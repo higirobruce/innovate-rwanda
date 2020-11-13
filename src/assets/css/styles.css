@@ -1,7 +1,156 @@
+@import url(//db.onlinewebfonts.com/c/860c3ec7bbc5da3e97233ccecafe512e?family=Circular+Std+Book);
+@font-face {
+  font-family: "Circular Std Book";
+  src: url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.eot");
+  src: url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.eot?#iefix")
+      format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.woff2")
+      format("woff2"),
+    url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.woff")
+      format("woff"),
+    url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.ttf")
+      format("truetype"),
+    url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.svg#Circular Std Book")
+      format("svg");
+}
+
+@font-face {
+  font-family: "Circular Std Black";
+  src: url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.eot"); /* IE9*/
+  src: url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */
+      url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.woff2")
+      format("woff2"),
+    /* chrome firefox */
+      url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.woff")
+      format("woff"),
+    /* chrome firefox */
+      url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.ttf")
+      format("truetype"),
+    /* chrome firefox opera Safari, Android, iOS 4.2+*/
+      url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.svg#Circular Std Black")
+      format("svg"); /* iOS 4.1- */
+}
 body {
-  background: #efefef;
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  background: #ffffff;
+  font-family: "Circular Std Book", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #202020;
+  color: #5e7c8d;
+}
+
+#app {
+  overflow: hidden;
+}
+*:focus {
+  outline: none !important;
+}
+
+input::placeholder {
+  color: #c0c6d8;
+}
+
+.container {
+  max-width: 1500px;
+}
+.clear {
+  clear: both;
+}
+/* colors */
+.text-white {
+  color: #ffffff;
+}
+.bg-white {
+  background: #ffffff;
+}
+.text-blue-dark {
+  color: #1b2958;
+}
+.bg-blue-dark {
+  background: #1b2958;
+}
+.text-blue-light-1 {
+  color: #f3fbfe;
+}
+.bg-blue-light-1 {
+  background: #f3fbfe;
+}
+
+.btn {
+  padding: 10px 22px;
+  font-weight: 800;
+}
+.btn.btn-lg {
+  padding: 11px 40px;
+}
+.btn.btn-primary {
+  background: #00aeef;
+  border: 2px solid #00aeef;
+}
+.btn.btn-primary:hover {
+  background: #0066ab;
+  border: 2px solid #0066ab;
+}
+.btn.btn-primary-outline {
+  color: #00aeef;
+  background: #ffffff;
+  border: 2px solid #00aeef;
+}
+.btn.btn-primary-outline:hover {
+  color: #0066ab;
+  background: #ffffff;
+  border: 2px solid #0066ab;
+}
+.btn.btn-secondary-outline {
+  color: #ef8700;
+  background: #ffffff;
+  border: 2px solid #ef8700;
+}
+.btn.btn-secondary-outline:hover {
+  color: #0066ab;
+  background: #ffffff;
+  border: 2px solid #0066ab;
+}
+.btn.btn-transparent {
+  color: #00aeef;
+  background: transparent;
+  border: 2px solid transparent;
+}
+.btn.btn-transparent:hover {
+  color: #0066ab;
+  background: transparent;
+  border: 2px solid transparent;
+  opacity: 0.7;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-display: swap;
+  font-family: "Circular Std Black";
+}
+h1 {
+  font-size: 75px;
+  font-weight: 900;
+}
+h2 {
+  font-size: 52px;
+  font-weight: 900;
+}
+@media (max-width: 769px) {
+  .hide-on-small {
+    display: none;
+  }
+  h1 {
+    font-size: 2em;
+    font-weight: 700;
+  }
+  h2 {
+    font-size: 1.8em;
+    font-weight: 700;
+  }
 }
