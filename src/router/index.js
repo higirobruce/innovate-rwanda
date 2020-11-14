@@ -11,14 +11,63 @@ const router = new Router({
   routes: [
     {
       path: "/",
-      component: () => import("@/pages/home"),
+      component: () => import("@/pages/home/Index.vue"),
       meta: {
         layout: "default-layout",
       },
     },
     {
+      path: "/why-rwanda",
+      component: () => import("@/pages/whyrwanda/Index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/dashboard",
+      component: () => import("@/pages/dashboard/Index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/companies",
+      component: () => import("@/pages/dashboard/companies/Index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/my-company",
+      component: () => import("@/pages/dashboard/mycompany/Index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/users",
+      component: () => import("@/pages/dashboard/users/Index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/content",
+      component: () => import("@/pages/dashboard/content/Index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings",
+      component: () => import("@/pages/dashboard/settings/Index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
       path: "*",
-      component: () => import("@/pages/notfound"),
+      component: () => import("@/pages/notfound/Index.vue"),
       meta: {
         layout: "auth-layout",
       },

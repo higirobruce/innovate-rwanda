@@ -8,30 +8,30 @@
           </button>
           <div class="wrap-logo">
             <div class="main-logo">
-              <a to="/">
+              <router-link :to="'/'">
                 <img src="@/assets/images/logo.svg" alt="Innovate Rwanda" />
-              </a>
+              </router-link>
             </div>
           </div>
           <div class="wrap-main-nav">
             <ul class="list-inline py-3 my-2">
               <li class="list-inline-item">
-                <a href="#">About</a>
+                <router-link :to="'/'">About</router-link>
               </li>
               <li class="list-inline-item">
-                <a href="#">Why Rwanda</a>
+                <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
               </li>
               <li class="list-inline-item">
-                <a href="#">Community Directory</a>
+                <router-link :to="'/'">Community Directory</router-link>
               </li>
               <li class="list-inline-item">
-                <a href="#">Events</a>
+                <router-link :to="'/'">Events</router-link>
               </li>
               <li class="list-inline-item">
-                <a href="#">Blog</a>
+                <router-link :to="'/'">Blog</router-link>
               </li>
               <li class="list-inline-item">
-                <a href="#">Find Talent</a>
+                <router-link :to="'/'">Find Talent</router-link>
               </li>
             </ul>
           </div>
@@ -62,25 +62,25 @@
       <div class="sidebar-nav mt-5">
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
-            <a href="#">About</a>
+            <router-link :to="'/'">About</router-link>
           </li>
           <li class="list-group-item">
-            <a href="#">Why Rwanda</a>
+            <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
           </li>
           <li class="list-group-item">
-            <a href="#">Community Directory</a>
+            <router-link :to="'/'">Community Directory</router-link>
           </li>
           <li class="list-group-item">
-            <a href="#">Events</a>
+            <router-link :to="'/'">Events</router-link>
           </li>
           <li class="list-group-item">
-            <a href="#">Blog</a>
+            <router-link :to="'/'">Blog</router-link>
           </li>
           <li class="list-group-item">
-            <a href="#">Find Talents</a>
+            <router-link :to="'/'">Find Talents</router-link>
           </li>
           <li class="list-group-item">
-            <a href="#">Search</a>
+            <router-link :to="'/'">Search</router-link>
           </li>
         </ul>
       </div>
