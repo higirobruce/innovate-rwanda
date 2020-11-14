@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-white">
     <component :is="layout">
       <div class="container">
         <!-- welcome to innovate -->

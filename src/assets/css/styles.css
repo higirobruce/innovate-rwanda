@@ -46,7 +46,16 @@ body {
 *:focus {
   outline: none !important;
 }
-
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+[v-cloak] {
+  display: none;
+}
+#root {
+  white-space: pre-line;
+}
 input::placeholder {
   color: #c0c6d8;
 }
@@ -153,4 +162,61 @@ h2 {
     font-size: 1.8em;
     font-weight: 700;
   }
+}
+
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+button[type="button"]:focus,
+[type="text"].form-control:focus,
+[type="password"].form-control:focus,
+[type="email"].form-control:focus,
+[type="tel"].form-control:focus,
+[contenteditable].form-control:focus {
+  box-shadow: inset 0 0px 0 #ddd;
+  outline: none;
+  background: none;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+}
+
+.page-info {
+  padding: 20px 40px;
+  background: #f0f2f8;
+}
+
+.page-info h2 {
+  padding: 20px 40px;
+  background: #f0f2f8;
+  color: #00AEEF;
+  font-size: 45px;
+}
+.coming-soon {
+  height: 460px;
+  background-image: url('./../images/coming-soon.svg');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 600px 460px;
+  padding: 50px 0;
+  position: relative;
+}
+.coming-soon::before {
+position: absolute;
+content: "Page under construction!";
+bottom: 0;
+left: 0;
+width: 100%;
+padding: 150x 0;
+text-align: center;
 }
