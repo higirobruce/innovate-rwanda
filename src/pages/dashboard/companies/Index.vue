@@ -3,6 +3,7 @@
     <component :is="layout">
       <div class="page-info">
         <h2 class="h2 font-weight-bold">Companies</h2>
+        
       </div>
       <div class="coming-soon"></div>
     </component>
