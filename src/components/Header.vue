@@ -31,7 +31,7 @@
                 <router-link :to="'/'">Blog</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/'">Find Talent</router-link>
+                <router-link :to="'/find-talent'">Find Talent</router-link>
               </li>
             </ul>
           </div>
@@ -40,12 +40,12 @@
               <button class="btn btn-transparent">
                 <img src="@/assets/images/search.svg" alt="Search" />
               </button>
-              <button class="btn font-weight-bold btn-primary-outline mr-2">
+              <router-link :to="'/login'" class="btn font-weight-bold btn-primary-outline mr-2">
                 Login
-              </button>
-              <button class="btn font-weight-bold btn-primary">
+              </router-link>
+              <router-link :to="'/join'" class="btn font-weight-bold btn-primary">
                 Join The Community
-              </button>
+              </router-link>
             </div>
           </div>
           <button class="auth-btn" @click="toggleAuthModal">
