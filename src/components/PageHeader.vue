@@ -7,7 +7,7 @@
   >
     <div class="page-overlay" :style="{ 'background-color': rgba }"></div>
     <h1>{{ title }}</h1>
-    <div>{{ subtitle || "" }}</div>
+    <div class="subtitle">{{ subtitle || "" }}</div>
   </div>
 </template>
 <script>
@@ -23,9 +23,10 @@ export default {
   padding: 100px 0;
   text-align: center;
   position: relative;
-  margin-bottom: 120px;
+  margin-bottom: 60px;
 }
-.page-header h1{
+.page-header h1,
+.subtitle {
   color: #ffffff;
   position: relative;
   z-index: 5;
@@ -37,5 +38,10 @@ export default {
   width: 100%;
   height: 100%;
   z-index: 0;
+}
+.subtitle {
+  max-width: 770px;
+  margin: 0 auto;
+  display: block;
 }
 </style>

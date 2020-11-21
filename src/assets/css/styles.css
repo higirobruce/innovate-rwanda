@@ -33,7 +33,7 @@
       format("svg"); /* iOS 4.1- */
 }
 body {
-  background: #ffffff;
+  background: #F0F2F8;
   font-family: "Circular Std Book", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -219,4 +219,9 @@ left: 0;
 width: 100%;
 padding: 150x 0;
 text-align: center;
+}
+input.custom-input {
+  margin: 10px 0;
+  padding: 27px 15px!important;
+  border: 1px solid #C0C6D8!important;
 }

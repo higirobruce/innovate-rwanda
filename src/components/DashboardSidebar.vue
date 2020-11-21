@@ -1,42 +1,44 @@
 <template>
   <div>
-    <div class="dash-logo">
-      <router-link :to="'/dashboard'">
-        <img src="@/assets/images/logo-dash.svg" />
-      </router-link>
-    </div>
     <ul class="dash-nav">
       <li>
+        <div class="dash-logo">
+          <router-link :to="'/dashboard'">
+            <img src="@/assets/images/logo-dash.svg" />
+          </router-link>
+        </div>
+      </li>
+      <li class="nav-item">
         <router-link exact :to="'/dashboard'">
           <img src="@/assets/images/icon-dash.svg" />
           <div>Dashboard</div>
         </router-link>
       </li>
-      <li>
+      <li class="nav-item">
         <router-link :to="'/dashboard/companies'">
           <img src="@/assets/images/icon-companies.svg" />
           <div>Companies</div>
         </router-link>
       </li>
-      <li>
+      <li class="nav-item">
         <router-link :to="'/dashboard/my-company'">
           <img src="@/assets/images/icon-company.svg" />
           <div>My Company</div>
         </router-link>
       </li>
-      <li>
+      <li class="nav-item">
         <router-link :to="'/dashboard/users'">
           <img src="@/assets/images/icon-users.svg" />
           <div>Users</div>
         </router-link>
       </li>
-      <li>
+      <li class="nav-item">
         <router-link :to="'/dashboard/content'">
           <img src="@/assets/images/icon-content.svg" />
           <div>Content</div>
         </router-link>
       </li>
-      <li>
+      <li class="nav-item float-bottom">
         <router-link :to="'/dashboard/settings'">
           <img src="@/assets/images/icon-settings.svg" />
           <div>Settings</div>
@@ -60,38 +62,47 @@
 .dash-nav {
   margin: 0;
   padding: 0;
+  height: 100vh;
   display: block;
+  position: relative;
 }
 .dash-nav li {
   margin: 0;
   display: block;
   text-align: center;
 }
-.dash-nav li img {
+.float-bottom {
+  position: absolute;
+  bottom: 20px;
+}
+.dash-nav li.nav-item img {
   display: block;
   margin: 5px auto;
   width: 30px;
 }
-.dash-nav li a {
+.dash-nav li.nav-item a {
   padding: 10px 0;
   font-size: 14px;
   color: #c0c6d8;
   display: block;
 }
-.dash-nav li:hover a {
-  background: #0D1A47;
+.dash-nav li.nav-item:hover a {
+  background: #0d1a47;
 }
 .dash-nav li a.router-link-exact-active {
-  background: #0D1A47;
+  background: #0d1a47;
   position: relative;
 }
 .dash-nav li a.router-link-exact-active::before {
-  background: #00AEEF;
+  background: #00aeef;
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 4px;
   content: "";
+}
+.dash-nav li.float-bottom {
+  width: 120px;
 }
 </style>
