@@ -25,13 +25,16 @@ export default {
 .wrap-dash {
   display: flex;
   flex-wrap: wrap;
+  background: #ffffff;
 }
 .wrap-sidebar {
   width: 120px;
   height: 100vh;
   background: #1B2958;
+  position: fixed;
 }
 .wrap-dash-content {
   width: calc(100% - 120px);
+  margin-left: 120px;
 }
 </style>

@@ -15,9 +15,9 @@
         </router-link>
       </li>
       <li class="nav-item">
-        <router-link :to="'/dashboard/companies'">
+        <router-link :to="'/dashboard/directory'">
           <img src="@/assets/images/icon-companies.svg" />
-          <div>Companies</div>
+          <div>Directory</div>
         </router-link>
       </li>
       <li class="nav-item">
