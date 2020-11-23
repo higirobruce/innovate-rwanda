@@ -1,7 +1,7 @@
 <template>
   <div class="wrap-home-dash">
     <component :is="layout">
-      <div class="dash-welcome">
+      <div class="dash-welcome border">
         <div class="welcome-content">
           <h1 class="h2 font-weight-bold text-blue-dark">Welcome</h1>
           <div>
@@ -36,11 +36,9 @@ export default {
 <style scoped>
 .wrap-home-dash {
   height: 100vh;
-  background: #f0f2f8;
 }
 .dash-welcome {
   margin: 0 25px;
-  background: #ffffff;
   padding: 50px;
   box-shadow: 0px 17px 36px #1b295814;
   border-radius: 3px;

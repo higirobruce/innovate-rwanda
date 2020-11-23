@@ -2,19 +2,21 @@
   <div>
     <component :is="layout">
       <div class="page-info px-5">
-        <h2 class="h2 font-weight-bold">Contents</h2>
+        <h2 class="h2 font-weight-bold">Directory</h2>
         <ul class="page-nav list-inline">
-          <li class="list-inline-item mr-5 list-active">
-            <router-link exact :to="'/dashboard/directory'">Posts</router-link>
-          </li>
           <li class="list-inline-item mr-5">
+            <router-link exact :to="'/dashboard/directory'"
+              >Companies list</router-link
+            >
+          </li>
+          <li class="list-inline-item mr-5 list-active">
             <router-link exact :to="'/dashboard/directory/pending'"
-              >Events</router-link
+              >Pending requests</router-link
             >
           </li>
           <li class="list-inline-item mr-5">
             <router-link exact :to="'/dashboard/directory/area-of-interests'"
-              >Jobs</router-link
+              >Areas of intrests</router-link
             >
           </li>
         </ul>
@@ -24,40 +26,34 @@
           <thead>
             <tr>
               <th scope="col">Title</th>
-              <th scope="col">Author</th>
-              <th scope="col">Category</th>
-              <th scope="col">Tags</th>
-              <th scope="col">Date</th>
+              <th scope="col">Date joined</th>
+              <th scope="col">Type</th>
+              <th scope="col">Area of intrests</th>
               <th scope="col">Status</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
-          <tbody v-if="posts">
-            <tr v-for="(post, index) in posts" :key="index">
-              <td>{{ post.title }}</td>
-              <td>{{ post.author }}</td>
-              <td>{{ post.category }}</td>
-              <td>{{ post.tag }}</td>
-              <td>{{ post.date }}</td>
+          <tbody v-if="directory">
+            <tr v-for="(dir, index) in directory" :key="index">
+              <td>{{ dir.name }}</td>
+              <td>{{ dir.createdAt }}</td>
+              <td>{{ dir.type }}</td>
+              <td>{{ dir.areaOfInterest }}</td>
               <td>
                 <div class="wrap-switch-toggle">
                   <span
                     :class="`${
-                      post.status === true
-                        ? 'switch-text active'
-                        : 'switch-text'
+                      dir.status === true ? 'switch-text active' : 'switch-text'
                     }`"
                     >Off</span
                   >
                   <label class="switch">
-                    <input type="checkbox" :checked="post.status === false" />
+                    <input type="checkbox" :checked="dir.status === false" />
                     <span class="slider round"></span>
                   </label>
                   <span
                     :class="`${
-                      post.status === true
-                        ? 'switch-text'
-                        : 'switch-text active'
+                      dir.status === true ? 'switch-text' : 'switch-text active'
                     }`"
                     >On</span
                   >
@@ -85,16 +81,17 @@
 </template>
 
 <script>
-import content from "./../../../dummy/content.js";
+import companies from "./../../../dummy/company.js";
 export default {
-  name: "users",
+  name: "dashboard",
   data() {
     return {
-      posts: [],
+      directory: [],
+      isAuthModelOpen: false,
     };
   },
   created() {
-    this.posts = content;
+    this.directory = companies;
   },
   computed: {
     layout() {

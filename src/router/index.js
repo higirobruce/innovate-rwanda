@@ -42,8 +42,22 @@ const router = new Router({
       },
     },
     {
-      path: "/dashboard/companies",
-      component: () => import("@/pages/dashboard/companies/index.vue"),
+      path: "/dashboard/directory",
+      component: () => import("@/pages/dashboard/directory/index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/directory/pending",
+      component: () => import("@/pages/dashboard/directory/pending.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/directory/area-of-interests",
+      component: () => import("@/pages/dashboard/directory/areaOfInterests.vue"),
       meta: {
         layout: "dashboard-layout",
       },
