@@ -10,20 +10,37 @@
       <div class="container">
         <h2 class="text-center">Tell us a little bit about yourself...</h2>
         <div class="choose-company-type">
-          <div class="type-option">
+          <div
+            :class="`${
+              currentType === 'startup' ? 'type-option active' : 'type-option'
+            }`"
+            @click="chooseType('startup')"
+          >
             <h3>I am a startup compant</h3>
-            <img src="@/assets/images/arrow-right.svg" />
+            <img v-if="!typeChosen" src="@/assets/images/arrow-right.svg" />
           </div>
-          <div class="type-option">
-            <h3>I am a startup compant</h3>
-            <img src="@/assets/images/arrow-right.svg" />
+          <div
+            :class="`${
+              currentType === 'coorporation'
+                ? 'type-option active'
+                : 'type-option'
+            }`"
+            @click="chooseType('coorporation')"
+          >
+            <h3>I am a major coorporation</h3>
+            <img v-if="!typeChosen" src="@/assets/images/arrow-right.svg" />
           </div>
-          <div class="type-option">
-            <h3>I am a startup compant</h3>
-            <img src="@/assets/images/arrow-right.svg" />
+          <div
+            :class="`${
+              currentType === 'investor' ? 'type-option active' : 'type-option'
+            }`"
+            @click="chooseType('investor')"
+          >
+            <h3>I am an angel investor or venture capitalist</h3>
+            <img v-if="!typeChosen" src="@/assets/images/arrow-right.svg" />
           </div>
         </div>
-        <div class="wrap-register">
+        <div class="wrap-register" v-if="typeChosen">
           <h2 class="text-center mb-4">Some basic information about you</h2>
           <div class="register-form">
             <!-- names -->
@@ -164,6 +181,23 @@ export default {
   components: {
     PageHeader,
   },
+  data() {
+    return {
+      typeChosen: false,
+      currentType: "",
+    };
+  },
+  methods: {
+    chooseType(type) {
+      if (this.currentType === type) {
+        this.typeChosen = false;
+        this.currentType = "";
+      } else {
+        this.typeChosen = true;
+        this.currentType = type;
+      }
+    },
+  },
   computed: {
     layout() {
       return this.$route.meta.layout;
@@ -190,10 +224,36 @@ h2 {
   border-radius: 3px;
   text-align: center;
   padding: 25px 0;
+  cursor: pointer;
+  position: relative;
+}
+.type-option.active::before {
+  z-index: 1;
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 160px;
+  background: #00aeef;
+}
+.type-option.active::after {
+  position: absolute;
+  content: "";
+  top: 160px;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: #6fcff2;
 }
 .type-option h3 {
   font-size: 22px;
   margin: 10px 0;
+  z-index: 4;
+  position: relative;
+}
+.type-option.active h3 {
+  color: #ffffff !important;
 }
 .wrap-register {
   max-width: 1200px;
