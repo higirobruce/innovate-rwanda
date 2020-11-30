@@ -4,8 +4,7 @@
       <div class="page-info">
         <h2 class="h2 font-weight-bold">Settings</h2>
       </div>
-
-      <div class="coming-soon"></div>
+      
     </component>
   </div>
 </template>

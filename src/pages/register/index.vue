@@ -43,130 +43,200 @@
         <div class="wrap-register" v-if="typeChosen">
           <h2 class="text-center mb-4">Some basic information about you</h2>
           <div class="register-form">
-            <!-- names -->
-            <h4 class="text-center mt-3">What is your name?</h4>
-            <div class="row mt-4">
-              <div class="col-lg-6 col-sm-12">
-                <div class="form-group">
-                  <input
-                    type="firstname"
-                    class="form-control custom-input"
-                    placeholder="First name"
-                  />
+            <form @submit="registerAccount">
+              <!-- names -->
+              <h4 class="text-center mt-3">What is your name?</h4>
+              <div class="row mt-4">
+                <div class="col-lg-6 col-sm-12">
+                  <div class="form-group">
+                    <input
+                      type="firstname"
+                      v-model.trim="$v.user.firstName.$model"
+                      required
+                      class="form-control custom-input"
+                      placeholder="First name"
+                    />
+                  </div>
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                  <div class="form-group">
+                    <input
+                      type="lastname"
+                      v-model.trim="$v.user.lastName.$model"
+                      required
+                      class="form-control custom-input"
+                      placeholder="Last name"
+                    />
+                  </div>
                 </div>
               </div>
-              <div class="col-lg-6 col-sm-12">
-                <div class="form-group">
-                  <input
-                    type="lastname"
-                    class="form-control custom-input"
-                    placeholder="Last name"
-                  />
+              <!-- email -->
+              <h4 class="text-center mt-3">And your company email address?</h4>
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="form-group">
+                    <input
+                      type="email"
+                      v-model.trim="$v.user.email.$model"
+                      class="form-control custom-input"
+                      placeholder="Email"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- email -->
-            <h4 class="text-center mt-3">And your company email address?</h4>
-            <div class="row mt-4">
-              <div class="col-12">
-                <div class="form-group">
-                  <input
-                    type="email"
-                    class="form-control custom-input"
-                    placeholder="Email"
-                  />
+              <!-- password -->
+              <h4 class="text-center mt-3">Create password</h4>
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="form-group">
+                    <input
+                      type="password"
+                      v-model.trim="$v.user.password.$model"
+                      required
+                      class="form-control custom-input"
+                      placeholder="password"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- password -->
-            <h4 class="text-center mt-3">Create password</h4>
-            <div class="row mt-4">
-              <div class="col-12">
-                <div class="form-group">
-                  <input
-                    type="password"
-                    class="form-control custom-input"
-                    placeholder="password"
-                  />
+              <!-- company/institution -->
+              <h4 class="text-center mt-3">
+                What is the name of your company?
+              </h4>
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      v-model.trim="$v.user.coName.$model"
+                      required
+                      class="form-control custom-input"
+                      placeholder="Company name"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- website -->
-            <h4 class="text-center mt-3">What is your company's website?</h4>
-            <div class="row mt-4">
-              <div class="col-12">
-                <div class="form-group">
-                  <input
-                    type="password"
-                    class="form-control custom-input"
-                    placeholder="Company's website"
-                  />
+              <!-- website -->
+              <h4 class="text-center mt-3">What is your company's website?</h4>
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      v-model.trim="$v.user.coWebsite.$model"
+                      required
+                      class="form-control custom-input"
+                      placeholder="Company's website"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- job title -->
-            <h4 class="text-center mt-3">
-              What is your job title at the company?
-            </h4>
-            <div class="row mt-4">
-              <div class="col-12">
-                <div class="form-group">
-                  <input
-                    type="password"
-                    class="form-control custom-input"
-                    placeholder="Job title"
-                  />
+              <!-- job title -->
+              <h4 class="text-center mt-3">
+                What is your job title at the company?
+              </h4>
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      v-model.trim="$v.user.jobTitle.$model"
+                      required
+                      class="form-control custom-input"
+                      placeholder="Job title"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- district -->
-            <h4 class="text-center mt-3">What District are you based in?</h4>
-            <div class="row mt-4">
-              <div class="col-12">
-                <div class="form-group">
-                  <input
-                    type="password"
-                    class="form-control custom-input"
-                    placeholder="Please Select District"
-                  />
+              <!-- district -->
+              <h4 class="text-center mt-3">What District are you based in?</h4>
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="form-group">
+                    <select
+                      class="form-control form-control-lg"
+                      name="district"
+                      v-model="user.district"
+                      @change="changeDistrict($event)"
+                      required
+                    >
+                      <option
+                        v-for="(district, index) in allDistricts"
+                        v-bind:value="district"
+                        :key="index"
+                      >
+                        {{ district }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- area -->
-            <h4 class="text-center mt-3">
-              Which area of interest closely fits your company?
-            </h4>
-            <div class="row mt-4">
-              <div class="col-12">
-                <div class="form-group">
-                  <input
-                    type="password"
-                    class="form-control custom-input"
-                    placeholder="Please Select Area of Interest"
-                  />
+              <!-- area -->
+              <h4 class="text-center mt-3">
+                Which area of interest closely fits your company?
+              </h4>
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="form-group">
+                    <select
+                      class="form-control form-control-lg"
+                      name="district"
+                      v-model="user.areaOfInterest"
+                      @change="changeInterest($event)"
+                      required
+                    >
+                      <option
+                        v-for="(area, index) in listOfAreaOfInterests"
+                        v-bind:value="area"
+                        :key="index"
+                      >
+                        {{ area }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- description -->
-            <h4 class="text-center mt-3">
-              short description about the company
-            </h4>
-            <div class="row mt-4">
-              <div class="col-12">
-                <div class="form-group">
-                  <textarea class="form-control" rows="6"></textarea>
+              <!-- description -->
+              <h4 class="text-center mt-3">
+                Short description about the company
+              </h4>
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="form-group">
+                    <textarea
+                      v-model="user.description"
+                      class="form-control"
+                      rows="6"
+                    ></textarea>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <button
-                  class="btn btn-lg font-weight-bold btn-primary-outline mr-lg-5 mt-3"
-                >
-                  Register
-                </button>
+              <div class="row">
+                <div class="col-12">
+                  <button
+                    :disabled="
+                      $v.$invalid ||
+                      !user.districtBasedIn ||
+                      !user.areaOfInterest
+                    "
+                    class="btn btn-lg font-weight-bold btn-primary-outline mr-lg-5 mt-3"
+                  >
+                    Register
+                  </button>
+                  <span class="py-3" v-if="registering">
+                    Wait, we are creating your listing
+                  </span>
+                  <div
+                    v-if="!registering && registered"
+                    class="my-3 alert alert-success"
+                    role="alert"
+                  >
+                    We have created your account successfully. Kindly, check
+                    your email to verify your email!
+                  </div>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -175,9 +245,24 @@
 </template>
 
 <script>
+import Vue from "vue";
+import AxiosHelper from "@/helpers/AxiosHelper";
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
+
+import {
+  required,
+  minLength,
+  maxLength,
+  email,
+} from "vuelidate/lib/validators";
+
+const checkWebsite = (value) =>
+  /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value);
+
 import PageHeader from "@/components/PageHeader";
 export default {
-  name: "why-rwanda",
+  name: "register",
   components: {
     PageHeader,
   },
@@ -185,10 +270,40 @@ export default {
     return {
       typeChosen: false,
       currentType: "",
+      registering: false,
+      registered: false,
+      user: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        jobTitle: "",
+        password: "",
+        role: "normal",
+        coName: "",
+        coType: "",
+        coWebsite: "",
+        districtBasedIn: "",
+        areaOfInterest: "",
+        shortDescription: "",
+      },
+      allDistricts: ["Gasabo", "Kicukiro"],
+      listOfAreaOfInterests: [
+        "Tech companies",
+        "Co-working spaces",
+        "Business networks",
+        "Accelerators",
+        "Government agencies",
+        "Ecosystem builders",
+        "Financer/Investors",
+        "Academic/Research institutions",
+        "Incubators",
+        "Talent Development",
+      ],
     };
   },
   methods: {
     chooseType(type) {
+      this.registered = false;
       if (this.currentType === type) {
         this.typeChosen = false;
         this.currentType = "";
@@ -197,10 +312,66 @@ export default {
         this.currentType = type;
       }
     },
+    changeDistrict(e) {
+      this.user.districtBasedIn = e.target.value;
+    },
+    changeInterest(e) {
+      this.user.areaOfInterest = e.target.value;
+    },
+    registerAccount(evt) {
+      evt.preventDefault();
+      this.registering = true;
+      this.registered = false;
+      this.user.coType = this.currentType;
+      AxiosHelper.post("register", this.user)
+        .then((response) => {
+          console.log("response", response);
+          this.registering = false;
+          this.registered = true;
+        })
+        .catch((error) => {
+          console.log("something happened", error);
+          this.registering = false;
+        });
+    },
   },
   computed: {
     layout() {
       return this.$route.meta.layout;
+    },
+  },
+  validations: {
+    user: {
+      firstName: {
+        required,
+        minLength: minLength(3),
+        maxLength: maxLength(25),
+      },
+      lastName: {
+        required,
+        minLength: minLength(3),
+        maxLength: maxLength(25),
+      },
+      email: {
+        email,
+      },
+      jobTitle: {
+        required,
+        minLength: minLength(3),
+        maxLength: maxLength(35),
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+      },
+      coName: {
+        required,
+        minLength: minLength(3),
+      },
+      coWebsite: {
+        required,
+        validateWebsite: checkWebsite,
+      },
     },
   },
 };

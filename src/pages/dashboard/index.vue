@@ -38,18 +38,19 @@ export default {
   height: 100vh;
 }
 .dash-welcome {
-  margin: 0 25px;
   padding: 50px;
   box-shadow: 0px 17px 36px #1b295814;
   border-radius: 3px;
   display: flex;
   align-items: center;
+  width: 90%;
+  margin: 40px 5%;
 }
 .dash-welcome img {
   width: 300px;
   float: right;
 }
-.welcome-content div{
+.welcome-content div {
   max-width: 580px;
 }
 .welcome-content {

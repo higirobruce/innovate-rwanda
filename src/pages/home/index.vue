@@ -9,7 +9,7 @@
               Bringing Rwanda's Innovation Community Together
             </h1>
             <button
-              class="btn btn-lg font-weight-bold btn-primary-outline mr-lg-5 mt-3"
+              class="btn btn-lg font-weight-bold btn-primary-outline mt-3 mr-lg-5 mt-3"
             >
               Join the community
             </button>

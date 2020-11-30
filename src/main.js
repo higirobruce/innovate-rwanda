@@ -17,11 +17,19 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 
 Vue.config.productionTip = false;
 
+import './mixins/auth';
+
+import "./filters/truncate";
+import "./filters/date";
 
 // Register fontawesome icons
 library.add(fas);
 library.add(fab);
 Vue.component('icon', FontAwesomeIcon);
+
+import VueToast from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
+Vue.use(VueToast);
 
 new Vue({
   store,

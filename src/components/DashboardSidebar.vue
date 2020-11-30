@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="dash-nav">
+    <ul class="dash-nav" v-if="profile && Object.keys(profile).length > 0">
       <li>
         <div class="dash-logo">
           <router-link :to="'/dashboard'">
@@ -14,25 +14,40 @@
           <div>Dashboard</div>
         </router-link>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item"
+        v-if="profile.role === 'admin-company' || profile.role === 'super-admin'"
+      >
         <router-link :to="'/dashboard/directory'">
           <img src="@/assets/images/icon-companies.svg" />
           <div>Directory</div>
         </router-link>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" v-if="profile.role === 'normal'">
         <router-link :to="'/dashboard/my-company'">
           <img src="@/assets/images/icon-company.svg" />
           <div>My Company</div>
         </router-link>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item"
+        v-if="profile.role === 'admin-user' || profile.role === 'super-admin'"
+      >
         <router-link :to="'/dashboard/users'">
           <img src="@/assets/images/icon-users.svg" />
           <div>Users</div>
         </router-link>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item"
+        v-if="
+          profile.role === 'admin-blog' ||
+          profile.role === 'admin-event' ||
+          profile.role === 'admin-job' ||
+          profile.role === 'normal' ||
+          profile.role === 'super-admin'
+        "
+      >
         <router-link :to="'/dashboard/content'">
           <img src="@/assets/images/icon-content.svg" />
           <div>Content</div>
@@ -47,7 +62,11 @@
     </ul>
   </div>
 </template>
-
+<script>
+export default {
+  name: "sidebar"
+};
+</script>
 <style scoped>
 .dash-logo {
   width: 100%;

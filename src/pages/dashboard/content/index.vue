@@ -3,24 +3,18 @@
     <component :is="layout">
       <div class="page-info px-5">
         <h2 class="h2 font-weight-bold">Contents</h2>
-        <ul class="page-nav list-inline">
-          <li class="list-inline-item mr-5 list-active">
-            <router-link exact :to="'/dashboard/directory'">Posts</router-link>
-          </li>
-          <li class="list-inline-item mr-5">
-            <router-link exact :to="'/dashboard/directory/pending'"
-              >Events</router-link
-            >
-          </li>
-          <li class="list-inline-item mr-5">
-            <router-link exact :to="'/dashboard/directory/area-of-interests'"
-              >Jobs</router-link
-            >
-          </li>
-        </ul>
+        <MenuContent />
       </div>
       <div class="dash-container">
-        <table class="table">
+        <table
+          class="table"
+          v-if="
+            profile &&
+            (profile.role === 'normal' ||
+              profile.role === 'admin-blog' ||
+              profile.role === 'super-admin')
+          "
+        >
           <thead>
             <tr>
               <th scope="col">Title</th>
@@ -40,7 +34,10 @@
               <td>{{ post.tag }}</td>
               <td>{{ post.date }}</td>
               <td>
-                <div class="wrap-switch-toggle">
+                <div
+                  v-if="profile && profile.role !== 'normal'"
+                  class="wrap-switch-toggle"
+                >
                   <span
                     :class="`${
                       post.status === true
@@ -61,6 +58,10 @@
                     }`"
                     >On</span
                   >
+                </div>
+                <div v-else>
+                  <span class="text-success" v-if="post.status === true">Published</span>
+                  <span class="text-danger" v-else>Unpublished</span>
                 </div>
               </td>
               <td>
@@ -86,8 +87,12 @@
 
 <script>
 import content from "./../../../dummy/content.js";
+import MenuContent from "@/components/MenuContent";
 export default {
-  name: "users",
+  name: "content",
+  components: {
+    MenuContent,
+  },
   data() {
     return {
       posts: [],

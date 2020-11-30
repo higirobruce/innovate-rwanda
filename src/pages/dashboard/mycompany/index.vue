@@ -3,12 +3,52 @@
     <component :is="layout">
       <div class="page-info px-5">
         <h2 class="h2 font-weight-bold">My Company</h2>
-        <div class="logo-mycompany">
-          <img src="@/assets/images/jica.png" alt="Tech Solver" />
-          <h3>Tech Solver Ltd</h3>
+        <div
+          class="logo-mycompany"
+          v-if="company && Object.keys(company).length > 0"
+        >
+          <img
+            v-if="company && company.company.logo"
+            :src="company.company.logo"
+            alt="Tech Solver"
+          />
+          <img
+            v-else
+            src="@/assets/images/logo_placeholder.svg"
+            alt="Tech Solver"
+          />
+          <div class="ml-4">
+            <h3 class="position-relative">
+              {{ company.company.coName }}
+              <span
+                class="company-status approved"
+                v-if="company.company.status === 'approved'"
+              >
+                Company is approved
+              </span>
+              <span
+                class="company-status pending"
+                v-if="company.company.status === 'pending'"
+              >
+                Pending approval
+              </span>
+              <span
+                class="company-status declined"
+                v-if="company.company.status === 'declined'"
+              >
+                Company is rejected
+              </span>
+            </h3>
+            <div class="text-capitalize">
+              {{ company.company.coType }}
+            </div>
+          </div>
         </div>
       </div>
-      <div class="dash-container">
+      <div
+        class="dash-container"
+        v-if="company && Object.keys(company).length > 0"
+      >
         <div class="wrap-company position-relative">
           <button
             class="btn font-weight-bold btn-primary-outline mr-2 shadow floating-btn"
@@ -20,32 +60,167 @@
             <div class="row small-row">
               <div class="col-sm-12 col-lg-6 info-box">
                 Phone:&nbsp;&nbsp;
-                <span>+25073210213</span>
+                <span>{{
+                  company.company.contactPhone || "No contact phone yet"
+                }}</span>
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Email:&nbsp;&nbsp;
-                <span>+25073210213</span>
+                <span>{{
+                  company.company.contactPhone || "No contact email yet"
+                }}</span>
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Website:&nbsp;&nbsp;
-                <span>techsolver.com</span>
+                <span>{{
+                  company.company.coWebsite || "No contact phone yet"
+                }}</span>
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Year Founded:&nbsp;&nbsp;
-                <span>2012</span>
+                <span>{{ company.company.yearFounded || "-" }}</span>
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Location:&nbsp;&nbsp;
-                <span>Gasabo</span>
+                <span> {{ company.company.districtBasedIn || "" }}</span>
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
-                Social media:&nbsp;&nbsp;
-                <span>-</span>
+                <div class="social-links">
+                  Social media:&nbsp;&nbsp;
+                  <a
+                    style="color: #1473E6"
+                    :to="''"
+                    v-if="
+                      company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).facebook
+                    "
+                  >
+                    <icon :icon="['fab', 'facebook']" class="icon mr-2" />
+                  </a>
+                  <a
+                    style="color: #00AEEF"
+                    :to="''"
+                    target="_blank"
+                    v-if="
+                      company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).twitter
+                    "
+                  >
+                    <icon :icon="['fab', 'twitter']" class="icon mr-2" />
+                  </a>
+                  <a
+                    style="color: #FF1D77"
+                    :to="''"
+                    target="_blank"
+                    v-if="
+                      company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).instagram
+                    "
+                  >
+                    <icon :icon="['fab', 'instagram']" class="icon mr-2" />
+                  </a>
+                  <a
+                    style="color: #ff0000"
+                    target="_blank"
+                    v-if="
+                      company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).youtube
+                    "
+                    :href="`https://youtube.com/${
+                      convertToObject(company.company.socialMedia).youtube
+                    }`"
+                  >
+                    <icon :icon="['fab', 'youtube']" class="icon mr-2" />
+                  </a>
+                  <a
+                    style="color: #007bb5"
+                    target="_blank"
+                    v-if="
+                      company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).linkedin
+                    "
+                    :href="`https://youtube.com/${
+                      convertToObject(company.company.socialMedia).linkedin
+                    }`"
+                  >
+                    <icon :icon="['fab', 'linkedin']" class="icon mr-2" />
+                  </a>
+
+                  <!-- UNPROVIDED LINKS  -->
+                  <span
+                    style="color: #dedede"
+                    v-if="
+                      company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).facebook ===
+                        ''
+                    "
+                  >
+                    <icon :icon="['fab', 'facebook']" class="icon mr-2" />
+                  </span>
+                  <span
+                    style="color: #dedede"
+                    v-if="
+                      company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).twitter ===
+                        ''
+                    "
+                  >
+                    <icon :icon="['fab', 'twitter']" class="icon mr-2" />
+                  </span>
+                  <span
+                    style="color: #dedede"
+                    v-if="
+                      company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).instagram ===
+                        ''
+                    "
+                  >
+                    <icon :icon="['fab', 'instagram']" class="icon mr-2" />
+                  </span>
+                  <span
+                    style="color: #dedede"
+                    v-if="
+                      company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).youtube ===
+                        ''
+                    "
+                  >
+                    <icon :icon="['fab', 'youtube']" class="icon mr-2" />
+                  </span>
+                  <span
+                    style="color: #dedede"
+                    v-if="
+                      company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).linkedin ===
+                        ''
+                    "
+                  >
+                    <icon :icon="['fab', 'linkedin']" class="icon mr-2" />
+                  </span>
+                  <button
+                    @click="openEditSocial"
+                    class="btn btn-transparent mx-1 px-1"
+                  >
+                    Update
+                  </button>
+                  <modal
+                    name="editSocialMedia"
+                    :adaptive="true"
+                    :scrollable="true"
+                    :height="550"
+                    :width="650"
+                  >
+                    <EditSocial
+                      :company="company.company"
+                    />
+                  </modal>
+                </div>
               </div>
             </div>
           </div>
           <div class="info-separator">&nbsp;</div>
           <div class="company-info">
+            {{ company.company }}
             <div>Areas of Interests</div>
             <div class="my-3">
               <div class="co-badge">Business consulting</div>
@@ -62,15 +237,17 @@
             <div>
               Main Area of Interest:
               <span class="text-blue-dark"
-                >Online business exposing and selling</span
-              >
+                >{{ company.company.mainAreaOfInterest || "" }}
+              </span>
             </div>
           </div>
           <div class="info-separator">&nbsp;</div>
           <div class="company-info">
             <div>
               Customer base:
-              <span class="text-blue-dark">Business to Business</span>
+              <span class="text-blue-dark">{{
+                company.company.customerBase || ""
+              }}</span>
             </div>
           </div>
         </div>
@@ -83,53 +260,10 @@
           </button>
           <div class="my-3">Company summary</div>
           <div class="text-blue-dark">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum. Sed ut
-            perspiciatis unde omnis iste natus error sit voluptatem accusantium
-            doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-            inventore veritatis et quasi architecto beatae vitae dicta sunt
-            explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur
-            aut odit aut fugit, sed quia consequuntur magni dolores eos qui
-            ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui
-            dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed
-            quia non numquam eius modi tempora incidunt ut labore et dolore
-            magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis
-            nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut
-            aliquid ex ea commodi consequatur? Quis autem vel eum iure
-            reprehenderit qui in ea voluptate velit esse quam nihil molestiae
-            consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla
-            pariatur?" Sed ut perspiciatis unde omnis iste natus error sit
-            voluptatem accusantium doloremque laudantium, totam rem aperiam,
-            eaque ipsa quae ab illo inventore veritatis et quasi architecto
-            beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia
-            voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur
-            magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro
-            quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-            adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-            labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad
-            minima veniam, quis nostrum exercitationem ullam corporis suscipit
-            laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem
-            vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil
-            molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas
-            nulla pariatur?" Sed ut perspiciatis unde omnis iste natus error sit
-            voluptatem accusantium doloremque laudantium, totam rem aperiam,
-            eaque ipsa quae ab illo inventore veritatis et quasi architecto
-            beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia
-            voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur
-            magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro
-            quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-            adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-            labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad
-            minima veniam, quis nostrum exercitationem ullam corporis suscipit
-            laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem
-            vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil
-            molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas
-            nulla pariatur?"
+            {{
+              company.company.shortDescription ||
+              "No company summary provided yet"
+            }}
           </div>
         </div>
         <div class="co-description position-relative">
@@ -141,9 +275,9 @@
           </button>
           <div class="my-3">
             Our office:
-            <span class="text-blue-dark"
-              >233 KG 7 Ave Kigali Height 8th floor</span
-            >
+            <span class="text-blue-dark">
+              {{ company.company.officeAddress }}
+            </span>
           </div>
           <div class="wrap-map">
             <GmapMap
@@ -169,25 +303,26 @@
 </template>
 
 <script>
-import companies from "./../../../dummy/company.js";
 import Vue from "vue";
+import AxiosHelper from "@/helpers/AxiosHelper";
 import * as VueGoogleMaps from "vue2-google-maps";
+import EditSocial from "@/components/EditSocial";
+import VModal from "vue-js-modal";
+Vue.use(VModal);
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyB4BlTNmRI2uk50yZ-QLat92Vb08U_WNhE",
-    libraries: "places", // This is required if you use the Autocomplete plugin
-    // OR: libraries: 'places,drawing'
-    // OR: libraries: 'places,drawing,visualization'
-    // (as you require)
-
-    //// If you want to set the version, you can do so:
-    // v: '3.26',
+    libraries: "places",
   },
 });
 export default {
-  name: "directory",
+  name: "my-company",
+  components: {
+    EditSocial,
+  },
   data() {
     return {
+      company: {},
       center: { lat: 10.0, lng: 10.0 },
       markers: [
         {
@@ -199,8 +334,32 @@ export default {
       ],
     };
   },
-  created() {
-    this.directory = companies;
+  mounted() {
+    AxiosHelper.get("company/my-company")
+      .then((response) => {
+        this.company = response.data.result;
+        // this.loadingDirectory = false;
+        // this.loadingCompany = false;
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          //   this.errorCompany = error.response.data.error;
+        } else {
+          this.errorCompany = "Something went wrong, try again later";
+        }
+        Vue.$toast.open({
+          message: error.response.data,
+          type: "error",
+        });
+      });
+  },
+  methods: {
+    convertToObject(object) {
+      return JSON.parse(object);
+    },
+    openEditSocial() {
+      this.$modal.show("editSocialMedia");
+    },
   },
   computed: {
     layout() {
@@ -209,66 +368,33 @@ export default {
   },
 };
 </script>
-
 <style scoped>
-.logo-mycompany {
+.social-links {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
-.logo-mycompany img {
-  background: #ffffff;
-  padding: 15px;
+.social-links a,
+.social-links span {
+  font-size: 35px;
+  margin: 4px 0 0 5px;
 }
-.logo-mycompany h3 {
-  font-size: 32px;
-  padding-left: 25px;
-  color: #1b2958;
-  font-weight: bold;
+.company-status {
+  position: relative;
+  top: -4px;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 200;
+  color: #fff;
 }
-.wrap-company {
-  font-size: 18px;
-  border: 1px solid #c0c6d8;
-  padding: 30px 10px;
-  border-radius: 5px;
+.company-status.approved {
+  background: #2ab363;
 }
-.co-description {
-  margin-top: 30px;
-  /* font-size: 14px; */
-  background: #f0f2f8;
-  padding: 30px 40px;
-  border-radius: 5px;
+.company-status.pending {
+  background: #e98e26;
 }
-.small-row {
-  max-width: 600px;
-}
-.info-separator {
-  background: #c0c6d8;
-  height: 1px;
-  margin: 15px 0;
-  width: 100%;
-}
-.company-info {
-  margin: 0px 35px;
-}
-.info-box {
-  margin: 7px 0;
-}
-.info-box span {
-  font-weight: 500;
-  color: #1b2958;
-}
-.co-badge {
-  font-size: 14px;
-  padding: 5px 20px;
-  background: #f0f2f8;
-  border-radius: 24px;
-  color: #1b2958;
-  margin: 8px 10px 8px 0;
-  display: inline-block;
-}
-.floating-btn {
-  position: absolute;
-  top: 15px;
-  right: 20px;
+.company-status.declined {
+  background: #e42121;
 }
 </style>
