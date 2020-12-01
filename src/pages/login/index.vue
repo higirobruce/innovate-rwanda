@@ -16,7 +16,7 @@
           class="my-3 alert alert-danger"
           role="alert"
         >
-          Invalid Password or email
+          Invalid email or password
         </div>
         <div class="register-form">
           <form @submit="login">

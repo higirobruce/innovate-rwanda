@@ -132,8 +132,7 @@ export default {
               this.$router.go();
             }, 500);
         })
-        .catch((err) => {
-          console.log("err", err);
+        .catch(() => {
           Vue.$toast.open({
             message:
               "Sorry, something went wrong while updating your social media accounts",

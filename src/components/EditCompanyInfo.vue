@@ -2,7 +2,7 @@
   <div>
     <h3 class="p-4 bottom-shadow shadow">Edit info</h3>
     <div class="px-4 py-2">
-      <form @submit="editCompany">
+      <form @submit="submitCompanyInfo">
         <div class="wrap-modal" style="max-height: 450px; overflow: scroll">
           <div class="row mt-4">
             <div class="col-lg-8 col-sm-12">
@@ -10,7 +10,7 @@
               <div class="form-group">
                 <input
                   type="text"
-                  v-model.trim="$v.company.coName.$model"
+                  v-model.trim="$v.companyInfo.coName.$model"
                   required
                   class="form-control custom-input"
                   placeholder="Company name"
@@ -22,7 +22,7 @@
               <div class="form-group">
                 <input
                   type="number"
-                  v-model.trim="$v.company.yearFounded.$model"
+                  v-model.trim="$v.companyInfo.yearFounded.$model"
                   class="form-control custom-input"
                   placeholder="Example: 2018"
                 />
@@ -35,7 +35,7 @@
               <div class="form-group">
                 <input
                   type="email"
-                  v-model.trim="$v.company.contactEmail.$model"
+                  v-model.trim="$v.companyInfo.contactEmail.$model"
                   class="form-control custom-input"
                   placeholder="Contact email name"
                 />
@@ -44,7 +44,7 @@
                 Display email address to public
                 <span
                   :class="`${
-                    company.emailDisplay === true
+                    companyInfo.emailDisplay === true
                       ? 'switch-text active'
                       : 'switch-text'
                   }`"
@@ -52,14 +52,15 @@
                 >
                 <label class="switch">
                   <input
+                    v-model="companyInfo.emailDisplay"
                     type="checkbox"
-                    :checked="company.emailDisplay === false"
+                    :checked="companyInfo.emailDisplay === false"
                   />
                   <span class="slider round"></span>
                 </label>
                 <span
                   :class="`${
-                    company.emailDisplay === true
+                    companyInfo.emailDisplay === true
                       ? 'switch-text'
                       : 'switch-text active'
                   }`"
@@ -72,7 +73,7 @@
               <div class="form-group">
                 <input
                   type="number"
-                  v-model.trim="$v.company.contactPhone.$model"
+                  v-model.trim="$v.companyInfo.contactPhone.$model"
                   class="form-control custom-input"
                   placeholder="Contact phone"
                 />
@@ -81,7 +82,7 @@
                 Display phone number to public
                 <span
                   :class="`${
-                    company.phoneDisplay === true
+                    companyInfo.phoneDisplay === true
                       ? 'switch-text active'
                       : 'switch-text'
                   }`"
@@ -90,13 +91,14 @@
                 <label class="switch">
                   <input
                     type="checkbox"
-                    :checked="company.phoneDisplay === false"
+                    v-model="companyInfo.phoneDisplay"
+                    :checked="companyInfo.phoneDisplay === false"
                   />
                   <span class="slider round"></span>
                 </label>
                 <span
                   :class="`${
-                    company.phoneDisplay === true
+                    companyInfo.phoneDisplay === true
                       ? 'switch-text'
                       : 'switch-text active'
                   }`"
@@ -114,14 +116,14 @@
                 <select
                   class="form-control form-control-lg"
                   name="district"
-                  v-model="company.districtBasedIn"
+                  v-model="companyInfo.districtBasedIn"
                   @change="changeDistrict($event)"
                 >
                   <option
                     v-for="(district, index) in allDistricts"
                     v-bind:value="district"
                     :key="index"
-                    :selected="district === company.districtBasedIn"
+                    :selected="district === companyInfo.districtBasedIn"
                   >
                     {{ district }}
                   </option>
@@ -129,21 +131,7 @@
               </div>
             </div>
           </div>
-          <!-- area of interest -->
-          <h4 class="mt-3">Area of interests that fits your company</h4>
-          <div class="row mt-4">
-            <div class="col-12">
-              <div class="form-group">
-                <v-select
-                  multiple
-                  v-model="company.areaOfInterest"
-                  :options="listOfAreaOfInterests"
-                ></v-select>
-              </div>
-            </div>
-          </div>
           <!-- main area of interest -->
-          <!-- area -->
           <h4 class="mt-3">Main area of your interest</h4>
           <div class="row mt-4">
             <div class="col-12">
@@ -151,7 +139,7 @@
                 <select
                   class="form-control form-control-lg"
                   name="district"
-                  v-model="company.mainAreaOfInterest"
+                  v-model="companyInfo.mainAreaOfInterest"
                   @change="changeMainInterest($event)"
                 >
                   <option
@@ -165,22 +153,12 @@
               </div>
             </div>
           </div>
-          <!-- description -->
-          <h4 class="mt-3">Short description about the company</h4>
-          <div class="row mt-4">
-            <div class="col-12">
-              <div class="form-group">
-                <textarea
-                  v-model="company.shortDescription"
-                  class="form-control"
-                  rows="6"
-                ></textarea>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="mt-4">
-          <button @click="editCompany" class="btn btn-success-outline mr-2">
+          <button
+            @click="submitCompanyInfo"
+            class="btn btn-success-outline mr-2"
+          >
             Save
           </button>
         </div>
@@ -213,22 +191,10 @@ Vue.component("v-select", vSelect);
 import "vue-select/dist/vue-select.css";
 export default {
   name: "company-info",
-  props: ["companyId"],
+  props: ["company"],
   data() {
     return {
-      company: {
-        coName: "",
-        yearFounded: "",
-        contactEmail: "",
-        emailDisplay: false,
-        contactPhone: "",
-        phoneDisplay: false,
-        coWebsite: "",
-        districtBasedIn: "",
-        areaOfInterest: "",
-        mainAreaOfInterest: "",
-        shortDescription: "",
-      },
+      companyInfo: {},
       twitter: "",
       linkedin: "",
       facebook: "",
@@ -254,67 +220,38 @@ export default {
     };
   },
   mounted() {
-    AxiosHelper.get(`company/${this.companyId}`)
-      .then((response) => {
-        console.log("response",response)
-        this.company = response.data.result.company;
-        // this.loadingDirectory = false;
-        // this.loadingCompany = false;
-      })
-      .catch((error) => {
-        if (error.response.status === 404) {
-            this.errorCompany = error.response.data.error;
-        } else {
-          this.errorCompany = "Something went wrong, try again later";
-        }
-        Vue.$toast.open({
-          message: error.response.data,
-          type: "error",
-        });
-      });
+    this.companyInfo = { ...this.company };
   },
   methods: {
-    convertSocialMedia(object) {
-        console.log("oject", object)
-      return true;
-    },
-    editCompany(evt) {
+    submitCompanyInfo(evt) {
       evt.preventDefault();
-      const social = {
-        twitter: this.twitter || "",
-        linkedin: this.linkedin || "",
-        facebook: this.facebook || "",
-        instagram: this.instagram || "",
-        youtube: this.youtube || "",
-      };
-      this.company.areaOfInterest = JSON.stringify(this.company.areaOfInterest);
-      this.company.socialMedia = JSON.stringify(social);
-      AxiosHelper.patch(`company/edit/${this.companyId}`, this.company)
+      AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
         .then(() => {
           Vue.$toast.open({
-            message: "Company's information has been updated",
+            message: "Company information has been updated successfully",
             type: "success",
           });
-          //   setTimeout(() => {
-          //     this.$router.go();
-          //   }, 4000);
+          setTimeout(() => {
+            this.$router.go();
+          }, 500);
         })
         .catch(() => {
           Vue.$toast.open({
-            message: "Sorry, something went wrong. try again later!",
+            message:
+              "Sorry, something went wrong while updating your social media accounts",
             type: "error",
           });
         });
     },
     changeDistrict(e) {
-      this.company.districtBasedIn = e.target.value;
+      this.companyInfo.districtBasedIn = e.target.value;
     },
     changeMainInterest(e) {
-      this.company.mainAreaOfInterest = e.target.value;
+      this.companyInfo.mainAreaOfInterest = e.target.value;
     },
   },
   validations: {
-    company: {
+    companyInfo: {
       coName: {
         required,
         minLength: minLength(3),

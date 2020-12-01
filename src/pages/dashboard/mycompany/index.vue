@@ -51,24 +51,46 @@
       >
         <div class="wrap-company position-relative">
           <button
+            @click="openEditCompanyInfo"
             class="btn font-weight-bold btn-primary-outline mr-2 shadow floating-btn"
           >
             <icon class="icon" icon="pen" />
             Edit
           </button>
+          <modal
+            name="editCompanyInfo"
+            :adaptive="true"
+            :scrollable="true"
+            :height="640"
+            :width="920"
+          >
+            <EditCompanyInfo :company="company.company" />
+          </modal>
           <div class="company-info">
             <div class="row small-row">
               <div class="col-sm-12 col-lg-6 info-box">
                 Phone:&nbsp;&nbsp;
                 <span>{{
-                  company.company.contactPhone || "No contact phone yet"
+                  company.company.contactPhone ||
+                  "No contact phone provided yet"
                 }}</span>
+                <span
+                  class="ml-2 co-badge"
+                  v-if="company.company.phoneDisplay !== true"
+                  >Hidden on public</span
+                >
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Email:&nbsp;&nbsp;
                 <span>{{
-                  company.company.contactPhone || "No contact email yet"
+                  company.company.contactEmail ||
+                  "No contact provided email yet"
                 }}</span>
+                <span
+                  class="ml-2 co-badge"
+                  v-if="company.company.emailDisplay !== true"
+                  >Hidden on public</span
+                >
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Website:&nbsp;&nbsp;
@@ -88,7 +110,7 @@
                 <div class="social-links">
                   Social media:&nbsp;&nbsp;
                   <a
-                    style="color: #1473E6"
+                    style="color: #1473e6"
                     :to="''"
                     v-if="
                       company.company.socialMedia &&
@@ -98,7 +120,7 @@
                     <icon :icon="['fab', 'facebook']" class="icon mr-2" />
                   </a>
                   <a
-                    style="color: #00AEEF"
+                    style="color: #00aeef"
                     :to="''"
                     target="_blank"
                     v-if="
@@ -109,7 +131,7 @@
                     <icon :icon="['fab', 'twitter']" class="icon mr-2" />
                   </a>
                   <a
-                    style="color: #FF1D77"
+                    style="color: #ff1d77"
                     :to="''"
                     target="_blank"
                     v-if="
@@ -210,9 +232,7 @@
                     :height="550"
                     :width="650"
                   >
-                    <EditSocial
-                      :company="company.company"
-                    />
+                    <EditSocial :company="company.company" />
                   </modal>
                 </div>
               </div>
@@ -220,7 +240,6 @@
           </div>
           <div class="info-separator">&nbsp;</div>
           <div class="company-info">
-            {{ company.company }}
             <div>Areas of Interests</div>
             <div class="my-3">
               <div class="co-badge">Business consulting</div>
@@ -253,11 +272,21 @@
         </div>
         <div class="co-description position-relative">
           <button
+            @click="openEditCompanySummary"
             class="btn font-weight-bold btn-primary-outline mr-2 shadow floating-btn"
           >
             <icon class="icon" icon="pen" />
             Edit
           </button>
+          <modal
+            name="editCompanySummary"
+            :adaptive="true"
+            :scrollable="true"
+            :height="400"
+            :width="920"
+          >
+            <EditCompanySummary :company="company.company" /> </modal
+          >˝
           <div class="my-3">Company summary</div>
           <div class="text-blue-dark">
             {{
@@ -268,11 +297,21 @@
         </div>
         <div class="co-description position-relative">
           <button
+            @click="openEditCompanyLocation"
             class="btn font-weight-bold btn-primary-outline mr-2 shadow floating-btn"
           >
-            <icon class="icon" icon="pen" />
-            Edit
+            <icon class="icon" icon="map-marker-alt" />
+            Update location
           </button>
+          <modal
+            name="editCompanyLocation"
+            :adaptive="true"
+            :scrollable="true"
+            :height="700"
+            :width="920"
+          >
+            <EditCompanyLocation :company="company.company" /> </modal
+          >˝
           <div class="my-3">
             Our office:
             <span class="text-blue-dark">
@@ -307,6 +346,9 @@ import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import * as VueGoogleMaps from "vue2-google-maps";
 import EditSocial from "@/components/EditSocial";
+import EditCompanyInfo from "@/components/EditCompanyInfo";
+import EditCompanySummary from "@/components/EditCompanySummary";
+import EditCompanyLocation from "@/components/EditCompanyLocation";
 import VModal from "vue-js-modal";
 Vue.use(VModal);
 Vue.use(VueGoogleMaps, {
@@ -319,6 +361,9 @@ export default {
   name: "my-company",
   components: {
     EditSocial,
+    EditCompanyInfo,
+    EditCompanySummary,
+    EditCompanyLocation,
   },
   data() {
     return {
@@ -338,12 +383,10 @@ export default {
     AxiosHelper.get("company/my-company")
       .then((response) => {
         this.company = response.data.result;
-        // this.loadingDirectory = false;
-        // this.loadingCompany = false;
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          //   this.errorCompany = error.response.data.error;
+          this.errorCompany = error.response.data.error;
         } else {
           this.errorCompany = "Something went wrong, try again later";
         }
@@ -359,6 +402,15 @@ export default {
     },
     openEditSocial() {
       this.$modal.show("editSocialMedia");
+    },
+    openEditCompanyInfo() {
+      this.$modal.show("editCompanyInfo");
+    },
+    openEditCompanySummary() {
+      this.$modal.show("editCompanySummary");
+    },
+    openEditCompanyLocation() {
+      this.$modal.show("editCompanyLocation");
     },
   },
   computed: {
