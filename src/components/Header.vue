@@ -22,7 +22,7 @@
                 <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/'">Community Directory</router-link>
+                <router-link :to="'/directory'">Community Directory</router-link>
               </li>
               <li class="list-inline-item">
                 <router-link :to="'/'">Events</router-link>
@@ -36,7 +36,12 @@
             </ul>
           </div>
           <div class="wrap-hotlinks">
-            <div class="py-2 float-right">
+            <div class="py-2 float-right" v-if="profile && Object.keys(profile).length > 0">
+              <router-link :to="'/dashboard'" class="btn font-weight-bold btn-secondary">
+               Dashboard
+              </router-link>
+            </div>
+            <div class="py-2 float-right" v-else>
               <button class="btn btn-transparent">
                 <img src="@/assets/images/search.svg" alt="Search" />
               </button>

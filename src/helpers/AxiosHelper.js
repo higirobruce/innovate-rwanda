@@ -24,7 +24,6 @@ class AxiosHelper {
   }
   static get(path) {
     return new Promise((resolve, reject) => {
-      console.log('hey')
       return axios
         .get(`${VUE_APP_BACKEND_URL}${path}`, config)
         .then((response) => {

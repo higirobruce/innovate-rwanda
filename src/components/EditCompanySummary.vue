@@ -23,7 +23,7 @@
             Save
           </button>
         </div>
-      </form>˝
+      </form>
     </div>
   </div>
 </template>

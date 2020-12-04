@@ -387,7 +387,7 @@ input.custom-input {
   border-right: 1px solid #F6F7F8;
 }
 
-
+/*
 .logo-mycompany {
   display: flex;
   align-items: center;
@@ -403,6 +403,7 @@ input.custom-input {
   color: #1b2958;
   font-weight: bold;
 }
+*/
 .wrap-company {
   font-size: 18px;
   border: 1px solid #c0c6d8;
@@ -450,4 +451,23 @@ input.custom-input {
 }
 .v-toast__item--success {
  background-color: #28a745!important; 
+}
+
+.company-status {
+  position: relative;
+  top: -4px;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 200;
+  color: #fff;
+}
+.company-status.approved {
+  background: #2ab363;
+}
+.company-status.pending {
+  background: #e98e26;
+}
+.company-status.declined {
+  background: #e42121;
 }

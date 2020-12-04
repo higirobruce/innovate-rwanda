@@ -35,6 +35,34 @@ const router = new Router({
       },
     },
     {
+      path: "/directory",
+      component: () => import("@/pages/directory/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/directory/enablers",
+      component: () => import("@/pages/directory/enablers.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/directory/companies",
+      component: () => import("@/pages/directory/companies.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/company/:slug",
+      component: () => import("@/pages/company/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
       path: "/dashboard",
       component: () => import("@/pages/dashboard/index.vue"),
       meta: {

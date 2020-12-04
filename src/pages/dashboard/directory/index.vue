@@ -9,6 +9,7 @@
               >Companies list</router-link
             >
           </li>
+          <!--
           <li class="list-inline-item mr-5">
             <router-link exact :to="'/dashboard/directory/pending'"
               >Pending requests</router-link
@@ -19,6 +20,7 @@
               >Areas of intrests</router-link
             >
           </li>
+          -->
         </ul>
       </div>
       <div class="dash-container">
@@ -55,32 +57,28 @@
               <td>{{ dir.createdAt | date("DD MMM, YYYY") }}</td>
               <td>{{ dir.coType }}</td>
               <td>
-                <span
-                  v-for="(a, index) in convertToObject(dir.areaOfInterest)"
-                  :key="index"
-                >
-                  <span v-if="index !== 0">,</span>
-                  {{ a }}
-                </span>
+                {{ dir.mainAreaOfInterest }}
               </td>
               <td>
                 <div class="wrap-switch-toggle">
                   <span
-                    :class="`${
-                      dir.status === true ? 'switch-text active' : 'switch-text'
-                    }`"
-                    >Off</span
+                    class="company-status text-capitalize approved"
+                    v-if="dir.status === 'approved'"
                   >
-                  <label class="switch">
-                    <input type="checkbox" :checked="dir.status === false" />
-                    <span class="slider round"></span>
-                  </label>
+                    Company is approved
+                  </span>
                   <span
-                    :class="`${
-                      dir.status === true ? 'switch-text' : 'switch-text active'
-                    }`"
-                    >On</span
+                    class="company-status text-capitalize pending"
+                    v-if="dir.status === 'pending'"
                   >
+                    Pending approval
+                  </span>
+                  <span
+                    class="company-status text-capitalize declined"
+                    v-if="dir.status === 'declined'"
+                  >
+                    Company is rejected
+                  </span>
                 </div>
               </td>
               <td>
@@ -197,7 +195,7 @@ export default {
       companyToDeleteId: "",
       notAllowed: false,
       companyIdEdit: "",
-      inputCompanyToDelete: ""
+      inputCompanyToDelete: "",
     };
   },
   created() {
@@ -270,25 +268,6 @@ export default {
       this.companyToDeleteName = name;
       this.companyToDeleteId = id;
       this.$modal.show("deleteCompany");
-      //   AxiosHelper.get(`company/${id}`)
-      //     .then((response) => {
-      //       this.company = response.data.result;
-      //       this.loadingDirectory = false;
-      //       this.loadingCompany = false;
-      //     })
-      //     .catch((error) => {
-      //       if (error.response.status === 404) {
-      //         this.errorCompany = error.response.data.error;
-      //       } else {
-      //         this.errorCompany = "Something went wrong, try again later";
-      //       }
-      //       Vue.$toast.open({
-      //         message: this.errorCompany,
-      //         type: "error",
-      //       });
-      //       this.loadingDirectory = false;
-      //       this.loadingCompany = false;
-      //     });
     },
   },
 };

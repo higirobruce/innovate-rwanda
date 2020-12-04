@@ -67,7 +67,7 @@
         </div>
         <div class="one-row content-inverted">
           <div class="image-row">
-            <img src="@/assets/images/economic_growth@2x.png" alt="" />
+            <img src="@/assets/images/proof_of_concept_hub.svg" alt="" />
           </div>
           <div class="content-row">
             <h2 class="font-weight-bold h3 text-blue-dark">

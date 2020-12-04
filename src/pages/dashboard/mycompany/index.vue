@@ -4,19 +4,33 @@
       <div class="page-info px-5">
         <h2 class="h2 font-weight-bold">My Company</h2>
         <div
-          class="logo-mycompany"
+          class="company-header"
           v-if="company && Object.keys(company).length > 0"
         >
-          <img
-            v-if="company && company.company.logo"
-            :src="company.company.logo"
-            alt="Tech Solver"
-          />
-          <img
-            v-else
-            src="@/assets/images/logo_placeholder.svg"
-            alt="Tech Solver"
-          />
+          <div class="logo-mycompany">
+            <img
+              :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${company.company.logo}`"
+              v-if="company.company.logo"
+              :alt="company.company.coName"
+            />
+            <img
+              v-else
+              src="@/assets/images/logo_placeholder.svg"
+              :alt="company.company.coName"
+            />
+            <button class="btn-upload" @click="openUploadCompanyLogo">
+              Change logo
+            </button>
+            <modal
+              name="uploadCompanyLogo"
+              :adaptive="true"
+              :scrollable="true"
+              :height="650"
+              :width="650"
+            >
+              <UploadCompanyLogo :company="company.company" />
+            </modal>
+          </div>
           <div class="ml-4">
             <h3 class="position-relative">
               {{ company.company.coName }}
@@ -349,6 +363,7 @@ import EditSocial from "@/components/EditSocial";
 import EditCompanyInfo from "@/components/EditCompanyInfo";
 import EditCompanySummary from "@/components/EditCompanySummary";
 import EditCompanyLocation from "@/components/EditCompanyLocation";
+import UploadCompanyLogo from "@/components/UploadCompanyLogo";
 import VModal from "vue-js-modal";
 Vue.use(VModal);
 Vue.use(VueGoogleMaps, {
@@ -358,12 +373,14 @@ Vue.use(VueGoogleMaps, {
   },
 });
 export default {
+  // props: ["image_name"],
   name: "my-company",
   components: {
     EditSocial,
     EditCompanyInfo,
     EditCompanySummary,
     EditCompanyLocation,
+    UploadCompanyLogo,
   },
   data() {
     return {
@@ -412,6 +429,12 @@ export default {
     openEditCompanyLocation() {
       this.$modal.show("editCompanyLocation");
     },
+    openUploadCompanyLogo() {
+      this.$modal.show("uploadCompanyLogo");
+    },
+    toggleShow() {
+      this.show = !this.show;
+    },
   },
   computed: {
     layout() {
@@ -431,22 +454,31 @@ export default {
   font-size: 35px;
   margin: 4px 0 0 5px;
 }
-.company-status {
-  position: relative;
-  top: -4px;
-  font-size: 12px;
-  padding: 4px 12px;
+.company-header {
+  display: flex;
+  align-items: center;
+}
+.logo-mycompany {
+  width: 140px;
+  height: auto;
+  padding: 10px;
+  background: #fff;
   border-radius: 4px;
-  font-weight: 200;
+}
+.logo-mycompany img {
+  border-radius: 4px;
+}
+.btn-upload {
+  margin: 8px 0 0 0;
+  border: none;
+  background: #00aeef;
+  border: none;
+  text-align: center;
+  display: block;
+  width: 100%;
   color: #fff;
-}
-.company-status.approved {
-  background: #2ab363;
-}
-.company-status.pending {
-  background: #e98e26;
-}
-.company-status.declined {
-  background: #e42121;
+  padding: 8px 0;
+  border-radius: 3px;
+  font-size: 12px;
 }
 </style>

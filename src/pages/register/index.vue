@@ -234,6 +234,16 @@
                     We have created your account successfully. Kindly, check
                     your email to verify your email!
                   </div>
+                  <div
+                    v-if="errorHappened && error"
+                    class="my-3 alert alert-danger"
+                    role="alert"
+                  >
+                    {{
+                      error.error ||
+                      "Something went wrong while creating your company, try again later"
+                    }}
+                  </div>
                 </div>
               </div>
             </form>
@@ -272,6 +282,8 @@ export default {
       currentType: "",
       registering: false,
       registered: false,
+      error: {},
+      errorHappened: false,
       user: {
         firstName: "",
         lastName: "",
@@ -322,16 +334,17 @@ export default {
       evt.preventDefault();
       this.registering = true;
       this.registered = false;
+      this.errorHappened = false;
       this.user.coType = this.currentType;
       AxiosHelper.post("register", this.user)
-        .then((response) => {
-          console.log("response", response);
+        .then(() => {
           this.registering = false;
           this.registered = true;
         })
         .catch((error) => {
-          console.log("something happened", error);
+          this.error = error.response.data;
           this.registering = false;
+          this.errorHappened = true;
         });
     },
   },

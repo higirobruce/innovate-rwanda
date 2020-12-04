@@ -7,5 +7,8 @@ Vue.mixin({
         ? JSON.parse(localStorage.getItem("profile"))
         : {};
     },
+    IMAGE_URL() {
+      return "https://res.cloudinary.com/dbvxqoznr/image/upload/";
+    },
   },
 });

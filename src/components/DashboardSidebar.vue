@@ -3,7 +3,7 @@
     <ul class="dash-nav" v-if="profile && Object.keys(profile).length > 0">
       <li>
         <div class="dash-logo">
-          <router-link :to="'/dashboard'">
+          <router-link :to="'/'">
             <img src="@/assets/images/logo-dash.svg" />
           </router-link>
         </div>
