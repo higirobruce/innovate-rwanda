@@ -326,26 +326,24 @@
           >
             <EditCompanyLocation :company="company.company" /> </modal
           >˝
-          <div class="my-3">
-            Our office:
-            <span class="text-blue-dark">
-              {{ company.company.officeAddress }}
-            </span>
-          </div>
+          <div class="my-3">Our office</div>
           <div class="wrap-map">
             <GmapMap
-              :center="{ lat: -1.953841484576185, lng: 30.08110361228947 }"
+              :center="{
+                lat: convertToObject(company.company.officeAddress).lat,
+                lng: convertToObject(company.company.officeAddress).lng,
+              }"
               :zoom="17"
               map-type-id="terrain"
               style="width: 1000px; height: 700px"
             >
               <GmapMarker
-                :key="index"
-                v-for="(m, index) in markers"
-                :position="m.position"
-                :clickable="true"
-                :draggable="true"
-                @click="center = m.position"
+                :position="{
+                  lat: convertToObject(company.company.officeAddress).lat,
+                  lng: convertToObject(company.company.officeAddress).lng,
+                }"
+                :clickable="false"
+                :draggable="false"
               />
             </GmapMap>
           </div>
@@ -368,12 +366,11 @@ import VModal from "vue-js-modal";
 Vue.use(VModal);
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyB4BlTNmRI2uk50yZ-QLat92Vb08U_WNhE",
+    key: "AIzaSyBzyXzhhqWBsTj305rY30VC1UF_1OHDKgA",
     libraries: "places",
   },
 });
 export default {
-  // props: ["image_name"],
   name: "my-company",
   components: {
     EditSocial,
@@ -385,15 +382,6 @@ export default {
   data() {
     return {
       company: {},
-      center: { lat: 10.0, lng: 10.0 },
-      markers: [
-        {
-          position: { lat: 10.0, lng: 10.0 },
-        },
-        {
-          position: { lat: 11.0, lng: 11.0 },
-        },
-      ],
     };
   },
   mounted() {
@@ -480,5 +468,11 @@ export default {
   padding: 8px 0;
   border-radius: 3px;
   font-size: 12px;
+}
+.wrap-map {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  display: block;
 }
 </style>

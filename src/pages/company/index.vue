@@ -6,7 +6,7 @@
           <div class="company-header mb-3 p-3">
             <img
               v-if="company && company.company.logo"
-               :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${company.company.logo}`"
+              :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${company.company.logo}`"
               :alt="company.company.coName"
             />
             <img
@@ -127,7 +127,15 @@
                   <img src="@/assets/images/email.svg" />
                 </div>
 
-                <div class="info-separator clear my-3" v-if="company.company.emailDisplay === true || company.company.phoneDisplay === true">&nbsp;</div>
+                <div
+                  class="info-separator clear my-3"
+                  v-if="
+                    company.company.emailDisplay === true ||
+                    company.company.phoneDisplay === true
+                  "
+                >
+                  &nbsp;
+                </div>
 
                 <div class="company-large-info">
                   <h4>Areas of interests</h4>
@@ -201,7 +209,28 @@
                   </div>
                   <div class="info-separator my-3">&nbsp;</div>
                   <h3>Location</h3>
-                  <div>Map soon</div>
+                  <div class="wrap-map">
+                    <GmapMap
+                      :center="{
+                        lat: convertToObject(company.company.officeAddress).lat,
+                        lng: convertToObject(company.company.officeAddress).lng,
+                      }"
+                      :zoom="17"
+                      map-type-id="terrain"
+                      style="width: 600px; height: 400px"
+                    >
+                      <GmapMarker
+                        :position="{
+                          lat: convertToObject(company.company.officeAddress)
+                            .lat,
+                          lng: convertToObject(company.company.officeAddress)
+                            .lng,
+                        }"
+                        :clickable="false"
+                        :draggable="false"
+                      />
+                    </GmapMap>
+                  </div>
                 </div>
               </div>
             </div>
@@ -214,7 +243,15 @@
 </template>
 
 <script>
+import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import * as VueGoogleMaps from "vue2-google-maps";
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyBzyXzhhqWBsTj305rY30VC1UF_1OHDKgA",
+    libraries: "places",
+  },
+});
 export default {
   name: "company",
   data() {

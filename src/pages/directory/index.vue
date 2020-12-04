@@ -5,6 +5,9 @@
         <h1>Choose a preferred section</h1>
         <div class="row">
           <div class="col-sm-12 col-lg-6 one-box">
+            <div class="box-image">
+              <img src="@/assets/images/enablers.svg" alt="type" />
+            </div>
             <h3>Ecosystem Enablers</h3>
             <div>
               Companies, organizations and service providers working together to
@@ -15,6 +18,9 @@
             /></router-link>
           </div>
           <div class="col-sm-12 col-lg-6 one-box">
+            <div class="box-image">
+              <img src="@/assets/images/companies.svg" alt="type" />
+            </div>
             <h3>Tech Companies</h3>
             <div>
               Our community listing of tech and innovation companies in the
@@ -46,14 +52,13 @@ export default {
 </script>
 <style scoped>
 .wrap-choose-section {
-  margin: 25px auto;
+  margin: 25px auto 55px auto;
   max-width: 800px;
-  padding: 50px 0;
 }
 .wrap-choose-section h1 {
   color: #00aeef;
   font-size: 48px;
-  margin: 40px 0;
+  margin: 32px 0;
   padding: 45px 0;
 }
 .one-box h3 {
@@ -65,6 +70,15 @@ export default {
   height: 80px;
   font-size: 16px;
   font-weight: 200;
+}
+.one-box .box-image {
+  width: 100px;
+  height: 130px;
+}
+.one-box img {
+  width: 100%;
+  height: auto;
+  margin: 0;
 }
 .one-box .btn {
   border: 2px solid #c0c6d8;
