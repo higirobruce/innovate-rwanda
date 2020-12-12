@@ -10,34 +10,41 @@
             />
           </router-link>
         </div>
-        <h2 class="text-center mb-4">Login</h2>
+        <h2 class="text-center mb-4">Reset password</h2>
         <div
-          v-if="!logging && !success && unauthorized"
+          v-if="!loading && changed"
+          class="my-3 alert alert-success"
+          role="alert"
+        >
+          You have reset your password successfully. You can <router-link :to="'/login'">login</router-link> now
+        </div>
+        <div
+          v-if="!loading && error"
           class="my-3 alert alert-danger"
           role="alert"
         >
-          Invalid email or password
+          Sorry, we could not change you password right now. try again
         </div>
-        <div class="register-form">
-          <form @submit="login">
+        <div class="register-form" v-if="!loading && !changed">
+          <form @submit="resetPassword">
             <div class="row mt-4">
               <div class="col-12">
                 <div class="form-group">
                   <input
-                    v-model.trim="$v.user.email.$model"
-                    type="email"
+                    v-model.trim="$v.user.newPassword.$model"
+                    type="password"
+                    name="password"
                     class="form-control custom-input"
-                    placeholder="Email"
+                    placeholder="New password"
                   />
                 </div>
-              </div>
-              <div class="col-12">
                 <div class="form-group">
                   <input
+                    v-model.trim="$v.user.confirmPassword.$model"
                     type="password"
-                    v-model.trim="$v.user.password.$model"
+                    name="password"
                     class="form-control custom-input"
-                    placeholder="Password"
+                    placeholder="Retype password"
                   />
                 </div>
               </div>
@@ -45,18 +52,19 @@
             <div>
               <button
                 :disabled="$v.$invalid"
+                @click="resetPassword"
                 class="btn font-weight-bold btn-primary btn-lg btn-block shadow"
               >
-                Login
+                Reset
               </button>
             </div>
             <div>
-              <Loading v-if="logging && !success" />
+              <Loading v-if="loading && !changed" />
             </div>
           </form>
           <div class="clear"></div>
           <div class="py-3 text-center">
-            <router-link :to="'/forgot-password'">Forgot password?</router-link>
+            <router-link :to="'/login'">Login</router-link>
           </div>
         </div>
       </div>
@@ -69,10 +77,8 @@ import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
-import dotenv from "dotenv";
-dotenv.config();
 
-import { required, email, minLength } from "vuelidate/lib/validators";
+import { required, minLength, sameAs } from "vuelidate/lib/validators";
 import Loading from "@/components/Loading";
 export default {
   name: "login",
@@ -81,55 +87,46 @@ export default {
   },
   data() {
     return {
-      logging: false,
-      success: false,
-      errorMessage: "",
-      unauthorized: false,
+      loading: false,
+      changed: false,
+      error: false,
+      token: "",
       user: {
-        email: "",
-        password: "",
+        newPassword: "",
+        confirmPassword: "",
       },
     };
   },
-  mounted() {},
+  created() {
+    this.token = this.$route.params.token;
+  },
   methods: {
-    login(evt) {
+    resetPassword(evt) {
       evt.preventDefault();
-      localStorage.removeItem("profile");
-      localStorage.removeItem("isAuth");
-      localStorage.removeItem("token");
-      localStorage.removeItem("company");
-      this.logging = true;
-      this.success = false;
-      AxiosHelper.post("login", this.user)
-        .then((response) => {
-          this.logging = false;
-          this.success = true;
-          localStorage.setItem("profile", JSON.stringify(response.data.user));
-          localStorage.setItem(
-            "company",
-            JSON.stringify(response.data.company)
-          );
-          localStorage.setItem("isAuth", true);
-          localStorage.setItem("token", response.data.token);
-          this.$router.push("/dashboard");
+      this.loading = true;
+      this.changed = false;
+      this.error = false;
+      delete this.user.confirmPassword;
+      AxiosHelper.put(`reset-password/${this.token}`, this.user)
+        .then(() => {
+          this.loading = false;
+          this.changed = true;
         })
-        .catch((error) => {
-          console.log("error", error);
-          this.errorMessage = "Something went wrong";
-          this.unauthorized = true;
-          this.logging = false;
+        .catch(() => {
+          this.changed = false;
+          this.loading = false;
+          this.error = true;
         });
     },
   },
   validations: {
     user: {
-      email: {
-        email,
-      },
-      password: {
+      newPassword: {
         required,
         minLength: minLength(6),
+      },
+      confirmPassword: {
+        sameAsPassword: sameAs("newPassword"),
       },
     },
   },

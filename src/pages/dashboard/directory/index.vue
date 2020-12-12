@@ -9,18 +9,6 @@
               >Companies list</router-link
             >
           </li>
-          <!--
-          <li class="list-inline-item mr-5">
-            <router-link exact :to="'/dashboard/directory/pending'"
-              >Pending requests</router-link
-            >
-          </li>
-          <li class="list-inline-item mr-5">
-            <router-link exact :to="'/dashboard/directory/area-of-interests'"
-              >Areas of intrests</router-link
-            >
-          </li>
-          -->
         </ul>
       </div>
       <div class="dash-container">
@@ -62,19 +50,19 @@
               <td>
                 <div class="wrap-switch-toggle">
                   <span
-                    class="company-status text-capitalize approved"
+                    class="status text-capitalize approved"
                     v-if="dir.status === 'approved'"
                   >
                     Company is approved
                   </span>
                   <span
-                    class="company-status text-capitalize pending"
+                    class="status text-capitalize pending"
                     v-if="dir.status === 'pending'"
                   >
                     Pending approval
                   </span>
                   <span
-                    class="company-status text-capitalize declined"
+                    class="status text-capitalize declined"
                     v-if="dir.status === 'declined'"
                   >
                     Company is rejected
@@ -200,7 +188,7 @@ export default {
   },
   created() {
     this.loadingDirectory = true;
-    AxiosHelper.get("directory/admin")
+    AxiosHelper.get("blog/pending")
       .then((response) => {
         this.directory = response.data;
         this.loadingDirectory = false;

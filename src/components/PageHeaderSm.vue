@@ -1,6 +1,6 @@
 <template>
   <div
-    class="page-header"
+    class="page-header-sm"
     :style="{
       'background-image': 'url(' + require('@/assets/images/' + image) + ')',
     }"
@@ -17,15 +17,15 @@ export default {
 </script>
 
 <style scoped>
-.page-header {
+.page-header-sm {
   background-attachment: scroll;
   background-position: center top;
-  padding: 100px 0;
+  padding: 30px 0;
   text-align: center;
   position: relative;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
 }
-.page-header h1,
+.page-header-sm h1,
 .subtitle {
   color: #ffffff;
   position: relative;

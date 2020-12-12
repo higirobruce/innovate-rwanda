@@ -81,7 +81,7 @@ export default {
     },
   },
   created() {
-    AxiosHelper.get("directory/public")
+    AxiosHelper.get("directory/public/startup")
       .then((response) => {
         this.directory = response.data.result;
       })

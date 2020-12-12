@@ -22,13 +22,15 @@
                 <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/directory'">Community Directory</router-link>
+                <router-link :to="'/directory'"
+                  >Community Directory</router-link
+                >
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/'">Events</router-link>
+                <router-link :to="'/events'">Events</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/'">Blog</router-link>
+                <router-link :to="'/blog'">Blog</router-link>
               </li>
               <li class="list-inline-item">
                 <router-link :to="'/find-talent'">Find Talent</router-link>
@@ -36,25 +38,37 @@
             </ul>
           </div>
           <div class="wrap-hotlinks">
-            <div class="py-2 float-right" v-if="profile && Object.keys(profile).length > 0">
-              <router-link :to="'/dashboard'" class="btn font-weight-bold btn-secondary">
-               Dashboard
+            <div
+              class="py-2 float-right"
+              v-if="profile && Object.keys(profile).length > 0"
+            >
+              <router-link
+                :to="'/dashboard'"
+                class="btn font-weight-bold btn-secondary"
+              >
+                Dashboard
               </router-link>
             </div>
             <div class="py-2 float-right" v-else>
               <button class="btn btn-transparent">
                 <img src="@/assets/images/search.svg" alt="Search" />
               </button>
-              <router-link :to="'/login'" class="btn font-weight-bold btn-primary-outline mr-2">
+              <router-link
+                :to="'/login'"
+                class="btn font-weight-bold btn-primary-outline mr-2"
+              >
                 Login
               </router-link>
-              <router-link :to="'/join'" class="btn font-weight-bold btn-primary">
+              <router-link
+                :to="'/join'"
+                class="btn font-weight-bold btn-primary"
+              >
                 Join The Community
               </router-link>
             </div>
           </div>
           <button class="auth-btn" @click="toggleAuthModal">
-            <img src="@/assets/images/user.svg" />
+            <img class="avatar" src="@/assets/images/user-avatar.svg" />
           </button>
         </div>
       </div>
@@ -73,19 +87,19 @@
             <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
           </li>
           <li class="list-group-item">
-            <router-link :to="'/'">Community Directory</router-link>
+            <router-link :to="'/directory'">Community Directory</router-link>
           </li>
           <li class="list-group-item">
-            <router-link :to="'/'">Events</router-link>
+            <router-link :to="'/events'">Events</router-link>
           </li>
           <li class="list-group-item">
-            <router-link :to="'/'">Blog</router-link>
+            <router-link :to="'/blog'">Blog</router-link>
           </li>
           <li class="list-group-item">
-            <router-link :to="'/'">Find Talents</router-link>
+            <router-link :to="'/find-talent'">Find Talents</router-link>
           </li>
           <li class="list-group-item">
-            <router-link :to="'/'">Search</router-link>
+            <router-link :to="'/search'">Search</router-link>
           </li>
         </ul>
       </div>
@@ -189,12 +203,6 @@ export default {
   .wrap-hotlinks {
     display: none;
   }
-  /* .sidebar-btn {
-    grid-area: sidebar-btn;
-  }
-  .auth-btn {
-    grid-area: auth-btn;
-  } */
   .sidebar-btn,
   .auth-btn {
     border: none;
@@ -269,7 +277,7 @@ export default {
   border: none;
 }
 .sidebar-nav li a {
-  color: #5E7C8D;
+  color: #5e7c8d;
 }
 </style>
 

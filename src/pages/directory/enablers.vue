@@ -14,12 +14,12 @@
             v-for="(company, index) in directory"
             :key="index"
           >
-            <router-link :to="`/company/${company.slug}`">
-              <div class="col-sm-12 col-md-4 col-lg-2">
-                <div class="company-logo">
+            <div class="col-sm-12 col-md-4 col-lg-2">
+              <div class="company-logo">
+                <router-link :to="`/company/${company.slug}`">
                   <img
                     v-if="company && company.logo"
-                    :src="company.logo"
+                    :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${company.logo}`"
                     :alt="company.coName"
                   />
                   <img
@@ -27,30 +27,32 @@
                     src="@/assets/images/logo_placeholder.svg"
                     :alt="company.coName"
                   />
-                </div>
+                </router-link>
               </div>
-              <div class="col-sm-12 col-md-8 col-lg-10">
+            </div>
+            <div class="col-sm-12 col-md-8 col-lg-10">
+              <router-link :to="`/company/${company.slug}`">
                 <h2>{{ company.coName }}</h2>
                 <div>
-                  <div class="mb-2 co-info">
+                  <div class="mb-2 co-info" v-if="company.yearFounded">
                     <icon class="icon" icon="calendar-alt" />
                     <span class="ml-2">{{ company.yearFounded }} </span>
                   </div>
-                  <div class="mb-2 co-info">
+                  <div class="mb-2 co-info" v-if="company.districtBasedIn">
                     <icon class="icon" icon="map-marker-alt" />
                     <span class="ml-2">{{ company.districtBasedIn }} </span>
                   </div>
-                  <div class="mb-2 co-info">
+                  <div class="mb-2 co-info" v-if="company.mainAreaOfInterest">
                     <icon class="icon" icon="tag" />
                     <span class="ml-2">{{ company.mainAreaOfInterest }} </span>
                   </div>
-                  <div class="mb-2 co-info">
+                  <div class="mb-2 co-info" v-if="company.shortDescription">
                     <icon class="icon" icon="comment" />
                     <span class="ml-2">{{ company.shortDescription }} </span>
                   </div>
                 </div>
-              </div>
-            </router-link>
+              </router-link>
+            </div>
             <div class="info-separator clear my-3">&nbsp;</div>
           </div>
         </div>
@@ -79,7 +81,7 @@ export default {
     },
   },
   created() {
-    AxiosHelper.get("directory/public")
+    AxiosHelper.get("directory/public/cooporation")
       .then((response) => {
         this.directory = response.data.result;
       })
@@ -96,15 +98,18 @@ export default {
   border-radius: 3px;
   margin: 0 auto;
   max-width: 1200px;
+  background: #ffffff;
 }
 .one-company {
   margin: 25px 0;
 }
 .company-logo {
   margin: 25px;
+  border-radius: 4px;
 }
 .company-logo img {
   max-width: 140px;
+  border-radius: 4px;
 }
 .one-company h2 {
   margin: 20px 0;

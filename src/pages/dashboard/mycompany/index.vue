@@ -35,19 +35,19 @@
             <h3 class="position-relative">
               {{ company.company.coName }}
               <span
-                class="company-status approved"
+                class="status approved"
                 v-if="company.company.status === 'approved'"
               >
                 Company is approved
               </span>
               <span
-                class="company-status pending"
+                class="status pending"
                 v-if="company.company.status === 'pending'"
               >
                 Pending approval
               </span>
               <span
-                class="company-status declined"
+                class="status declined"
                 v-if="company.company.status === 'declined'"
               >
                 Company is rejected
@@ -121,6 +121,7 @@
                 <span> {{ company.company.districtBasedIn || "" }}</span>
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
+                {{ company.company }}
                 <div class="social-links">
                   Social media:&nbsp;&nbsp;
                   <a
@@ -327,25 +328,29 @@
             <EditCompanyLocation :company="company.company" /> </modal
           >˝
           <div class="my-3">Our office</div>
-          <div class="wrap-map">
+          <div class="wrap-map" v-if="company.company.officeAddress">
             <GmapMap
-              :center="{
-                lat: convertToObject(company.company.officeAddress).lat,
-                lng: convertToObject(company.company.officeAddress).lng,
-              }"
+              :center="convertLatLng(company.company)"
               :zoom="17"
               map-type-id="terrain"
               style="width: 1000px; height: 700px"
             >
               <GmapMarker
-                :position="{
-                  lat: convertToObject(company.company.officeAddress).lat,
-                  lng: convertToObject(company.company.officeAddress).lng,
-                }"
+                :position="convertLatLng(company.company)"
                 :clickable="false"
                 :draggable="false"
               />
             </GmapMap>
+          </div>
+          <div class="my-3" v-else>
+            <h3>You did not provide the office location yet</h3>
+            <button
+              class="border bg-white cursor-pointer py-2 px-4"
+              @click="openEditCompanyLocation"
+            >
+              <icon class="icon" icon="map-marker-alt" />
+              Add location
+            </button>
           </div>
         </div>
       </div>
@@ -390,13 +395,17 @@ export default {
         this.company = response.data.result;
       })
       .catch((error) => {
+        console.log("rror.response.data", error.response.data);
         if (error.response.status === 404) {
-          this.errorCompany = error.response.data.error;
+          this.errorCompany = "Company information not found. Try again later";
+        } else if (error.response.status === 403) {
+          this.errorCompany =
+            "You are not allowed to access this resource. Kindly log out and login in again!";
         } else {
           this.errorCompany = "Something went wrong, try again later";
         }
         Vue.$toast.open({
-          message: error.response.data,
+          message: this.errorCompany,
           type: "error",
         });
       });
@@ -404,6 +413,13 @@ export default {
   methods: {
     convertToObject(object) {
       return JSON.parse(object);
+    },
+    convertLatLng(company) {
+      let latLng = { lat: -1.9535713202050946, lng: 30.09239731494155 };
+      if (company && company.officeAddress !== "") {
+        latLng = JSON.parse(company.officeAddress);
+      }
+      return latLng;
     },
     openEditSocial() {
       this.$modal.show("editSocialMedia");

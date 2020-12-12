@@ -60,6 +60,19 @@ class AxiosHelper {
         });
     });
   }
+
+  static delete(path) {
+    return new Promise((resolve, reject) => {
+      return axios
+        .delete(`${VUE_APP_BACKEND_URL}${path}`, config)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
 }
 
 export default AxiosHelper;

@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import companies from "./../../../dummy/company.js";
+import companies from "./../../../data/company.js";
 export default {
   name: "dashboard",
   data() {

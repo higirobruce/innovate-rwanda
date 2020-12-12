@@ -153,43 +153,10 @@
                   </div>
                 </div>
                 <div class="info-separator clear my-3">&nbsp;</div>
-                <div class="company-large-info">
-                  <h4
-                    style="
-                      margin: 20px 0;
-                      font-size: 27px;
-                      font-weight: 900;
-                      color: #1b2958;
-                    "
-                  >
-                    Contact {{ company.company.coName }}
-                  </h4>
-                  <div class="row mt-4">
-                    <div class="col-12">
-                      <div class="form-group">
-                        <input
-                          type="email"
-                          class="form-control custom-input"
-                          placeholder="Your email address"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="col-12">
-                      <div class="form-group">
-                        <textarea
-                          class="form-control"
-                          rows="7"
-                          placeholder="Type your message...."
-                        >
-                        </textarea>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="my-4 border float-right">
-                    <button class="btn btn-primary-outline px-5">Send</button>
-                  </div>
-                </div>
+                <SendMessage
+                  v-if="company && company.company"
+                  :company="company.company"
+                />
               </div>
               <div class="col-sm-12 col-lg-6">
                 <div class="wrap-summary">
@@ -208,24 +175,19 @@
                     {{ company.company.customerBase || "-" }}
                   </div>
                   <div class="info-separator my-3">&nbsp;</div>
-                  <h3>Location</h3>
-                  <div class="wrap-map">
+                  <div
+                    class="wrap-map"
+                    v-if="company.company && company.company.officeAddress"
+                  >
+                    <h3>Location</h3>
                     <GmapMap
-                      :center="{
-                        lat: convertToObject(company.company.officeAddress).lat,
-                        lng: convertToObject(company.company.officeAddress).lng,
-                      }"
+                      :center="convertLatLng(company.company.officeAddress)"
                       :zoom="17"
                       map-type-id="terrain"
                       style="width: 600px; height: 400px"
                     >
                       <GmapMarker
-                        :position="{
-                          lat: convertToObject(company.company.officeAddress)
-                            .lat,
-                          lng: convertToObject(company.company.officeAddress)
-                            .lng,
-                        }"
+                        :position="convertLatLng(company.company.officeAddress)"
                         :clickable="false"
                         :draggable="false"
                       />
@@ -246,6 +208,7 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import * as VueGoogleMaps from "vue2-google-maps";
+import SendMessage from '@/components/SendMessage'
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyBzyXzhhqWBsTj305rY30VC1UF_1OHDKgA",
@@ -254,6 +217,9 @@ Vue.use(VueGoogleMaps, {
 });
 export default {
   name: "company",
+  components: {
+    SendMessage
+  },
   data() {
     return {
       company: {},
@@ -278,6 +244,13 @@ export default {
   methods: {
     convertToObject(object) {
       return JSON.parse(object);
+    },
+    convertLatLng(officeAddress) {
+      let latLng = { lat: -1.9535713202050946, lng: 30.09239731494155 };
+      if (officeAddress && officeAddress) {
+        latLng = JSON.parse(officeAddress);
+      }
+      return latLng;
     },
   },
   computed: {

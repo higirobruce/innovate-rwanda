@@ -86,6 +86,7 @@ export default {
   top: 40px;
   right: 0;
   width: 280px;
+  z-index: 100000;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 </style>
