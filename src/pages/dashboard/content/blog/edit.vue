@@ -32,7 +32,7 @@
         <div v-if="profile.role === 'normal'">
           <h4 class="h5">
             <router-link :to="'/dashboard/content'" class="btn btn-back">
-              <icon class="icon" icon="arrow-left" />
+              <i class="icon-arrow-left" />
               <span class="ml-3"> Back </span>
             </router-link>
             <span class="text-blue-dark font-weight-bold">

@@ -11,10 +11,7 @@ Vue.component("dashboard-layout", Dashboard);
 Vue.component("auth-layout", Auth);
 import "./assets/css/bootstrap.min.css";
 import "./assets/css/styles.css";
-import { fas } from "@fortawesome/free-solid-svg-icons";
-import { fab } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import "./assets/css/icons.css";
 
 Vue.config.productionTip = false;
 
@@ -26,10 +23,6 @@ import "./filters/date";
 // Register lodash
 Vue.prototype._ = _;
 
-// Register fontawesome icons
-library.add(fas);
-library.add(fab);
-Vue.component("icon", FontAwesomeIcon);
 
 import VueToast from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";

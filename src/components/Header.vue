@@ -76,7 +76,7 @@
     <!-- Sidebar -->
     <div class="wrap-sidebar" v-if="isSidebarOpen">
       <button class="close" @click="isSidebarOpen = false">
-        <icon class="icon" icon="times" />
+       <i class="icon-times" />
       </button>
       <div class="sidebar-nav mt-5">
         <ul class="list-group list-group-flush">
@@ -108,7 +108,7 @@
     <div class="wrap-auth-modal" v-if="isAuthModelOpen">
       <div class="auth-modal">
         <button class="close" @click="isAuthModelOpen = false">
-          <icon class="icon" icon="times" />
+          <i class="icon"  />
         </button>
         <div class="auth-wrap-btns mb-4">
           <button

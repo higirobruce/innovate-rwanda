@@ -52,7 +52,7 @@
                         convertToObject(company.company.socialMedia).facebook
                       "
                     >
-                      <icon :icon="['fab', 'facebook']" class="icon mr-2" />
+                      <i class="icon-facebook-official mr-2" />
                     </a>
                     <a
                       style="color: #00aeef"
@@ -63,7 +63,7 @@
                         convertToObject(company.company.socialMedia).twitter
                       "
                     >
-                      <icon :icon="['fab', 'twitter']" class="icon mr-2" />
+                      <i class="icon-twitter mr-2" />
                     </a>
                     <a
                       style="color: #ff1d77"
@@ -74,7 +74,7 @@
                         convertToObject(company.company.socialMedia).instagram
                       "
                     >
-                      <icon :icon="['fab', 'instagram']" class="icon mr-2" />
+                      <i class="icon-instagrem mr-2" />
                     </a>
                     <a
                       style="color: #ff0000"
@@ -87,7 +87,7 @@
                         convertToObject(company.company.socialMedia).youtube
                       }`"
                     >
-                      <icon :icon="['fab', 'youtube']" class="icon mr-2" />
+                      <i class="icon-youtube-play mr-2" />
                     </a>
                     <a
                       style="color: #007bb5"
@@ -96,11 +96,11 @@
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).linkedin
                       "
-                      :href="`https://youtube.com/${
+                      :href="`https://youtube.com/c/${
                         convertToObject(company.company.socialMedia).linkedin
                       }`"
                     >
-                      <icon :icon="['fab', 'linkedin']" class="icon mr-2" />
+                      <i class="icon-linkedin-alt mr-2" />
                     </a>
                   </div>
                   <img src="@/assets/images/hashtag.svg" />

@@ -86,13 +86,13 @@
             <div class="wrap-map">
               <div class="wrap-map" v-if="company.company.officeAddress">
                 <GmapMap
-                  :center="convertLatLng(company.company)"
+                  :center="convertLatLng(company.company.officeAddress)"
                   :zoom="17"
                   map-type-id="terrain"
                   style="width: 1000px; height: 700px"
                 >
                   <GmapMarker
-                    :position="convertLatLng(company.company)"
+                    :position="convertLatLng(company.company.officeAddress)"
                     :clickable="false"
                     :draggable="false"
                   />

@@ -11,7 +11,7 @@
                 style="color: #1da1f2; background: #ffffff"
                 class="input-group-text"
               >
-                <icon :icon="['fab', 'twitter-square']" class="icon mr-2" />
+                <i class="icon-twitter mr-2" />
                 https://twitter.com/</span
               >
             </div>
@@ -28,7 +28,7 @@
                 style="color: #007bb5; background: #ffffff"
                 class="input-group-text"
               >
-                <icon :icon="['fab', 'linkedin']" class="icon mr-2" />
+                <i class="icon-linkedin-alt mr-2" />
                 https://linkedin.com/in/</span
               >
             </div>
@@ -45,7 +45,7 @@
                 style="color: #1877f2; background: #ffffff"
                 class="input-group-text"
               >
-                <icon :icon="['fab', 'facebook-square']" class="icon mr-2" />
+                <i class="icon-facebook-official mr-2" />
                 https://facebook.com/</span
               >
             </div>
@@ -62,7 +62,7 @@
                 style="color: #4c5fd7; background: #ffffff"
                 class="input-group-text"
               >
-                <icon :icon="['fab', 'instagram']" class="icon mr-2" />
+                 <i class="icon-linkedin-alt mr-2" />
                 https://instagram.com/</span
               >
             </div>
@@ -79,7 +79,7 @@
                 style="color: #ff0000; background: #ffffff"
                 class="input-group-text"
               >
-                <icon :icon="['fab', 'youtube']" class="icon mr-2" />
+                 <i class="icon-youtube-play mr-2" />
                 https://youtube.com/c/</span
               >
             </div>

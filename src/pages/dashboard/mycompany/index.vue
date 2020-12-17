@@ -68,7 +68,7 @@
             @click="openEditCompanyInfo"
             class="btn font-weight-bold btn-primary-outline mr-2 shadow floating-btn"
           >
-            <icon class="icon" icon="pen" />
+            <i class="icon-edit" />
             Edit
           </button>
           <modal
@@ -134,7 +134,7 @@
                     :to="''"
                     v-if="!_.isEmpty(socialMedia) && socialMedia.facebook"
                   >
-                    <icon :icon="['fab', 'facebook']" class="icon mr-2" />
+                    <i class="icon-facebook-official mr-2" />
                   </a>
 
                   <a
@@ -143,7 +143,7 @@
                     target="_blank"
                     v-if="!_.isEmpty(socialMedia) && socialMedia.twitter"
                   >
-                    <icon :icon="['fab', 'twitter']" class="icon mr-2" />
+                    <i class="icon-twitter mr-2" />
                   </a>
                   <a
                     style="color: #ff1d77"
@@ -151,7 +151,7 @@
                     target="_blank"
                     v-if="!_.isEmpty(socialMedia) && socialMedia.instagram"
                   >
-                    <icon :icon="['fab', 'instagram']" class="icon mr-2" />
+                    <i class="icon-linkedin-alt mr-2" />
                   </a>
                   <a
                     style="color: #ff0000"
@@ -161,7 +161,7 @@
                       convertToObject(company.company.socialMedia).youtube
                     }`"
                   >
-                    <icon :icon="['fab', 'youtube']" class="icon mr-2" />
+                    <i class="icon-youtube-play mr-2" />
                   </a>
                   <a
                     style="color: #007bb5"
@@ -171,23 +171,20 @@
                       convertToObject(company.company.socialMedia).linkedin
                     }`"
                   >
-                    <icon :icon="['fab', 'linkedin']" class="icon mr-2" />
+                    <i class="icon-linkedin-alt mr-2" />
                   </a>
                   <!-- UNPROVIDED LINKS  -->
-                  <!-- company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).facebook ===
-                        '' -->
                   <span
                     style="color: #dedede"
                     v-if="!socialMedia.facebook || socialMedia.facebook === ''"
                   >
-                    <icon :icon="['fab', 'facebook']" class="icon mr-2" />
+                    <i class="icon-facebook-official mr-2" />
                   </span>
                   <span
                     style="color: #dedede"
                     v-if="!socialMedia.twitter || socialMedia.twitter === ''"
                   >
-                    <icon :icon="['fab', 'twitter']" class="icon mr-2" />
+                    <i class="icon-twitter mr-2" />
                   </span>
                   <span
                     style="color: #dedede"
@@ -195,19 +192,19 @@
                       !socialMedia.instagram || socialMedia.instagram === ''
                     "
                   >
-                    <icon :icon="['fab', 'instagram']" class="icon mr-2" />
+                    <i class="icon-linkedin-alt mr-2" />
                   </span>
                   <span
                     style="color: #dedede"
                     v-if="!socialMedia.youtube || socialMedia.youtube === ''"
                   >
-                    <icon :icon="['fab', 'youtube']" class="icon mr-2" />
+                    <i class="icon-youtube-play mr-2" />
                   </span>
                   <span
                     style="color: #dedede"
                     v-if="!socialMedia.linkedin || socialMedia.linkedin === ''"
                   >
-                    <icon :icon="['fab', 'linkedin']" class="icon mr-2" />
+                    <i class="icon-linkedin-alt mr-2" />
                   </span>
                   <button
                     @click="openEditSocial"
@@ -291,7 +288,7 @@
             @click="openEditCompanySummary"
             class="btn font-weight-bold btn-primary-outline mr-2 shadow floating-btn"
           >
-            <icon class="icon" icon="pen" />
+            <i class="icon-edit" />
             Edit
           </button>
           <modal
@@ -316,7 +313,7 @@
             @click="openEditCompanyLocation"
             class="btn font-weight-bold btn-primary-outline mr-2 shadow floating-btn"
           >
-            <icon class="icon" icon="map-marker-alt" />
+            <i class="icon-marker-stroked mr-2" />
             Update location
           </button>
           <modal
@@ -349,7 +346,7 @@
               class="border bg-white cursor-pointer py-2 px-4"
               @click="openEditCompanyLocation"
             >
-              <icon class="icon" icon="map-marker-alt" />
+              <i class="icon-marker-stroked mr-2" />
               Add location
             </button>
           </div>

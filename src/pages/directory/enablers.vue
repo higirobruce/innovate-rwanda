@@ -35,19 +35,19 @@
                 <h2>{{ company.coName }}</h2>
                 <div>
                   <div class="mb-2 co-info" v-if="company.yearFounded">
-                    <icon class="icon" icon="calendar-alt" />
+                    <i class="icon-calendar" />
                     <span class="ml-2">{{ company.yearFounded }} </span>
                   </div>
                   <div class="mb-2 co-info" v-if="company.districtBasedIn">
-                    <icon class="icon" icon="map-marker-alt" />
+                    <i class="icon-marker-stroked" />
                     <span class="ml-2">{{ company.districtBasedIn }} </span>
                   </div>
                   <div class="mb-2 co-info" v-if="company.mainAreaOfInterest">
-                    <icon class="icon" icon="tag" />
+                    <i class="icon-pound" />
                     <span class="ml-2">{{ company.mainAreaOfInterest }} </span>
                   </div>
                   <div class="mb-2 co-info" v-if="company.shortDescription">
-                    <icon class="icon" icon="comment" />
+                    <i class="icon-comment" />
                     <span class="ml-2">{{ company.shortDescription }} </span>
                   </div>
                 </div>

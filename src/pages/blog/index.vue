@@ -49,7 +49,7 @@
                   <span>
                     by <span class="text-blue">{{ post.author }}</span>
                   </span>
-                  <span class="float-right"> <icon class="icon" icon="calendar-alt" /> {{ post.createdAt | date("MMM YYYY") }}</span>
+                  <span class="float-right"> <i class="icon-calendar mr-2" /> {{ post.createdAt | date("MMM YYYY") }}</span>
                 </div>
               </div>
             </div>
