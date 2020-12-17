@@ -9,35 +9,17 @@
       />
       <div class="container">
         <h2 class="text-center">Tell us a little bit about yourself...</h2>
-        <div class="choose-company-type">
+        <div class="choose-company-type" v-if="coTypes">
           <div
+            v-for="(type, index) in coTypes"
+            :key="index"
             :class="`${
-              currentType === 'startup' ? 'type-option active' : 'type-option'
+              currentType === type.slug ? 'type-option active' : 'type-option'
             }`"
-            @click="chooseType('startup')"
+            @click="chooseType(type.slug)"
           >
-            <h3>I am a startup compant</h3>
-            <img v-if="!typeChosen" src="@/assets/images/arrow-right.svg" />
-          </div>
-          <div
-            :class="`${
-              currentType === 'coorporation'
-                ? 'type-option active'
-                : 'type-option'
-            }`"
-            @click="chooseType('coorporation')"
-          >
-            <h3>I am a major coorporation</h3>
-            <img v-if="!typeChosen" src="@/assets/images/arrow-right.svg" />
-          </div>
-          <div
-            :class="`${
-              currentType === 'investor' ? 'type-option active' : 'type-option'
-            }`"
-            @click="chooseType('investor')"
-          >
-            <h3>I am an angel investor or venture capitalist</h3>
-            <img v-if="!typeChosen" src="@/assets/images/arrow-right.svg" />
+            <h3>{{ type.name }}</h3>
+            <img src="@/assets/images/arrow-right.svg" />
           </div>
         </div>
         <div class="wrap-register" v-if="typeChosen">
@@ -51,6 +33,7 @@
                   <div class="form-group">
                     <input
                       type="firstname"
+                      name="first_name"
                       v-model.trim="$v.user.firstName.$model"
                       required
                       class="form-control custom-input"
@@ -62,6 +45,7 @@
                   <div class="form-group">
                     <input
                       type="lastname"
+                      name="last_name"
                       v-model.trim="$v.user.lastName.$model"
                       required
                       class="form-control custom-input"
@@ -77,6 +61,7 @@
                   <div class="form-group">
                     <input
                       type="email"
+                      name="email"
                       v-model.trim="$v.user.email.$model"
                       class="form-control custom-input"
                       placeholder="Email"
@@ -91,10 +76,11 @@
                   <div class="form-group">
                     <input
                       type="password"
+                      name="password"
                       v-model.trim="$v.user.password.$model"
                       required
                       class="form-control custom-input"
-                      placeholder="password"
+                      placeholder="Password"
                     />
                   </div>
                 </div>
@@ -108,6 +94,7 @@
                   <div class="form-group">
                     <input
                       type="text"
+                      name="company"
                       v-model.trim="$v.user.coName.$model"
                       required
                       class="form-control custom-input"
@@ -123,6 +110,7 @@
                   <div class="form-group">
                     <input
                       type="text"
+                      name="website"
                       v-model.trim="$v.user.coWebsite.$model"
                       required
                       class="form-control custom-input"
@@ -140,6 +128,7 @@
                   <div class="form-group">
                     <input
                       type="text"
+                      name="job_title"
                       v-model.trim="$v.user.jobTitle.$model"
                       required
                       class="form-control custom-input"
@@ -173,24 +162,24 @@
               </div>
               <!-- area -->
               <h4 class="text-center mt-3">
-                Which area of interest closely fits your company?
+                What is your main business activity closely fits your company?
               </h4>
               <div class="row mt-4">
                 <div class="col-12">
                   <div class="form-group">
                     <select
                       class="form-control form-control-lg"
-                      name="district"
-                      v-model="user.areaOfInterest"
+                      name="business_activity"
+                      v-model="user.businessActivityId"
                       @change="changeInterest($event)"
                       required
                     >
                       <option
-                        v-for="(area, index) in listOfAreaOfInterests"
-                        v-bind:value="area"
+                        v-for="(activity, index) in listOfBusinessActivities"
+                        v-bind:value="activity.id"
                         :key="index"
                       >
-                        {{ area }}
+                        {{ activity.name }}
                       </option>
                     </select>
                   </div>
@@ -204,7 +193,8 @@
                 <div class="col-12">
                   <div class="form-group">
                     <textarea
-                      v-model="user.description"
+                      name="description"
+                      v-model="user.shortDescription"
                       class="form-control"
                       rows="6"
                     ></textarea>
@@ -217,14 +207,14 @@
                     :disabled="
                       $v.$invalid ||
                       !user.districtBasedIn ||
-                      !user.areaOfInterest
+                      !user.businessActivityId
                     "
                     class="btn btn-lg font-weight-bold btn-primary-outline mr-lg-5 mt-3"
                   >
                     Register
                   </button>
                   <span class="py-3" v-if="registering">
-                    Wait, we are creating your listing
+                    <Loading />
                   </span>
                   <div
                     v-if="!registering && registered"
@@ -257,7 +247,9 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import { Districts } from "rwanda";
 import Vuelidate from "vuelidate";
+import Loading from "@/components/Loading";
 Vue.use(Vuelidate);
 
 import {
@@ -273,8 +265,9 @@ const checkWebsite = (value) =>
 import PageHeader from "@/components/PageHeader";
 export default {
   name: "register",
-  components: {
+  components: { 
     PageHeader,
+    Loading,
   },
   data() {
     return {
@@ -295,23 +288,29 @@ export default {
         coType: "",
         coWebsite: "",
         districtBasedIn: "",
-        areaOfInterest: "",
+        businessActivityId: "",
         shortDescription: "",
       },
-      allDistricts: ["Gasabo", "Kicukiro"],
-      listOfAreaOfInterests: [
-        "Tech companies",
-        "Co-working spaces",
-        "Business networks",
-        "Accelerators",
-        "Government agencies",
-        "Ecosystem builders",
-        "Financer/Investors",
-        "Academic/Research institutions",
-        "Incubators",
-        "Talent Development",
-      ],
+      allDistricts: [],
+      listOfBusinessActivities: [],
+      coTypes: [],
     };
+  },
+  created() {
+    // loading all districts
+    this.allDistricts = Districts();
+    // loading company types
+    AxiosHelper.get("company-types")
+      .then((response) => {
+        this.coTypes = response.data.result;
+      })
+      .catch(() => {});
+    // loading business activities
+    AxiosHelper.get("business-activities")
+      .then((response) => {
+        this.listOfBusinessActivities = response.data.result;
+      })
+      .catch(() => {});
   },
   methods: {
     chooseType(type) {
@@ -328,7 +327,7 @@ export default {
       this.user.districtBasedIn = e.target.value;
     },
     changeInterest(e) {
-      this.user.areaOfInterest = e.target.value;
+      this.user.businessActivityId = e.target.value;
     },
     registerAccount(evt) {
       evt.preventDefault();
@@ -396,13 +395,13 @@ h2 {
   color: #1b2958;
 }
 .choose-company-type {
-  max-width: 1000px;
+  max-width: 700px;
   margin: 30px auto;
   display: flex;
   gap: 20px;
 }
 .type-option {
-  width: 33.3%;
+  width: 50%;
   background: #ffffff;
   box-shadow: 0px 9px 36px #1b295826;
   border-radius: 3px;

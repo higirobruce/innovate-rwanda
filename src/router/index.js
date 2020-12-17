@@ -28,6 +28,34 @@ const router = new Router({
       },
     },
     {
+      path: "/activate-account/:token",
+      component: () => import("@/pages/activate-account/index.vue"),
+      meta: {
+        layout: "auth-layout",
+      },
+    },
+    {
+      path: "/forgot-password",
+      component: () => import("@/pages/forgot-password/index.vue"),
+      meta: {
+        layout: "auth-layout",
+      },
+    },
+    {
+      path: "/reset-password/:token",
+      component: () => import("@/pages/reset-password/index.vue"),
+      meta: {
+        layout: "auth-layout",
+      },
+    },
+    {
+      path: "/join",
+      component: () => import("@/pages/register/index.vue"),
+      meta: {
+        layout: "auth-layout",
+      },
+    },
+    {
       path: "/why-rwanda",
       component: () => import("@/pages/whyrwanda/index.vue"),
       meta: {
@@ -85,7 +113,8 @@ const router = new Router({
     },
     {
       path: "/dashboard/directory/area-of-interests",
-      component: () => import("@/pages/dashboard/directory/areaOfInterests.vue"),
+      component: () =>
+        import("@/pages/dashboard/directory/areaOfInterests.vue"),
       meta: {
         layout: "dashboard-layout",
       },
@@ -106,9 +135,86 @@ const router = new Router({
     },
     {
       path: "/dashboard/content",
-      component: () => import("@/pages/dashboard/content/index.vue"),
+      component: () => import("@/pages/dashboard/content/blog/index.vue"),
       meta: {
         layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/content/blog/new",
+      component: () => import("@/pages/dashboard/content/blog/new.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/content/blog/edit/:slug",
+      component: () => import("@/pages/dashboard/content/blog/edit.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/content/events",
+      component: () => import("@/pages/dashboard/content/events/index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/content/events/new",
+      component: () => import("@/pages/dashboard/content/events/new.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/content/events/edit/:slug",
+      component: () => import("@/pages/dashboard/content/events/edit.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/content/jobs",
+      component: () => import("@/pages/dashboard/content/jobs/index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/content/jobs/new",
+      component: () => import("@/pages/dashboard/content/jobs/new.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/content/jobs/edit/:slug",
+      component: () => import("@/pages/dashboard/content/jobs/edit.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/messages",
+      component: () => import("@/pages/dashboard/messages/index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/blog",
+      component: () => import("@/pages/blog/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/blog/:slug",
+      component: () => import("@/pages/blog/post.vue"),
+      meta: {
+        layout: "default-layout",
       },
     },
     {

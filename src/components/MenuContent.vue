@@ -1,32 +1,53 @@
 <template>
   <ul class="page-nav list-inline">
     <li
-      class="list-inline-item mr-5 list-active"
-      v-if="profile && profile.role === 'admin-blog' || profile.role === 'super-admin'"
+      :class="{
+        'list-inline-item mr-5 list-active': active == 'blog',
+        'list-inline-item mr-5': active != 'blog',
+      }"
+      v-if="
+        profile &&
+        (profile.role === 'normal' ||
+          profile.role === 'admin-blog' ||
+          profile.role === 'super-admin')
+      "
     >
-      <router-link exact :to="'/dashboard/directory'">Posts</router-link>
+      <router-link exact :to="'/dashboard/content'">Posts</router-link>
     </li>
     <li
-      class="list-inline-item mr-5"
-      v-if="profile && profile.role === 'admin-event' || profile.role === 'super-admin'"
+      :class="{
+        'list-inline-item mr-5 list-active': active == 'events',
+        'list-inline-item mr-5': active != 'events',
+      }"
+      v-if="
+        profile &&
+        (profile.role === 'normal' ||
+          profile.role === 'admin-event' ||
+          profile.role === 'super-admin')
+      "
     >
-      <router-link exact :to="'/dashboard/directory/pending'"
-        >Events</router-link
-      >
+      <router-link exact :to="'/dashboard/content/events'">Events</router-link>
     </li>
     <li
-      class="list-inline-item mr-5"
-      v-if="profile && profile.role === 'admin-job' || profile.role === 'super-admin'"
+      :class="{
+        'list-inline-item mr-5 list-active': active == 'jobs',
+        'list-inline-item mr-5': active != 'jobs',
+      }"
+      v-if="
+        profile &&
+        (profile.role === 'normal' ||
+          profile.role === 'admin-job' ||
+          profile.role === 'super-admin')
+      "
     >
-      <router-link exact :to="'/dashboard/directory/area-of-interests'"
-        >Jobs</router-link
-      >
+      <router-link exact :to="'/dashboard/content/jobs'">Jobs</router-link>
     </li>
   </ul>
 </template>
 <script>
 export default {
   name: "menu-content",
+  props: ["active"],
   data() {
     return {
       user: {},

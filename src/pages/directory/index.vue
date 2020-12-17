@@ -14,8 +14,7 @@
               foster growth in the Ecosystem
             </div>
             <router-link :to="'/directory/enablers'" class="btn">
-              Discover <icon class="icon" icon="arrow-right"
-            /></router-link>
+              Discover <i class="icon-arrow-right" /></router-link>
           </div>
           <div class="col-sm-12 col-lg-6 one-box">
             <div class="box-image">
@@ -27,8 +26,7 @@
               ecosystem.
             </div>
             <router-link :to="'/directory/companies'" class="btn">
-              Discover <icon class="icon" icon="arrow-right"
-            /></router-link>
+              Discover <i class="icon-arrow-right" /></router-link>
           </div>
         </div>
       </div>

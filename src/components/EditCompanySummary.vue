@@ -9,19 +9,36 @@
           <div class="row mt-4">
             <div class="col-12">
               <div class="form-group">
-              <textarea  class="form-control" rows="4" v-model="companyInfo.shortDescription" placeholder="Company summary....">
-              </textarea>
+                <textarea
+                  class="form-control"
+                  rows="4"
+                  v-model="companyInfo.shortDescription"
+                  placeholder="Company summary...."
+                >
+                </textarea>
               </div>
             </div>
           </div>
         </div>
         <div class="mt-4">
-          <button
-            @click="submitCompanyInfo"
-            class="btn btn-success-outline mr-2"
-          >
-            Save
-          </button>
+          <span class="float-left">
+            <button
+              type="submit"
+              @click="submitCompanyInfo"
+              class="btn btn-success-outline mr-2"
+            >
+              Save
+            </button>
+          </span>
+          <span class="float-right">
+            <button
+              type="button"
+              @click="closeModal"
+              class="btn btn-gray-outline mr-2"
+            >
+              Close
+            </button>
+          </span>
         </div>
       </form>
     </div>
@@ -62,6 +79,9 @@ export default {
     this.companyInfo = { ...this.company };
   },
   methods: {
+    closeModal() {
+      this.$modal.hide("editCompanySummary");
+    },
     submitCompanyInfo(evt) {
       evt.preventDefault();
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
@@ -72,7 +92,7 @@ export default {
           });
           setTimeout(() => {
             this.$router.go();
-          }, 500);
+          }, 2000);
         })
         .catch(() => {
           Vue.$toast.open({

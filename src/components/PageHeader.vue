@@ -7,7 +7,7 @@
   >
     <div class="page-overlay" :style="{ 'background-color': rgba }"></div>
     <h1>{{ title }}</h1>
-    <div class="subtitle">{{ subtitle || "" }}</div>
+    <div v-if="subtitle" class="subtitle">{{ subtitle }}</div>
   </div>
 </template>
 <script>

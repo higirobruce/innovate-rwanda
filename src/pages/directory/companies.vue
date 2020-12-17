@@ -8,7 +8,7 @@
         subtitle="Our community listing of tech and innovation companies in the ecosystem."
       />
       <div class="container">
-        <div class="wrap-companies" v-if="directory">
+        <div class="wrap-companies" v-if="!_.isEmpty(directory)">
           <div
             class="row one-company"
             v-for="(company, index) in directory"
@@ -35,19 +35,19 @@
                 <h2>{{ company.coName }}</h2>
                 <div>
                   <div class="mb-2 co-info" v-if="company.yearFounded">
-                    <icon class="icon" icon="calendar-alt" />
+                    <i class="icon-calendar" />
                     <span class="ml-2">{{ company.yearFounded }} </span>
                   </div>
                   <div class="mb-2 co-info" v-if="company.districtBasedIn">
-                    <icon class="icon" icon="map-marker-alt" />
+                    <i class="icon-marker-stroked" />
                     <span class="ml-2">{{ company.districtBasedIn }} </span>
                   </div>
                   <div class="mb-2 co-info" v-if="company.mainAreaOfInterest">
-                    <icon class="icon" icon="tag" />
+                    <i class="icon-pound" />
                     <span class="ml-2">{{ company.mainAreaOfInterest }} </span>
                   </div>
                   <div class="mb-2 co-info" v-if="company.shortDescription">
-                    <icon class="icon" icon="comment" />
+                    <i class="icon-comment" />
                     <span class="ml-2">{{ company.shortDescription }} </span>
                   </div>
                 </div>
@@ -56,6 +56,7 @@
             <div class="info-separator clear my-3">&nbsp;</div>
           </div>
         </div>
+        <div v-else class="not-found"></div>
       </div>
     </component>
   </div>
@@ -81,7 +82,7 @@ export default {
     },
   },
   created() {
-    AxiosHelper.get("directory/public")
+    AxiosHelper.get("directory/public/Tech company")
       .then((response) => {
         this.directory = response.data.result;
       })

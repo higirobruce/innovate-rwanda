@@ -9,18 +9,6 @@
               >Companies list</router-link
             >
           </li>
-          <!--
-          <li class="list-inline-item mr-5">
-            <router-link exact :to="'/dashboard/directory/pending'"
-              >Pending requests</router-link
-            >
-          </li>
-          <li class="list-inline-item mr-5">
-            <router-link exact :to="'/dashboard/directory/area-of-interests'"
-              >Areas of intrests</router-link
-            >
-          </li>
-          -->
         </ul>
       </div>
       <div class="dash-container">
@@ -62,19 +50,19 @@
               <td>
                 <div class="wrap-switch-toggle">
                   <span
-                    class="company-status text-capitalize approved"
+                    class="status text-capitalize approved"
                     v-if="dir.status === 'approved'"
                   >
                     Company is approved
                   </span>
                   <span
-                    class="company-status text-capitalize pending"
+                    class="status text-capitalize pending"
                     v-if="dir.status === 'pending'"
                   >
                     Pending approval
                   </span>
                   <span
-                    class="company-status text-capitalize declined"
+                    class="status text-capitalize declined"
                     v-if="dir.status === 'declined'"
                   >
                     Company is rejected
@@ -120,10 +108,10 @@
         name="EditcompanyInfo"
         :adaptive="true"
         :scrollable="true"
-        :height="640"
+        :height="660"
         :width="960"
       >
-        <EditCompanyInfo :companyId="companyIdEdit" />
+        <EditCompanyInfo :company="company.company" />
       </modal>
       <modal
         name="deleteCompany"
@@ -151,16 +139,23 @@
           />
         </div>
         <div class="py-3 px-4">
-          <button class="btn btn-success-outline mr-2" @click="cancelDelete">
-            Cancel
-          </button>
-          <button
-            class="btn btn-danger"
-            :disabled="inputCompanyToDelete !== companyToDeleteName"
-            @click="deleteAnyway(companyToDeleteId)"
-          >
-            Delete
-          </button>
+          <span class="float-left">
+            <button class="btn btn-success-outline mr-2" @click="cancelDelete">
+              Cancel
+            </button>
+            <button
+              class="btn btn-danger"
+              :disabled="inputCompanyToDelete !== companyToDeleteName"
+              @click="deleteAnyway(companyToDeleteId)"
+            >
+              Delete
+            </button>
+          </span>
+          <span class="float-right">
+            <button @click="cancelDelete" class="btn btn-gray-outline mr-2">
+              Close
+            </button>
+          </span>
         </div>
       </modal>
     </component>
@@ -229,20 +224,38 @@ export default {
     convertToObject(object) {
       return JSON.parse(object);
     },
-    openCompanyEdit(id) {
-      this.companyIdEdit = id;
-      this.$modal.show("EditcompanyInfo");
-    },
-    loadCompany(id) {
-      this.company = {};
-      this.loadingCompany = true;
-      this.errorCompany = "";
-      this.$modal.show("companyInfo");
+    async openCompanyEdit(id) {
       AxiosHelper.get(`company/${id}`)
         .then((response) => {
           this.company = response.data.result;
           this.loadingDirectory = false;
           this.loadingCompany = false;
+          this.$modal.show("EditcompanyInfo");
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            this.errorCompany = error.response.data.error;
+          } else {
+            this.errorCompany = "Something went wrong, try again later";
+          }
+          Vue.$toast.open({
+            message: this.errorCompany,
+            type: "error",
+          });
+          this.loadingDirectory = false;
+          this.loadingCompany = false;
+        });
+    },
+    loadCompany(id) {
+      this.company = {};
+      this.loadingCompany = true;
+      this.errorCompany = "";
+      AxiosHelper.get(`company/${id}`)
+        .then((response) => {
+          this.company = response.data.result;
+          this.loadingDirectory = false;
+          this.loadingCompany = false;
+          this.$modal.show("companyInfo");
         })
         .catch((error) => {
           if (error.response.status === 404) {

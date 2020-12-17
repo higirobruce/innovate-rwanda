@@ -1,37 +1,12 @@
-@import url(//db.onlinewebfonts.com/c/860c3ec7bbc5da3e97233ccecafe512e?family=Circular+Std+Book);
-@font-face {
-  font-family: "Circular Std Book";
-  src: url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.eot");
-  src: url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.eot?#iefix")
-      format("embedded-opentype"),
-    url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.woff2")
-      format("woff2"),
-    url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.woff")
-      format("woff"),
-    url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.ttf")
-      format("truetype"),
-    url("//db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.svg#Circular Std Book")
-      format("svg");
+@font-face {font-family: "Circular Std Book";
+  src: url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.eot"); 
+  src: url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.eot?#iefix") format("embedded-opentype"),
+  url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.woff2") format("woff2"),
+  url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.woff") format("woff"),
+  url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.ttf") format("truetype"),
+  /* url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.svg#Circular Std Book") format("svg");  */
 }
 
-@font-face {
-  font-family: "Circular Std Black";
-  src: url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.eot"); /* IE9*/
-  src: url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.eot?#iefix")
-      format("embedded-opentype"),
-    /* IE6-IE8 */
-      url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.woff2")
-      format("woff2"),
-    /* chrome firefox */
-      url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.woff")
-      format("woff"),
-    /* chrome firefox */
-      url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.ttf")
-      format("truetype"),
-    /* chrome firefox opera Safari, Android, iOS 4.2+*/
-      url("http://db.onlinewebfonts.com/t/860c3ec7bbc5da3e97233ccecafe512e.svg#Circular Std Black")
-      format("svg"); /* iOS 4.1- */
-}
 body {
   background: #f0f2f8;
   font-family: "Circular Std Book", sans-serif;
@@ -50,6 +25,9 @@ a:hover,
 a:focus {
   text-decoration: none;
 }
+button {
+  cursor: pointer;
+}
 [v-cloak] {
   display: none;
 }
@@ -57,19 +35,19 @@ a:focus {
   white-space: pre-line;
 }
 input::placeholder {
-  color: #e6e6e6;
+  color: #cecece!important;
 }
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #e6e6e6;
+  color: #cecece!important;
   opacity: 1; /* Firefox */
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: #e6e6e6;
+  color: #cecece!important;
 }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
-  color: #e6e6e6;
+  color: #cecece!important;
 }
 .container {
   max-width: 1500px;
@@ -125,8 +103,18 @@ input::placeholder {
 }
 .btn.btn-primary-outline:hover {
   color: #0066ab;
-  background: #ffffff;
+  background: #e3eef1;
   border: 2px solid #0066ab;
+}
+.btn.btn-gray-outline {
+  color: #5E7C8D;
+  background: #ffffff;
+  border: 2px solid #C0C6D8;
+}
+.btn.btn-gray-outline:hover {
+  color: #5E7C8D;
+  background: #ebeff1;
+  border: 2px solid #c4c4c4;
 }
 .btn.btn-success-outline {
   color: #28a745;
@@ -134,9 +122,9 @@ input::placeholder {
   border: 2px solid #28a745;
 }
 .btn.btn-success-outline:hover {
-  color: #28a745;
-  background: #ffffff;
-  border: 2px solid #28a745;
+  color: #177c2e;
+  background: #d0f1d8;
+  border: 2px solid #177c2e;
 }
 .btn.btn-danger-outline {
   color: #dc3545;
@@ -235,6 +223,7 @@ select:-webkit-autofill:focus {
 .page-info {
   padding: 20px 40px;
   background: #f0f2f8;
+  z-index: 1;
 }
 .page-info h2 {
   padding: 20px 0;
@@ -244,6 +233,8 @@ select:-webkit-autofill:focus {
 }
 .page-nav {
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 .page-nav a {
   color: #5e7c8d;
@@ -265,7 +256,43 @@ select:-webkit-autofill:focus {
   color: #1b2958;
   font-weight: 800;
 }
-.coming-soon {
+.not-found {
+  height: 460px;
+  margin-bottom: 100px;
+  background-image: url("./../images/coming-soon.svg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 600px 460px;
+  padding: 50px 0;
+  position: relative;
+}
+.not-found::before {
+  position: absolute;
+  content: "Content not found at this moment!";
+  bottom: -50px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.no-message {
+  height: 460px;
+  margin-bottom: 100px;
+  background-image: url("./../images/no-messages.svg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 600px 460px;
+  padding: 50px 0;
+  position: relative;
+}
+.no-message::before {
+  position: absolute;
+  content: "You haven't received any message yet!";
+  bottom: -50px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.not-allowed {
   height: 460px;
   background-image: url("./../images/coming-soon.svg");
   background-repeat: no-repeat;
@@ -274,9 +301,9 @@ select:-webkit-autofill:focus {
   padding: 50px 0;
   position: relative;
 }
-.coming-soon::before {
+.not-allowed::before {
   position: absolute;
-  content: "Page under construction!";
+  content: "Sorry, you are not allowed to view this page";
   bottom: 0;
   left: 0;
   width: 100%;
@@ -362,7 +389,9 @@ input.custom-input {
 .wrap-switch-toggle .switch-text.active {
   color: #00AEEF;
 }
-.wrap-actions button {
+.wrap-actions button,
+.wrap-actions a
+ {
   border: none;
   background: transparent;
   margin: auto 5px;
@@ -453,7 +482,7 @@ input.custom-input {
  background-color: #28a745!important; 
 }
 
-.company-status {
+.status {
   position: relative;
   top: -4px;
   font-size: 12px;
@@ -462,12 +491,38 @@ input.custom-input {
   font-weight: 200;
   color: #fff;
 }
-.company-status.approved {
+.status.approved {
   background: #2ab363;
 }
-.company-status.pending {
+.status.pending {
+  background: #3390dd;
+}
+.status.declined {
   background: #e98e26;
 }
-.company-status.declined {
+.status.deleted {
   background: #e42121;
+}
+.wrap-content-head-btns {
+  position: absolute;
+  right: 30px;
+  bottom: 15px;
+  z-index: 1;
+  min-width:200px;
+}
+.btn-back  {
+  position: relative;
+}
+
+.image {
+  width: 100%;
+}
+.image img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+.avatar {
+  border-radius: 50%!important;
+  background-color: #C0C6D8;
 }

@@ -47,22 +47,16 @@
           <div class="float-lg-left">
             <h4 class="h6">Follow us</h4>
             <div>
-              <a href="#">
-                <icon :icon="['fab', 'facebook-square']" class="icon"
-              /></a>
-              <a href="#">
-                <icon :icon="['fab', 'twitter-square']" class="icon"
-              /></a>
-              <a href="#">
-                <icon :icon="['fab', 'instagram-square']" class="icon"
-              /></a>
+              <a href="#"> <i class="icon-facebook-official mr-2" /></a>
+              <a href="#"> <i class="icon-twitter mr-2" /></a>
+              <a href="#"> <i class="icon-instagrem mr-2" /></a>
             </div>
           </div>
           <div class="float-lg-right">
             <h4 class="h6">Email us</h4>
             <div>
               <a href="#" class="email-us">
-                <icon :icon="['fab', 'facebook-square']" class="icon" />
+                <i class="icon-facebook-official mr-2" />
                 <span class="">info@innovaterwanda.com</span>
               </a>
             </div>
@@ -96,7 +90,7 @@ footer {
   background-color: #00abdf;
 }
 .wrap-footer {
-  padding:10px 0 55px 0;
+  padding: 10px 0 55px 0;
 }
 .footer-bg {
   position: absolute;

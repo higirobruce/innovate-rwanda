@@ -56,7 +56,7 @@
           </form>
           <div class="clear"></div>
           <div class="py-3 text-center">
-            <router-link :to="'/'">Forget password?</router-link>
+            <router-link :to="'/forgot-password'">Forgot password?</router-link>
           </div>
         </div>
       </div>
@@ -95,6 +95,10 @@ export default {
   methods: {
     login(evt) {
       evt.preventDefault();
+      localStorage.removeItem("profile");
+      localStorage.removeItem("isAuth");
+      localStorage.removeItem("token");
+      localStorage.removeItem("company");
       this.logging = true;
       this.success = false;
       AxiosHelper.post("login", this.user)
@@ -102,7 +106,10 @@ export default {
           this.logging = false;
           this.success = true;
           localStorage.setItem("profile", JSON.stringify(response.data.user));
-          localStorage.setItem("company", JSON.stringify(response.data.company));
+          localStorage.setItem(
+            "company",
+            JSON.stringify(response.data.company)
+          );
           localStorage.setItem("isAuth", true);
           localStorage.setItem("token", response.data.token);
           this.$router.push("/dashboard");

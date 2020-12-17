@@ -1,11 +1,10 @@
 import axios from "axios";
 const { VUE_APP_BACKEND_URL } = process.env;
-// const token = this.localStorage.getItem('token')
 let config = {
   headers: {
     "Content-Type": "application/json;charset=UTF-8",
     "Access-Control-Allow-Origin": "*",
-    'authorization': localStorage.token || '',
+    authorization: localStorage.token || "",
   },
 };
 
@@ -52,6 +51,19 @@ class AxiosHelper {
     return new Promise((resolve, reject) => {
       return axios
         .patch(`${VUE_APP_BACKEND_URL}${path}`, data, config)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static delete(path) {
+    return new Promise((resolve, reject) => {
+      return axios
+        .delete(`${VUE_APP_BACKEND_URL}${path}`, config)
         .then((response) => {
           resolve(response);
         })

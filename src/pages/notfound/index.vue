@@ -1,12 +1,14 @@
 <template>
-  <div>Not found</div>
+  <div>
+    <component :is="layout">
+      <div class="not-found"></div>
+    </component>
+  </div>
 </template>
 
 <script>
 export default {
   name: "notfound",
-  components: {
-  },
   computed: {
     layout() {
       return this.$route.meta.layout;

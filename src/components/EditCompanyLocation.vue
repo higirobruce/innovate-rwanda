@@ -7,15 +7,23 @@
           To update office address, please place the red pin on the right
           location
         </div>
+        <label>
+          <gmap-autocomplete
+            placeholder="This is a placeholder text"
+            @place_changed="setPlace"
+          >
+          </gmap-autocomplete>
+          <button @click="usePlace">Add</button>
+        </label>
         <div class="wrap-map">
           <GmapMap
             :center="{ lat: -1.9535713202050946, lng: 30.09239731494155 }"
-            :zoom="16"
+            :zoom="15"
             map-type-id="terrain"
             style="width: 940px; height: 450px"
           >
             <GmapMarker
-              :position="{ lat: -1.9535713202050946, lng: 30.09239731494155 }"
+              :position="convertLatLng()"
               :draggable="true"
               @drag="updateCoordinates"
             />
@@ -50,18 +58,44 @@ export default {
     return {
       companyInfo: {},
       officeAddress: null,
+      place: null,
     };
   },
   mounted() {
     this.companyInfo = { ...this.company };
   },
   methods: {
+    convertLatLng() {
+      let latLng = { lat: -1.9535713202050946, lng: 30.09239731494155 };
+      if (this.companyInfo && this.companyInfo.officeAddress) {
+        latLng = JSON.parse(this.companyInfo.officeAddress);
+      }
+      return latLng;
+    },
+    convertToObject(object) {
+      return JSON.parse(object);
+    },
     updateCoordinates(location) {
       this.officeAddress = {
         lat: location.latLng.lat(),
         lng: location.latLng.lng(),
       };
       this.companyInfo.officeAddress = JSON.stringify(this.officeAddress);
+    },
+    setPlace(place) {
+      this.place = place;
+    },
+    usePlace(place) {
+      console.log("pl", place);
+      if (this.place) {
+        this.markers.push({
+          position: {
+            lat: this.place.geometry.location.lat(),
+            lng: this.place.geometry.location.lng(),
+          },
+        });
+        this.place = null;
+      }
     },
     submitCompanyInfo(evt) {
       evt.preventDefault();
@@ -74,7 +108,7 @@ export default {
           });
           setTimeout(() => {
             this.$router.go();
-          }, 500);
+          }, 2500);
         })
         .catch((err) => {
           console.log(err.response.data);
