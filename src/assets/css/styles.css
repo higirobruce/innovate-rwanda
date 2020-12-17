@@ -1,12 +1,27 @@
-@font-face {font-family: "Circular Std Book";
-  src: url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.eot"); 
-  src: url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.eot?#iefix") format("embedded-opentype"),
-  url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.woff2") format("woff2"),
-  url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.woff") format("woff"),
-  url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.ttf") format("truetype"),
-  /* url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.svg#Circular Std Book") format("svg");  */
+@font-face {
+  font-family: "Circular Std Book";
+  src: url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.eot");
+  src: url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.eot?#iefix")
+      format("embedded-opentype"),
+    url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.woff2")
+      format("woff2"),
+    url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.woff")
+      format("woff"),
+    url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.ttf")
+      format("truetype")
 }
-
+@font-face {
+  font-family: "Circular Std Black";
+  src: url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.eot");
+  src: url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.eot?#iefix")
+      format("embedded-opentype"),
+    url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.woff2")
+      format("woff2"),
+    url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.woff")
+      format("woff"),
+    url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.ttf")
+      format("truetype")
+}
 body {
   background: #f0f2f8;
   font-family: "Circular Std Book", sans-serif;
@@ -35,19 +50,22 @@ button {
   white-space: pre-line;
 }
 input::placeholder {
-  color: #cecece!important;
+  color: #cecece !important;
 }
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #cecece!important;
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #cecece !important;
   opacity: 1; /* Firefox */
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: #cecece!important;
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #cecece !important;
 }
 
-::-ms-input-placeholder { /* Microsoft Edge */
-  color: #cecece!important;
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #cecece !important;
 }
 .container {
   max-width: 1500px;
@@ -69,10 +87,10 @@ input::placeholder {
   background: #1b2958;
 }
 .text-blue {
-  color: #06ADEF;
+  color: #06adef;
 }
 .bg-blue {
-  background: #06ADEF;
+  background: #06adef;
 }
 .text-blue-light-1 {
   color: #f3fbfe;
@@ -107,12 +125,12 @@ input::placeholder {
   border: 2px solid #0066ab;
 }
 .btn.btn-gray-outline {
-  color: #5E7C8D;
+  color: #5e7c8d;
   background: #ffffff;
-  border: 2px solid #C0C6D8;
+  border: 2px solid #c0c6d8;
 }
 .btn.btn-gray-outline:hover {
-  color: #5E7C8D;
+  color: #5e7c8d;
   background: #ebeff1;
   border: 2px solid #c4c4c4;
 }
@@ -361,11 +379,11 @@ input.custom-input {
 }
 
 .switch input:checked + .slider {
-  background-color: #00AEEF;
+  background-color: #00aeef;
 }
 
 .switch input:focus + .slider {
-  box-shadow: 0 0 1px #00AEEF;
+  box-shadow: 0 0 1px #00aeef;
 }
 
 .switch input:checked + .slider:before {
@@ -383,15 +401,14 @@ input.custom-input {
   border-radius: 50%;
 }
 .wrap-switch-toggle .switch-text {
-  color: #C0C6D8;
+  color: #c0c6d8;
   padding: auto 10px;
 }
 .wrap-switch-toggle .switch-text.active {
-  color: #00AEEF;
+  color: #00aeef;
 }
 .wrap-actions button,
-.wrap-actions a
- {
+.wrap-actions a {
   border: none;
   background: transparent;
   margin: auto 5px;
@@ -403,17 +420,17 @@ input.custom-input {
   color: #5e7c8d;
 }
 .table tbody {
-  margin: 20px 0!important;
+  margin: 20px 0 !important;
 }
-.table { 
-  border: 1px solid #F6F7F8;
+.table {
+  border: 1px solid #f6f7f8;
 }
 .table tbody tr {
-  border-bottom: 5px solid #F6F7F8;
-  padding: 20px 0!important;
+  border-bottom: 5px solid #f6f7f8;
+  padding: 20px 0 !important;
 }
 .table tbody td {
-  border-right: 1px solid #F6F7F8;
+  border-right: 1px solid #f6f7f8;
 }
 
 /*
@@ -479,7 +496,7 @@ input.custom-input {
   right: 20px;
 }
 .v-toast__item--success {
- background-color: #28a745!important; 
+  background-color: #28a745 !important;
 }
 
 .status {
@@ -508,9 +525,9 @@ input.custom-input {
   right: 30px;
   bottom: 15px;
   z-index: 1;
-  min-width:200px;
+  min-width: 200px;
 }
-.btn-back  {
+.btn-back {
   position: relative;
 }
 
@@ -523,6 +540,6 @@ input.custom-input {
   border-radius: 4px;
 }
 .avatar {
-  border-radius: 50%!important;
-  background-color: #C0C6D8;
+  border-radius: 50% !important;
+  background-color: #c0c6d8;
 }
