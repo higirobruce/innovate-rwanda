@@ -8,7 +8,7 @@
         subtitle="Companies, organizations and service providers working together to foster growth in the Ecosystem"
       />
       <div class="container">
-        <div class="wrap-companies" v-if="directory">
+        <div class="wrap-companies" v-if="!_.isEmpty(directory)">
           <div
             class="row one-company"
             v-for="(company, index) in directory"
@@ -56,6 +56,7 @@
             <div class="info-separator clear my-3">&nbsp;</div>
           </div>
         </div>
+        <div v-else class="not-found"></div>
       </div>
     </component>
   </div>

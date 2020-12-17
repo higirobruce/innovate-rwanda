@@ -1,11 +1,10 @@
 import axios from "axios";
 const { VUE_APP_BACKEND_URL } = process.env;
-// const token = this.localStorage.getItem('token')
 let config = {
   headers: {
     "Content-Type": "application/json;charset=UTF-8",
     "Access-Control-Allow-Origin": "*",
-    'authorization': localStorage.token || '',
+    authorization: localStorage.token || "",
   },
 };
 

@@ -4,7 +4,7 @@
     <div class="p-3">
       <div class="row">
         <div class="col-12">
-          <div class="py-3">Social network of the organization</div>
+          <div class="mb-3">Social network of the organization</div>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
               <span
@@ -80,7 +80,7 @@
                 class="input-group-text"
               >
                 <icon :icon="['fab', 'youtube']" class="icon mr-2" />
-                https://youtube.com/</span
+                https://youtube.com/c/</span
               >
             </div>
             <input
@@ -92,12 +92,23 @@
           </div>
 
           <div class="mt-4">
-            <button
-              @click="updateSocialMedia"
-              class="btn btn-success-outline mr-2"
-            >
-              Save
-            </button>
+            <span class="float-left">
+              <button
+                @click="updateSocialMedia"
+                class="btn btn-success-outline mr-2"
+              >
+                Save
+              </button>
+            </span>
+            <span class="float-right">
+              <button
+                type="button"
+                @click="closeModal"
+                class="btn btn-gray-outline mr-2"
+              >
+                Close
+              </button>
+            </span>
           </div>
         </div>
       </div>
@@ -116,21 +127,24 @@ export default {
     };
   },
   mounted() {
-    this.socialMedia = this.convertToObject(this.company.socialMedia);
+    this.socialMedia = this.convertToObject(this.company.socialMedia) || {};
   },
   methods: {
+    closeModal() {
+      this.$modal.hide("editSocialMedia");
+    },
     updateSocialMedia() {
       const socialMedia = JSON.stringify(this.socialMedia);
       this.company.socialMedia = socialMedia;
-      AxiosHelper.patch(`company/edit/${this.company.id}`,  this.company)
+      AxiosHelper.patch(`company/edit/${this.company.id}`, this.company)
         .then(() => {
           Vue.$toast.open({
             message: "Social media accounts  of the company have been updated",
             type: "success",
           });
-            setTimeout(() => {
-              this.$router.go();
-            }, 500);
+          setTimeout(() => {
+            this.$router.go();
+          }, 2000);
         })
         .catch(() => {
           Vue.$toast.open({

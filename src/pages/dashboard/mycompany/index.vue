@@ -83,6 +83,7 @@
           <div class="company-info">
             <div class="row small-row">
               <div class="col-sm-12 col-lg-6 info-box">
+                {{ company.company.contactPhone !== "" }}
                 Phone:&nbsp;&nbsp;
                 <span>{{
                   company.company.contactPhone ||
@@ -90,7 +91,10 @@
                 }}</span>
                 <span
                   class="ml-2 co-badge"
-                  v-if="company.company.phoneDisplay !== true"
+                  v-if="
+                    company.company.contactPhone !== null &&
+                    company.company.phoneDisplay !== true
+                  "
                   >Hidden on public</span
                 >
               </div>
@@ -121,27 +125,23 @@
                 <span> {{ company.company.districtBasedIn || "" }}</span>
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
-                {{ company.company }}
                 <div class="social-links">
-                  Social media:&nbsp;&nbsp;
+                  Social media&nbsp;&nbsp;
+                  <!-- <span v-if="!_.isEmpty(company.company.socialMedia)"> -->
+
                   <a
                     style="color: #1473e6"
                     :to="''"
-                    v-if="
-                      company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).facebook
-                    "
+                    v-if="!_.isEmpty(socialMedia) && socialMedia.facebook"
                   >
                     <icon :icon="['fab', 'facebook']" class="icon mr-2" />
                   </a>
+
                   <a
                     style="color: #00aeef"
                     :to="''"
                     target="_blank"
-                    v-if="
-                      company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).twitter
-                    "
+                    v-if="!_.isEmpty(socialMedia) && socialMedia.twitter"
                   >
                     <icon :icon="['fab', 'twitter']" class="icon mr-2" />
                   </a>
@@ -149,21 +149,15 @@
                     style="color: #ff1d77"
                     :to="''"
                     target="_blank"
-                    v-if="
-                      company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).instagram
-                    "
+                    v-if="!_.isEmpty(socialMedia) && socialMedia.instagram"
                   >
                     <icon :icon="['fab', 'instagram']" class="icon mr-2" />
                   </a>
                   <a
                     style="color: #ff0000"
                     target="_blank"
-                    v-if="
-                      company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).youtube
-                    "
-                    :href="`https://youtube.com/${
+                    v-if="!_.isEmpty(socialMedia) && socialMedia.youtube"
+                    :href="`https://youtube.com/c/${
                       convertToObject(company.company.socialMedia).youtube
                     }`"
                   >
@@ -172,65 +166,46 @@
                   <a
                     style="color: #007bb5"
                     target="_blank"
-                    v-if="
-                      company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).linkedin
-                    "
-                    :href="`https://youtube.com/${
+                    v-if="!_.isEmpty(socialMedia) && socialMedia.linkedin"
+                    :href="`https://linkedin.com/in/${
                       convertToObject(company.company.socialMedia).linkedin
                     }`"
                   >
                     <icon :icon="['fab', 'linkedin']" class="icon mr-2" />
                   </a>
-
                   <!-- UNPROVIDED LINKS  -->
+                  <!-- company.company.socialMedia &&
+                      convertToObject(company.company.socialMedia).facebook ===
+                        '' -->
                   <span
                     style="color: #dedede"
-                    v-if="
-                      company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).facebook ===
-                        ''
-                    "
+                    v-if="!socialMedia.facebook || socialMedia.facebook === ''"
                   >
                     <icon :icon="['fab', 'facebook']" class="icon mr-2" />
                   </span>
                   <span
                     style="color: #dedede"
-                    v-if="
-                      company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).twitter ===
-                        ''
-                    "
+                    v-if="!socialMedia.twitter || socialMedia.twitter === ''"
                   >
                     <icon :icon="['fab', 'twitter']" class="icon mr-2" />
                   </span>
                   <span
                     style="color: #dedede"
                     v-if="
-                      company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).instagram ===
-                        ''
+                      !socialMedia.instagram || socialMedia.instagram === ''
                     "
                   >
                     <icon :icon="['fab', 'instagram']" class="icon mr-2" />
                   </span>
                   <span
                     style="color: #dedede"
-                    v-if="
-                      company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).youtube ===
-                        ''
-                    "
+                    v-if="!socialMedia.youtube || socialMedia.youtube === ''"
                   >
                     <icon :icon="['fab', 'youtube']" class="icon mr-2" />
                   </span>
                   <span
                     style="color: #dedede"
-                    v-if="
-                      company.company.socialMedia &&
-                      convertToObject(company.company.socialMedia).linkedin ===
-                        ''
-                    "
+                    v-if="!socialMedia.linkedin || socialMedia.linkedin === ''"
                   >
                     <icon :icon="['fab', 'linkedin']" class="icon mr-2" />
                   </span>
@@ -244,7 +219,7 @@
                     name="editSocialMedia"
                     :adaptive="true"
                     :scrollable="true"
-                    :height="550"
+                    :height="500"
                     :width="650"
                   >
                     <EditSocial :company="company.company" />
@@ -255,24 +230,50 @@
           </div>
           <div class="info-separator">&nbsp;</div>
           <div class="company-info">
-            <div>Areas of Interests</div>
-            <div class="my-3">
-              <div class="co-badge">Business consulting</div>
-              <div class="co-badge">Information Technology Services</div>
-              <div class="co-badge">Tax and Accounting Consulting</div>
-              <div class="co-badge">Non-academic courses</div>
-              <div class="co-badge">Marketing</div>
-              <div class="co-badge">Communications &amp; Public Relations</div>
-              <div class="co-badge">Mentoring</div>
+            <div>
+              Main business activity:
+              <span class="text-blue-dark"
+                >{{ company.company.BusinessActivity.name }}
+              </span>
             </div>
           </div>
           <div class="info-separator">&nbsp;</div>
           <div class="company-info">
-            <div>
-              Main Area of Interest:
-              <span class="text-blue-dark"
-                >{{ company.company.mainAreaOfInterest || "" }}
+            <div>Business activities</div>
+            <div class="my-3">
+              <span v-if="!_.isEmpty(company.company.businessActivities)">
+                <div
+                  class="co-badge"
+                  v-for="(act, index) in convertToObject(
+                    company.company.businessActivities
+                  )"
+                  :key="index"
+                >
+                  <span
+                    v-for="(activity, index) in listOfBusinessActivities"
+                    :key="index"
+                  >
+                    <span v-if="activity.id === act">
+                      {{ activity.name }}
+                    </span>
+                  </span>
+                </div>
               </span>
+              <button
+                @click="updateActivities"
+                class="btn btn-transparent mx-1 px-1"
+              >
+                Update
+              </button>
+              <modal
+                name="openEditBusinessActivies"
+                :adaptive="true"
+                :scrollable="true"
+                :height="570"
+                :width="850"
+              >
+                <EditBusinessActivities :company="company.company" />
+              </modal>
             </div>
           </div>
           <div class="info-separator">&nbsp;</div>
@@ -365,6 +366,7 @@ import * as VueGoogleMaps from "vue2-google-maps";
 import EditSocial from "@/components/EditSocial";
 import EditCompanyInfo from "@/components/EditCompanyInfo";
 import EditCompanySummary from "@/components/EditCompanySummary";
+import EditBusinessActivities from "@/components/EditBusinessActivities";
 import EditCompanyLocation from "@/components/EditCompanyLocation";
 import UploadCompanyLogo from "@/components/UploadCompanyLogo";
 import VModal from "vue-js-modal";
@@ -383,19 +385,31 @@ export default {
     EditCompanySummary,
     EditCompanyLocation,
     UploadCompanyLogo,
+    EditBusinessActivities,
   },
   data() {
     return {
       company: {},
+      socialMedia: {},
+      listOfBusinessActivities: "",
     };
+  },
+  created() {
+    // loading business activities
+    AxiosHelper.get("business-activities")
+      .then((response) => {
+        this.listOfBusinessActivities = response.data.result;
+      })
+      .catch(() => {});
   },
   mounted() {
     AxiosHelper.get("company/my-company")
       .then((response) => {
         this.company = response.data.result;
+        this.socialMedia =
+          this.convertToObject(response.data.result.company.socialMedia) || {};
       })
       .catch((error) => {
-        console.log("rror.response.data", error.response.data);
         if (error.response.status === 404) {
           this.errorCompany = "Company information not found. Try again later";
         } else if (error.response.status === 403) {
@@ -420,6 +434,9 @@ export default {
         latLng = JSON.parse(company.officeAddress);
       }
       return latLng;
+    },
+    updateActivities() {
+      this.$modal.show("openEditBusinessActivies");
     },
     openEditSocial() {
       this.$modal.show("editSocialMedia");

@@ -41,7 +41,8 @@
                 </div>
                 <div class="col-sm-12 col-lg-6 info-box">
                   Social media:&nbsp;&nbsp;
-                  <span>-</span>
+                  <span v-if="company.company.socialMedia !== null">-</span>
+                  <span v-else> No social media provided </span>
                 </div>
               </div>
             </div>
@@ -50,7 +51,7 @@
               <div>
                 Main Area of Interest:
                 <span class="text-blue-dark">{{
-                  company.company.areaOfInterest
+                  company.company.BusinessActivity.name
                 }}</span>
               </div>
             </div>
@@ -81,60 +82,56 @@
             </div>
           </div>
           <div class="co-description position-relative">
-            <div class="my-3">
-              Our office:
-              <span class="text-blue-dark"
-                >233 KG 7 Ave Kigali Height 8th floor</span
-              >
-            </div>
+            <div class="my-3">Our office</div>
             <div class="wrap-map">
-              <GmapMap
-                :center="{
-                  lat: -1.953841484576185,
-                  lng: 30.08110361228947,
-                }"
-                :zoom="17"
-                map-type-id="terrain"
-                style="
-                  width: 600px;
-                  height: 400px;
-                  margin: 0 auto;
-                  display: block;
-                "
-              >
-                <GmapMarker
-                  :key="index"
-                  v-for="(m, index) in markers"
-                  :position="m.position"
-                  :clickable="true"
-                  :draggable="true"
-                  @click="center = m.position"
-                />
-              </GmapMap>
+              <div class="wrap-map" v-if="company.company.officeAddress">
+                <GmapMap
+                  :center="convertLatLng(company.company)"
+                  :zoom="17"
+                  map-type-id="terrain"
+                  style="width: 1000px; height: 700px"
+                >
+                  <GmapMarker
+                    :position="convertLatLng(company.company)"
+                    :clickable="false"
+                    :draggable="false"
+                  />
+                </GmapMap>
+              </div>
+              <div class="my-3" v-else>
+                <h3>No office location provided</h3>
+              </div>
             </div>
           </div>
         </div>
         <div class="my-3">
-          <button
-            v-if="
-              company.company.status === 'pending' ||
-              company.company.status === 'declined'
-            "
-            @click="approveOrDecline('approved', company.company.id)"
-            class="btn btn-success-outline mr-2"
-          >
-            Approve
-          </button>
-          <button
-            v-if="
-              company.company.status === 'pending' ||
-              company.company.status === 'approved'
-            "
-            @click="approveOrDecline('declined', company.company.id)"
-            class="btn btn-danger-outline"
-          >
-            Decline
-          </button>
+          <span class="float-right">
+            <button @click="closeModal" class="btn btn-gray-outline mr-2">
+              Close
+            </button>
+          </span>
+          <span class="float-left">
+            <button
+              v-if="
+                company.company.status === 'pending' ||
+                company.company.status === 'declined'
+              "
+              @click="approveOrDecline('approved', company.company.id)"
+              class="btn btn-success-outline mr-2"
+            >
+              Approve
+            </button>
+            <button
+              v-if="
+                company.company.status === 'pending' ||
+                company.company.status === 'approved'
+              "
+              @click="approveOrDecline('declined', company.company.id)"
+              class="btn btn-danger-outline"
+            >
+              Decline
+            </button>
+          </span>
         </div>
       </div>
     </div>
@@ -173,6 +170,16 @@ export default {
     };
   },
   methods: {
+    closeModal() {
+      this.$modal.hide("companyInfo");
+    },
+    convertLatLng(officeAddress) {
+      let latLng = { lat: -1.9535713202050946, lng: 30.09239731494155 };
+      if (officeAddress && officeAddress) {
+        latLng = JSON.parse(officeAddress);
+      }
+      return latLng;
+    },
     approveOrDecline(decision, id) {
       let data;
       if (decision === "approved") {
@@ -188,15 +195,16 @@ export default {
         };
       }
       AxiosHelper.put("company/approve-decline", data)
-        .then(() => {
+        .then((res) => {
+          console.log("res", res)
           Vue.$toast.open({
             message:
               "Company' status has been updated. We are updating company's directory",
             type: "success",
           });
-          setTimeout(() => {
-            this.$router.go();
-          }, 2000);
+          // setTimeout(() => {
+          //   this.$router.go();
+          // }, 2000);
         })
         .catch(() => {
           Vue.$toast.open({

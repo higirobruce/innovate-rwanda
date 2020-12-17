@@ -98,17 +98,25 @@
           </div>
         </div>
         <div class="my-2">
-          <button @click="closeModal" class="btn btn-primary-outline mr-2">
-            Cancel
-          </button>
-          <button
-            :disabled="$v.$invalid"
-            type="submit"
-            @click="register"
-            class="btn btn-success float-right"
-          >
-            Register new user
-          </button>
+          <span class="float-left">
+            <button
+              :disabled="$v.$invalid"
+              type="submit"
+              @click="register"
+              class="btn btn-success float-right"
+            >
+              Register new user
+            </button>
+          </span>
+          <span class="float-right">
+            <button
+              type="button"
+              @click="closeModal"
+              class="btn btn-gray-outline mr-2"
+            >
+              Cancel
+            </button>
+          </span>
         </div>
       </form>
     </div>
@@ -190,10 +198,10 @@ export default {
       this.user.role = e.target.value;
     },
     closeModal() {
-      this.$modal.hide("openChangeRole");
+      this.$modal.hide("openRegister");
     },
     register() {
-      AxiosHelper.post("users/register", this.user)
+      AxiosHelper.post("users/create", this.user)
         .then(() => {
           Vue.$toast.open({
             message: `User has been registered successfully, he/she should check the message sent to his/her email!`,

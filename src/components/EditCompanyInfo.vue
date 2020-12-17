@@ -132,10 +132,27 @@
             </div>
           </div>
           <!-- main area of interest -->
-          <h4 class="mt-3">Main area of your interest</h4>
+          <h4 class="mt-3">Main business activity</h4>
           <div class="row mt-4">
             <div class="col-12">
               <div class="form-group">
+                <select
+                  class="form-control form-control-lg"
+                  name="business_activity"
+                  v-model="companyInfo.businessActivityId"
+                  @change="changeInterest($event)"
+                  required
+                >
+                  <option
+                    v-for="(activity, index) in listOfBusinessActivities"
+                    v-bind:value="activity.id"
+                    :key="index"
+                    :selected="activity.id === companyInfo.businessActivityId"
+                  >
+                    {{ activity.name }}
+                  </option>
+                </select>
+                <!--
                 <select
                   class="form-control form-control-lg"
                   name="district"
@@ -150,17 +167,29 @@
                     {{ area }}
                   </option>
                 </select>
+                -->
               </div>
             </div>
           </div>
         </div>
         <div class="mt-4">
-          <button
-            @click="submitCompanyInfo"
-            class="btn btn-success-outline mr-2"
-          >
-            Save
-          </button>
+          <span class="float-left">
+            <button
+              @click="submitCompanyInfo"
+              class="btn btn-success-outline mr-2"
+            >
+              Save
+            </button>
+          </span>
+          <span class="float-right">
+            <button
+              type="button"
+              @click="closeModal"
+              class="btn btn-gray-outline mr-2"
+            >
+              Close
+            </button>
+          </span>
         </div>
       </form>
     </div>
@@ -171,6 +200,7 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import VModal from "vue-js-modal";
+import { Districts } from "rwanda";
 Vue.use(VModal);
 
 import Vuelidate from "vuelidate";
@@ -200,7 +230,7 @@ export default {
       facebook: "",
       instagram: "",
       youtube: "",
-      allDistricts: ["Gasabo", "Kicukiro"],
+      allDistricts: [],
       listOfMainAreaOfInterests: [
         "Tech companies",
         "Co-working spaces",
@@ -214,15 +244,32 @@ export default {
         "Talent Development",
       ],
       listOfAreaOfInterests: ["Education", "Shopping", "IoT"],
+      listOfBusinessActivities: [],
       Deselect: {
         render: (createElement) => createElement("span", "❌"),
       },
     };
   },
+  created() {
+    // loading all districts
+    this.allDistricts = Districts();
+    // loading business activities
+    AxiosHelper.get("business-activities")
+      .then((response) => {
+        this.listOfBusinessActivities = response.data.result;
+      })
+      .catch(() => {});
+  },
   mounted() {
     this.companyInfo = { ...this.company };
   },
   methods: {
+    closeModal() {
+      this.$modal.hide("EditcompanyInfo");
+    },
+    changeInterest(e) {
+      this.companyInfo.businessActivityId = e.target.value;
+    },
     submitCompanyInfo(evt) {
       evt.preventDefault();
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)

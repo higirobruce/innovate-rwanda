@@ -135,7 +135,7 @@ export default {
   margin: 30px;
 }
 .wrap-search input {
-  background: #dce0e9;
+  background: #F0F2F8;
 }
 .media img {
   width: 45px;

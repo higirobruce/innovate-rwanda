@@ -60,19 +60,19 @@ button {
   white-space: pre-line;
 }
 input::placeholder {
-  color: #e6e6e6;
+  color: #cecece!important;
 }
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #e6e6e6;
+  color: #cecece!important;
   opacity: 1; /* Firefox */
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: #e6e6e6;
+  color: #cecece!important;
 }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
-  color: #e6e6e6;
+  color: #cecece!important;
 }
 .container {
   max-width: 1500px;

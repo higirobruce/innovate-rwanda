@@ -19,10 +19,8 @@
       <div class="dash-container">
         <table
           class="table"
-          v-if="
-            (!loading && profile && profile.role === 'admin-user') ||
-            profile.role === 'super-admin'
-          "
+          v-if="!loading && profile.role === 'admin-user' || profile.role === 'super-admin'"
+          
         >
           <thead>
             <tr>
@@ -43,13 +41,14 @@
                 </span>
               </td>
               <td>{{ user.email }}</td>
-              <td>{{ user.jobTitle }}</td>
+              <td>{{ user.jobTitle || "-" }}</td>
               <td>
                 <select
                   v-if="user.role !== 'normal'"
                   class="form-control form-control-sm"
                   @change="changeRole($event, user)"
                   name="category"
+                  :disabled="profile.id === user.id"
                 >
                   <option
                     v-for="(role, index) in roles"
@@ -69,14 +68,17 @@
                 <span class="status approved" v-if="user.status === 'active'">
                   Active
                 </span>
+                <span class="status declined" v-if="user.status === 'inactive'">
+                  Inactive
+                </span>
               </td>
               <td>{{ user.createdAt | date("DD/MM/YYYY") }}</td>
               <td>
                 <div class="wrap-actions">
-                  <button>
-                    <img src="@/assets/images/edit.svg" alt="edit" />
-                  </button>
-                  <button>
+                  <button
+                    @click="deleteUser(user.email)"
+                    v-if="profile.id !== user.id && user.status === 'active'"
+                  >
                     <img src="@/assets/images/delete.svg" alt="delete" />
                   </button>
                 </div>
@@ -84,7 +86,6 @@
             </tr>
           </tbody>
         </table>
-        <div v-else class="not-allowed"></div>
         <div
           v-if="!loading && Object.keys(users).length === 0"
           class="not-found"
@@ -113,6 +114,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import ChangeRole from "@/components/ChangeRole";
 import NewUser from "@/components/NewUser";
@@ -155,33 +157,51 @@ export default {
   },
   created() {
     this.loading = true;
-    let url = "users";
-    AxiosHelper.get(url)
-      .then((response) => {
-        this.users = response.data.result;
-        this.loading = false;
-      })
-      .catch((error) => {
-        this.users = [];
-        if (error.response.status === 404 || error.response.status === 400) {
-          this.error = "No content yet!";
-        } else if (error.response.status === 403) {
-          this.error = "No companies found at this moment";
-          this.notAllowed = true;
-        } else {
-          this.error = "Something went wrong, try again later";
-        }
-        this.loading = false;
-      });
+    this.loadUsers();
   },
   methods: {
     changeRole(e, user) {
-      console.log("e", e);
       this.user = user;
       this.$modal.show("openChangeRole");
     },
     regiserUser() {
       this.$modal.show("openRegister");
+    },
+    deleteUser(email) {
+      AxiosHelper.delete(`users/deactivate/${email}`)
+        .then(() => {
+          this.loadUsers();
+          Vue.$toast.open({
+            message: `User has been deleted successfully`,
+            type: "success",
+          });
+        })
+        .catch(() => {
+          Vue.$toast.open({
+            message: "Sorry, something went wrong. try again later!",
+            type: "error",
+          });
+        });
+    },
+    loadUsers() {
+      this.loading = true;
+      AxiosHelper.get("users")
+        .then((response) => {
+          this.users = response.data.result;
+          this.loading = false;
+        })
+        .catch((error) => {
+          this.users = [];
+          if (error.response.status === 404 || error.response.status === 400) {
+            this.error = "No content yet!";
+          } else if (error.response.status === 403) {
+            this.error = "No companies found at this moment";
+            this.notAllowed = true;
+          } else {
+            this.error = "Something went wrong, try again later";
+          }
+          this.loading = false;
+        });
     },
   },
   computed: {

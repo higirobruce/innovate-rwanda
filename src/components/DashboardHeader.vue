@@ -13,7 +13,9 @@
       </li>
       <li class="list-inline-item px-1 position-relative">
         <button class="dash-header-user" @click="toggleUserDropDown">
-          <img src="@/assets/images/user-avatar.png" />
+          <div class="image avatar">
+            <img src="@/assets/images/user-avatar.svg" />
+          </div>
         </button>
         <div
           class="card profile-card"

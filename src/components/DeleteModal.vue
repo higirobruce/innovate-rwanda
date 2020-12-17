@@ -3,12 +3,22 @@
     <h3 class="p-4 bottom-shadow shadow">Delete</h3>
     <div class="p-4">Do you really want to delete this {{ entity }}?</div>
     <div class="my-2 mx-4">
-      <button @click="closeModal" class="btn btn-primary-outline mr-2">
-        Cancel
-      </button>
-      <button @click="deleteAnyway" class="btn btn-danger-outline float-right">
-        Delete
-      </button>
+      <span class="float-left">
+        <button @click="closeModal" class="btn btn-primary-outline mr-2">
+          Cancel
+        </button>
+        <button
+          @click="deleteAnyway"
+          class="btn btn-danger-outline float-right"
+        >
+          Delete
+        </button>
+      </span>
+      <span class="float-right">
+        <button @click="closeModal" class="btn btn-gray-outline mr-2">
+          Close
+        </button>
+      </span>
     </div>
   </div>
 </template>

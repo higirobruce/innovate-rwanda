@@ -8,7 +8,7 @@
         subtitle="Our community listing of tech and innovation companies in the ecosystem."
       />
       <div class="container">
-        <div class="wrap-companies" v-if="directory">
+        <div class="wrap-companies" v-if="!_.isEmpty(directory)">
           <div
             class="row one-company"
             v-for="(company, index) in directory"
@@ -56,6 +56,7 @@
             <div class="info-separator clear my-3">&nbsp;</div>
           </div>
         </div>
+        <div v-else class="not-found"></div>
       </div>
     </component>
   </div>
@@ -81,7 +82,7 @@ export default {
     },
   },
   created() {
-    AxiosHelper.get("directory/public/startup")
+    AxiosHelper.get("directory/public/Tech company")
       .then((response) => {
         this.directory = response.data.result;
       })

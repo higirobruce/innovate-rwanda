@@ -9,7 +9,7 @@
         />
       </div>
       <div class="head-info">
-        <h4 class="h2 font-weight-bold">{{ message.email }}</h4>
+        <h4 class="h4 font-weight-light">{{ message.email }}</h4>
         <div>
           {{ message.createdAt | date("DD MMM YYYY") }}
         </div>
@@ -30,16 +30,16 @@ export default {
 
 <style scoped>
 .message-head {
-  padding: 30px 50px;
+  padding: 15px 50px;
   display: flex;
   background: #ffffff;
 }
 .message-head .image {
-  width: 80px;
+  width: 60px;
 }
 .message-head .head-info {
   width: calc(100% - 80px);
-  padding: 8px 30px;
+  padding: 2px 30px;
 }
 .message-body {
   padding: 30px 60px;
