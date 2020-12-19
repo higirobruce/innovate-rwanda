@@ -62,13 +62,13 @@
               <td>
                 <div class="wrap-actions">
                   <button>
-                    <img src="@/assets/images/view.svg" alt="view" />
+                    <img src="@/assets/images/view.png" alt="view" />
                   </button>
                   <button>
-                    <img src="@/assets/images/edit.svg" alt="edit" />
+                    <img src="@/assets/images/edit.png" alt="edit" />
                   </button>
                   <button>
-                    <img src="@/assets/images/delete.svg" alt="delete" />
+                    <img src="@/assets/images/delete.png" alt="delete" />
                   </button>
                 </div>
               </td>

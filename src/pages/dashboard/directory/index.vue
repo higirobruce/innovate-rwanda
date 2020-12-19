@@ -72,13 +72,13 @@
               <td>
                 <div class="wrap-actions">
                   <button @click="loadCompany(dir.id)">
-                    <img src="@/assets/images/view.svg" alt="view" />
+                    <img src="@/assets/images/view.png" alt="view" />
                   </button>
                   <button @click="openCompanyEdit(dir.id)">
-                    <img src="@/assets/images/edit.svg" alt="edit" />
+                    <img src="@/assets/images/edit.png" alt="edit" />
                   </button>
                   <button @click="deleteCompany(dir.coName, dir.id)">
-                    <img src="@/assets/images/delete.svg" alt="delete" />
+                    <img src="@/assets/images/delete.png" alt="delete" />
                   </button>
                 </div>
               </td>

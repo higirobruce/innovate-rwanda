@@ -81,7 +81,7 @@
                     target="_blank"
                     :to="`/blog/${post.id}`"
                   >
-                    <img src="@/assets/images/view.svg" alt="view" />
+                    <img src="@/assets/images/view.png" alt="view" />
                   </router-link>
                   <router-link
                     v-if="
@@ -91,13 +91,13 @@
                     "
                     :to="`/dashboard/content/blog/edit/${post.id}`"
                   >
-                    <img src="@/assets/images/edit.svg" alt="edit" />
+                    <img src="@/assets/images/edit.png" alt="edit" />
                   </router-link>
                   <button
                     v-if="post.status !== 'deleted'"
                     @click="deleteRecord(post.id)"
                   >
-                    <img src="@/assets/images/delete.svg" alt="delete" />
+                    <img src="@/assets/images/delete.png" alt="delete" />
                   </button>
                 </div>
               </td>

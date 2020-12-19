@@ -21,21 +21,21 @@
         <div class="row">
           <div class="col-sm-12 col-lg-4">
             <div class="one-counter">
-              <img src="@/assets/images/counter-companies.svg" />
+              <img src="@/assets/images/counter-companies.png" />
               <h3 class="ml-2">{{ summary.approvedCompaniesCount}}</h3>
               <h4 class="ml-2">Total registered Companies</h4>
             </div>
           </div>
           <div class="col-sm-12 col-lg-4">
             <div class="one-counter">
-              <img src="@/assets/images/counter-users.svg" />
+              <img src="@/assets/images/counter-users.png" />
               <h3 class="ml-2">{{ summary.usersCount}}</h3>
               <h4 class="ml-2">Users</h4>
             </div>
           </div>
           <div class="col-sm-12 col-lg-4">
             <div class="one-counter">
-              <img src="@/assets/images/counter-pending.svg" />
+              <img src="@/assets/images/counter-pending.png" />
               <h3 class="ml-2">{{ summary.pendingRequestsCount}}</h3>
               <h4 class="ml-2">Pending Registration Requests</h4>
             </div>

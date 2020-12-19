@@ -88,7 +88,7 @@
                       @click="deleteUser(user.email)"
                       v-if="profile.id !== user.id && user.status === 'active'"
                     >
-                      <img src="@/assets/images/delete.svg" alt="delete" />
+                      <img src="@/assets/images/delete.png" alt="delete" />
                     </button>
                   </div>
                 </td>
