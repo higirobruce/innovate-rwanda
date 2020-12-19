@@ -111,9 +111,8 @@
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Website:&nbsp;&nbsp;
-                <span>{{
-                  company.company.coWebsite || "No contact phone yet"
-                }}</span>
+                <span>
+                  <a v-if="!_.isEmpty(company.company.coWebsite)" :href="company.company.coWebsite" target="_blank">{{ company.company.coWebsite }}</a>
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Year Founded:&nbsp;&nbsp;

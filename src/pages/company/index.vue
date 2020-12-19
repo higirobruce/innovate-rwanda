@@ -22,7 +22,7 @@
                 <div class="company-small-info">
                   <h4>Website</h4>
                   <h5>
-                    {{ company.company.coWebsite }}
+                    <a :href="company.company.coWebsite" target="_bla">{{ company.company.coWebsite }}</a>
                   </h5>
                   <img src="@/assets/images/globe.svg" />
                 </div>
@@ -120,7 +120,7 @@
                   class="company-small-info"
                   v-if="company.company.emailDisplay === true"
                 >
-                  <h4>Contact phone number</h4>
+                  <h4>Contact email</h4>
                   <h5>
                     {{ company.company.contactEmail }}
                   </h5>
