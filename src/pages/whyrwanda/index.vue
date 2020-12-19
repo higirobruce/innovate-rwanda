@@ -121,6 +121,9 @@ export default {
 </script>
 
 <style scoped>
+.content-row {
+    text-align: justify;
+  }
 @media (min-width: 1025px) {
   .one-row {
     margin: 0 0 40px 0;
@@ -136,9 +139,6 @@ export default {
   }
   .one-row.content-inverted {
     grid-template-areas: "content-row image-row";
-  }
-  .one-row.content-inverted .content-row {
-    text-align: right;
   }
   .image-row {
     grid-area: image-row;
@@ -172,7 +172,6 @@ export default {
   }
   .content-row {
     grid-area: content-row;
-    text-align: center;
   }
   .content-row h2 {
     margin: 25px 0;

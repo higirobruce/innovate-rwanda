@@ -82,7 +82,7 @@ export default {
     },
   },
   created() {
-    AxiosHelper.get("directory/public/cooporation")
+    AxiosHelper.get("directory/public/Enabler")
       .then((response) => {
         this.directory = response.data.result;
       })

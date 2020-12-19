@@ -3,18 +3,18 @@
     <ul class="list-inline my-2 mr-4 py-1 float-right">
       <li class="list-inline-item px-1">
         <router-link class="dash-header-btn" :to="'/dashboard/messages'">
-          <img src="@/assets/images/message.svg" />
+          <img src="@/assets/images/message.png" />
         </router-link>
       </li>
       <li class="list-inline-item px-1">
         <router-link class="dash-header-btn" :to="'/dashboard/notifications'">
-          <img src="@/assets/images/notification.svg" />
+          <img src="@/assets/images/notification.png" />
         </router-link>
       </li>
       <li class="list-inline-item px-1 position-relative">
         <button class="dash-header-user" @click="toggleUserDropDown">
           <div class="image avatar">
-            <img src="@/assets/images/user-avatar.svg" />
+            <img src="@/assets/images/user-avatar.png" />
           </div>
         </button>
         <div

@@ -1,49 +1,64 @@
 <template>
   <div>
     <h3 class="p-4 bottom-shadow shadow">Business activities</h3>
-    <div class="px-4">Select all your business activities</div>
     <div class="px-4">
       <form @submit="submit">
-        <div class="wrap-modal" style="max-height: 450px; overflow: scroll">
+        <div class="wrap-modal" style="max-height: 500px; overflow: scroll">
           <div class="row mt-1">
             <div class="col-12" v-if="listOfBusinessActivities">
               <div
-                class="form-check co-badge form-check-inline"
-                v-for="(activity, index) in listOfBusinessActivities"
-                v-bind:value="activity.id"
+                v-for="(a, index) in convertToObject(
+                  company.businessActivities
+                )"
                 :key="index"
               >
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="businessActivities"
-                  :id="`box-${activity.id}`"
-                  :value="activity.id"
-                />
-                <label
-                  class="form-check-label"
-                  :for="`box-${activity.id}`"
+                <div
+                  v-for="(activity, index) in listOfBusinessActivities.filter(
+                    (p) => p.id === a
+                  )"
+                  :key="index"
                 >
-                  {{ activity.name }}
-                </label>
+                  <div
+                    :class="`${
+                      a === activity.id
+                        ? 's-one-activity active-one-activity'
+                        : 's-one-activity'
+                    }`"
+                  >
+                    {{ activity.name }}
+                    <button :disabled="a === activity.id" type="button">
+                      Remove
+                    </button>
+                  </div>
+                </div>
+                <!-- <div
+                  v-for="(activity, index) in listOfBusinessActivities.filter(
+                    (p) =>  a !== p.id
+                  )"
+                  :key="index"
+                >
+                  <div
+                    :class="`${
+                      a === activity.id
+                        ? 's-one-activity active-one-activity'
+                        : 's-one-activity'
+                    }`"
+                  >
+                    {{ a }}=={{ activity.id }} {{ activity.name }}
+                    <button :disabled="a === activity.id" type="button">
+                      Remove
+                    </button>
+                  </div>
+                </div> -->
               </div>
             </div>
           </div>
         </div>
-        <div class="mt-4">
-          <span class="float-left">
-            <button
-              type="submit"
-              @click="submit"
-              class="btn btn-success-outline mr-2"
-            >
-              Update
-            </button>
-          </span>
+        <div class="mt-1">
           <span class="float-right">
             <button
               type="button"
-              @click="closeModal"
+              @click.prevent="closeModal"
               class="btn btn-gray-outline mr-2"
             >
               Close
@@ -96,24 +111,24 @@ export default {
           ? JSON.stringify(this.businessActivities)
           : "";
       console.log("wait", this.companyInfo.businessActivities);
-      AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
-        .then(() => {
-          Vue.$toast.open({
-            message:
-              "Company business activities have been updated successfully",
-            type: "success",
-          });
-          setTimeout(() => {
-            this.$router.go();
-          }, 2000);
-        })
-        .catch(() => {
-          Vue.$toast.open({
-            message:
-              "Sorry, something went wrong while updating your social media accounts",
-            type: "error",
-          });
-        });
+      // AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
+      //   .then(() => {
+      //     Vue.$toast.open({
+      //       message:
+      //         "Company business activities have been updated successfully",
+      //       type: "success",
+      //     });
+      //     setTimeout(() => {
+      //       this.$router.go();
+      //     }, 2000);
+      //   })
+      //   .catch(() => {
+      //     Vue.$toast.open({
+      //       message:
+      //         "Sorry, something went wrong while updating your social media accounts",
+      //       type: "error",
+      //     });
+      //   });
     },
     changeDistrict(e) {
       this.companyInfo.districtBasedIn = e.target.value;
@@ -132,5 +147,22 @@ export default {
   border-radius: 5px;
   margin-top: 8px;
   cursor: pointer;
+}
+.s-one-activity {
+  position: relative;
+  padding: 10px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.s-one-activity button {
+  position: absolute;
+  font-size: 14px;
+  color: #747474;
+  top: 8px;
+  right: 5px;
+  border: none;
+  background: none;
+}
+.active-one-activity {
+  background: #f5f5f5 !important;
 }
 </style>

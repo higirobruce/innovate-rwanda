@@ -138,19 +138,9 @@
                 </div>
 
                 <div class="company-large-info">
-                  <h4>Areas of interests</h4>
+                  <h4>Business activitivies</h4>
                   <img src="@/assets/images/phone.svg" />
-                  <div class="my-3">
-                    <div class="co-badge">Business consulting</div>
-                    <div class="co-badge">Information Technology Services</div>
-                    <div class="co-badge">Tax and Accounting Consulting</div>
-                    <div class="co-badge">Non-academic courses</div>
-                    <div class="co-badge">Marketing</div>
-                    <div class="co-badge">
-                      Communications &amp; Public Relations
-                    </div>
-                    <div class="co-badge">Mentoring</div>
-                  </div>
+                  <div class="my-3">-</div>
                 </div>
                 <div class="info-separator clear my-3">&nbsp;</div>
                 <SendMessage
@@ -208,7 +198,7 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import * as VueGoogleMaps from "vue2-google-maps";
-import SendMessage from '@/components/SendMessage'
+import SendMessage from "@/components/SendMessage";
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyBzyXzhhqWBsTj305rY30VC1UF_1OHDKgA",
@@ -218,7 +208,7 @@ Vue.use(VueGoogleMaps, {
 export default {
   name: "company",
   components: {
-    SendMessage
+    SendMessage,
   },
   data() {
     return {

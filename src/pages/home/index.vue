@@ -8,11 +8,12 @@
             <h1 class="text-blue-dark mb-4">
               Bringing Rwanda's Innovation Community Together
             </h1>
-            <button
+            <router-link
+              :to="'/join'"
               class="btn btn-lg font-weight-bold btn-primary-outline mt-3 mr-lg-5 mt-3"
             >
               Join the community
-            </button>
+            </router-link>
             <button
               class="btn btn-lg font-weight-bold btn-secondary-outline mt-3"
             >
@@ -22,7 +23,7 @@
             <div class="home-search my-4">
               <input type="text" placeholder="Search the directory..." />
               <button type="email" class="btn btn-transparent">
-                <img src="@/assets/images/search.svg" alt="Search" />
+                <img src="@/assets/images/search.png" alt="Search" />
               </button>
             </div>
           </div>
@@ -53,7 +54,7 @@
           <div class="row my-5">
             <div class="col-sm-12 col-md-12 col-lg-4">
               <div class="media px-4 py-5 rounded">
-                <img class="mr-3" src="@/assets/images/join-company.svg" />
+                <img class="mr-3" src="@/assets/images/join-company.png" />
                 <div class="media-body">
                   Profile your company, startup or organization to local and
                   global ecosystem players
@@ -62,7 +63,7 @@
             </div>
             <div class="col-sm-12 col-md-12 col-lg-4">
               <div class="media px-4 py-5 rounded">
-                <img class="mr-3" src="@/assets/images/join-partner.svg" />
+                <img class="mr-3" src="@/assets/images/join-partner.png" />
                 <div class="media-body">
                   Discover partners, various avenues for support, resources and
                   events
@@ -120,7 +121,7 @@
           <div class="wrap-partners-row-1">
             <div
               class="one-partner"
-              v-for="(num, index) in [0,1,2]"
+              v-for="(num, index) in [0, 1, 2]"
               :key="index"
               @mouseover="partnerHoverUrl(num)"
               @mouseout="partnerMouseoutUrl(num)"
@@ -137,9 +138,9 @@
             </div>
           </div>
           <div class="wrap-partners-row-1">
-           <div
+            <div
               class="one-partner"
-              v-for="(num, index) in [3,4,5,6]"
+              v-for="(num, index) in [3, 4, 5, 6]"
               :key="index"
               @mouseover="partnerHoverUrl(num)"
               @mouseout="partnerMouseoutUrl(num)"
@@ -162,8 +163,29 @@
               Keep me updated on news, events, and offers from
             </h5>
             <div class="newsletter-form">
-              <input type="email" placeholder="Your email address" />
-              <button type="button">Subscribe</button>
+              <input
+                type="email"
+                name="email"
+                v-model.trim="$v.subscribe.email.$model"
+                placeholder="Your email address"
+              />
+              
+              <button :disabled="$v.subscribe.email.$invalid" @click="subscribeNow" type="button">Subscribe</button>
+            </div>
+            <div v-if="subscribing && !subscribed">
+              <Loading />
+            </div>
+            <div
+              class="text-success text-center"
+              v-if="!subscribing && subscribed"
+            >
+              Thank you for subscribing to our newsletter
+            </div>
+            <div
+              class="text-danger text-center"
+              v-if="$v.subscribe.email.$dirty && $v.subscribe.email.$invalid && !subscribed"
+            >
+              Provide a valid email
             </div>
           </div>
         </div>
@@ -173,8 +195,18 @@
 </template>
 
 <script>
+import Vue from "vue";
+import AxiosHelper from "@/helpers/AxiosHelper";
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
+import { required, email } from "vuelidate/lib/validators";
+import Loading from "@/components/Loading";
+
 export default {
   name: "home",
+  components: {
+    Loading,
+  },
   data() {
     return {
       categories: [
@@ -269,6 +301,12 @@ export default {
       startingPoint: 0,
       endingPoint: 5,
       selectedPage: 1,
+      subscribe: {
+        email: "",
+        status: "subscribed",
+      },
+      subscribing: false,
+      subscribed: false,
     };
   },
   methods: {
@@ -291,10 +329,33 @@ export default {
     partnerMouseoutUrl(index) {
       this.partners[index].isHover = false;
     },
+    subscribeNow() {
+      this.subscribing = true;
+      this.subscribed = false;
+      AxiosHelper.post("subscribe", this.subscribe)
+        .then(() => {
+          this.subscribed = true;
+          this.subscribe = {
+            email: ""
+          }
+        })
+        .catch(() => {
+          this.subscribed = false;
+        });
+      this.subscribing = false;
+    },
   },
   computed: {
     layout() {
       return this.$route.meta.layout;
+    },
+  },
+  validations: {
+    subscribe: {
+      email: {
+        email,
+        required,
+      },
     },
   },
 };

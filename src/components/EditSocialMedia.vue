@@ -26,7 +26,7 @@
                     class="input-group-text"
                   >
                    <i class="icon-linkedin-alt mr-2" />
-                    https://linkedin.com/in/</span
+                    https://linkedin.com/company/</span
                   >
                 </div>
                 <input

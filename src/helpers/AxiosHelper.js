@@ -2,12 +2,12 @@ import axios from "axios";
 const { VUE_APP_BACKEND_URL } = process.env;
 let config = {
   headers: {
-    "Content-Type": "application/json;charset=UTF-8",
-    "Access-Control-Allow-Origin": "*",
     authorization: localStorage.token || "",
+    "Cache-Control": "no-cache",
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
   },
 };
-
 class AxiosHelper {
   static post(path, data) {
     return new Promise((resolve, reject) => {

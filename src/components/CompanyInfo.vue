@@ -57,14 +57,10 @@
             </div>
             <div class="info-separator">&nbsp;</div>
             <div class="company-info">
-              <div>Areas of Interests</div>
+              <div>Business activitivies</div>
               <div class="my-3">
-                <div class="co-badge">Business consulting</div>
-
-                <div class="co-badge">
-                  Communications &amp; Public Relations
-                </div>
-                <div class="co-badge">Mentoring</div>
+                -
+                <!-- <div class="co-badge">Business consulting</div> -->
               </div>
             </div>
             <div class="info-separator">&nbsp;</div>

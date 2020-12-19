@@ -4,13 +4,13 @@
       <li>
         <div class="dash-logo">
           <router-link :to="'/'">
-            <img src="@/assets/images/logo-dash.svg" />
+            <img src="@/assets/images/logo-dash.png" />
           </router-link>
         </div>
       </li>
       <li class="nav-item">
         <router-link exact :to="'/dashboard'">
-          <img src="@/assets/images/icon-dash.svg" />
+          <img src="@/assets/images/icon-dash.png" />
           <div>Dashboard</div>
         </router-link>
       </li>
@@ -19,13 +19,13 @@
         v-if="profile.role === 'admin-company' || profile.role === 'super-admin'"
       >
         <router-link :to="'/dashboard/directory'">
-          <img src="@/assets/images/icon-companies.svg" />
+          <img src="@/assets/images/icon-companies.png" />
           <div>Directory</div>
         </router-link>
       </li>
       <li class="nav-item" v-if="profile.role === 'normal'">
         <router-link :to="'/dashboard/my-company'">
-          <img src="@/assets/images/icon-company.svg" />
+          <img src="@/assets/images/icon-company.png" />
           <div>My Company</div>
         </router-link>
       </li>
@@ -34,7 +34,7 @@
         v-if="profile.role === 'admin-user' || profile.role === 'super-admin'"
       >
         <router-link :to="'/dashboard/users'">
-          <img src="@/assets/images/icon-users.svg" />
+          <img src="@/assets/images/icon-users.png" />
           <div>Users</div>
         </router-link>
       </li>
@@ -49,13 +49,13 @@
         "
       >
         <router-link :to="'/dashboard/content'">
-          <img src="@/assets/images/icon-content.svg" />
+          <img src="@/assets/images/icon-content.png" />
           <div>Content</div>
         </router-link>
       </li>
       <li class="nav-item float-bottom">
         <router-link :to="'/dashboard/settings'">
-          <img src="@/assets/images/icon-settings.svg" />
+          <img src="@/assets/images/icon-settings.png" />
           <div>Settings</div>
         </router-link>
       </li>

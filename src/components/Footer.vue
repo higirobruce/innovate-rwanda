@@ -23,22 +23,22 @@
             class="footer-links list-inline mx-auto py-3 justify-content-center"
           >
             <li class="list-inline-item">
-              <a href="#">Home</a>
+              <router-link :to="'/'">Home</router-link>
             </li>
             <li class="list-inline-item">
-              <a href="#">About</a>
+              <router-link :to="'/about'">About</router-link>
             </li>
             <li class="list-inline-item">
-              <a href="#">Why Rwanda</a>
+              <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
             </li>
             <li class="list-inline-item">
-              <a href="#">Community Directory</a>
+              <router-link :to="'/directory'">Community Directory</router-link>
             </li>
             <li class="list-inline-item">
-              <a href="#">Events</a>
+              <router-link :to="'/events'">Events</router-link>
             </li>
             <li class="list-inline-item">
-              <a href="#">Resources</a>
+              <router-link :to="'/resources'">Resources</router-link>
             </li>
           </ul>
         </div>
@@ -47,18 +47,18 @@
           <div class="float-lg-left">
             <h4 class="h6">Follow us</h4>
             <div>
-              <a href="#"> <i class="icon-facebook-official mr-2" /></a>
-              <a href="#"> <i class="icon-twitter mr-2" /></a>
-              <a href="#"> <i class="icon-instagrem mr-2" /></a>
+              <router-link :to="'/'"> <i class="icon-facebook-official mr-2" /></router-link>
+              <router-link :to="'/'"> <i class="icon-twitter mr-2" /></router-link>
+              <router-link :to="'/'"> <i class="icon-instagrem mr-2" /></router-link>
             </div>
           </div>
           <div class="float-lg-right">
             <h4 class="h6">Email us</h4>
             <div>
-              <a href="#" class="email-us">
-                <i class="icon-facebook-official mr-2" />
+              <router-link :to="'/'" class="email-us">
+                <i class="icon-envelope mr-2" />
                 <span class="">info@innovaterwanda.com</span>
-              </a>
+              </router-link>
             </div>
           </div>
         </div>
@@ -71,9 +71,9 @@
           Innovation City.
         </div>
         <div class="copyright-links float-sm-left float-lg-right">
-          <a href="#" class="mr-4">Terms</a>
-          <a href="#" class="mr-4">Privacy</a>
-          <a href="#" class="mr-4">Support</a>
+          <router-link :to="'/'" class="mr-4">Terms</router-link>
+          <router-link :to="'/'" class="mr-4">Privacy</router-link>
+          <router-link :to="'/'" class="mr-4">Support</router-link>
         </div>
       </div>
     </div>

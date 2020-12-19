@@ -17,7 +17,7 @@
           <img src="@/assets/images/welcome-image.png" />
         </div>
       </div>
-      <div class="wrap-counters">
+      <div class="wrap-counters" v-if="!_.isEmpty(summary)">
         <div class="row">
           <div class="col-sm-12 col-lg-4">
             <div class="one-counter">

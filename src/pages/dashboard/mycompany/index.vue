@@ -83,7 +83,6 @@
           <div class="company-info">
             <div class="row small-row">
               <div class="col-sm-12 col-lg-6 info-box">
-                {{ company.company.contactPhone !== "" }}
                 Phone:&nbsp;&nbsp;
                 <span>{{
                   company.company.contactPhone ||
@@ -127,11 +126,12 @@
               <div class="col-sm-12 col-lg-6 info-box">
                 <div class="social-links">
                   Social media&nbsp;&nbsp;
-                  <!-- <span v-if="!_.isEmpty(company.company.socialMedia)"> -->
 
                   <a
                     style="color: #1473e6"
-                    :to="''"
+                    :href="`https://facebook.com/${
+                      convertToObject(company.company.socialMedia).facebook
+                    }`"
                     v-if="!_.isEmpty(socialMedia) && socialMedia.facebook"
                   >
                     <i class="icon-facebook-official mr-2" />
@@ -139,19 +139,23 @@
 
                   <a
                     style="color: #00aeef"
-                    :to="''"
                     target="_blank"
+                    :href="`https://twitter.com/${
+                      convertToObject(company.company.socialMedia).twitter
+                    }`"
                     v-if="!_.isEmpty(socialMedia) && socialMedia.twitter"
                   >
                     <i class="icon-twitter mr-2" />
                   </a>
                   <a
                     style="color: #ff1d77"
-                    :to="''"
                     target="_blank"
+                    :href="`https://instagram.com/${
+                      convertToObject(company.company.socialMedia).instagram
+                    }`"
                     v-if="!_.isEmpty(socialMedia) && socialMedia.instagram"
                   >
-                    <i class="icon-linkedin-alt mr-2" />
+                    <i class="icon-instagrem mr-2" />
                   </a>
                   <a
                     style="color: #ff0000"
@@ -167,7 +171,7 @@
                     style="color: #007bb5"
                     target="_blank"
                     v-if="!_.isEmpty(socialMedia) && socialMedia.linkedin"
-                    :href="`https://linkedin.com/in/${
+                    :href="`https://linkedin.com/company/${
                       convertToObject(company.company.socialMedia).linkedin
                     }`"
                   >
@@ -192,7 +196,7 @@
                       !socialMedia.instagram || socialMedia.instagram === ''
                     "
                   >
-                    <i class="icon-linkedin-alt mr-2" />
+                    <i class="icon-instagrem mr-2" />
                   </span>
                   <span
                     style="color: #dedede"
@@ -266,8 +270,8 @@
                 name="openEditBusinessActivies"
                 :adaptive="true"
                 :scrollable="true"
-                :height="570"
-                :width="850"
+                :height="660"
+                :width="550"
               >
                 <EditBusinessActivities :company="company.company" />
               </modal>
@@ -278,9 +282,24 @@
             <div>
               Customer base:
               <span class="text-blue-dark">{{
-                company.company.customerBase || ""
+                company.company.customerBase || "-"
               }}</span>
+               <button
+                @click="updateCustomerBAse"
+                class="btn btn-transparent mx-1 px-1"
+              >
+                Update
+              </button>
             </div>
+             <modal
+                name="openEditCustomerBase"
+                :adaptive="true"
+                :scrollable="true"
+                :height="340"
+                :width="550"
+              >
+                <EditCustomerBase :company="company.company" />
+              </modal>
           </div>
         </div>
         <div class="co-description position-relative">
@@ -365,8 +384,10 @@ import EditCompanyInfo from "@/components/EditCompanyInfo";
 import EditCompanySummary from "@/components/EditCompanySummary";
 import EditBusinessActivities from "@/components/EditBusinessActivities";
 import EditCompanyLocation from "@/components/EditCompanyLocation";
+import EditCustomerBase from "@/components/EditCustomerBase";
 import UploadCompanyLogo from "@/components/UploadCompanyLogo";
 import VModal from "vue-js-modal";
+import VueTaggableSelect from "vue-taggable-select";
 Vue.use(VModal);
 Vue.use(VueGoogleMaps, {
   load: {
@@ -383,6 +404,8 @@ export default {
     EditCompanyLocation,
     UploadCompanyLogo,
     EditBusinessActivities,
+    EditCustomerBase,
+    VueTaggableSelect
   },
   data() {
     return {
@@ -391,7 +414,7 @@ export default {
       listOfBusinessActivities: "",
     };
   },
-  created() {
+  beforeCreate() {
     // loading business activities
     AxiosHelper.get("business-activities")
       .then((response) => {
@@ -449,6 +472,9 @@ export default {
     },
     openUploadCompanyLogo() {
       this.$modal.show("uploadCompanyLogo");
+    },
+    updateCustomerBAse() {
+      this.$modal.show("openEditCustomerBase");
     },
     toggleShow() {
       this.show = !this.show;
