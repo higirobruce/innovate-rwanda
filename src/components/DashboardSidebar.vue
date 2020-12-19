@@ -4,7 +4,7 @@
       <li>
         <div class="dash-logo">
           <router-link :to="'/'">
-            <img src="@/assets/images/logo-dash.png" />
+            <img src="@/assets/images/logo-dash.svg" />
           </router-link>
         </div>
       </li>
