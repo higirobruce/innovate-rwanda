@@ -111,8 +111,12 @@
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Website:&nbsp;&nbsp;
-                <span>
-                  <a v-if="!_.isEmpty(company.company.coWebsite)" :href="company.company.coWebsite" target="_blank">{{ company.company.coWebsite }}</a>
+                <router-link
+                  v-if="!_.isEmpty(company.company.coWebsite)"
+                  :to="`'//'${company.company.coWebsite}`"
+                  target="_blank"
+                  >{{ company.company.coWebsite }}</router-link
+                >
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Year Founded:&nbsp;&nbsp;
@@ -241,39 +245,28 @@
           <div class="company-info">
             <div>Business activities</div>
             <div class="my-3">
-              <span v-if="!_.isEmpty(company.company.businessActivities)">
+              <span v-if="!_.isEmpty(company.company.ActivitiesOfCompanies)">
                 <div
                   class="co-badge"
-                  v-for="(act, index) in convertToObject(
-                    company.company.businessActivities
-                  )"
+                  v-for="(act, index) in company.company.ActivitiesOfCompanies"
                   :key="index"
                 >
-                  <span
-                    v-for="(activity, index) in listOfBusinessActivities"
-                    :key="index"
-                  >
-                    <span v-if="activity.id === act">
-                      {{ activity.name }}
-                    </span>
+                  <span>
+                    {{ act.BusinessActivity.name }}
                   </span>
+                  <button
+                    @click.prevent="removeActivityFromCompany(act.activityId)"
+                  >
+                    <img src="@/assets/images/remove.png" />
+                  </button>
                 </div>
               </span>
               <button
                 @click="updateActivities"
                 class="btn btn-transparent mx-1 px-1"
               >
-                Update
+                Add activity
               </button>
-              <modal
-                name="openEditBusinessActivies"
-                :adaptive="true"
-                :scrollable="true"
-                :height="660"
-                :width="550"
-              >
-                <EditBusinessActivities :company="company.company" />
-              </modal>
             </div>
           </div>
           <div class="info-separator">&nbsp;</div>
@@ -283,22 +276,22 @@
               <span class="text-blue-dark">{{
                 company.company.customerBase || "-"
               }}</span>
-               <button
+              <button
                 @click="updateCustomerBAse"
                 class="btn btn-transparent mx-1 px-1"
               >
                 Update
               </button>
             </div>
-             <modal
-                name="openEditCustomerBase"
-                :adaptive="true"
-                :scrollable="true"
-                :height="340"
-                :width="550"
-              >
-                <EditCustomerBase :company="company.company" />
-              </modal>
+            <modal
+              name="openEditCustomerBase"
+              :adaptive="true"
+              :scrollable="true"
+              :height="340"
+              :width="550"
+            >
+              <EditCustomerBase :company="company.company" />
+            </modal>
           </div>
         </div>
         <div class="co-description position-relative">
@@ -369,6 +362,50 @@
             </button>
           </div>
         </div>
+
+        <!-- Update activities -->
+        <modal
+          name="openEditBusinessActivies"
+          :adaptive="true"
+          :scrollable="true"
+          :height="660"
+          :width="550"
+        >
+          <h3 class="p-4 bottom-shadow shadow">Business activities</h3>
+          <div class="px-4">
+            <div class="wrap-modal" style="max-height: 500px; overflow: scroll">
+              <div class="row mt-1">
+                <div class="col-12" v-if="listOfBusinessActivities">
+                  <div
+                    v-for="(a, index) in listOfBusinessActivities"
+                    :key="index"
+                  >
+                    <div class="s-one-activity">
+                      {{ a.name }}
+                      <button
+                        @click.prevent="addActivityToCompany(a.id, a.name)"
+                        type="button"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-1">
+              <span class="float-right">
+                <button
+                  type="button"
+                  @click.prevent="closeModal"
+                  class="btn btn-gray-outline mr-2"
+                >
+                  Close
+                </button>
+              </span>
+            </div>
+          </div>
+        </modal>
       </div>
     </component>
   </div>
@@ -404,7 +441,7 @@ export default {
     UploadCompanyLogo,
     EditBusinessActivities,
     EditCustomerBase,
-    VueTaggableSelect
+    VueTaggableSelect,
   },
   data() {
     return {
@@ -422,28 +459,33 @@ export default {
       .catch(() => {});
   },
   mounted() {
-    AxiosHelper.get("company/my-company")
-      .then((response) => {
-        this.company = response.data.result;
-        this.socialMedia =
-          this.convertToObject(response.data.result.company.socialMedia) || {};
-      })
-      .catch((error) => {
-        if (error.response.status === 404) {
-          this.errorCompany = "Company information not found. Try again later";
-        } else if (error.response.status === 403) {
-          this.errorCompany =
-            "You are not allowed to access this resource. Kindly log out and login in again!";
-        } else {
-          this.errorCompany = "Something went wrong, try again later";
-        }
-        Vue.$toast.open({
-          message: this.errorCompany,
-          type: "error",
-        });
-      });
+    this.loadCompanyInfo();
   },
   methods: {
+    loadCompanyInfo() {
+      AxiosHelper.get("company/my-company")
+        .then((response) => {
+          this.company = response.data.result;
+          this.socialMedia =
+            this.convertToObject(response.data.result.company.socialMedia) ||
+            {};
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            this.errorCompany =
+              "Company information not found. Try again later";
+          } else if (error.response.status === 403) {
+            this.errorCompany =
+              "You are not allowed to access this resource. Kindly log out and login in again!";
+          } else {
+            this.errorCompany = "Something went wrong, try again later";
+          }
+          Vue.$toast.open({
+            message: this.errorCompany,
+            type: "error",
+          });
+        });
+    },
     convertToObject(object) {
       return JSON.parse(object);
     },
@@ -477,6 +519,54 @@ export default {
     },
     toggleShow() {
       this.show = !this.show;
+    },
+
+    closeModal() {
+      this.$modal.hide("openEditBusinessActivies");
+    },
+    addActivityToCompany(id, name) {
+      const data = {
+        companyId: this.company.company.id,
+        activityId: id,
+      };
+      AxiosHelper.post("activities/add-activity", data)
+        .then(() => {
+          this.loadCompanyInfo();
+          Vue.$toast.open({
+            message: `"${name}" activity have been added successfully`,
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          if (error.response.status === 409) {
+            Vue.$toast.open({
+              message: "Activity has been already added",
+              type: "warning",
+            });
+          } else {
+            Vue.$toast.open({
+              message: "Sorry, something went wrong. Try again later",
+              type: "error",
+            });
+          }
+        });
+    },
+    removeActivityFromCompany(id) {
+      AxiosHelper.delete(`activities/remove-activity/${this.company.company.id}/${id}`)
+        .then(() => {
+          this.loadCompanyInfo();
+          Vue.$toast.open({
+            message: `Activity has been removed successfully`,
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          console.log("err",err.response)
+          Vue.$toast.open({
+            message: "Sorry, something went wrong. Try again later",
+            type: "error",
+          });
+        });
     },
   },
   computed: {
@@ -529,5 +619,20 @@ export default {
   width: 100%;
   margin: 0 auto;
   display: block;
+}
+
+.s-one-activity {
+  position: relative;
+  padding: 10px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.s-one-activity button {
+  position: absolute;
+  font-size: 14px;
+  color: #747474;
+  top: 12px;
+  right: 5px;
+  border: none;
+  background: none;
 }
 </style>

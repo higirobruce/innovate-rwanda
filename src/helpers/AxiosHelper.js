@@ -1,18 +1,17 @@
 import axios from "axios";
 const { VUE_APP_BACKEND_URL } = process.env;
-let config = {
-  headers: {
-    authorization: localStorage.token || "",
-    "Cache-Control": "no-cache",
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
-  },
-};
+
 class AxiosHelper {
   static post(path, data) {
     return new Promise((resolve, reject) => {
       return axios
-        .post(`${VUE_APP_BACKEND_URL}${path}`, data, config)
+        .post(`${VUE_APP_BACKEND_URL}${path}`, data, {
+          headers: {
+            authorization: localStorage.token || null,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        })
         .then((response) => {
           resolve(response);
         })
@@ -24,7 +23,13 @@ class AxiosHelper {
   static get(path) {
     return new Promise((resolve, reject) => {
       return axios
-        .get(`${VUE_APP_BACKEND_URL}${path}`, config)
+        .get(`${VUE_APP_BACKEND_URL}${path}`, {
+          headers: {
+            authorization: localStorage.token || null,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        })
         .then((response) => {
           resolve(response);
         })
@@ -37,7 +42,13 @@ class AxiosHelper {
   static put(path, data) {
     return new Promise((resolve, reject) => {
       return axios
-        .put(`${VUE_APP_BACKEND_URL}${path}`, data, config)
+        .put(`${VUE_APP_BACKEND_URL}${path}`, data, {
+          headers: {
+            authorization: localStorage.token || null,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        })
         .then((response) => {
           resolve(response);
         })
@@ -50,7 +61,13 @@ class AxiosHelper {
   static patch(path, data) {
     return new Promise((resolve, reject) => {
       return axios
-        .patch(`${VUE_APP_BACKEND_URL}${path}`, data, config)
+        .patch(`${VUE_APP_BACKEND_URL}${path}`, data, {
+          headers: {
+            authorization: localStorage.token || null,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        })
         .then((response) => {
           resolve(response);
         })
@@ -63,7 +80,13 @@ class AxiosHelper {
   static delete(path) {
     return new Promise((resolve, reject) => {
       return axios
-        .delete(`${VUE_APP_BACKEND_URL}${path}`, config)
+        .delete(`${VUE_APP_BACKEND_URL}${path}`, {
+          headers: {
+            authorization: localStorage.token || null,
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        })
         .then((response) => {
           resolve(response);
         })

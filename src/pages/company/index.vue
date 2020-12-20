@@ -22,7 +22,9 @@
                 <div class="company-small-info">
                   <h4>Website</h4>
                   <h5>
-                    <a :href="company.company.coWebsite" target="_bla">{{ company.company.coWebsite }}</a>
+                    <a :href="company.company.coWebsite" target="_bla">{{
+                      company.company.coWebsite
+                    }}</a>
                   </h5>
                   <img src="@/assets/images/globe.svg" />
                 </div>
@@ -140,7 +142,18 @@
                 <div class="company-large-info">
                   <h4>Business activitivies</h4>
                   <img src="@/assets/images/phone.svg" />
-                  <div class="my-3">-</div>
+                  <div class="my-3">
+                    <div
+                      class="co-badge"
+                      v-for="(act, index) in company.company
+                        .ActivitiesOfCompanies"
+                      :key="index"
+                    >
+                      <span>
+                        {{ act.BusinessActivity.name }}
+                      </span>
+                    </div>
+                  </div>
                 </div>
                 <div class="info-separator clear my-3">&nbsp;</div>
                 <SendMessage

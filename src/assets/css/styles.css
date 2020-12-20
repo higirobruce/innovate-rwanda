@@ -3,24 +3,18 @@
   src: url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.eot");
   src: url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.eot?#iefix")
       format("embedded-opentype"),
-    url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.woff2")
-      format("woff2"),
-    url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.woff")
-      format("woff"),
-    url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.ttf")
-      format("truetype")
+    url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.woff2") format("woff2"),
+    url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.woff") format("woff"),
+    url("../fonts/860c3ec7bbc5da3e97233ccecafe512e.ttf") format("truetype");
 }
 @font-face {
   font-family: "Circular Std Black";
   src: url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.eot");
   src: url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.eot?#iefix")
       format("embedded-opentype"),
-    url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.woff2")
-      format("woff2"),
-    url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.woff")
-      format("woff"),
-    url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.ttf")
-      format("truetype")
+    url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.woff2") format("woff2"),
+    url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.woff") format("woff"),
+    url("../fonts/f1a22f6f15d272c7aa56da8b2c91f5e5.ttf") format("truetype");
 }
 body {
   background: #f0f2f8;
@@ -483,12 +477,27 @@ input.custom-input {
 }
 .co-badge {
   font-size: 14px;
-  padding: 5px 20px;
+  padding: 5px 30px 5px 20px;
   background: #f0f2f8;
   border-radius: 24px;
   color: #1b2958;
   margin: 8px 10px 8px 0;
   display: inline-block;
+  position: relative;
+}
+.co-badge button {
+  position: absolute;
+  top: 3px;
+  right: 8px;
+  border: none;
+  background: none;
+  content: "";
+  width: 18px;
+  height: 18px;
+}
+.co-badge button img {
+  width: 10px;
+  height: 10px;
 }
 .floating-btn {
   position: absolute;

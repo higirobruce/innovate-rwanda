@@ -27,7 +27,7 @@
               <th scope="col">Title</th>
               <th scope="col">Date joined</th>
               <th scope="col">Type</th>
-              <th scope="col">Area of intrests</th>
+              <th scope="col">Business activity</th>
               <th scope="col">Status</th>
               <th scope="col">Actions</th>
             </tr>
@@ -45,7 +45,7 @@
               <td>{{ dir.createdAt | date("DD MMM, YYYY") }}</td>
               <td>{{ dir.coType }}</td>
               <td>
-                {{ dir.mainAreaOfInterest }}
+                {{ dir.BusinessActivity.name }}
               </td>
               <td>
                 <div class="wrap-switch-toggle">

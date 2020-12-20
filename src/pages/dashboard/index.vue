@@ -17,7 +17,11 @@
           <img src="@/assets/images/welcome-image.png" />
         </div>
       </div>
-      <div class="wrap-counters" v-if="!_.isEmpty(summary) && profile.role !== 'role'">
+      {{ summary }}
+      <div
+        class="wrap-counters"
+        v-if="!_.isEmpty(summary) && profile.role !== 'normal'"
+      >
         <div class="row">
           <div class="col-sm-12 col-lg-4">
             <div class="one-counter">
@@ -38,6 +42,34 @@
               <img src="@/assets/images/counter-pending.png" />
               <h3 class="ml-2">{{ summary.pendingRequestsCount}}</h3>
               <h4 class="ml-2">Pending Registration Requests</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrap-counters"
+        v-if="!_.isEmpty(summary) && profile.role === 'normal'"
+      >
+        <div class="row">
+          <div class="col-sm-12 col-lg-4">
+            <div class="one-counter">
+              <img src="@/assets/images/counter-companies.png" />
+              <h3 class="ml-2">{{ summary.totalBlogs}}</h3>
+              <h4 class="ml-2">Blog posted</h4>
+            </div>
+          </div>
+          <div class="col-sm-12 col-lg-4">
+            <div class="one-counter">
+              <img src="@/assets/images/counter-users.png" />
+              <h3 class="ml-2">{{ summary.totalEvents}}</h3>
+              <h4 class="ml-2">Events posted</h4>
+            </div>
+          </div>
+          <div class="col-sm-12 col-lg-4">
+            <div class="one-counter">
+              <img src="@/assets/images/counter-pending.png" />
+              <h3 class="ml-2">{{ summary.totalJobs}}</h3>
+              <h4 class="ml-2">Jobs posted</h4>
             </div>
           </div>
         </div>
@@ -63,9 +95,15 @@ export default {
   },
   created() {
     this.loadingDirectory = true;
-    AxiosHelper.get("counters").then((response) => {
-      this.summary = response.data.result;
-    });
+    if (this.profile.role === "normal") {
+      AxiosHelper.get("countersCo").then((response) => {
+        this.summary = response.data.result;
+      });
+    } else {
+      AxiosHelper.get("counters").then((response) => {
+        this.summary = response.data.result;
+      });
+    }
   },
 };
 </script>
@@ -108,12 +146,12 @@ export default {
   border-radius: 3px;
 }
 .one-counter h3 {
-  color: #00AEEF;
+  color: #00aeef;
   font-weight: 800;
   font-size: 45px;
 }
 .one-counter h4 {
-  color: #5E7C8D;
+  color: #5e7c8d;
   font-size: 22px;
 }
 </style>
