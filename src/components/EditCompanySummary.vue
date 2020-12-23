@@ -57,12 +57,8 @@ Vue.use(Vuelidate);
 import {
   required,
   minLength,
-  maxLength,
-  email,
 } from "vuelidate/lib/validators";
 
-const checkWebsite = (value) =>
-  /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value);
 import vSelect from "vue-select";
 
 Vue.component("v-select", vSelect);
@@ -111,32 +107,8 @@ export default {
   },
   validations: {
     companyInfo: {
-      coName: {
-        required,
-        minLength: minLength(3),
-        maxLength: maxLength(25),
-      },
-      yearFounded: {},
-      contactEmail: {
-        email,
-      },
-      emailDisplay: {
-        required,
-      },
-      contactPhone: {
-        required,
-        minLength: minLength(3),
-      },
-      phoneDisplay: {
-        required,
-      },
-      coWebsite: {
-        validateWebsite: checkWebsite,
-      },
-      districtBasedIn: {},
-      areaOfInterest: {},
-      mainAreaOfInterest: {},
       shortDescription: {
+        required,
         minLength: minLength(3),
       },
     },

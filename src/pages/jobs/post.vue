@@ -4,40 +4,65 @@
       <PageHeaderSm
         image="bg-why.png"
         rgba="rgba(212, 121, 2, 0.7)"
-        title="Blog"
+        title="Job"
       />
       <div
         class="container"
         v-if="loaded && post && post.status === 'approved'"
       >
-        <div class="head-post">
-          <h1 class="text-blue-dark font-weight-bold">
-            {{ post.title }}
-          </h1>
-          <div>
-            <span class="text-blue">
-              {{ post.User.lastName }} {{ post.User.firstName }}
-            </span>
-            <br />
-            {{ post.createdAt | date("DD MMM YYYY") }}
-          </div>
-        </div>
-        <div class="wrap-post-image">
+        <div class="wrap-event-image">
           <img
-            v-if="post.image"
-            :src="`${IMAGE_URL}c_fill,g_center,w_1200/${post.image}`"
+            v-if="post.flyer"
+            :src="`${IMAGE_URL}c_fill,g_center,w_1200/${post.flyer}`"
             :alt="post.title"
             class="current-logo"
           />
         </div>
+        <div class="head-post">
+          <h1 class="text-blue-dark font-weight-bold">
+            {{ post.title }}
+          </h1>
 
+          <div class="mb-2 co-info mt-2">
+            <div class="text-blue">
+              <i class="icon-company" />
+              {{ post.Company.companyName }}
+            </div>
+            <span class="mr-3">
+              <i class="icon-calendar" />
+              Published
+              <span class="ml-2"
+                >{{ post.createdAt | date("DD-MM-YYYY") }}
+              </span>
+            </span>
+            |
+            <span>
+              <i class="icon-calendar" />
+              Deadline
+              <span class="ml-2"
+                >{{ post.deadlineDate | date("DD-MM-YYYY") }}
+              </span>
+              <span class="ml-1"
+                >{{ post.deadlineTime  }} CAT
+              </span>
+            </span>
+          </div>
+          <div class="my-2">
+            <span>
+              <i class="icon-tag mr-2" />
+              {{ post.category }}
+            </span>
+          </div>
+        </div>
+        <div class="divider bg-gray-1 my-3"></div>
         <div
-          class="wrap-post-content"
-          v-if="post.content"
+          class="wrap-post-content mt-0 py-0"
+          v-if="post.description"
           v-html="previewText"
         ></div>
 
-        <div>
+        <div class="clear"></div>
+        <div class="my-4">
           <div
             class="co-badge"
             v-for="(act, index) in post.AudienceForPosts"
@@ -48,8 +73,8 @@
             </span>
           </div>
         </div>
-        <div class="more-posts">
-          <router-link :to="'/blog'">More Posts</router-link>
+        <div class="more-posts mt-5">
+          <router-link :to="'/jobs'">More Jobs</router-link>
         </div>
       </div>
       <div
@@ -64,6 +89,7 @@
 import AxiosHelper from "@/helpers/AxiosHelper";
 import PageHeaderSm from "@/components/PageHeaderSm";
 let marked = require("marked");
+
 export default {
   name: "blog-post",
   components: {
@@ -78,7 +104,7 @@ export default {
   },
   created() {
     const slug = this.$route.params.slug;
-    AxiosHelper.get(`blog/info/${slug}`)
+    AxiosHelper.get(`jobs/info/${slug}`)
       .then((response) => {
         this.post = response.data.result;
         this.loaded = true;
@@ -103,7 +129,7 @@ export default {
         smartLists: true,
         smartypants: false,
       });
-      return marked(this.post.content);
+      return marked(this.post.description);
     },
   },
 };
@@ -114,18 +140,18 @@ export default {
   max-width: 1280px;
 }
 .head-post {
-  margin: 0 auto;
-  display: block;
+  width: 100%;
 }
 .head-post h1 {
   font-size: 65px;
 }
-.wrap-post-image {
+.wrap-event-image {
   margin: 30px auto 0 auto;
   width: 100%;
+  max-width: 1280px;
   display: block;
 }
-.wrap-post-image img {
+.wrap-event-image img {
   width: 100%;
 }
 .more-posts {

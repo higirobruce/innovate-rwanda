@@ -1,12 +1,34 @@
 <template>
   <div>
     <component :is="layout">
-      <PageHeader
-        image="auth-bg.jpg"
-        rgba="rgba(212, 121, 2, 0.7)"
-        title="Blog"
-        subtitle="Whether you're a corporation looking for innovation, a startup looking for a boost, or a VC looking to meet great startups, we're the right place for you."
-      />
+      <div
+        class="page-header"
+        :style="{
+          'background-image':
+            'url(' + require('@/assets/images/auth-bg.jpg') + '',
+        }"
+      >
+        <div
+          class="page-overlay"
+          :style="{ 'background-color': 'rgba(212, 121, 2, 0.7)' }"
+        ></div>
+        <h1>Blog</h1>
+        <div class="subtitle">
+          Whether you're a corporation looking for innovation, a startup looking
+          for a boost, or a VC looking to meet great startups, we're the right
+          place for you.
+        </div>
+        <form @submit="search" class="page-search">
+          <input
+            type="text"
+            v-model="query"
+            placeholder="Type to search and hit enter"
+          />
+          <button :disabled="_.isEmpty(query)" @click.prevent="search(query)">
+            <img src="@/assets/images/search.png" />
+          </button>
+        </form>
+      </div>
       <div class="container">
         <div class="row">
           <div
@@ -41,19 +63,28 @@
                     {{ post.title | truncate(58) }}
                   </router-link>
                 </h2>
-                <div
-                  class="post-content"
-                  :inner-html.prop="post.content | truncate(200)"
-                ></div>
+                <div class="post-content mb-2">
+                  {{ filterHtml(post.content) }}
+                </div>
                 <div>
                   <span>
-                    by <span class="text-blue">{{ post.author }}</span>
+                    by
+                    <span class="text-blue"
+                      >{{ post.User.lastName }} {{ post.User.firstName }}</span
+                    >
                   </span>
-                  <span class="float-right"> <i class="icon-calendar mr-2" /> {{ post.createdAt | date("MMM YYYY") }}</span>
+                  <span class="float-right">
+                    <i class="icon-calendar mr-2" />
+                    {{ post.createdAt | date("MMM YYYY") }}</span
+                  >
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div v-if="loaded && _.isEmpty(posts)" class="empty-post">
+          <img src="@/assets/images/empty.png" />
+          <h2 class="my-0 py-0 font-weight-light h3">No blog posts found</h2>
         </div>
       </div>
     </component>
@@ -70,24 +101,45 @@ export default {
   },
   data() {
     return {
+      query: "",
       posts: {},
       loading: false,
       loaded: false,
     };
   },
   created() {
-    this.slug = this.$route.params.slug;
-    AxiosHelper.get("blog/public")
-      .then((response) => {
-        this.posts = response.data.result;
-        this.loaded = true;
-      })
-      .catch(() => {
-        this.loading = false;
-        this.loaded = true;
-      });
+    const value = this.$route.query.search;
+    if (!this._.isEmpty(value)) {
+      this.search(value);
+    } else {
+      AxiosHelper.get("blog/public")
+        .then((response) => {
+          this.posts = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+          this.posts = [];
+        });
+    }
   },
   methods: {
+    filterHtml(str) {
+      return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 200)}...`;
+    },
+    search(query) {
+      AxiosHelper.get(`blogs/search?searchValue=${query}`)
+        .then((response) => {
+          this.posts = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+          this.posts = [];
+        });
+    },
     convertToObject(object) {
       return JSON.parse(object);
     },
@@ -101,6 +153,9 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  max-width: 1280px;
+}
 .wrap-one-post {
   background: #fff;
   box-shadow: 0px 4px 16px rgba(27, 41, 88, 0.08);

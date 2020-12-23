@@ -3,9 +3,10 @@
     <component :is="layout">
       <div class="page-info px-5 position-relative">
         <h2 class="h2 font-weight-bold">Contents</h2>
-        <MenuContent active="events"/>
+        <MenuContent active="events" />
         <div class="wrap-content-head-btns">
           <router-link
+            v-if="profile.role === 'normal'"
             :to="'/dashboard/content/events/new'"
             class="btn font-weight-bold btn-primary-outline"
             >Add New Event</router-link
@@ -18,7 +19,7 @@
           v-if="
             profile &&
             (profile.role === 'normal' ||
-              profile.role === 'admin-blog' ||
+              profile.role === 'admin-event' ||
               profile.role === 'super-admin')
           "
         >
@@ -26,8 +27,9 @@
             <tr>
               <th scope="col">Title</th>
               <th scope="col">Author</th>
+              <th scope="col">Company</th>
               <th scope="col">Category</th>
-              <th scope="col">Tags</th>
+              <th scope="col">Target group</th>
               <th scope="col">Date</th>
               <th scope="col">Status</th>
               <th scope="col">Actions</th>
@@ -43,16 +45,25 @@
                   {{ post.title }}
                 </span>
               </td>
-              <td>{{ post.author }}</td>
+              <td>{{ post.User.lastName }} {{ post.User.firstName }}</td>
+              <td>{{ post.Company.companyName }}</td>
               <td>{{ post.category }}</td>
               <td>
-                <span
-                  v-for="(tag, index) of convertTagsArray(post.tags)"
+                <div
+                  class="co-badge no-button"
+                  v-for="(act, index) in post.AudienceForPosts.slice(0, 1)"
                   :key="index"
                 >
-                  <span v-if="index !== 0">,</span>
-                  {{ tag }}
-                </span>
+                  <span>
+                    {{ act.BusinessActivity.name }}
+                  </span>
+                </div>
+                <div
+                  class="co-badge no-button"
+                  v-if="_.size(post.AudienceForPosts) > 1"
+                >
+                  <span> +{{ _.size(post.AudienceForPosts) - 1 }} </span>
+                </div>
               </td>
               <td>{{ post.createdAt | date("DD/MM/YYYY") }}</td>
               <td>
@@ -79,7 +90,7 @@
                   <router-link
                     v-if="post.status !== 'deleted'"
                     target="_blank"
-                    :to="`/blog/${post.id}`"
+                    :to="`/events/${post.id}`"
                   >
                     <img src="@/assets/images/view.png" alt="view" />
                   </router-link>
@@ -89,7 +100,7 @@
                         profile.role === 'super-admin') &&
                       post.status !== 'deleted'
                     "
-                    :to="`/dashboard/content/blog/edit/${post.id}`"
+                    :to="`/dashboard/content/events/edit/${post.id}`"
                   >
                     <img src="@/assets/images/edit.png" alt="edit" />
                   </router-link>
@@ -106,13 +117,13 @@
         </table>
         <div v-else class="not-allowed"></div>
         <modal
-          name="openPostInfo"
+          name="openInfoEvent"
           :adaptive="true"
           :scrollable="true"
-          :height="800"
+          :height="700"
           :width="1100"
         >
-          <PostInfo :id="postId" />
+          <InfoEvent :id="postId" />
         </modal>
         <modal
           name="openDeleteRecord"
@@ -121,7 +132,10 @@
           :height="240"
           :width="600"
         >
-          <DeleteModal :url="`blog/delete/${recordId}`" entity="blog" />
+          <DeleteModal
+            :url="`events/delete?eventId=${recordId}`"
+            entity="event"
+          />
         </modal>
       </div>
     </component>
@@ -131,13 +145,13 @@
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
 import MenuContent from "@/components/MenuContent";
-import PostInfo from "@/components/PostInfo";
+import InfoEvent from "@/components/InfoEvent";
 import DeleteModal from "@/components/DeleteModal";
 export default {
   name: "content",
   components: {
     MenuContent,
-    PostInfo,
+    InfoEvent,
     DeleteModal,
   },
   data() {
@@ -150,9 +164,9 @@ export default {
   },
   created() {
     this.loading = true;
-    let url = "blog/all";
+    let url = "events/all";
     if (this.profile.role === "normal" && this.profile.companyId) {
-      url = `blog/company/${this.profile.companyId}`;
+      url = `events/company/${this.profile.companyId}`;
     }
     AxiosHelper.get(url)
       .then((response) => {
@@ -181,7 +195,7 @@ export default {
     },
     loadPost(postId) {
       this.postId = postId;
-      this.$modal.show("openPostInfo");
+      this.$modal.show("openInfoEvent");
     },
     deleteRecord(id) {
       this.recordId = id;

@@ -28,6 +28,7 @@
               <th scope="col">Date joined</th>
               <th scope="col">Type</th>
               <th scope="col">Business activity</th>
+              <th scope="col">Activities</th>
               <th scope="col">Status</th>
               <th scope="col">Actions</th>
             </tr>
@@ -46,6 +47,22 @@
               <td>{{ dir.coType }}</td>
               <td>
                 {{ dir.BusinessActivity.name }}
+              </td>
+              <td style="max-width: 200px">
+                <span v-if="!_.isEmpty(dir.ActivitiesOfCompanies)">
+                  <spac
+                    v-for="(act, index) in dir.ActivitiesOfCompanies.slice(
+                      0,
+                      3
+                    )"
+                    :key="index"
+                  >
+                    {{ act.BusinessActivity.name }},
+                  </spac>
+                  <span v-if="dir.ActivitiesOfCompanies.length >= 3">
+                    and more</span
+                  >
+                </span>
               </td>
               <td>
                 <div class="wrap-switch-toggle">

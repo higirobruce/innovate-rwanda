@@ -107,7 +107,6 @@
               </div>
             </div>
           </div>
-
           <!-- district -->
           <h4 class="mt-3">What District are you based in?</h4>
           <div class="row mt-4">
@@ -128,46 +127,6 @@
                     {{ district }}
                   </option>
                 </select>
-              </div>
-            </div>
-          </div>
-          <!-- main area of interest -->
-          <h4 class="mt-3">Main business activity</h4>
-          <div class="row mt-4">
-            <div class="col-12">
-              <div class="form-group">
-                <select
-                  class="form-control form-control-lg"
-                  name="business_activity"
-                  v-model="companyInfo.businessActivityId"
-                  @change="changeInterest($event)"
-                  required
-                >
-                  <option
-                    v-for="(activity, index) in listOfBusinessActivities"
-                    v-bind:value="activity.id"
-                    :key="index"
-                    :selected="activity.id === companyInfo.businessActivityId"
-                  >
-                    {{ activity.name }}
-                  </option>
-                </select>
-                <!--
-                <select
-                  class="form-control form-control-lg"
-                  name="district"
-                  v-model="companyInfo.mainAreaOfInterest"
-                  @change="changeMainInterest($event)"
-                >
-                  <option
-                    v-for="(area, index) in listOfMainAreaOfInterests"
-                    v-bind:value="area"
-                    :key="index"
-                  >
-                    {{ area }}
-                  </option>
-                </select>
-                -->
               </div>
             </div>
           </div>
@@ -213,8 +172,6 @@ import {
   email,
 } from "vuelidate/lib/validators";
 
-const checkWebsite = (value) =>
-  /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value);
 import vSelect from "vue-select";
 
 Vue.component("v-select", vSelect);
@@ -317,9 +274,6 @@ export default {
       },
       phoneDisplay: {
         required,
-      },
-      coWebsite: {
-        validateWebsite: checkWebsite,
       },
       districtBasedIn: {},
       areaOfInterest: {},

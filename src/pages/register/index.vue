@@ -158,6 +158,7 @@
                         placeholder="Company's website"
                       />
                     </div>
+                    <div class="small">e.g.: example.com</div>
                     <div
                       class="my-1 alert alert-danger small py-1"
                       v-if="
@@ -204,7 +205,7 @@
                       <select
                         class="form-control form-control-lg"
                         name="district"
-                        v-model="user.district"
+                        v-model="user.districtBasedIn"
                         @change="changeDistrict($event)"
                         required
                       >
@@ -352,7 +353,7 @@ Vue.use(Vuelidate);
 import { required, minLength, email } from "vuelidate/lib/validators";
 
 const checkWebsite = (value) =>
-  /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value);
+  /^([a-z0-9])(([a-z0-9-]{1,61})?[a-z0-9]{1})?(\.[a-z0-9](([a-z0-9-]{1,61})?[a-z0-9]{1})?)?(\.[a-zA-Z]{2,4})+$/i.test(value);
 
 import PageHeader from "@/components/PageHeader";
 export default {
@@ -495,7 +496,6 @@ export default {
         minLength: minLength(3),
       },
       coWebsite: {
-        required,
         validateWebsite: checkWebsite,
       },
     },

@@ -113,10 +113,11 @@
                 Website:&nbsp;&nbsp;
                 <router-link
                   v-if="!_.isEmpty(company.company.coWebsite)"
-                  :to="`'//'${company.company.coWebsite}`"
+                  :to="`/redirect/${company.company.coWebsite}`"
                   target="_blank"
-                  >{{ company.company.coWebsite }}</router-link
                 >
+                  {{ company.company.coWebsite }}
+                </router-link>
               </div>
               <div class="col-sm-12 col-lg-6 info-box">
                 Year Founded:&nbsp;&nbsp;
@@ -158,7 +159,7 @@
                     }`"
                     v-if="!_.isEmpty(socialMedia) && socialMedia.instagram"
                   >
-                    <i class="icon-instagrem mr-2" />
+                    <i class="icon-instagram mr-2" />
                   </a>
                   <a
                     style="color: #ff0000"
@@ -199,7 +200,7 @@
                       !socialMedia.instagram || socialMedia.instagram === ''
                     "
                   >
-                    <i class="icon-instagrem mr-2" />
+                    <i class="icon-instagram mr-2" />
                   </span>
                   <span
                     style="color: #dedede"
@@ -423,11 +424,10 @@ import EditCompanyLocation from "@/components/EditCompanyLocation";
 import EditCustomerBase from "@/components/EditCustomerBase";
 import UploadCompanyLogo from "@/components/UploadCompanyLogo";
 import VModal from "vue-js-modal";
-import VueTaggableSelect from "vue-taggable-select";
 Vue.use(VModal);
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyBzyXzhhqWBsTj305rY30VC1UF_1OHDKgA",
+    key: "AIzaSyBOcgzwN-u8KLJ2JHeeJON8St0jAkD2u_8",
     libraries: "places",
   },
 });
@@ -441,7 +441,6 @@ export default {
     UploadCompanyLogo,
     EditBusinessActivities,
     EditCustomerBase,
-    VueTaggableSelect,
   },
   data() {
     return {
@@ -552,7 +551,9 @@ export default {
         });
     },
     removeActivityFromCompany(id) {
-      AxiosHelper.delete(`activities/remove-activity/${this.company.company.id}/${id}`)
+      AxiosHelper.delete(
+        `activities/remove-activity?company=${this.company.company.id}&activity=${id}`
+      )
         .then(() => {
           this.loadCompanyInfo();
           Vue.$toast.open({
@@ -561,7 +562,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log("err",err.response)
+          console.log("err", err.response);
           Vue.$toast.open({
             message: "Sorry, something went wrong. Try again later",
             type: "error",
@@ -621,18 +622,4 @@ export default {
   display: block;
 }
 
-.s-one-activity {
-  position: relative;
-  padding: 10px;
-  border-bottom: 1px solid #e6e6e6;
-}
-.s-one-activity button {
-  position: absolute;
-  font-size: 14px;
-  color: #747474;
-  top: 12px;
-  right: 5px;
-  border: none;
-  background: none;
-}
 </style>

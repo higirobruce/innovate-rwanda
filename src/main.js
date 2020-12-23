@@ -12,6 +12,7 @@ Vue.component("auth-layout", Auth);
 import "./assets/css/bootstrap.min.css";
 import "./assets/css/styles.css";
 import "./assets/css/icons.css";
+// import marked from "marked";
 
 Vue.config.productionTip = false;
 
@@ -23,6 +24,14 @@ import "./filters/date";
 // Register lodash
 Vue.prototype._ = _;
 
+// Vue.use({
+//   install () {
+//     Vue.marked = marked
+//     Vue.prototype.$marked = marked
+//   }
+// })
+
+Vue.config.productionTip = false
 
 import VueToast from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";

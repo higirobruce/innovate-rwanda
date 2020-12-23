@@ -62,7 +62,7 @@
                 style="color: #4c5fd7; background: #ffffff"
                 class="input-group-text"
               >
-                 <i class="icon-linkedin-alt mr-2" />
+                 <i class="icon-instagram mr-2" />
                 https://instagram.com/</span
               >
             </div>

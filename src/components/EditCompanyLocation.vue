@@ -45,7 +45,7 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyBzyXzhhqWBsTj305rY30VC1UF_1OHDKgA",
+    key: "AIzaSyBOcgzwN-u8KLJ2JHeeJON8St0jAkD2u_8",
     libraries: "places",
     installComponents: false,
   },

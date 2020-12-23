@@ -17,7 +17,6 @@
           <img src="@/assets/images/welcome-image.png" />
         </div>
       </div>
-      {{ summary }}
       <div
         class="wrap-counters"
         v-if="!_.isEmpty(summary) && profile.role !== 'normal'"
@@ -26,21 +25,21 @@
           <div class="col-sm-12 col-lg-4">
             <div class="one-counter">
               <img src="@/assets/images/counter-companies.png" />
-              <h3 class="ml-2">{{ summary.approvedCompaniesCount}}</h3>
+              <h3 class="ml-2">{{ summary.approvedCompaniesCount }}</h3>
               <h4 class="ml-2">Total registered Companies</h4>
             </div>
           </div>
           <div class="col-sm-12 col-lg-4">
             <div class="one-counter">
               <img src="@/assets/images/counter-users.png" />
-              <h3 class="ml-2">{{ summary.usersCount}}</h3>
+              <h3 class="ml-2">{{ summary.usersCount }}</h3>
               <h4 class="ml-2">Users</h4>
             </div>
           </div>
           <div class="col-sm-12 col-lg-4">
             <div class="one-counter">
               <img src="@/assets/images/counter-pending.png" />
-              <h3 class="ml-2">{{ summary.pendingRequestsCount}}</h3>
+              <h3 class="ml-2">{{ summary.pendingRequestsCount }}</h3>
               <h4 class="ml-2">Pending Registration Requests</h4>
             </div>
           </div>
@@ -52,25 +51,31 @@
       >
         <div class="row">
           <div class="col-sm-12 col-lg-4">
-            <div class="one-counter">
-              <img src="@/assets/images/counter-companies.png" />
-              <h3 class="ml-2">{{ summary.totalBlogs}}</h3>
-              <h4 class="ml-2">Blog posted</h4>
-            </div>
+            <router-link :to="'/dashboard/content'">
+              <div class="one-counter">
+                <img src="@/assets/images/counter-companies.png" />
+                <h3 class="ml-2">{{ summary.blogs }}</h3>
+                <h4 class="ml-2">Blog posted</h4>
+              </div>
+            </router-link>
           </div>
           <div class="col-sm-12 col-lg-4">
-            <div class="one-counter">
-              <img src="@/assets/images/counter-users.png" />
-              <h3 class="ml-2">{{ summary.totalEvents}}</h3>
-              <h4 class="ml-2">Events posted</h4>
-            </div>
+            <router-link :to="'/dashboard/content/events'">
+              <div class="one-counter">
+                <img src="@/assets/images/counter-users.png" />
+                <h3 class="ml-2">{{ summary.events }}</h3>
+                <h4 class="ml-2">Events posted</h4>
+              </div>
+            </router-link>
           </div>
           <div class="col-sm-12 col-lg-4">
-            <div class="one-counter">
-              <img src="@/assets/images/counter-pending.png" />
-              <h3 class="ml-2">{{ summary.totalJobs}}</h3>
-              <h4 class="ml-2">Jobs posted</h4>
-            </div>
+            <router-link :to="'/dashboard/content/jobs'">
+              <div class="one-counter">
+                <img src="@/assets/images/counter-pending.png" />
+                <h3 class="ml-2">{{ summary.jobs }}</h3>
+                <h4 class="ml-2">Jobs posted</h4>
+              </div>
+            </router-link>
           </div>
         </div>
       </div>

@@ -5,7 +5,6 @@
         'list-inline-item mr-5 list-active': active == 'blog',
         'list-inline-item mr-5': active != 'blog',
       }"
-      v-if="profile && profile.role === 'super-admin'"
     >
       <router-link exact :to="'/dashboard/content'">Profile</router-link>
     </li>

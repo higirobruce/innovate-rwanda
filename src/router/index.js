@@ -218,10 +218,45 @@ const router = new Router({
       },
     },
     {
+      path: "/events",
+      component: () => import("@/pages/events/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/event/:slug",
+      component: () => import("@/pages/events/post.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/find-talent",
+      component: () => import("@/pages/jobs/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/job/:slug",
+      component: () => import("@/pages/jobs/post.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
       path: "/dashboard/settings",
       component: () => import("@/pages/dashboard/settings/index.vue"),
       meta: {
         layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/redirect/:url",
+      component: () => import("@/pages/redirect/_url.vue"),
+      meta: {
+        layout: "default-layout",
       },
     },
     {

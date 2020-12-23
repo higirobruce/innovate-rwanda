@@ -3,10 +3,10 @@
     <component :is="layout">
       <div class="page-info px-5 position-relative">
         <h2 class="h2 font-weight-bold">Contents</h2>
-        <MenuContent active="jobs"/>
+        <MenuContent active="jobs" />
         <div class="wrap-content-head-btns" v-if="profile.role === 'normal'">
           <router-link
-            :to="'/dashboard/content'"
+            :to="'/dashboard/content/jobs'"
             class="btn font-weight-bol btn-gray-outline ml-3"
             >Cancel</router-link
           >
@@ -18,9 +18,11 @@
             Save as draft
           </button>
           <button
-            @click="publishArticle('pending')"
+            @click="publishAPost('pending')"
             :disabled="
-              post.title === '' || post.category === '' || post.content === ''
+              post.title === '' ||
+              post.category === '' ||
+              post.description === ''
             "
             class="btn font-weight-bold btn-success-outline ml-3"
           >
@@ -31,11 +33,13 @@
       <div class="dash-container">
         <div v-if="profile.role === 'normal'">
           <h4 class="h5">
-            <router-link :to="'/dashboard/content'" class="btn btn-back">
+            <router-link :to="'/dashboard/content/jobs'" class="btn btn-back">
               <i class="icon-arrow-left" />
               <span class="ml-3"> Back </span>
             </router-link>
-            <span class="text-blue-dark font-weight-bold"> New post </span>
+            <span class="text-blue-dark font-weight-bold">
+              {{ post.title }}
+            </span>
           </h4>
           <div class="alert alert-info" v-if="!created && editing">
             Wait, we are editing your content...
@@ -43,7 +47,7 @@
           <div class="alert alert-success" v-if="created && !uploading">
             Your content has been created successfully!
           </div>
-          <!-- FORM: CREATE BLOG -->
+          <!-- FORM: EDIT JOBS -->
           <div class="row">
             <div class="col-sm-12 col-md-8 col-l-8">
               <div class="form-group">
@@ -56,11 +60,14 @@
                 />
               </div>
               <div class="form-group">
-                <vue-editor
-                  :editorToolbar="toobar"
-                  v-model="post.content"
-                  :editorOptions="editorSettings"
-                ></vue-editor>
+                <div class="form-group">
+                  <textarea
+                    style="height: auto"
+                    rows="16"
+                    class="form-control"
+                    v-model="post.description"
+                  ></textarea>
+                </div>
               </div>
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
@@ -69,12 +76,23 @@
                 <div class="h4 mb-4">
                   {{ post.category }}
                 </div>
-                <h3 class="h6">Tags</h3>
-                <vue-tags-input
-                  v-model="tag"
-                  :tags="tags"
-                  @tags-changed="(newTags) => (tags = newTags)"
-                />
+
+                <h3 class="h6">Which group are you trying to reach?</h3>
+                <div
+                  class="co-badge"
+                  v-for="(act, index) in post.AudienceForPosts"
+                  :key="index"
+                >
+                  <span>
+                    {{ act.BusinessActivity.name }}
+                  </span>
+                  <button @click.prevent="removeActivityFromPost(act.activity)">
+                    <img src="@/assets/images/remove.png" />
+                  </button>
+                </div>
+                <a @click="updateActivities" class="btn btn-transparent px-1">
+                  Add
+                </a>
                 <div class="form-group" v-if="showOtherCategoryInput">
                   <h3 class="h6 my-3">Specify other category</h3>
                   <input
@@ -84,35 +102,98 @@
                     placeholder="Type category..."
                   />
                 </div>
-                <h3 class="h6 my-3">Featured Image</h3>
-                <button class="btn btn-block" @click="$refs.FileInput.click()">
-                  <span v-if="post.image"> Change image </span>
-                  <span v-else> Select image </span>
+                <h3 class="h6 my-3">Job attachment</h3>
+                <button
+                  class="btn btn-block select-image"
+                  @click="$refs.file.click()"
+                >
+                  <span v-if="post.jobDetailsDocument">
+                    Change job attachment
+                  </span>
+                  <span v-else> Select job attachment </span>
                 </button>
-                <div class="image my-3" v-if="!selectedFile">
+                <input
+                  type="file"
+                  id="file"
+                  ref="file"
+                  style="display: none"
+                  accept="application/pdf"
+                  @change="handleFileUpload()"
+                />
+                <div class="media mt-3 p-3 bg-white rounded" v-if="!selectedFile && post.jobDetailsDocument">
                   <img
-                    :src="`${IMAGE_URL}c_fill,g_center,w_440,h_220/${post.image}`"
-                    :alt="post.title"
+                    class="align-self-start mr-3"
+                    src="@/assets/images/pdf.png"
                   />
+                  <div class="media-body">
+                    <h5 class="mt-2">Preview</h5>
+                    <p>
+                      Job attachment
+                    </p>
+                  </div>
                 </div>
-                <div class="my-3">
-                  <input
-                    ref="FileInput"
-                    type="file"
-                    style="display: none"
-                    @change="onFileSelect"
+                <div class="media mt-3 p-3 bg-white rounded" v-if="selectedFile">
+                  <img
+                    class="align-self-start mr-3"
+                    src="@/assets/images/pdf.png"
                   />
-                  <VueCropper
-                    v-show="selectedFile && !imageUpdated"
-                    ref="cropper"
-                    :src="selectedFile"
-                    alt="Source Image"
-                    :aspectRatio="aspectRatio"
-                  ></VueCropper>
+                  <div class="media-body">
+                    <h5 class="mt-2">Preview</h5>
+                    <p>
+                      {{ fileName }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- Update activities -->
+          <modal
+            name="openEditBusinessActivies"
+            :adaptive="true"
+            :scrollable="true"
+            :height="660"
+            :width="550"
+          >
+            <h3 class="p-4 bottom-shadow shadow">Business activities</h3>
+            <div class="px-4">
+              <div
+                class="wrap-modal"
+                style="max-height: 500px; overflow: scroll"
+              >
+                <div class="row mt-1">
+                  <div class="col-12" v-if="listOfBusinessActivities">
+                    <div
+                      v-for="(a, index) in listOfBusinessActivities"
+                      :key="index"
+                    >
+                      <div class="s-one-activity">
+                        {{ a.name }}
+                        <button
+                          @click.prevent="addActivityToPost(a.id, a.name)"
+                          type="button"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-1">
+                <span class="float-right">
+                  <button
+                    type="button"
+                    @click.prevent="closeModal"
+                    class="btn btn-gray-outline mr-2"
+                  >
+                    Close
+                  </button>
+                </span>
+              </div>
+            </div>
+          </modal>
         </div>
         <div v-else class="not-allowed"></div>
       </div>
@@ -128,39 +209,32 @@ import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
 import categories from "@/data/blogCategories.js";
-import VueTagsInput from "@johmun/vue-tags-input";
 import { VueEditor } from "vue2-editor";
+let marked = require("marked");
+import VModal from "vue-js-modal";
+Vue.use(VModal);
 
 export default {
-  name: "write-blog",
+  name: "edit-event",
   components: {
     MenuContent,
     VueCropper,
-    VueTagsInput,
     VueEditor,
   },
   data() {
     return {
+      slug: "",
       post: {
         id: "",
         title: "",
-        content: "",
-        tags: "",
-        image: "",
-        status: "pending",
-        author: "",
+        description: "",
+        jobDetailsDocument: "",
+        deadlineDate: "",
+        deadlineTime: "",
+        companyId: "",
         category: "",
+        status: "",
       },
-      toobar: [["bold", "italic", "underline"]],
-      editorSettings: {
-        modules: {
-          clipboard: {
-            matchVisual: false,
-          },
-        },
-      },
-      tags: [],
-      tag: "",
       categories: [],
       mime_type: "",
       cropedImage: "",
@@ -175,30 +249,89 @@ export default {
       editing: false,
       imageUpdated: false,
       showOtherCategoryInput: false,
+      listOfBusinessActivities: [],
+      file: "",
+      fileName: "",
     };
   },
-  created() {
-    const slug = this.$route.params.slug;
-    AxiosHelper.get(`blog/info/${slug}`)
+  beforeCreate() {
+    // loading business activities
+    AxiosHelper.get("business-activities")
       .then((response) => {
-        this.post = response.data.result;
-        this.loaded = true;
-        JSON.parse(this.post.tags).map((value) => {
-          this.tags.push({ text: value });
-        });
+        this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {
-        this.loading = false;
-        this.loaded = true;
-      });
+      .catch(() => {});
+  },
+  created() {
+    this.slug = this.$route.params.slug;
+    this.loadPost();
   },
   mounted() {
     this.categories = categories;
   },
   methods: {
-    convertTags(obj) {
-      console.log(obj);
-      return true;
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+      this.fileName = this.file.name;
+      this.selectedFile = true;
+    },
+    // load post
+    loadPost() {
+      AxiosHelper.get(`jobs/info/${this.slug}`)
+        .then((response) => {
+          this.post = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+        });
+    },
+    addActivityToPost(id, name) {
+      const data = {
+        post: this.post.id,
+        activity: id,
+        type: "job",
+      };
+      AxiosHelper.post("post/add-activity", data)
+        .then(() => {
+          this.loadPost();
+          Vue.$toast.open({
+            message: `"${name}" activity have been added successfully`,
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          if (error.response.status === 409) {
+            Vue.$toast.open({
+              message: "Activity has been already added",
+              type: "warning",
+            });
+          } else {
+            Vue.$toast.open({
+              message: "Sorry, something went wrong. Try again later",
+              type: "error",
+            });
+          }
+        });
+    },
+    removeActivityFromPost(id) {
+      AxiosHelper.delete(
+        `post/remove-activity?post=${this.post.id}&activity=${id}&type=job`
+      )
+        .then(() => {
+          this.loadPost();
+          Vue.$toast.open({
+            message: `Activity has been removed successfully`,
+            type: "success",
+          });
+        })
+        .catch(() => {
+          Vue.$toast.open({
+            message: "Sorry, something went wrong. Try again later",
+            type: "error",
+          });
+        });
     },
     changeCategory(e) {
       if (e.target.value === "other") {
@@ -209,7 +342,7 @@ export default {
         this.post.category = e.target.value;
       }
     },
-    publishArticle(status) {
+    publishAPost(status) {
       this.editing = true;
       this.savePost(status);
     },
@@ -221,14 +354,7 @@ export default {
       this.post.status = status;
       this.uploading = true;
       this.created = false;
-      // convert tags
-      let getTags = [];
-      if (this.tags) {
-        for (const value of this.tags) {
-          getTags = [...getTags, value.text];
-        }
-        this.post.tags = JSON.stringify(getTags);
-      }
+      console.log("this.file", this.selectedFile);
       if (this.selectedFile) {
         this.uploading = false;
         this.uploadImage();
@@ -236,21 +362,28 @@ export default {
         this.submitPostNow();
       }
     },
+    updateActivities() {
+      this.$modal.show("openEditBusinessActivies");
+    },
+    closeModal() {
+      this.$modal.hide("openEditBusinessActivies");
+    },
     submitPostNow() {
-      AxiosHelper.patch(`blog/edit/${this.post.id}`, this.post)
+      console.log("start submitting", this.post);
+      AxiosHelper.patch(`jobs/edit`, this.post)
         .then(() => {
           this.created = true;
           Vue.$toast.open({
-            message: "Blog has been created successfully",
+            message: "Event has been created successfully",
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log("e", err);
           this.uploading = false;
           this.created = false;
           Vue.$toast.open({
-            message:
-              "Sorry, something went wrong while updating your social media accounts",
+            message: "Sorry, something went wrong while updating this event",
             type: "error",
           });
         });
@@ -258,33 +391,29 @@ export default {
     },
     uploadImage() {
       this.imageUpdated = false;
-      this.cropedImage = this.$refs.cropper.getCroppedCanvas().toDataURL();
-      this.$refs.cropper.getCroppedCanvas().toBlob((blob) => {
-        const formData = new FormData();
-        formData.append("file", blob);
-        formData.append("upload_preset", "wjjxv2a4");
-        formData.append("cloud_name", "dbvxqoznr");
-        const config = {
-          headers: { "X-Requested-With": "XMLHttpRequest" },
-        };
-        axios
-          .post(
-            "https://api.cloudinary.com/v1_1/dbvxqoznr/image/upload",
-            formData,
-            config
-          )
-          .then((response) => {
-            // uploaded successfully, continue submiting article then
-            this.post.image = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
-            this.selectedFile = false;
-            this.imageUpdated = true;
-            this.submitPostNow();
-          })
-          .catch(() => {
-            this.uploading = false;
-            this.created = false;
-          });
-      }, this.mime_type);
+      let formData = new FormData();
+      formData.append("file", this.file);
+      formData.append("upload_preset", "wjjxv2a4");
+      formData.append("cloud_name", "dbvxqoznr");
+      const config = {
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      };
+      axios
+        .post(
+          "https://api.cloudinary.com/v1_1/dbvxqoznr/image/upload",
+          formData,
+          config
+        )
+        .then((response) => {
+          this.post.jobDetailsDocument = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
+          this.submitPostNow();
+          console.log("file uploaded", this.post);
+        })
+        .catch((e) => {
+          console.log("upload error", e);
+          this.uploading = false;
+          this.created = false;
+        });
     },
     onFileSelect(e) {
       const file = e.target.files[0];
@@ -306,6 +435,19 @@ export default {
     layout() {
       return this.$route.meta.layout;
     },
+    previewText() {
+      marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: true,
+        smartLists: true,
+        smartypants: false,
+      });
+      return marked(this.post.description);
+    },
   },
 };
 </script>
@@ -314,11 +456,6 @@ export default {
 .content-form-sidebar {
   background: #f0f2f8;
   padding: 25px;
-  border-radius: 3px;
-}
-.content-form-sidebar button {
-  border: 1px solid #5e7c8d;
-  background: #f0f2f8;
   border-radius: 3px;
 }
 </style>

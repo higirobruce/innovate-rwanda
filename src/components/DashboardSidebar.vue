@@ -16,7 +16,9 @@
       </li>
       <li
         class="nav-item"
-        v-if="profile.role === 'admin-company' || profile.role === 'super-admin'"
+        v-if="
+          profile.role === 'admin-company' || profile.role === 'super-admin'
+        "
       >
         <router-link :to="'/dashboard/directory'">
           <img src="@/assets/images/icon-companies.png" />
@@ -40,15 +42,21 @@
       </li>
       <li
         class="nav-item"
-        v-if="
-          profile.role === 'admin-blog' ||
-          profile.role === 'admin-event' ||
-          profile.role === 'admin-job' ||
-          profile.role === 'normal' ||
-          profile.role === 'super-admin'
-        "
+        v-if="profile.role === 'normal' || profile.role === 'admin-blog'  || profile.role === 'super-admin'"
       >
         <router-link :to="'/dashboard/content'">
+          <img src="@/assets/images/icon-content.png" />
+          <div>Content</div>
+        </router-link>
+      </li>
+      <li class="nav-item" v-if="profile.role === 'admin-event'">
+        <router-link :to="'/dashboard/content/events'">
+          <img src="@/assets/images/icon-content.png" />
+          <div>Content</div>
+        </router-link>
+      </li>
+      <li class="nav-item" v-if="profile.role === 'admin-job'">
+        <router-link :to="'/dashboard/content/jobs'">
           <img src="@/assets/images/icon-content.png" />
           <div>Content</div>
         </router-link>
@@ -64,7 +72,7 @@
 </template>
 <script>
 export default {
-  name: "sidebar"
+  name: "sidebar",
 };
 </script>
 <style scoped>

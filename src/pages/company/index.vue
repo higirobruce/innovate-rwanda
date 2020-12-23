@@ -22,9 +22,13 @@
                 <div class="company-small-info">
                   <h4>Website</h4>
                   <h5>
-                    <a :href="company.company.coWebsite" target="_bla">{{
-                      company.company.coWebsite
-                    }}</a>
+                    <router-link
+                      v-if="!_.isEmpty(company.company.coWebsite)"
+                      :to="`/redirect/${company.company.coWebsite}`"
+                      target="_blank"
+                    >
+                      {{ company.company.coWebsite }}
+                    </router-link>
                   </h5>
                   <img src="@/assets/images/globe.svg" />
                 </div>
@@ -76,7 +80,7 @@
                         convertToObject(company.company.socialMedia).instagram
                       "
                     >
-                      <i class="icon-instagrem mr-2" />
+                      <i class="icon-instagram mr-2" />
                     </a>
                     <a
                       style="color: #ff0000"
@@ -141,7 +145,6 @@
 
                 <div class="company-large-info">
                   <h4>Business activitivies</h4>
-                  <img src="@/assets/images/phone.svg" />
                   <div class="my-3">
                     <div
                       class="co-badge"
@@ -168,9 +171,9 @@
                     {{ company.company.shortDescription }}
                   </div>
                   <div class="info-separator my-3">&nbsp;</div>
-                  <h3>Main area of interest</h3>
+                  <h3>Main business actity</h3>
                   <div>
-                    {{ company.company.mainAreaOfInterest }}
+                    {{ company.company.BusinessActivity.name }}
                   </div>
                   <div class="info-separator my-3">&nbsp;</div>
                   <h3>Customer base</h3>
@@ -201,7 +204,44 @@
             </div>
           </div>
         </div>
-        <div v-if="notfound">Company not found</div>
+        <div class="wrap-similar-companies">
+          <h3 class="text-center text-blue-dark">Similart companies</h3>
+          <div class="text-center similar-desc mb-4">
+            based on areas of interests
+          </div>
+          <div class="row">
+            <div
+              class="col-sm-12 col-md-6 col-lg-4"
+              v-for="(co, index) in company.similarCompanies"
+              :key="index"
+            >
+              <div class="co-similar">
+                <router-link :to="`/company/${co.Company.slug}`">
+                  <img
+                    v-if="co && co.Company"
+                    :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${co.Company.logo}`"
+                    :alt="company.company.coName"
+                  />
+                  <img
+                    v-else
+                    src="@/assets/images/logo_placeholder.svg"
+                    :alt="company.company.coName"
+                  />
+                  {{ co.Company.companyName }}
+                </router-link>
+              </div>
+            </div>
+          </div>
+          <div class="co-loadmore">
+            <router-link :to="'/'">Load more</router-link>
+          </div>
+        </div>
+        <div class="my-5 py-5" v-if="notfound && _.isEmpty(company)">
+          <div class="empty-post">
+            <img src="@/assets/images/empty.png" />
+            <h2 class="my-0 py-0 font-weight-light h3">Company not found</h2>
+          </div>
+        </div>
       </div>
     </component>
   </div>
@@ -214,7 +254,7 @@ import * as VueGoogleMaps from "vue2-google-maps";
 import SendMessage from "@/components/SendMessage";
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyBzyXzhhqWBsTj305rY30VC1UF_1OHDKgA",
+    key: "AIzaSyBOcgzwN-u8KLJ2JHeeJON8St0jAkD2u_8",
     libraries: "places",
   },
 });
@@ -333,5 +373,30 @@ export default {
 .social-links a {
   font-size: 30px;
   margin: 4px 0 0 5px;
+}
+.wrap-similar-companies {
+  max-width: 940px;
+  margin: 40px auto;
+  display: block;
+}
+.similar-desc {
+  color: #c0c6d8;
+}
+.co-similar {
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 10px;
+}
+.co-similar a {
+  color: #5e7c8d;
+}
+.co-loadmore {
+  padding: 30px 0;
+  text-align: center;
+}
+.co-loadmore a {
+  color: #5e7c8d;
+  font-size: 22px;
+  display: block;
 }
 </style>

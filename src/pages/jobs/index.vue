@@ -12,10 +12,10 @@
           class="page-overlay"
           :style="{ 'background-color': 'rgba(4, 137, 187, 0.83)' }"
         ></div>
-        <h1>Ecosystem Enablers</h1>
+        <h1>Find talents</h1>
         <div class="subtitle">
-          Companies, organizations and service providers working together to
-          foster growth in the Ecosystem
+          Our community listing of tech and innovation companies in the
+          ecosystem
         </div>
         <form @submit="search" class="page-search">
           <input
@@ -29,47 +29,60 @@
         </form>
       </div>
       <div class="container">
-        <div class="wrap-companies" v-if="!_.isEmpty(directory)">
+        <div class="wrap-companies" v-if="!_.isEmpty(posts)">
           <div
             class="row one-company"
-            v-for="(company, index) in directory"
+            v-for="(post, index) in posts"
             :key="index"
           >
             <div class="col-sm-12 col-md-4 col-lg-2">
               <div class="company-logo">
-                <router-link :to="`/company/${company.slug}`">
+                <router-link :to="`/company/${post.slug}`">
                   <img
-                    v-if="company && company.logo"
-                    :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${company.logo}`"
-                    :alt="company.coName"
+                    v-if="post && post.Company.logo"
+                    :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${post.Company.logo}`"
+                    :alt="post.coName"
                   />
                   <img
                     v-else
                     src="@/assets/images/logo_placeholder.svg"
-                    :alt="company.coName"
+                    :alt="post.coName"
                   />
                 </router-link>
               </div>
             </div>
             <div class="col-sm-12 col-md-8 col-lg-10">
-              <router-link :to="`/company/${company.slug}`">
-                <h2>{{ company.coName }}</h2>
+              <router-link :to="`/job/${post.id}`">
+                <h2 class="mb-1">{{ post.title }}</h2>
                 <div>
-                  <div class="mb-2 co-info" v-if="company.yearFounded">
-                    <i class="icon-calendar" />
-                    <span class="ml-2">{{ company.yearFounded }} </span>
+                  <div class="mb-2 co-info mt-2">
+                    <div class="text-blue">
+                      <i class="icon-company" />
+                      {{ post.Company.companyName }}
+                    </div>
+                    <span class="mr-3">
+                      <i class="icon-calendar" />
+                      Published
+                      <span class="ml-2"
+                        >{{ post.createdAt | date("DD-MM-YYYY") }}
+                      </span>
+                    </span>
+                    |
+                    <span>
+                      <i class="icon-calendar" />
+                      Deadline
+                      <span class="ml-2"
+                        >{{ post.deadlineDate | date("DD-MM-YYYY") }}
+                      </span>
+                    </span>
                   </div>
-                  <div class="mb-2 co-info" v-if="company.districtBasedIn">
-                    <i class="icon-marker-stroked" />
-                    <span class="ml-2">{{ company.districtBasedIn }} </span>
+                  <div class="mb-2 co-info">
+                    <i class="icon-tag" />
+                    <span class="ml-2">{{ post.category }} </span>
                   </div>
-                  <div class="mb-2 co-info" v-if="company.mainAreaOfInterest">
-                    <i class="icon-pound" />
-                    <span class="ml-2">{{ company.mainAreaOfInterest }} </span>
-                  </div>
-                  <div class="mb-2 co-info" v-if="company.shortDescription">
-                    <i class="icon-comment" />
-                    <span class="ml-2">{{ company.shortDescription }} </span>
+                  <div class="mb-2 co-info" v-if="post.jobDetailsDocument">
+                    <i class="icon-file" />
+                    <span class="ml-2">Attachment</span>
                   </div>
                 </div>
               </router-link>
@@ -77,28 +90,30 @@
             <div class="info-separator clear my-3">&nbsp;</div>
           </div>
         </div>
-        <div v-if="loaded && _.isEmpty(directory)" class="empty-post">
+        <div v-if="loaded && _.isEmpty(posts)" class="empty-post">
           <img src="@/assets/images/empty.png" />
-          <h2 class="my-0 py-0 font-weight-light h3">Companies not found</h2>
+          <h2 class="my-0 py-0 font-weight-light h3">No jobs found</h2>
         </div>
       </div>
     </component>
   </div>
 </template>
 
-
 <script>
+import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import PageHeader from "@/components/PageHeader";
+import moment from "moment";
+Vue.use(moment);
 export default {
-  name: "enablers",
+  name: "companies",
   components: {
     PageHeader,
   },
   data() {
     return {
-      directory: {},
       query: "",
+      posts: {},
       loading: false,
       loaded: false,
     };
@@ -109,33 +124,41 @@ export default {
     },
   },
   created() {
+    AxiosHelper.get("jobs/public")
+      .then((response) => {
+        this.posts = response.data.result;
+      })
+      .catch(() => {
+        console.log("something went wrong");
+      });
+    this.timeNow = moment().format("YYYY-MM-DD");
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {
       this.search(value);
     } else {
-      AxiosHelper.get("directory/public/Enabler")
+      AxiosHelper.get("jobs/public")
         .then((response) => {
-          this.directory = response.data.result;
+          this.posts = response.data.result;
           this.loaded = true;
         })
         .catch(() => {
           this.loading = false;
           this.loaded = true;
-          this.directory = [];
+          this.posts = [];
         });
     }
   },
   methods: {
     search(query) {
-      AxiosHelper.get(`directory/search?searchValue=${query}`)
+      AxiosHelper.get(`jobs/public/search?searchValue=${query}`)
         .then((response) => {
-          this.directory = response.data.result;
+          this.posts = response.data.result;
           this.loaded = true;
         })
         .catch(() => {
           this.loading = false;
           this.loaded = true;
-          this.directory = [];
+          this.posts = [];
         });
     },
   },

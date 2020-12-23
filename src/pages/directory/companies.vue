@@ -1,12 +1,105 @@
 <template>
   <div>
     <component :is="layout">
-      <PageHeader
-        image="auth-bg.jpg"
-        rgba="rgba(4, 137, 187, 0.83)"
-        title="Tech Companies"
-        subtitle="Our community listing of tech and innovation companies in the ecosystem."
-      />
+      <div
+        class="page-header"
+        :style="{
+          'background-image':
+            'url(' + require('@/assets/images/auth-bg.jpg') + '',
+        }"
+      >
+        <div
+          class="page-overlay"
+          :style="{ 'background-color': 'rgba(4, 137, 187, 0.83)' }"
+        ></div>
+        <h1>Tech Companies</h1>
+        <div class="subtitle">
+          Our community listing of tech and innovation companies in the
+          ecosystem.
+        </div>
+        <form @submit="search" class="page-search">
+          <input
+            type="text"
+            v-model="query"
+            placeholder="Type to search and hit enter"
+          />
+          <button :disabled="_.isEmpty(query)" @click.prevent="search(query)">
+            <img src="@/assets/images/search.png" />
+          </button>
+        </form>
+      </div>
+      <div class="wrap-filters-box">
+        <div class="wrap-filters">
+          <div class="filter-select">
+            <select
+              name="district"
+              v-model="districtBasedIn"
+              @change="changeDistrict($event)"
+              required
+            >
+              <option value="" selected>Location</option>
+              <option
+                v-for="(district, index) in allDistricts"
+                v-bind:value="district"
+                :key="index"
+              >
+                {{ district }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-select">
+            <select
+              name="district"
+              v-model="districtBasedIn"
+              @change="changeDistrict($event)"
+              required
+            >
+              <option value="" selected>Year founded</option>
+              <option
+                v-for="(district, index) in allDistricts"
+                v-bind:value="district"
+                :key="index"
+              >
+                {{ district }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-select">
+            <select
+              name="district"
+              v-model="districtBasedIn"
+              @change="changeDistrict($event)"
+              required
+            >
+              <option value="" selected>Activity</option>
+              <option
+                v-for="(district, index) in allDistricts"
+                v-bind:value="district"
+                :key="index"
+              >
+                {{ district }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-select float-right">
+            <select
+              name="district"
+              v-model="districtBasedIn"
+              @change="changeDistrict($event)"
+              required
+            >
+              <option value="" selected>Sort by</option>
+              <option
+                v-for="(district, index) in allDistricts"
+                v-bind:value="district"
+                :key="index"
+              >
+                {{ district }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
       <div class="container">
         <div class="wrap-companies" v-if="!_.isEmpty(directory)">
           <div
@@ -56,7 +149,11 @@
             <div class="info-separator clear my-3">&nbsp;</div>
           </div>
         </div>
-        <div v-else class="not-found"></div>
+
+        <div v-if="loaded && _.isEmpty(directory)" class="empty-post">
+          <img src="@/assets/images/empty.png" />
+          <h2 class="my-0 py-0 font-weight-light h3">Companies not found</h2>
+        </div>
       </div>
     </component>
   </div>
@@ -66,6 +163,7 @@
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
 import PageHeader from "@/components/PageHeader";
+import { Districts } from "rwanda";
 export default {
   name: "companies",
   components: {
@@ -74,6 +172,11 @@ export default {
   data() {
     return {
       directory: {},
+      query: "",
+      loading: false,
+      loaded: false,
+      allDistricts: [],
+      districtBasedIn: "",
     };
   },
   computed: {
@@ -82,13 +185,41 @@ export default {
     },
   },
   created() {
-    AxiosHelper.get("directory/public/Tech company")
-      .then((response) => {
-        this.directory = response.data.result;
-      })
-      .catch(() => {
-        console.log("something went wrong");
-      });
+    // loading all districts
+    this.allDistricts = Districts();
+    // load companies
+    const value = this.$route.query.search;
+    if (!this._.isEmpty(value)) {
+      this.search(value);
+    } else {
+      AxiosHelper.get("directory/public/Tech company")
+        .then((response) => {
+          this.directory = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+          this.directory = [];
+        });
+    }
+  },
+  methods: {
+    changeDistrict(e) {
+      this.districtBasedIn = e.target.value;
+    },
+    search(query) {
+      AxiosHelper.get(`directory/search?searchValue=${query}`)
+        .then((response) => {
+          this.directory = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+          this.directory = [];
+        });
+    },
   },
 };
 </script>
@@ -118,8 +249,60 @@ export default {
   font-weight: 900;
   color: #1b2958;
 }
-.co-info {
-  color: #5e7c8d;
-  font-size: 18px;
+
+/* Reset Select */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #ffffff;
+  background-image: none;
+  color: #1b2958;
+}
+/* Remove IE arrow */
+select::-ms-expand {
+  display: none;
+}
+/* Custom Select */
+.filter-select {
+  position: relative;
+  display: flex;
+  width: auto;
+  min-width: 180px;
+  height: 50px;
+  line-height: 3;
+  float: left;
+  margin-right: 10px;
+  background: #1b2958;
+  overflow: hidden;
+}
+select {
+  flex: 1;
+  padding: 0 0;
+  cursor: pointer;
+  color: #1b2958;
+}
+/* Arrow */
+.filter-select::after {
+  content: "\25BF";
+  position: absolute;
+  color: #6b6b6b;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #ffffff;
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: 0.25s all ease;
+  -o-transition: 0.25s all ease;
+  transition: 0.25s all ease;
+}
+/* Transition */
+.filter-select:hover::after {
+  color: #f39c12;
 }
 </style>

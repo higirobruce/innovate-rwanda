@@ -16,24 +16,24 @@
           <div class="wrap-main-nav">
             <ul class="list-inline py-3 my-2">
               <li class="list-inline-item">
-                <router-link :to="'/'">About</router-link>
+                <router-link :to="'/about'">About</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
+                <router-link active :to="'/why-rwanda'">Why Rwanda</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/directory'"
+                <router-link active  :to="'/directory'"
                   >Community Directory</router-link
                 >
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/events'">Events</router-link>
+                <router-link active  :to="'/events'">Events</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/blog'">Blog</router-link>
+                <router-link active  :to="'/blog'">Blog</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/find-talent'">Find Talent</router-link>
+                <router-link active  :to="'/find-talent'">Find Talent</router-link>
               </li>
             </ul>
           </div>
@@ -228,6 +228,18 @@ export default {
   font-size: 15px;
   padding: 0 8px;
   font-weight: 100;
+}
+.wrap-main-nav a.router-link-active {
+  position: relative;
+}
+.wrap-main-nav a.router-link-active::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 4px;
+  background: #00AEEF;
+  bottom: -50px;
+  left: 0;
 }
 .wrap-sidebar {
   background: #ffffff;

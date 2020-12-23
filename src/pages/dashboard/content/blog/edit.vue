@@ -58,11 +58,14 @@
                 />
               </div>
               <div class="form-group">
-                <vue-editor
-                  :editorToolbar="toobar"
+              <div class="form-group">
+                <textarea
+                  style="height: auto"
+                  rows="16"
+                  class="form-control"
                   v-model="post.content"
-                  :editorOptions="editorSettings"
-                ></vue-editor>
+                ></textarea>
+              </div>
               </div>
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
@@ -71,12 +74,23 @@
                 <div class="h4 mb-4">
                   {{ post.category }}
                 </div>
-                <h3 class="h6">Tags</h3>
-                <vue-tags-input
-                  v-model="tag"
-                  :tags="tags"
-                  @tags-changed="(newTags) => (tags = newTags)"
-                />
+
+                <h3 class="h6">Which group are you trying to reach?</h3>
+                <div
+                  class="co-badge"
+                  v-for="(act, index) in post.AudienceForPosts"
+                  :key="index"
+                >
+                  <span>
+                    {{ act.BusinessActivity.name }}
+                  </span>
+                  <button @click.prevent="removeActivityFromPost(act.activity)">
+                    <img src="@/assets/images/remove.png" />
+                  </button>
+                </div>
+                <a @click="updateActivities" class="btn btn-transparent px-1">
+                  Add
+                </a>
                 <div class="form-group" v-if="showOtherCategoryInput">
                   <h3 class="h6 my-3">Specify other category</h3>
                   <input
@@ -87,11 +101,14 @@
                   />
                 </div>
                 <h3 class="h6 my-3">Featured Image</h3>
-                <button class="btn btn-block" @click="$refs.FileInput.click()">
+                <button
+                  class="btn btn-block select-image"
+                  @click="$refs.FileInput.click()"
+                >
                   <span v-if="post.image"> Change image </span>
                   <span v-else> Select image </span>
                 </button>
-                <div class="image my-3" v-if="!selectedFile">
+                <div class="image my-3" v-if="!selectedFile && post.image">
                   <img
                     :src="`${IMAGE_URL}c_fill,g_center,w_440,h_220/${post.image}`"
                     :alt="post.title"
@@ -115,6 +132,53 @@
               </div>
             </div>
           </div>
+
+          <!-- Update activities -->
+          <modal
+            name="openEditBusinessActivies"
+            :adaptive="true"
+            :scrollable="true"
+            :height="660"
+            :width="550"
+          >
+            <h3 class="p-4 bottom-shadow shadow">Business activities</h3>
+            <div class="px-4">
+              <div
+                class="wrap-modal"
+                style="max-height: 500px; overflow: scroll"
+              >
+                <div class="row mt-1">
+                  <div class="col-12" v-if="listOfBusinessActivities">
+                    <div
+                      v-for="(a, index) in listOfBusinessActivities"
+                      :key="index"
+                    >
+                      <div class="s-one-activity">
+                        {{ a.name }}
+                        <button
+                          @click.prevent="addActivityToPost(a.id, a.name)"
+                          type="button"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-1">
+                <span class="float-right">
+                  <button
+                    type="button"
+                    @click.prevent="closeModal"
+                    class="btn btn-gray-outline mr-2"
+                  >
+                    Close
+                  </button>
+                </span>
+              </div>
+            </div>
+          </modal>
         </div>
         <div v-else class="not-allowed"></div>
       </div>
@@ -130,19 +194,21 @@ import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
 import categories from "@/data/blogCategories.js";
-import VueTagsInput from "@johmun/vue-tags-input";
 import { VueEditor } from "vue2-editor";
+let marked = require("marked");
+import VModal from "vue-js-modal";
+Vue.use(VModal);
 
 export default {
-  name: "write-blog",
+  name: "edit-blog",
   components: {
     MenuContent,
     VueCropper,
-    VueTagsInput,
     VueEditor,
   },
   data() {
     return {
+      slug: "",
       post: {
         id: "",
         title: "",
@@ -161,8 +227,6 @@ export default {
           },
         },
       },
-      tags: [],
-      tag: "",
       categories: [],
       mime_type: "",
       cropedImage: "",
@@ -179,28 +243,82 @@ export default {
       showOtherCategoryInput: false,
     };
   },
-  created() {
-    const slug = this.$route.params.slug;
-    AxiosHelper.get(`blog/info/${slug}`)
+  beforeCreate() {
+    // loading business activities
+    AxiosHelper.get("business-activities")
       .then((response) => {
-        this.post = response.data.result;
-        this.loaded = true;
-        JSON.parse(this.post.tags).map((value) => {
-          this.tags.push({ text: value });
-        });
+        this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {
-        this.loading = false;
-        this.loaded = true;
-      });
+      .catch(() => {});
+  },
+  created() {
+    this.slug = this.$route.params.slug;
+    this.loadPost();
   },
   mounted() {
     this.categories = categories;
   },
   methods: {
-    convertTags(obj) {
-      console.log(obj);
-      return true;
+    // load post
+    loadPost() {
+      AxiosHelper.get(`blog/info/${this.slug}`)
+        .then((response) => {
+          this.post = response.data.result;
+          this.loaded = true;
+          JSON.parse(this.post.tags).map((value) => {
+            this.tags.push({ text: value });
+          });
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+        });
+    },
+    addActivityToPost(id, name) {
+      const data = {
+        post: this.post.id,
+        activity: id,
+        type: "blog",
+      };
+      AxiosHelper.post("post/add-activity", data)
+        .then(() => {
+          this.loadPost();
+          Vue.$toast.open({
+            message: `"${name}" activity have been added successfully`,
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          if (error.response.status === 409) {
+            Vue.$toast.open({
+              message: "Activity has been already added",
+              type: "warning",
+            });
+          } else {
+            Vue.$toast.open({
+              message: "Sorry, something went wrong. Try again later",
+              type: "error",
+            });
+          }
+        });
+    },
+    removeActivityFromPost(id) {
+      AxiosHelper.delete(
+        `post/remove-activity?post=${this.post.id}&activity=${id}&type=blog`
+      )
+        .then(() => {
+          this.loadPost();
+          Vue.$toast.open({
+            message: `Activity has been removed successfully`,
+            type: "success",
+          });
+        })
+        .catch(() => {
+          Vue.$toast.open({
+            message: "Sorry, something went wrong. Try again later",
+            type: "error",
+          });
+        });
     },
     changeCategory(e) {
       if (e.target.value === "other") {
@@ -223,20 +341,18 @@ export default {
       this.post.status = status;
       this.uploading = true;
       this.created = false;
-      // convert tags
-      let getTags = [];
-      if (this.tags) {
-        for (const value of this.tags) {
-          getTags = [...getTags, value.text];
-        }
-        this.post.tags = JSON.stringify(getTags);
-      }
       if (this.selectedFile) {
         this.uploading = false;
         this.uploadImage();
       } else {
         this.submitPostNow();
       }
+    },
+    updateActivities() {
+      this.$modal.show("openEditBusinessActivies");
+    },
+    closeModal() {
+      this.$modal.hide("openEditBusinessActivies");
     },
     submitPostNow() {
       AxiosHelper.patch(`blog/edit/${this.post.id}`, this.post)
@@ -308,6 +424,19 @@ export default {
     layout() {
       return this.$route.meta.layout;
     },
+    previewText() {
+      marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: true,
+        smartLists: true,
+        smartypants: false,
+      });
+      return marked(this.post.content);
+    },
   },
 };
 </script>
@@ -316,11 +445,6 @@ export default {
 .content-form-sidebar {
   background: #f0f2f8;
   padding: 25px;
-  border-radius: 3px;
-}
-.content-form-sidebar button {
-  border: 1px solid #5e7c8d;
-  background: #f0f2f8;
   border-radius: 3px;
 }
 </style>
