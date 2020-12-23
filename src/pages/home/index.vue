@@ -20,12 +20,21 @@
               Learn more
             </button>
             <div class="clear"></div>
-            <div class="home-search my-4">
-              <input type="text" placeholder="Search the directory..." />
-              <button type="email" class="btn btn-transparent">
+            <form @submit="search" class="home-search my-4">
+              <input
+                v-model="query"
+                type="text"
+                placeholder="Search the directory..."
+              />
+              <button
+                type="submit"
+                :disabled="_.isEmpty(query)"
+                @click.prevent="search"
+                class="btn btn-transparent"
+              >
                 <img src="@/assets/images/search.png" alt="Search" />
               </button>
-            </div>
+            </form>
           </div>
           <div class="innovate-bg">
             <img src="@/assets/images/bg-welcome-innovate.png" alt="Innovate" />
@@ -169,8 +178,14 @@
                 v-model.trim="$v.subscribe.email.$model"
                 placeholder="Your email address"
               />
-              
-              <button :disabled="$v.subscribe.email.$invalid" @click="subscribeNow" type="button">Subscribe</button>
+
+              <button
+                :disabled="$v.subscribe.email.$invalid"
+                @click="subscribeNow"
+                type="button"
+              >
+                Subscribe
+              </button>
             </div>
             <div v-if="subscribing && !subscribed">
               <Loading />
@@ -183,7 +198,11 @@
             </div>
             <div
               class="text-danger text-center"
-              v-if="$v.subscribe.email.$dirty && $v.subscribe.email.$invalid && !subscribed"
+              v-if="
+                $v.subscribe.email.$dirty &&
+                $v.subscribe.email.$invalid &&
+                !subscribed
+              "
             >
               Provide a valid email
             </div>
@@ -307,9 +326,13 @@ export default {
       },
       subscribing: false,
       subscribed: false,
+      query: "",
     };
   },
   methods: {
+    search() {
+      this.$router.push(`/directory/companies?search=${this.query}`);
+    },
     pageOne(start, end) {
       this.startingPoint = start;
       this.endingPoint = end;
@@ -336,8 +359,8 @@ export default {
         .then(() => {
           this.subscribed = true;
           this.subscribe = {
-            email: ""
-          }
+            email: "",
+          };
         })
         .catch(() => {
           this.subscribed = false;
@@ -369,12 +392,14 @@ export default {
     align-items: center;
     justify-content: flex-start;
     position: relative;
+    z-index: 0;
   }
   .innovate-bg {
     width: 1350px;
     position: absolute;
     right: -90px;
     bottom: 0;
+    z-index: -1;
   }
   .innovate-bg img {
     position: relative;

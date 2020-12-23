@@ -191,6 +191,7 @@ export default {
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {
       this.search(value);
+      this.query = value
     } else {
       AxiosHelper.get("directory/public/Tech company")
         .then((response) => {
