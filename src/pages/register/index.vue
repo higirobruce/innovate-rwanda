@@ -1,15 +1,27 @@
 <template>
   <div>
     <component :is="layout">
-      <PageHeader
-        image="auth-bg.jpg"
-        rgba="rgba(4, 137, 187, 0.83)"
-        title="Join The Community"
-        subtitle="Whether you're a corporation looking for innovation, a startup looking for a boost, or a VC looking to meet great startups, we're the right place for you."
-      />
+      <div
+        class="page-header"
+        :style="{
+          'background-image':
+            'url(' + require('@/assets/images/auth-bg.jpg') + '',
+        }"
+      >
+        <div
+          class="page-overlay"
+          :style="{ 'background-color': 'rgba(4, 137, 187, 0.83)' }"
+        ></div>
+        <h1>Join The Community</h1>
+        <div class="subtitle">
+          Whether you're a corporation looking for innovation, a startup looking
+          for a boost, or a VC looking to meet great startups, we're the right
+          place for you.
+        </div>
+      </div>
       <div class="container">
         <div v-if="_.isEmpty(profile) && !registering && !registered">
-          <h2 class="text-center">Tell us a little bit about yourself...</h2>
+          <h2 class="text-center mt-4">Tell us a little bit about yourself...</h2>
           <div class="choose-company-type" v-if="coTypes">
             <div
               v-for="(type, index) in coTypes"
@@ -20,7 +32,7 @@
               @click="chooseType(type.slug)"
             >
               <h3>{{ type.name }}</h3>
-              <img src="@/assets/images/arrow-right.svg" />
+              <img src="@/assets/images/arrow-right.png" />
             </div>
           </div>
           <div class="wrap-register" v-if="typeChosen">
@@ -353,7 +365,9 @@ Vue.use(Vuelidate);
 import { required, minLength, email } from "vuelidate/lib/validators";
 
 const checkWebsite = (value) =>
-  /^([a-z0-9])(([a-z0-9-]{1,61})?[a-z0-9]{1})?(\.[a-z0-9](([a-z0-9-]{1,61})?[a-z0-9]{1})?)?(\.[a-zA-Z]{2,4})+$/i.test(value);
+  /^([a-z0-9])(([a-z0-9-]{1,61})?[a-z0-9]{1})?(\.[a-z0-9](([a-z0-9-]{1,61})?[a-z0-9]{1})?)?(\.[a-zA-Z]{2,4})+$/i.test(
+    value
+  );
 
 import PageHeader from "@/components/PageHeader";
 export default {

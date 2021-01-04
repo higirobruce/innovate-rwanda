@@ -8,12 +8,6 @@
     <div class="page-overlay" :style="{ 'background-color': rgba }"></div>
     <h1>{{ title }}</h1>
     <div v-if="subtitle" class="subtitle">{{ subtitle }}</div>
-    <div class="page-search">
-      <input type="text">
-      <button>
-         <img src="@/assets/images/search.png" />
-      </button>
-    </div>
   </div>
 </template>
 <script>

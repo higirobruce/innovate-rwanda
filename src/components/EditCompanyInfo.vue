@@ -6,8 +6,14 @@
         <div class="wrap-modal" style="max-height: 450px; overflow: scroll">
           <div class="row mt-4">
             <div class="col-lg-8 col-sm-12">
-              <h4 class="mt-3">What is your name?</h4>
-              <div class="form-group">
+              <h4 class="mt-3">Company name</h4>
+              <div
+                :class="`${
+                  $v.companyInfo.coName.$invalid === true
+                    ? 'form-group has-error'
+                    : 'form-group'
+                }`"
+              >
                 <input
                   type="text"
                   v-model.trim="$v.companyInfo.coName.$model"
@@ -19,7 +25,13 @@
             </div>
             <div class="col-lg-4 col-sm-12">
               <h4 class="mt-3">Year founded</h4>
-              <div class="form-group">
+              <div
+                :class="`${
+                  $v.companyInfo.yearFounded.$invalid === true
+                    ? 'form-group has-error'
+                    : 'form-group'
+                }`"
+              >
                 <input
                   type="number"
                   v-model.trim="$v.companyInfo.yearFounded.$model"
@@ -32,7 +44,14 @@
           <div class="row mt-4">
             <div class="col-lg-6 col-sm-12">
               <h4 class="mt-3">Contact email</h4>
-              <div class="form-group">
+
+              <div
+                :class="`${
+                  $v.companyInfo.contactEmail.$invalid === true
+                    ? 'form-group has-error'
+                    : 'form-group'
+                }`"
+              >
                 <input
                   type="email"
                   v-model.trim="$v.companyInfo.contactEmail.$model"
@@ -70,7 +89,13 @@
             </div>
             <div class="col-lg-6 col-sm-12">
               <h4 class="mt-3">Phone number</h4>
-              <div class="form-group">
+              <div
+                :class="`${
+                  $v.companyInfo.contactPhone.$invalid === true
+                    ? 'form-group has-error'
+                    : 'form-group'
+                }`"
+              >
                 <input
                   type="number"
                   v-model.trim="$v.companyInfo.contactPhone.$model"
@@ -143,7 +168,7 @@
           <span class="float-right">
             <button
               type="button"
-              @click="closeModal"
+              @click.prevent="closeModal"
               class="btn btn-gray-outline mr-2"
             >
               Close
@@ -171,6 +196,11 @@ import {
   maxLength,
   email,
 } from "vuelidate/lib/validators";
+
+const checkYear = (value) => {
+  console.log(value)
+  return true
+};
 
 import vSelect from "vue-select";
 
@@ -261,7 +291,9 @@ export default {
         minLength: minLength(3),
         maxLength: maxLength(25),
       },
-      yearFounded: {},
+      yearFounded: {
+        validateYear: checkYear,
+      },
       contactEmail: {
         email,
       },
@@ -270,7 +302,8 @@ export default {
       },
       contactPhone: {
         required,
-        minLength: minLength(3),
+        minLength: minLength(5),
+        maxLength: maxLength(18),
       },
       phoneDisplay: {
         required,

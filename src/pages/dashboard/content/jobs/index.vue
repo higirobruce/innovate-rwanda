@@ -27,7 +27,6 @@
             <tr>
               <th scope="col">Title</th>
               <th scope="col">Company</th>
-              <th scope="col">Category</th>
               <th scope="col">Target group</th>
               <th scope="col">Date</th>
               <th scope="col">Status</th>
@@ -45,7 +44,6 @@
                 </span>
               </td>
               <td>{{ post.Company.companyName }}</td>
-              <td>{{ post.category }}</td>
               <td>
                 <div
                   class="co-badge no-button"

@@ -37,6 +37,12 @@
             <li class="list-inline-item">
               <router-link :to="'/events'">Events</router-link>
             </li>
+            <li class="list-inline-item">
+              <router-link :to="'/blog'">Blog</router-link>
+            </li>
+            <li class="list-inline-item">
+              <router-link :to="'/find-talent'">Find talents</router-link>
+            </li>
           </ul>
         </div>
         <div class="footer-divider my-2"></div>
@@ -68,26 +74,56 @@
           Innovation City.
         </div>
         <div class="copyright-links float-sm-left float-lg-right">
-          <router-link :to="'/'" class="mr-4">Terms</router-link>
-          <router-link :to="'/'" class="mr-4">Privacy</router-link>
-          <router-link :to="'/'" class="mr-4">Support</router-link>
+          <router-link :to="'/terms'" class="mr-4">Terms</router-link>
+          <router-link :to="'/privacy-policy'" class="mr-4">Privacy</router-link>
+          <router-link :to="'/disclaimer'" class="mr-4">Disclaimer</router-link>
         </div>
       </div>
     </div>
+    <!-- <div class="wrap-cookie">
+      <div class="cookie">
+        We use cookies on this website. By navigating this website, you agree that....
+      </div>
+    </div> -->
   </footer>
 </template>
 
 <script>
-export default {};
+export default {
+  name: "",
+  data(){
+    return {
+      firstTime: true
+    }
+  }
+};
 </script>
 
 <style scoped>
+.wrap-cookie {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 0;
+  z-index: 12000;
+  background: #343434;
+}
+.cookie {
+  margin: 0 auto;
+  display: block;
+  max-width: 1000px;
+  padding: 10px 0;
+  font-size: 14px;
+}
 footer {
   color: #ffffff;
   background-color: #00abdf;
 }
 .wrap-footer {
   padding: 10px 0 55px 0;
+  position: relative;
+  z-index: 1;
 }
 .footer-bg {
   position: absolute;
@@ -95,7 +131,7 @@ footer {
   left: 0;
   width: 480px;
   height: auto;
-  z-index: 0;
+  z-index: -1;
 }
 .footer-bg img {
   width: 100%;

@@ -36,7 +36,7 @@
           </thead>
           <tbody v-for="(post, index) in posts" :key="index">
             <tr>
-              <td>
+              <td style="max-width: 220px">
                 <span
                   class="cursor-pointer text-blue"
                   @click="loadPost(post.id)"
@@ -44,7 +44,7 @@
                   {{ post.title }}
                 </span>
               </td>
-              <td>{{ post.User.lastName }} {{ post.User.lastName }}</td>
+              <td>{{ post.User.lastName }} {{ post.User.firstName }}</td>
                <td>{{ post.Company.companyName }}</td>
               <td>{{ post.category }}</td>
               <td>
@@ -99,7 +99,6 @@
                 <div class="wrap-actions">
                   <router-link
                     v-if="post.status !== 'deleted'"
-                    target="_blank"
                     :to="`/blog/${post.id}`"
                   >
                     <img src="@/assets/images/view.png" alt="view" />

@@ -4,10 +4,7 @@
       <div class="page-info px-5">
         <h2 class="h2 font-weight-bold">Messages</h2>
       </div>
-      <div
-        class="dash-container"
-        v-if="messages && Object.keys(messages).length > 0"
-      >
+      <div class="dash-container" v-if="messages">
         <div class="wrap-messages">
           <div class="wrap-senders">
             <div class="wrap-search">
@@ -15,13 +12,15 @@
                 <input
                   type="text"
                   v-model="search"
+                  @input="searching($event)"
                   class="form-control custom-input"
                   placeholder="Search..."
                 />
               </div>
             </div>
             <!-- list of senders -->
-            <ul class="list-unstyled">
+
+            <ul class="list-unstyled" v-if="!_.isEmpty(messages)">
               <li
                 v-for="(message, index) in messages"
                 :key="index"
@@ -49,11 +48,14 @@
             </ul>
           </div>
           <div class="wrap-read-message">
-            <ReadMessage :message="message" />
+            <div v-if="!_.isEmpty(message)">
+              <ReadMessage :message="message" />
+            </div>
+            <div v-else class="no-search-message"></div>
           </div>
         </div>
       </div>
-      <div v-else class="no-message"></div>
+      <!-- <div v-else class="no-message"></div> -->
     </component>
   </div>
 </template>
@@ -69,28 +71,51 @@ export default {
   data() {
     return {
       messages: [],
+      searches: [],
       search: "",
       message: {},
       activeMessage: 0,
+      seached: false,
+      companyId: "",
     };
   },
   mounted() {
-    const companyId = `${this.profile.companyId}`;
-    AxiosHelper.get(`message/company/${companyId}`)
-      .then((response) => {
-        this.messagesLoaded = true;
-        this.messages = response.data.result;
-        this.message = response.data.result[0];
-        this.activeMessage = response.data.result[0].id;
-      })
-      .catch(() => {
-        this.messagesLoaded = false;
-      });
+    this.loadMessages();
   },
   methods: {
+    loadMessages() {
+      this.companyId = `${this.profile.companyId}`;
+      AxiosHelper.get(`message/company/${this.companyId}`)
+        .then((response) => {
+          this.messagesLoaded = true;
+          this.messages = response.data.result;
+          this.message = response.data.result[0];
+          this.activeMessage = response.data.result[0].id;
+        })
+        .catch(() => {
+          this.messagesLoaded = false;
+        });
+    },
     viewMessage(message) {
       this.message = message;
       this.activeMessage = message.id;
+    },
+    searching(e) {
+      this.searches = [];
+      this.seached = true;
+      if (this._.size(e.target.value)) {
+        Object.values(this.messages).some((item) => {
+          if (
+            item.message.toLowerCase().includes(e.target.value.toLowerCase())
+          ) {
+            this.searches = [...this.searches, item];
+          }
+        });
+        if (this._.isEmpty(this.searches)) this.message = {};
+        this.messages = this.searches;
+      } else {
+        this.loadMessages();
+      }
     },
   },
   computed: {
@@ -135,7 +160,7 @@ export default {
   margin: 30px;
 }
 .wrap-search input {
-  background: #F0F2F8;
+  background: #f0f2f8;
 }
 .media img {
   width: 45px;

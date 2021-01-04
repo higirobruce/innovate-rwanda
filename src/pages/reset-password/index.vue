@@ -99,6 +99,10 @@ export default {
   },
   created() {
     this.token = this.$route.params.token;
+      localStorage.removeItem("profile");
+      localStorage.removeItem("isAuth");
+      localStorage.removeItem("token");
+      localStorage.removeItem("company");
   },
   methods: {
     resetPassword(evt) {

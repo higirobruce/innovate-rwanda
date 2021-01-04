@@ -7,20 +7,33 @@
           To update office address, please place the red pin on the right
           location
         </div>
-        <label>
+        <!-- <label>
           <gmap-autocomplete
-            placeholder="This is a placeholder text"
+            placeholder="Type location..."
             @place_changed="setPlace"
           >
           </gmap-autocomplete>
           <button @click="usePlace">Add</button>
-        </label>
+        </label> -->
+        <gmap-autocomplete class="introInput">
+          <template v-slot:input="slotProps">
+            <v-text-field
+              outlined
+              prepend-inner-icon="place"
+              placeholder="Location Of Event"
+              ref="input"
+              v-on:listeners="slotProps.listeners"
+              v-on:attrs="slotProps.attrs"
+            >
+            </v-text-field>
+          </template>
+        </gmap-autocomplete>
         <div class="wrap-map">
           <GmapMap
             :center="{ lat: -1.9535713202050946, lng: 30.09239731494155 }"
             :zoom="15"
             map-type-id="terrain"
-            style="width: 940px; height: 450px"
+            style="width: 940px; height: 430px"
           >
             <GmapMarker
               :position="convertLatLng()"
@@ -47,10 +60,10 @@ Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyBOcgzwN-u8KLJ2JHeeJON8St0jAkD2u_8",
     libraries: "places",
-    installComponents: false,
+    v: "3.26",
+    installComponents: true,
   },
 });
-
 export default {
   name: "company-info",
   props: ["company"],
@@ -65,6 +78,9 @@ export default {
     this.companyInfo = { ...this.company };
   },
   methods: {
+    getAddressData() {
+      console.log("hey");
+    },
     convertLatLng() {
       let latLng = { lat: -1.9535713202050946, lng: 30.09239731494155 };
       if (this.companyInfo && this.companyInfo.officeAddress) {

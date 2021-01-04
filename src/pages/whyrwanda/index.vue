@@ -3,7 +3,7 @@
     <component :is="layout">
       <PageHeader
         image="bg-why.png"
-        rgba="rgba(0,0, 0, 0.5)"
+        rgba="rgba(4, 137, 187, 0.83)"
         title="Why Rwanda"
         subtitle=""
       />

@@ -50,64 +50,68 @@
                 <div class="company-small-info">
                   <h4>Social media</h4>
                   <div class="social-links">
-                    <a
+                    <router-link
                       style="color: #1473e6"
-                      :to="''"
+                      target="_blank"
+                      :to="`/redirect/facebook.com/${
+                        convertToObject(company.company.socialMedia).facebook
+                      }`"
                       v-if="
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).facebook
                       "
                     >
                       <i class="icon-facebook-official mr-2" />
-                    </a>
-                    <a
+                    </router-link>
+                    <router-link
                       style="color: #00aeef"
-                      :to="''"
                       target="_blank"
+                      :to="`/redirect/twitter.com/${
+                        convertToObject(company.company.socialMedia).twitter
+                      }`"
                       v-if="
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).twitter
                       "
                     >
                       <i class="icon-twitter mr-2" />
-                    </a>
-                    <a
+                    </router-link>
+                    <router-link
                       style="color: #ff1d77"
-                      :to="''"
-                      target="_blank"
+                      :to="`/redirect/instagram.com/${
+                        convertToObject(company.company.socialMedia).instagram
+                      }`"
                       v-if="
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).instagram
                       "
                     >
                       <i class="icon-instagram mr-2" />
-                    </a>
-                    <a
+                    </router-link>
+                    <router-link
                       style="color: #ff0000"
-                      target="_blank"
+                      :to="`/redirect/youtube.com/c/${
+                        convertToObject(company.company.socialMedia).youtube
+                      }`"
                       v-if="
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).youtube
                       "
-                      :href="`https://youtube.com/${
-                        convertToObject(company.company.socialMedia).youtube
-                      }`"
                     >
                       <i class="icon-youtube-play mr-2" />
-                    </a>
-                    <a
+                    </router-link>
+                    <router-link
                       style="color: #007bb5"
-                      target="_blank"
+                      :to="`/redirect/linkedin.com/company/${
+                        convertToObject(company.company.socialMedia).linkedin
+                      }`"
                       v-if="
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).linkedin
                       "
-                      :href="`https://youtube.com/c/${
-                        convertToObject(company.company.socialMedia).linkedin
-                      }`"
                     >
                       <i class="icon-linkedin-alt mr-2" />
-                    </a>
+                    </router-link>
                   </div>
                   <img src="@/assets/images/hashtag.svg" />
                 </div>
@@ -383,12 +387,12 @@ export default {
   color: #c0c6d8;
 }
 .co-similar {
-  background: #ffffff;
+  /* background: #ffffff; */
   border-radius: 4px;
   padding: 10px;
 }
 .co-similar a {
-  color: #5e7c8d;
+  color: #1b2958;
 }
 .co-loadmore {
   padding: 30px 0;

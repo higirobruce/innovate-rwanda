@@ -3,7 +3,7 @@
     <component :is="layout">
       <PageHeaderSm
         image="bg-why.png"
-        rgba="rgba(212, 121, 2, 0.7)"
+        rgba="rgba(4, 137, 187, 0.83)"
         title="Job"
       />
       <div

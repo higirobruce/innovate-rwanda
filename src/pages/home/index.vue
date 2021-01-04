@@ -14,13 +14,13 @@
             >
               Join the community
             </router-link>
-            <button
+            <router-link :to="'/about'"
               class="btn btn-lg font-weight-bold btn-secondary-outline mt-3"
             >
               Learn more
-            </button>
+            </router-link>
             <div class="clear"></div>
-            <form @submit="search" class="home-search my-4">
+            <!-- <form @submit="search" class="home-search my-4">
               <input
                 v-model="query"
                 type="text"
@@ -34,7 +34,7 @@
               >
                 <img src="@/assets/images/search.png" alt="Search" />
               </button>
-            </form>
+            </form> -->
           </div>
           <div class="innovate-bg">
             <img src="@/assets/images/bg-welcome-innovate.png" alt="Innovate" />

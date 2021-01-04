@@ -253,7 +253,21 @@ const router = new Router({
       },
     },
     {
-      path: "/redirect/:url",
+      path: "/about",
+      component: () => import("@/pages/about/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/disclaimer",
+      component: () => import("@/pages/disclaimer/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/redirect/:url*",
       component: () => import("@/pages/redirect/_url.vue"),
       meta: {
         layout: "default-layout",

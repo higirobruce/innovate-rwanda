@@ -57,7 +57,8 @@
                     )"
                     :key="index"
                   >
-                    {{ act.BusinessActivity.name }},
+                  <span v-if="index !== 0">,</span>
+                    {{ act.BusinessActivity.name }}
                   </spac>
                   <span v-if="dir.ActivitiesOfCompanies.length >= 3">
                     and more</span

@@ -63,29 +63,9 @@
                   v-model="post.content"
                 ></textarea>
               </div>
-              <div v-if="post.content" v-html="previewText"></div>
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
               <div class="content-form-sidebar">
-                <h3 class="h6">Category</h3>
-                <div class="form-group">
-                  <select
-                    class="form-control form-control-lg"
-                    name="category"
-                    v-model="post.category"
-                    @change="changeCategory($event)"
-                  >
-                    <option value="" selected disabled>Select category</option>
-                    <option
-                      v-for="(cat, index) in categories"
-                      v-bind:value="cat.name"
-                      :key="index"
-                    >
-                      {{ cat.name }}
-                    </option>
-                    <option value="other">Other category</option>
-                  </select>
-                </div>
                 <div class="form-group" v-if="showOtherCategoryInput">
                   <h3 class="h6">Specify other category</h3>
                   <input

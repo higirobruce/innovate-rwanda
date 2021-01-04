@@ -10,7 +10,7 @@
       >
         <div
           class="page-overlay"
-          :style="{ 'background-color': 'rgba(212, 121, 2, 0.7)' }"
+          :style="{ 'background-color': 'rgba(4, 137, 187, 0.83)' }"
         ></div>
         <h1>Blog</h1>
         <div class="subtitle">
@@ -29,7 +29,83 @@
           </button>
         </form>
       </div>
+      <div class="wrap-filters-box">
+        <div class="wrap-filters">
+          <div class="filter-select">
+            <select
+              name="district"
+              v-model="selectedCompany"
+              @change="changeCompany($event)"
+              required
+            >
+              <option value="" selected disabled>Company</option>
+              <option
+                v-for="(company, index) in companies"
+                v-bind:value="company.id"
+                :key="index"
+              >
+                {{ company.coName }}
+              </option>
+            </select>
+          </div>
+          <!-- <div class="filter-select">
+            <select
+              name="district"
+              v-model="yearFounded"
+              @change="changeYearfound($event)"
+              required
+            >
+              <option value="" selected disabled>Year founded</option>
+              <option
+                v-for="(year, index) in 21"
+                v-bind:value="1999 + year"
+                :key="index"
+              >
+                {{ 1999 + year }}
+              </option>
+            </select>
+          </div> -->
+          <div class="filter-select">
+            <select
+              name="district"
+              v-model="selectedActivity"
+              @change="changeActivity($event)"
+              required
+            >
+              <option value="" selected disabled>Activity</option>
+              <option
+                v-for="(act, index) in listOfBusinessActivities"
+                v-bind:value="act.id"
+                :key="index"
+              >
+                {{ act.name }}
+              </option>
+            </select>
+          </div>
+          <!-- <span class="float-right">
+            <div class="filter-select" style="max-width: 220px">
+              <select
+                name="district"
+                v-model="sortBy"
+                @change="changeSort($event)"
+                required
+              >
+                <option value="" disabled selected>Sort by</option>
+                <option v-bind:value="'date,asc'">Year founded(Asc)</option>
+                <option v-bind:value="'date,desc'">Year founded(Desc)</option>
+                <option v-bind:value="'name,asc'">Company name(A-Z)</option>
+                <option v-bind:value="'name,desc'">Company name(Z-A)</option>
+              </select>
+            </div>
+            <button type="button" @click.prevent="resetFilter">
+              Reset filters
+            </button>
+          </span> -->
+        </div>
+      </div>
       <div class="container">
+        
+      {{ posts }}
         <div class="row">
           <div
             class="col-sm-12 col-md-6 col-lg-4"
@@ -103,8 +179,13 @@ export default {
     return {
       query: "",
       posts: {},
+      companies: [],
       loading: false,
       loaded: false,
+      selectedCompany: "",
+      selectedActivity: "",
+      listOfBusinessActivities: "",
+      sortBy: "",
     };
   },
   created() {
@@ -112,6 +193,44 @@ export default {
     if (!this._.isEmpty(value)) {
       this.search(value);
     } else {
+      this.loadBlog();
+    }
+    // loading business activities
+    AxiosHelper.get("business-activities")
+      .then((response) => {
+        this.listOfBusinessActivities = response.data.result;
+      })
+      .catch(() => {});
+    AxiosHelper.get("directory/public")
+      .then((response) => {
+        this.companies = response.data.result;
+        this.loaded = true;
+      })
+      .catch(() => {
+        this.loading = false;
+        this.loaded = true;
+        this.companies = [];
+      });
+  },
+  methods: {
+    changeCompany(e) {
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.sortBy = "";
+      this.selectedCompany = e.target.value;
+      this.loadBlogWithFilter("company", this.selectedCompany);
+    },
+    changeActivity(e) {
+      this.districtBasedIn = "";
+      this.sortBy = "";
+      this.yearFounded = "";
+      this.selectedCompany = "";
+      this.loadBlogWithFilter("topic", e.target.value);
+    },
+    filterHtml(str) {
+      return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 200)}...`;
+    },
+    loadBlog() {
       AxiosHelper.get("blog/public")
         .then((response) => {
           this.posts = response.data.result;
@@ -122,11 +241,20 @@ export default {
           this.loaded = true;
           this.posts = [];
         });
-    }
-  },
-  methods: {
-    filterHtml(str) {
-      return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 200)}...`;
+    },
+    loadBlogWithFilter(filter, value) {
+      this.posts = [];
+      AxiosHelper.get(
+        `blogs/public/filter?filterBy=${filter}&filterValue=${value}`
+      )
+        .then((response) => {
+          this.posts = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+        });
     },
     search(query) {
       AxiosHelper.get(`blogs/search?searchValue=${query}`)

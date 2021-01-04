@@ -10,7 +10,7 @@
       >
         <div
           class="page-overlay"
-          :style="{ 'background-color': 'rgba(212, 121, 2, 0.7)' }"
+          :style="{ 'background-color': 'rgba(4, 137, 187, 0.83)' }"
         ></div>
         <h1>Events</h1>
         <div class="subtitle">
@@ -40,9 +40,7 @@
         <div class="row">
           <div
             class="col-sm-12 col-md-6 col-lg-4"
-            v-for="(post, index) in posts.filter(
-              (p) => p.eventDate >= timeNow
-            )"
+            v-for="(post, index) in posts.filter((p) => p.eventDate >= timeNow)"
             :key="index"
           >
             <div class="wrap-one-event">
@@ -71,12 +69,9 @@
                 <div>
                   <span>
                     by
-                    <span class="text-blue">{{ post.eventTime }}</span>
+                    <span class="text-blue">{{ post.category }}</span>
                   </span>
-                  <span class="float-right">
-                    <i class="icon-calendar mr-2" />
-                    {{ post.eventTime }} CAT</span
-                  >
+                  <span class="ml-2"> {{ post.eventTime }} CAT</span>
                 </div>
               </div>
             </div>
@@ -91,9 +86,7 @@
         <div class="row">
           <div
             class="col-sm-12 col-md-6 col-lg-4"
-            v-for="(post, index) in posts.filter(
-              (p) => p.eventDate < timeNow
-            )"
+            v-for="(post, index) in posts.filter((p) => p.eventDate < timeNow)"
             :key="index"
           >
             <div class="wrap-one-event">
@@ -166,7 +159,7 @@ export default {
     };
   },
   created() {
-    this.timeNow = moment().format('YYYY-MM-DD');
+    this.timeNow = moment().format("YYYY-MM-DD");
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {
       this.search(value);
@@ -233,7 +226,7 @@ export default {
 }
 .post-info {
   padding: 30px;
-  height: 140px;
+  height: 120px;
 }
 .post-category {
   position: absolute;

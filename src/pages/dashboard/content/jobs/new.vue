@@ -289,28 +289,6 @@ export default {
       this.file = this.$refs.file.files[0];
       this.fileName = this.file.name;
     },
-    // submitFile() {
-    //   console.log("starting....");
-    //   let formData = new FormData();
-    //   formData.append("file", this.file);
-    //   formData.append("upload_preset", "wjjxv2a4");
-    //   formData.append("cloud_name", "dbvxqoznr");
-    //   const config = {
-    //     headers: { "X-Requested-With": "XMLHttpRequest" },
-    //   };
-    //   axios
-    //     .post(
-    //       "https://api.cloudinary.com/v1_1/dbvxqoznr/image/upload",
-    //       formData,
-    //       config
-    //     )
-    //     .then((response) => {
-    //       console.log("res", response);
-    //     })
-    //     .catch((e) => {
-    //       console.log("ee", e);
-    //     });
-    // },
     changeCategory(e) {
       if (e.target.value === "other") {
         this.showOtherCategoryInput = true;
