@@ -247,7 +247,28 @@ const router = new Router({
     },
     {
       path: "/dashboard/settings",
-      component: () => import("@/pages/dashboard/settings/index.vue"),
+      component: () => import("@/pages/dashboard/settings/profile.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings/business-activities",
+      component: () => import("@/pages/dashboard/settings/activities.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings/company-types",
+      component: () => import("@/pages/dashboard/settings/types.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/notifications",
+      component: () => import("@/pages/dashboard/notifications/index.vue"),
       meta: {
         layout: "dashboard-layout",
       },
@@ -263,7 +284,28 @@ const router = new Router({
       path: "/disclaimer",
       component: () => import("@/pages/disclaimer/index.vue"),
       meta: {
-        layout: "default-layout",
+        layout: "terms-layout",
+      },
+    },
+    {
+      path: "/terms",
+      component: () => import("@/pages/terms/index.vue"),
+      meta: {
+        layout: "terms-layout",
+      },
+    },
+    {
+      path: "/cookies-policy",
+      component: () => import("@/pages/cookies/index.vue"),
+      meta: {
+        layout: "terms-layout",
+      },
+    },
+    {
+      path: "/privacy-policy",
+      component: () => import("@/pages/privacy-policy/index.vue"),
+      meta: {
+        layout: "terms-layout",
       },
     },
     {

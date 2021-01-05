@@ -15,22 +15,34 @@
           </gmap-autocomplete>
           <button @click="usePlace">Add</button>
         </label> -->
-        <gmap-autocomplete class="introInput">
+        <!-- ref="input" -->
+        <!-- <gmap-autocomplete class="introInput">
           <template v-slot:input="slotProps">
             <v-text-field
               outlined
               prepend-inner-icon="place"
-              placeholder="Location Of Event"
-              ref="input"
+              placeholder="Search location"
+              :value="starting_point"
               v-on:listeners="slotProps.listeners"
               v-on:attrs="slotProps.attrs"
+              @place_changed="setPlace"
             >
             </v-text-field>
           </template>
-        </gmap-autocomplete>
+        </gmap-autocomplete> -->
+        <GmapAutocomplete
+          :position.sync="place"
+          @keyup.enter="usePlace"
+          @place_changed="setPlace"
+        >
+        </GmapAutocomplete>
+        <button @click="usePlace">Add</button>
+        <div>
+          {{ starting_point }}
+        </div>
         <div class="wrap-map">
           <GmapMap
-            :center="{ lat: -1.9535713202050946, lng: 30.09239731494155 }"
+            :center="place"
             :zoom="15"
             map-type-id="terrain"
             style="width: 940px; height: 430px"
@@ -59,6 +71,7 @@ import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyBOcgzwN-u8KLJ2JHeeJON8St0jAkD2u_8",
+    // key: "AIzaSyAs37zlR3-DucdN_ArQfHPLSJ5Eay1tdUs",
     libraries: "places",
     v: "3.26",
     installComponents: true,
@@ -71,18 +84,25 @@ export default {
     return {
       companyInfo: {},
       officeAddress: null,
-      place: null,
+      place: { lat: -1.9535713202050946, lng: 30.09239731494155 },
+      starting_point: "",
     };
   },
   mounted() {
     this.companyInfo = { ...this.company };
   },
   methods: {
-    getAddressData() {
-      console.log("hey");
+    setPlace(place) {
+      this.place = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      };
+    },
+    locationChanged() {
+      console.log("hey", this.starting_point);
     },
     convertLatLng() {
-      let latLng = { lat: -1.9535713202050946, lng: 30.09239731494155 };
+      let latLng = this.place;
       if (this.companyInfo && this.companyInfo.officeAddress) {
         latLng = JSON.parse(this.companyInfo.officeAddress);
       }
@@ -98,9 +118,9 @@ export default {
       };
       this.companyInfo.officeAddress = JSON.stringify(this.officeAddress);
     },
-    setPlace(place) {
-      this.place = place;
-    },
+    // setPlace(place) {
+    //   this.place = place;
+    // },
     usePlace(place) {
       console.log("pl", place);
       if (this.place) {

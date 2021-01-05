@@ -33,7 +33,7 @@
         <div class="wrap-filters">
           <div class="filter-select">
             <select
-              name="district"
+              name="company"
               v-model="selectedCompany"
               @change="changeCompany($event)"
               required
@@ -48,26 +48,26 @@
               </option>
             </select>
           </div>
-          <!-- <div class="filter-select">
+          <div class="filter-select">
             <select
-              name="district"
+              name="year"
               v-model="yearFounded"
               @change="changeYearfound($event)"
               required
             >
-              <option value="" selected disabled>Year founded</option>
+              <option value="" selected disabled>Year</option>
               <option
-                v-for="(year, index) in 21"
-                v-bind:value="1999 + year"
+                v-for="(year, index) in 4"
+                v-bind:value="new Date().getFullYear() - year + 1"
                 :key="index"
               >
-                {{ 1999 + year }}
+                {{ new Date().getFullYear() - year + 1 }}
               </option>
             </select>
-          </div> -->
+          </div>
           <div class="filter-select">
             <select
-              name="district"
+              name="activity"
               v-model="selectedActivity"
               @change="changeActivity($event)"
               required
@@ -82,81 +82,31 @@
               </option>
             </select>
           </div>
-          <!-- <span class="float-right">
+
+          <span class="float-right">
             <div class="filter-select" style="max-width: 220px">
               <select
-                name="district"
+                name="sort"
                 v-model="sortBy"
                 @change="changeSort($event)"
                 required
               >
                 <option value="" disabled selected>Sort by</option>
-                <option v-bind:value="'date,asc'">Year founded(Asc)</option>
-                <option v-bind:value="'date,desc'">Year founded(Desc)</option>
-                <option v-bind:value="'name,asc'">Company name(A-Z)</option>
-                <option v-bind:value="'name,desc'">Company name(Z-A)</option>
+                <option v-bind:value="'date,asc'">Date(Asc)</option>
+                <option v-bind:value="'date,desc'">Date(Desc)</option>
+                <option v-bind:value="'title,asc'">Title(A-Z)</option>
+                <option v-bind:value="'title,desc'">Title(Z-A)</option>
               </select>
             </div>
             <button type="button" @click.prevent="resetFilter">
               Reset filters
             </button>
-          </span> -->
+          </span>
         </div>
       </div>
       <div class="container">
-        
-      {{ posts }}
-        <div class="row">
-          <div
-            class="col-sm-12 col-md-6 col-lg-4"
-            v-for="(post, index) in posts"
-            :key="index"
-          >
-            <div class="wrap-one-post">
-              <router-link :to="`blog/${post.id}`">
-                <div class="one-post-image">
-                  <img
-                    v-if="post.image"
-                    :src="`${IMAGE_URL}c_fill,g_center,w_500,h_250/${post.image}`"
-                    :alt="post.title"
-                  />
-                  <img
-                    v-else
-                    src="@/assets/images/post_placeholder.svg"
-                    :alt="post.title"
-                  />
-                </div>
-              </router-link>
-              <div class="post-info position-relative">
-                <div class="post-category" v-if="post.category">
-                  {{ post.category }}
-                </div>
-                <h2>
-                  <router-link
-                    class="text-blue-dark font-weight-bold"
-                    :to="`blog/${post.id}`"
-                  >
-                    {{ post.title | truncate(58) }}
-                  </router-link>
-                </h2>
-                <div class="post-content mb-2">
-                  {{ filterHtml(post.content) }}
-                </div>
-                <div>
-                  <span>
-                    by
-                    <span class="text-blue"
-                      >{{ post.User.lastName }} {{ post.User.firstName }}</span
-                    >
-                  </span>
-                  <span class="float-right">
-                    <i class="icon-calendar mr-2" />
-                    {{ post.createdAt | date("MMM YYYY") }}</span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
+        <div v-if="!_.isEmpty(posts)">
+          <ListBlog :posts="posts" />
         </div>
         <div v-if="loaded && _.isEmpty(posts)" class="empty-post">
           <img src="@/assets/images/empty.png" />
@@ -170,10 +120,12 @@
 <script>
 import PageHeader from "@/components/PageHeader";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import ListBlog from "@/components/ListBlog"
 export default {
   name: "blog",
   components: {
     PageHeader,
+    ListBlog
   },
   data() {
     return {
@@ -186,6 +138,7 @@ export default {
       selectedActivity: "",
       listOfBusinessActivities: "",
       sortBy: "",
+      yearFounded: "",
     };
   },
   created() {
@@ -221,11 +174,16 @@ export default {
       this.loadBlogWithFilter("company", this.selectedCompany);
     },
     changeActivity(e) {
-      this.districtBasedIn = "";
       this.sortBy = "";
       this.yearFounded = "";
       this.selectedCompany = "";
       this.loadBlogWithFilter("topic", e.target.value);
+    },
+    changeYearfound(e) {
+      this.sortBy = "";
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.loadBlogWithFilter("year", e.target.value);
     },
     filterHtml(str) {
       return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 200)}...`;
@@ -242,6 +200,14 @@ export default {
           this.posts = [];
         });
     },
+    resetFilter() {
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.yearFounded = "";
+      this.sortBy = "";
+      this.posts = [];
+      this.loadBlog();
+    },
     loadBlogWithFilter(filter, value) {
       this.posts = [];
       AxiosHelper.get(
@@ -254,6 +220,26 @@ export default {
         .catch(() => {
           this.loading = false;
           this.loaded = true;
+        });
+    },
+    changeSort(e) {
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.yearFounded = "";
+      this.posts = [];
+      const sortBy = e.target.value.split(",")[0];
+      const sortValue = e.target.value.split(",")[1];
+      AxiosHelper.get(
+        `blogs/public/sort?sortBy=${sortBy}&sortValue=${sortValue}`
+      )
+        .then((response) => {
+          this.posts = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+          this.posts = [];
         });
     },
     search(query) {
@@ -283,38 +269,5 @@ export default {
 <style scoped>
 .container {
   max-width: 1280px;
-}
-.wrap-one-post {
-  background: #fff;
-  box-shadow: 0px 4px 16px rgba(27, 41, 88, 0.08);
-  border-radius: 3px;
-  margin-bottom: 40px;
-}
-.post-info {
-  padding: 30px;
-  height: 310px;
-}
-.post-category {
-  position: absolute;
-  top: -18px;
-  padding: 5px 15px;
-  background: #fef2e3;
-  color: #ef8700;
-}
-.post-content {
-  font-weight: 200 !important;
-  font-size: 16px !important;
-  max-height: 120px;
-  overflow: hidden;
-}
-.post-info h2 {
-  font-size: 28px;
-  max-height: 100px;
-}
-.one-post-image {
-  width: 100%;
-}
-.one-post-image img {
-  width: 100%;
 }
 </style>

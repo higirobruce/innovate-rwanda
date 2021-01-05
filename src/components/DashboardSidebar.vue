@@ -42,7 +42,11 @@
       </li>
       <li
         class="nav-item"
-        v-if="profile.role === 'normal' || profile.role === 'admin-blog'  || profile.role === 'super-admin'"
+        v-if="
+          profile.role === 'normal' ||
+          profile.role === 'admin-blog' ||
+          profile.role === 'super-admin'
+        "
       >
         <router-link :to="'/dashboard/content'">
           <img src="@/assets/images/icon-content.png" />
@@ -131,5 +135,16 @@ export default {
 }
 .dash-nav li.float-bottom {
   width: 120px;
+}
+@media screen and (max-width: 850px) {
+  .nav-item div {
+    display: none;
+  }
+  .dash-nav li.float-bottom {
+    width: 60px;
+  }
+  .dash-logo img {
+    max-width: 30px;
+  }
 }
 </style>

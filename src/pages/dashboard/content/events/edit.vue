@@ -11,20 +11,10 @@
             >Cancel</router-link
           >
           <button
-            @click="saveAsDraft('draft')"
-            :disabled="post.title === ''"
-            class="btn font-weight-bold btn-primary-outline ml-3"
-          >
-            Save as draft
-          </button>
-          <button
-            @click="publishAPost('pending')"
-            :disabled="
-              post.title === '' || post.category === '' || post.description === ''
-            "
+            @click="updateEvent"
             class="btn font-weight-bold btn-success-outline ml-3"
           >
-            Publish
+            Update
           </button>
         </div>
       </div>
@@ -243,7 +233,7 @@ export default {
       editing: false,
       imageUpdated: false,
       showOtherCategoryInput: false,
-      listOfBusinessActivities: []
+      listOfBusinessActivities: [],
     };
   },
   beforeCreate() {
@@ -332,16 +322,11 @@ export default {
         this.post.category = e.target.value;
       }
     },
-    publishAPost(status) {
+    updateEvent() {
       this.editing = true;
-      this.savePost(status);
+      this.savePost();
     },
-    saveAsDraft(status) {
-      this.editing = true;
-      this.savePost(status);
-    },
-    savePost(status) {
-      this.post.status = status;
+    savePost() {
       this.uploading = true;
       this.created = false;
       if (this.selectedFile) {
@@ -396,7 +381,7 @@ export default {
           )
           .then((response) => {
             // uploaded successfully, continue submiting article then
-            this.post.image = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
+            this.post.flyer = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
             this.selectedFile = false;
             this.imageUpdated = true;
             this.submitPostNow();

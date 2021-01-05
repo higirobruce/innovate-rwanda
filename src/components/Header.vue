@@ -22,18 +22,20 @@
                 <router-link active :to="'/why-rwanda'">Why Rwanda</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link active  :to="'/directory'"
+                <router-link active :to="'/directory'"
                   >Community Directory</router-link
                 >
               </li>
               <li class="list-inline-item">
-                <router-link active  :to="'/events'">Events</router-link>
+                <router-link active :to="'/events'">Events</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link active  :to="'/blog'">Blog</router-link>
+                <router-link active :to="'/blog'">Blog</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link active  :to="'/find-talent'">Find Talent</router-link>
+                <router-link active :to="'/find-talent'"
+                  >Find Talent</router-link
+                >
               </li>
             </ul>
           </div>
@@ -76,7 +78,7 @@
     <!-- Sidebar -->
     <div class="wrap-sidebar" v-if="isSidebarOpen">
       <button class="close" @click="isSidebarOpen = false">
-       <i class="icon-times" />
+        <i class="icon-times" />
       </button>
       <div class="sidebar-nav mt-5">
         <ul class="list-group list-group-flush">
@@ -108,7 +110,7 @@
     <div class="wrap-auth-modal" v-if="isAuthModelOpen">
       <div class="auth-modal">
         <button class="close" @click="isAuthModelOpen = false">
-          <i class="icon"  />
+          <i class="icon" />
         </button>
         <div class="auth-wrap-btns mb-4">
           <button
@@ -133,7 +135,6 @@ export default {
       isAuthModelOpen: false,
     };
   },
-
   methods: {
     toggleMenu() {
       this.isSidebarOpen = !this.isSidebarOpen;
@@ -237,7 +238,7 @@ export default {
   content: "";
   width: 100%;
   height: 4px;
-  background: #00AEEF;
+  background: #00aeef;
   bottom: -50px;
   left: 0;
 }

@@ -141,7 +141,9 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyBOcgzwN-u8KLJ2JHeeJON8St0jAkD2u_8",
+    key: "AIzaSyB4BlTNmRI2uk50yZ-QLat92Vb08U_WNhE",
+    // key: "AIzaSyBOcgzwN-u8KLJ2JHeeJON8St0jAkD2u_8",
+    // AIzaSyB4BlTNmRI2uk50yZ-QLat92Vb08U_WNhE
     libraries: "places",
   },
 });

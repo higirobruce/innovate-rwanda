@@ -1,51 +1,58 @@
 <template>
-  <div class="wrap-companies">
-    <div
-      class="row one-company"
-      v-for="(company, index) in response"
-      :key="index"
-    >
-      <div class="col-sm-12 col-md-4 col-lg-2">
-        <div class="company-logo">
-          <router-link :to="`/company/${company.slug}`">
-            <img
-              v-if="company && company.logo"
-              :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${company.logo}`"
-              :alt="company.coName"
-            />
-            <img
-              v-else
-              src="@/assets/images/logo_placeholder.svg"
-              :alt="company.coName"
-            />
+  <div class="wrap-blog">
+    <div class="row">
+      <div
+        class="col-sm-12 col-md-6 col-lg-4"
+        v-for="(post, index) in response"
+        :key="index"
+      >
+        <div class="wrap-one-post">
+          <router-link :to="`blog/${post.id}`">
+            <div class="one-post-image">
+              <img
+                v-if="post.image"
+                :src="`${IMAGE_URL}c_fill,g_center,w_500,h_250/${post.image}`"
+                :alt="post.title"
+              />
+              <img
+                v-else
+                src="@/assets/images/post_placeholder.svg"
+                :alt="post.title"
+              />
+            </div>
           </router-link>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-8 col-lg-10">
-        <router-link :to="`/company/${company.slug}`">
-          <h2>{{ company.coName }}</h2>
-          <div>
-            <div class="mb-2 co-info" v-if="company.yearFounded">
-              <i class="icon-calendar" />
-              <span class="ml-2">{{ company.yearFounded }} </span>
+          <div class="post-info position-relative">
+            <div class="post-category" v-if="post.category">
+              {{ post.category }}
             </div>
-            <div class="mb-2 co-info" v-if="company.districtBasedIn">
-              <i class="icon-marker-stroked" />
-              <span class="ml-2">{{ company.districtBasedIn }} </span>
+            <h2>
+              <router-link
+                class="text-blue-dark font-weight-bold"
+                :to="`blog/${post.id}`"
+              >
+                {{ post.title | truncate(58) }}
+              </router-link>
+            </h2>
+            <div class="post-content mb-2">
+              {{ filterHtml(post.content) }}
             </div>
-            <div class="mb-2 co-info" v-if="company.mainAreaOfInterest">
-              <i class="icon-pound" />
-              <span class="ml-2">{{ company.mainAreaOfInterest }} </span>
-            </div>
-            <div class="mb-2 co-info" v-if="company.shortDescription">
-              <i class="icon-comment" />
-              <span class="ml-2">{{ company.shortDescription }} </span>
+            <div>
+              <span>
+                by
+                <span class="text-blue"
+                  >{{ post.User.lastName }} {{ post.User.firstName }}</span
+                >
+              </span>
+              <span class="float-right">
+                <i class="icon-calendar mr-2" />
+                {{ post.createdAt | date("MMM YYYY") }}</span
+              >
             </div>
           </div>
-        </router-link>
+        </div>
       </div>
-      <div class="info-separator clear my-3">&nbsp;</div>
     </div>
+    <!-- START PAGINATION -->
     <div class="wrap-pagination">
       <button
         type="button"
@@ -70,13 +77,14 @@
         <img src="@/assets/images/right-arrow.png" />
       </button>
     </div>
+    <!-- END PAGINATION -->
   </div>
 </template>
 
 <script>
 export default {
-  name: "list-companies",
-  props: ["companies"],
+  name: "list-blog",
+  props: ["posts"],
   data() {
     return {
       response: [],
@@ -87,31 +95,35 @@ export default {
     };
   },
   created() {
-    this.count = this.companies.length;
-    this.response = this.companies.slice(
+    this.count = this.posts.length;
+    this.response = this.posts.slice(
       this.currentPage,
-      this.numberOnPage >= this.count ?  this.count : this.numberOnPage
+      this.numberOnPage >= this.count ? this.count : this.numberOnPage
     );
-    this.allPages = this.count > this.numberOnPage ? this.count / this.numberOnPage : 1;
+    this.allPages =
+      this.count > this.numberOnPage ? this.count / this.numberOnPage : 1;
   },
   methods: {
+    filterHtml(str) {
+      return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 200)}...`;
+    },
     goToPrevious() {
       this.currentPage = this.currentPage - 1;
-      this.response = this.companies.slice(
+      this.response = this.posts.slice(
         this.currentPage,
         this.numberOnPage + this.currentPage
       );
     },
     goToNext() {
       this.currentPage = this.currentPage + 1;
-      this.response = this.companies.slice(
+      this.response = this.posts.slice(
         this.currentPage,
         this.numberOnPage + this.currentPage
       );
     },
     goTo(page) {
       this.currentPage = page;
-      this.response = this.companies.slice(
+      this.response = this.posts.slice(
         this.currentPage,
         this.numberOnPage + this.currentPage
       );
@@ -121,7 +133,7 @@ export default {
 </script>
 
 <style scoped>
-.wrap-companies {
+.wrap-posts {
   padding: 40px;
   box-shadow: 0px 17px 36px #1b295814;
   border-radius: 3px;

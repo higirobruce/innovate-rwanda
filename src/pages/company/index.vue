@@ -213,27 +213,29 @@
           <div class="text-center similar-desc mb-4">
             based on areas of interests
           </div>
-          <div class="row">
+          <div class="row similar-companies">
             <div
               class="col-sm-12 col-md-6 col-lg-4"
               v-for="(co, index) in company.similarCompanies"
               :key="index"
             >
-              <div class="co-similar">
-                <router-link :to="`/company/${co.Company.slug}`">
+              <router-link :to="`/company/${co.slug}`">
+                <div class="co-similar">
                   <img
-                    v-if="co && co.Company"
-                    :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${co.Company.logo}`"
-                    :alt="company.company.coName"
+                    v-if="co && co.logo"
+                    :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${co.logo}`"
+                    :alt="company.coName"
                   />
                   <img
                     v-else
                     src="@/assets/images/logo_placeholder.svg"
-                    :alt="company.company.coName"
+                    :alt="company.coName"
                   />
-                  {{ co.Company.companyName }}
-                </router-link>
-              </div>
+                  <h4>
+                    {{ co.companyName }}
+                  </h4>
+                </div>
+              </router-link>
             </div>
           </div>
           <div class="co-loadmore">
@@ -386,13 +388,25 @@ export default {
 .similar-desc {
   color: #c0c6d8;
 }
-.co-similar {
-  /* background: #ffffff; */
-  border-radius: 4px;
-  padding: 10px;
+.similar-companies {
+  border-top: 1px solid #cecece;
+  padding-top: 25px;
 }
-.co-similar a {
+.co-similar {
+  border-bottom: 1px solid #cecece;
+  display: flex;
+  padding: 10px 0;
+  align-items: center;
+  justify-content: center;
+}
+.co-similar img {
+  width: 60px;
+}
+.co-similar h4 {
+  padding: 0 20px;
+  width: calc(100% - 60px);
   color: #1b2958;
+  font-size: 18px;
 }
 .co-loadmore {
   padding: 30px 0;

@@ -54,4 +54,13 @@ export default {
   width: calc(100% - 120px);
   margin-left: 120px;
 }
+@media screen and (max-width: 850px) {
+  .wrap-sidebar {
+    width: 60px;
+  }
+  .wrap-dash-content {
+    width: calc(100% - 60px);
+    margin-left: 60px;
+  }
+}
 </style>

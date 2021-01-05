@@ -11,20 +11,10 @@
             >Cancel</router-link
           >
           <button
-            @click="saveAsDraft('draft')"
-            :disabled="post.title === ''"
-            class="btn font-weight-bold btn-primary-outline ml-3"
-          >
-            Save as draft
-          </button>
-          <button
-            @click="publishArticle('pending')"
-            :disabled="
-              post.title === '' || post.category === '' || post.content === ''
-            "
+            @click="updateArticle"
             class="btn font-weight-bold btn-success-outline ml-3"
           >
-            Publish
+            Update
           </button>
         </div>
       </div>
@@ -39,7 +29,7 @@
               {{ post.title }}
             </span>
           </h4>
-          <div class="alert alert-info" v-if="!created && editing">
+          <div class="alert alert-info" v-if="editing">
             Wait, we are editing your content...
           </div>
           <div class="alert alert-success" v-if="created && !uploading">
@@ -58,14 +48,14 @@
                 />
               </div>
               <div class="form-group">
-              <div class="form-group">
-                <textarea
-                  style="height: auto"
-                  rows="16"
-                  class="form-control"
-                  v-model="post.content"
-                ></textarea>
-              </div>
+                <div class="form-group">
+                  <textarea
+                    style="height: auto"
+                    rows="16"
+                    class="form-control"
+                    v-model="post.content"
+                  ></textarea>
+                </div>
               </div>
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
@@ -241,6 +231,7 @@ export default {
       editing: false,
       imageUpdated: false,
       showOtherCategoryInput: false,
+      listOfBusinessActivities: [],
     };
   },
   beforeCreate() {
@@ -329,11 +320,7 @@ export default {
         this.post.category = e.target.value;
       }
     },
-    publishArticle(status) {
-      this.editing = true;
-      this.savePost(status);
-    },
-    saveAsDraft(status) {
+    updateArticle() {
       this.editing = true;
       this.savePost(status);
     },

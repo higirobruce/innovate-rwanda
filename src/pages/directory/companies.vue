@@ -56,11 +56,11 @@
             >
               <option value="" selected disabled>Year founded</option>
               <option
-                v-for="(year, index) in 21"
-                v-bind:value="1999 + year"
+                v-for="(year, index) in 22"
+                v-bind:value="new Date().getFullYear() - year + 1"
                 :key="index"
               >
-                {{ 1999 + year }}
+                {{ new Date().getFullYear() - year + 1 }}
               </option>
             </select>
           </div>
@@ -171,7 +171,7 @@ export default {
       this.yearFounded = "";
       this.selectedActivity = "";
       this.sortBy = "";
-       this.directory = [];
+      this.directory = [];
       this.loadCompanies();
     },
     changeLocation(e) {

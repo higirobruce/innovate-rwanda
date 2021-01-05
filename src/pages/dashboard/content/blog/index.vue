@@ -41,7 +41,7 @@
                   class="cursor-pointer text-blue"
                   @click="loadPost(post.id)"
                 >
-                  {{ post.title }}
+                  {{ post.title | truncate(60) }}
                 </span>
               </td>
               <td>{{ post.User.lastName }} {{ post.User.firstName }}</td>
@@ -130,7 +130,7 @@
           name="openInfoBlog"
           :adaptive="true"
           :scrollable="true"
-          :height="650"
+          :height="660"
           :width="1100"
         >
           <InfoBlog :id="postId" />
@@ -193,13 +193,6 @@ export default {
       });
   },
   methods: {
-    // convertTagsArray(object) {
-    //   const arr = object
-    //     .substring(1, object.length - 1)
-    //     .replace(/"/g, "")
-    //     .split(",");
-    //   return arr;
-    // },
     loadPost(postId) {
       this.postId = postId;
       this.$modal.show("openInfoBlog");

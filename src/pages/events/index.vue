@@ -38,44 +38,7 @@
           Upcoming Events
         </h2>
         <div class="row">
-          <div
-            class="col-sm-12 col-md-6 col-lg-4"
-            v-for="(post, index) in posts.filter((p) => p.eventDate >= timeNow)"
-            :key="index"
-          >
-            <div class="wrap-one-event">
-              <router-link :to="`event/${post.id}`">
-                <div class="one-event-image">
-                  <img
-                    v-if="post.flyer"
-                    :src="`${IMAGE_URL}c_fill,g_center,w_500,h_250/${post.flyer}`"
-                    :alt="post.title"
-                  />
-                  <img
-                    v-else
-                    src="@/assets/images/post_placeholder.svg"
-                    :alt="post.title"
-                  />
-                  <h2>
-                    {{ post.title | truncate(58) }}
-                  </h2>
-                </div>
-              </router-link>
-              <div class="post-info">
-                <h3 class="h5 text-blue-dark">
-                  <i class="icon-calendar mr-2" />
-                  {{ post.eventDate | date("DD MMM YYYY") }}
-                </h3>
-                <div>
-                  <span>
-                    by
-                    <span class="text-blue">{{ post.category }}</span>
-                  </span>
-                  <span class="ml-2"> {{ post.eventTime }} CAT</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ListEvents :events="getUpcomingEvents()" />
         </div>
         <h2
           class="h2 pb-4 text-blue-dark text-center"
@@ -86,7 +49,7 @@
         <div class="row">
           <div
             class="col-sm-12 col-md-6 col-lg-4"
-            v-for="(post, index) in posts.filter((p) => p.eventDate < timeNow)"
+            v-for="(post, index) in getPastEvents()"
             :key="index"
           >
             <div class="wrap-one-event">
@@ -139,6 +102,7 @@
 import Vue from "vue";
 import PageHeader from "@/components/PageHeader";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import ListEvents from "@/components/ListEvents";
 let marked = require("marked");
 
 import moment from "moment";
@@ -148,11 +112,14 @@ export default {
   name: "jobs",
   components: {
     PageHeader,
+    ListEvents,
   },
   data() {
     return {
       query: "",
       posts: {},
+      postEvents: [],
+      upcomingEVents: [],
       loading: false,
       loaded: false,
       timeNow: "",
@@ -177,6 +144,29 @@ export default {
     }
   },
   methods: {
+    getPastEvents() {
+      let pastEvents = [];
+      if (this.posts && this.posts.length > 0) {
+        this.posts.forEach((event) => {
+          if (event.eventDate <= this.timeNow) {
+            pastEvents = [...pastEvents, event];
+          }
+        });
+      }
+      return pastEvents;
+    },
+    getUpcomingEvents() {
+      let comingEvents = [];
+      if (this.posts && this.posts.length > 0) {
+        console.log("hey", this.posts.length);
+        this.posts.forEach((event) => {
+          if (event.eventDate >= this.timeNow) {
+            comingEvents = [...comingEvents, event];
+          }
+        });
+      }
+      return comingEvents;
+    },
     filterHtml(str) {
       return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 200)}...`;
     },
@@ -216,56 +206,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.wrap-one-event {
-  background: #fff;
-  box-shadow: 0px 4px 16px rgba(27, 41, 88, 0.08);
-  border-radius: 3px;
-  margin-bottom: 40px;
-}
-.post-info {
-  padding: 30px;
-  height: 120px;
-}
-.post-category {
-  position: absolute;
-  top: -18px;
-  padding: 5px 15px;
-  background: #fef2e3;
-  color: #ef8700;
-}
-.post-content {
-  font-weight: 200 !important;
-  font-size: 16px !important;
-  max-height: 120px;
-  overflow: hidden;
-}
-.post-info h2 {
-  font-size: 28px;
-  max-height: 100px;
-}
-.one-event-image {
-  width: 100%;
-  position: relative;
-}
-.one-event-image h2 {
-  position: absolute;
-  padding: 10px 20px;
-  bottom: 5px;
-  font-size: 28px;
-  color: #ffffff;
-}
-.one-event-image::before {
-  position: absolute;
-  content: "";
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.4);
-  width: 100%;
-  height: 100%;
-}
-.one-event-image img {
-  width: 100%;
-}
-</style>

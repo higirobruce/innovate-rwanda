@@ -28,6 +28,81 @@
           </button>
         </form>
       </div>
+      <div class="wrap-filters-box">
+        <div class="wrap-filters">
+          <div class="filter-select">
+            <select
+              name="company"
+              v-model="selectedCompany"
+              @change="changeCompany($event)"
+              required
+            >
+              <option value="" selected disabled>Company</option>
+              <option
+                v-for="(company, index) in companies"
+                v-bind:value="company.id"
+                :key="index"
+              >
+                {{ company.coName }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-select">
+            <select
+              name="year"
+              v-model="yearFounded"
+              @change="changeYearfound($event)"
+              required
+            >
+              <option value="" selected disabled>Year</option>
+              <option
+                v-for="(year, index) in 4"
+                v-bind:value="new Date().getFullYear() - year + 1"
+                :key="index"
+              >
+                {{ new Date().getFullYear() - year + 1 }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-select">
+            <select
+              name="activity"
+              v-model="selectedActivity"
+              @change="changeActivity($event)"
+              required
+            >
+              <option value="" selected disabled>Activity</option>
+              <option
+                v-for="(act, index) in listOfBusinessActivities"
+                v-bind:value="act.id"
+                :key="index"
+              >
+                {{ act.name }}
+              </option>
+            </select>
+          </div>
+
+          <span class="float-right">
+            <div class="filter-select" style="max-width: 220px">
+              <select
+                name="sort"
+                v-model="sortBy"
+                @change="changeSort($event)"
+                required
+              >
+                <option value="" disabled selected>Sort by</option>
+                <option v-bind:value="'date,asc'">Date(Asc)</option>
+                <option v-bind:value="'date,desc'">Date(Desc)</option>
+                <option v-bind:value="'title,asc'">Title(A-Z)</option>
+                <option v-bind:value="'title,desc'">Title(Z-A)</option>
+              </select>
+            </div>
+            <button type="button" @click.prevent="resetFilter">
+              Reset filters
+            </button>
+          </span>
+        </div>
+      </div>
       <div class="container">
         <div class="wrap-companies" v-if="!_.isEmpty(posts)">
           <div
@@ -116,6 +191,12 @@ export default {
       posts: {},
       loading: false,
       loaded: false,
+      companies: [],
+      selectedCompany: "",
+      selectedActivity: "",
+      listOfBusinessActivities: "",
+      sortBy: "",
+      yearFounded: "",
     };
   },
   computed: {
@@ -136,7 +217,29 @@ export default {
     if (!this._.isEmpty(value)) {
       this.search(value);
     } else {
-      AxiosHelper.get("jobs/public")
+      this.loadJob();
+    }
+    // loading business activities
+    AxiosHelper.get("business-activities")
+      .then((response) => {
+        this.listOfBusinessActivities = response.data.result;
+      })
+      .catch(() => {});
+    // load all companies
+    AxiosHelper.get("directory/public")
+      .then((response) => {
+        this.companies = response.data.result;
+        this.loaded = true;
+      })
+      .catch(() => {
+        this.loading = false;
+        this.loaded = true;
+        this.companies = [];
+      });
+  },
+  methods: {
+    search(query) {
+      AxiosHelper.get(`jobs/public/search?searchValue=${query}`)
         .then((response) => {
           this.posts = response.data.result;
           this.loaded = true;
@@ -146,11 +249,62 @@ export default {
           this.loaded = true;
           this.posts = [];
         });
-    }
-  },
-  methods: {
-    search(query) {
-      AxiosHelper.get(`jobs/public/search?searchValue=${query}`)
+    },
+    changeCompany(e) {
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.sortBy = "";
+      this.selectedCompany = e.target.value;
+      this.loadJobsWithFilter("company", this.selectedCompany);
+    },
+    changeYearfound(e) {
+      this.sortBy = "";
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.loadJobsWithFilter("year", e.target.value);
+    },
+    changeActivity(e) {
+      this.sortBy = "";
+      this.yearFounded = "";
+      this.selectedCompany = "";
+      this.loadJobsWithFilter("topic", e.target.value);
+    },
+    loadJobsWithFilter(filter, value) {
+      this.posts = [];
+      AxiosHelper.get(
+        `jobs/public/filter?filterBy=${filter}&filterValue=${value}`
+      )
+        .then((response) => {
+          this.posts = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+        });
+    },
+    changeSort(e) {
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.yearFounded = "";
+      this.posts = [];
+      const sortBy = e.target.value.split(",")[0];
+      const sortValue = e.target.value.split(",")[1];
+      AxiosHelper.get(
+        `jobs/public/sort?sortBy=${sortBy}&sortValue=${sortValue}`
+      )
+        .then((response) => {
+          this.posts = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+          this.posts = [];
+        });
+    },
+    loadJob() {
+      AxiosHelper.get("jobs/public")
         .then((response) => {
           this.posts = response.data.result;
           this.loaded = true;

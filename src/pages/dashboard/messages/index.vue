@@ -4,7 +4,7 @@
       <div class="page-info px-5">
         <h2 class="h2 font-weight-bold">Messages</h2>
       </div>
-      <div class="dash-container" v-if="messages">
+      <div class="dash-container" v-if="messages && profile && profile.role === 'normal'">
         <div class="wrap-messages">
           <div class="wrap-senders">
             <div class="wrap-search">
@@ -55,7 +55,7 @@
           </div>
         </div>
       </div>
-      <!-- <div v-else class="no-message"></div> -->
+      <div v-else class="not-allowed"></div>
     </component>
   </div>
 </template>

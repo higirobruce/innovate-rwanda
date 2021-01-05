@@ -1,5 +1,7 @@
 <template>
-  <footer>
+  <footer
+    :style="`${firstTime ? 'padding-bottom: 90px' : ''}`"
+  >
     <!-- Footer -->
     <div class="wrap-footer">
       <div class="container position-relative">
@@ -50,9 +52,15 @@
           <div class="float-lg-left">
             <h4 class="h6">Follow us</h4>
             <div>
-              <router-link :to="'/'"> <i class="icon-facebook-official mr-2" /></router-link>
-              <router-link :to="'/'"> <i class="icon-twitter mr-2" /></router-link>
-              <router-link :to="'/'"> <i class="icon-instagrem mr-2" /></router-link>
+              <router-link :to="'/'">
+                <i class="icon-facebook-official mr-2"
+              /></router-link>
+              <router-link :to="'/'">
+                <i class="icon-twitter mr-2"
+              /></router-link>
+              <router-link :to="'/'">
+                <i class="icon-instagram mr-2"
+              /></router-link>
             </div>
           </div>
           <div class="float-lg-right">
@@ -75,27 +83,47 @@
         </div>
         <div class="copyright-links float-sm-left float-lg-right">
           <router-link :to="'/terms'" class="mr-4">Terms</router-link>
-          <router-link :to="'/privacy-policy'" class="mr-4">Privacy</router-link>
+          <router-link :to="'/privacy-policy'" class="mr-4"
+            >Privacy</router-link
+          >
           <router-link :to="'/disclaimer'" class="mr-4">Disclaimer</router-link>
         </div>
       </div>
     </div>
-    <!-- <div class="wrap-cookie">
+    <div class="wrap-cookie" v-if="firstTime">
       <div class="cookie">
-        We use cookies on this website. By navigating this website, you agree that....
+        <div>
+          We use cookies to offer you a bbetter experience and analyze site
+          traffic. By continuing to use this website, you consent to the use of
+          cookies in accordance with our
+          <router-link :to="'/cookies'">Cookie Policy</router-link>
+        </div>
+        <button @click.prevent="accept" type="button">Accept</button>
       </div>
-    </div> -->
+    </div>
   </footer>
 </template>
 
 <script>
 export default {
   name: "",
-  data(){
+  data() {
     return {
-      firstTime: true
+      firstTime: true,
+    };
+  },
+  mounted() {
+    const accepted = localStorage.getItem("acceptedCookies");
+    if (accepted) {
+      this.firstTime = false;
     }
-  }
+  },
+  methods: {
+    accept() {
+      localStorage.setItem("acceptedCookies", true);
+      this.firstTime = false;
+    },
+  },
 };
 </script>
 
@@ -111,10 +139,23 @@ export default {
 }
 .cookie {
   margin: 0 auto;
-  display: block;
+  display: flex;
   max-width: 1000px;
   padding: 10px 0;
   font-size: 14px;
+}
+.cookie a {
+  color: #06adef;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.cookie button {
+  width: 100px;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  background: #06adef;
+  font-weight: bold;
 }
 footer {
   color: #ffffff;
