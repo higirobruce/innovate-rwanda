@@ -21,7 +21,9 @@
       </div>
       <div class="container">
         <div v-if="_.isEmpty(profile) && !registering && !registered">
-          <h2 class="text-center mt-4">Tell us a little bit about yourself...</h2>
+          <h2 class="text-center mt-4">
+            Tell us a little bit about yourself...
+          </h2>
           <div class="choose-company-type" v-if="coTypes">
             <div
               v-for="(type, index) in coTypes"

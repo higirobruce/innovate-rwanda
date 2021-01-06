@@ -41,7 +41,7 @@
             v-for="(act, index) in post.AudienceForPosts"
             :key="index"
           >
-            <span>
+            <span v-if="act.BusinessActivity && act.BusinessActivity.name">
               {{ act.BusinessActivity.name }}
             </span>
           </div>

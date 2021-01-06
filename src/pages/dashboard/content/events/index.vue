@@ -37,7 +37,7 @@
           </thead>
           <tbody v-if="posts">
             <tr v-for="(post, index) in posts" :key="index">
-              <td>
+              <td style="max-width: 250px">
                 <span
                   class="cursor-pointer text-blue"
                   @click="loadPost(post.id)"
@@ -54,7 +54,7 @@
                   v-for="(act, index) in post.AudienceForPosts.slice(0, 1)"
                   :key="index"
                 >
-                  <span>
+                  <span v-if=" act.BusinessActivity &&  act.BusinessActivity.name">
                     {{ act.BusinessActivity.name }}
                   </span>
                 </div>
@@ -171,6 +171,7 @@ export default {
     AxiosHelper.get(url)
       .then((response) => {
         this.posts = response.data.result;
+        console.log("response",response.data)
         this.loading = false;
       })
       .catch((error) => {

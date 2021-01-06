@@ -273,6 +273,14 @@ export default {
       this.selectedCompany = "";
       this.loadJobsWithFilter("topic", e.target.value);
     },
+    resetFilter() {
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.yearFounded = "";
+      this.sortBy = "";
+      this.posts = [];
+      this.loadJob();
+    },
     loadJobsWithFilter(filter, value) {
       this.posts = [];
       AxiosHelper.get(

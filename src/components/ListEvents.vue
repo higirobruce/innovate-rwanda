@@ -3,7 +3,7 @@
     <div class="row">
       <div
         class="col-sm-12 col-md-6 col-lg-4"
-        v-for="(post, index) in response"
+        v-for="(post, index) in events"
         :key="index"
       >
         <div class="wrap-one-event">
@@ -41,7 +41,7 @@
       </div>
     </div>
     <!-- START PAGINATION -->
-    <div class="wrap-pagination">
+    <!-- <div class="wrap-pagination">
       <button
         type="button"
         :disabled="currentPage < 1"
@@ -64,7 +64,7 @@
       >
         <img src="@/assets/images/right-arrow.png" />
       </button>
-    </div>
+    </div> -->
     <!-- END PAGINATION -->
   </div>
 </template>
@@ -83,40 +83,40 @@ export default {
     };
   },
   created() {
-    console.log("event", this.events);
-    this.count = this.events && this.events.length;
-    this.response = this.events.slice(
-      this.currentPage,
-      this.numberOnPage >= this.count ? this.count : this.numberOnPage
-    );
-    this.allPages =
-      this.count > this.numberOnPage ? this.count / this.numberOnPage : 1;
+    // console.log("event", this.events);
+    // this.count = this.events && this.events.length;
+    // this.response = this.events.slice(
+    //   this.currentPage,
+    //   this.numberOnPage >= this.count ? this.count : this.numberOnPage
+    // );
+    // this.allPages =
+    //   this.count > this.numberOnPage ? this.count / this.numberOnPage : 1;
   },
   methods: {
     filterHtml(str) {
       return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 200)}...`;
     },
-    goToPrevious() {
-      this.currentPage = this.currentPage - 1;
-      this.response = this.events.slice(
-        this.currentPage,
-        this.numberOnPage + this.currentPage
-      );
-    },
-    goToNext() {
-      this.currentPage = this.currentPage + 1;
-      this.response = this.events.slice(
-        this.currentPage,
-        this.numberOnPage + this.currentPage
-      );
-    },
-    goTo(page) {
-      this.currentPage = page;
-      this.response = this.events.slice(
-        this.currentPage,
-        this.numberOnPage + this.currentPage
-      );
-    },
+    // goToPrevious() {
+    //   this.currentPage = this.currentPage - 1;
+    //   this.response = this.events.slice(
+    //     this.currentPage,
+    //     this.numberOnPage + this.currentPage
+    //   );
+    // },
+    // goToNext() {
+    //   this.currentPage = this.currentPage + 1;
+    //   this.response = this.events.slice(
+    //     this.currentPage,
+    //     this.numberOnPage + this.currentPage
+    //   );
+    // },
+    // goTo(page) {
+    //   this.currentPage = page;
+    //   this.response = this.events.slice(
+    //     this.currentPage,
+    //     this.numberOnPage + this.currentPage
+    //   );
+    // },
   },
 };
 </script>

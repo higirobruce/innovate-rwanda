@@ -80,7 +80,7 @@
                     v-model="event.category"
                     @change="changeCategory($event)"
                   >
-                    <option value="" selected disabled>Select category</option>
+                    <option value="" selected disabled>Select type</option>
                     <option
                       v-for="(cat, index) in types"
                       v-bind:value="cat.name"

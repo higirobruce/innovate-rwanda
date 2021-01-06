@@ -38,7 +38,48 @@
           Upcoming Events
         </h2>
         <div class="row">
-          <ListEvents :events="getUpcomingEvents()" />
+          <div
+            class="col-sm-12 col-md-6 col-lg-4"
+            v-for="(post, index) in getUpcomingEvents()"
+            :key="index"
+          >
+            <div class="wrap-one-event">
+              <router-link :to="`event/${post.id}`">
+                <div class="one-event-image">
+                  <img
+                    v-if="post.flyer"
+                    :src="`${IMAGE_URL}c_fill,g_center,w_500,h_250/${post.flyer}`"
+                    :alt="post.title"
+                  />
+                  <img
+                    v-else
+                    src="@/assets/images/post_placeholder.svg"
+                    :alt="post.title"
+                  />
+                  <h2>
+                    {{ post.title | truncate(58) }}
+                  </h2>
+                </div>
+              </router-link>
+              <div class="post-info">
+                <h3 class="h5 text-blue-dark">
+                  <i class="icon-calendar mr-2" />
+                  {{ post.eventDate | date("DD MMM YYYY") }}
+                </h3>
+                <div>
+                  <span>
+                    by
+                    <span class="text-blue">{{ post.category }}</span>
+                  </span>
+                  <span class="float-right">
+                    <i class="icon-calendar mr-2" />
+                    {{ post.eventTime }} CAT</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <ListEvents :events="getUpcomingEvents()" /> -->
         </div>
         <h2
           class="h2 pb-4 text-blue-dark text-center"
