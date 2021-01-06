@@ -82,13 +82,12 @@
                   >
                     <option value="" selected disabled>Select category</option>
                     <option
-                      v-for="(cat, index) in categories"
+                      v-for="(cat, index) in types"
                       v-bind:value="cat.name"
                       :key="index"
                     >
                       {{ cat.name }}
                     </option>
-                    <option value="other">Other category</option>
                   </select>
                 </div>
                 <div class="form-group" v-if="showOtherCategoryInput">
@@ -218,7 +217,6 @@ import Vue from "vue";
 import axios from "axios";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import MenuContent from "@/components/MenuContent";
-import categories from "@/data/blogCategories.js";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
 import VModal from "vue-js-modal";
@@ -247,10 +245,10 @@ export default {
         companyId: "",
         category: "",
       },
+      types: [],
       listOfBusinessActivities: "",
       selectedBusinessActivities: [],
       activities: [],
-      categories: [],
       mime_type: "",
       cropedImage: "",
       autoCrop: false,
@@ -272,11 +270,21 @@ export default {
         this.listOfBusinessActivities = response.data.result;
       })
       .catch(() => {});
+      
   },
   mounted() {
-    this.categories = categories;
+    this.loadEventTypes()
   },
   methods: {
+    loadEventTypes() {
+      AxiosHelper.get("events-types")
+        .then((response) => {
+          console.log("response", response)
+          this.types = response.data.result;
+          this.loading = false;
+        })
+        .catch(() => (this.loading = false));
+    },
     changeCategory(e) {
       if (e.target.value === "other") {
         this.showOtherCategoryInput = true;

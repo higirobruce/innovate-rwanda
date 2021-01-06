@@ -11,7 +11,7 @@
         />
         <img
           v-if="company && !company.logo && !selectedFile"
-          src="@/assets/images/logo_placeholder.svg"
+          src="@/assets/images/logo_placeholder.png"
           :alt="company.coName"
           class="current-logo"
         />

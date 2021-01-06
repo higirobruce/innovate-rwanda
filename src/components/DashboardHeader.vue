@@ -3,10 +3,19 @@
     <ul class="list-inline my-2 mr-4 py-1 float-right">
       <li
         v-if="profile && profile.role === 'normal'"
-        class="list-inline-item px-1"
+        class="list-inline-item px-1 position-relative"
       >
-        <router-link class="dash-header-btn" :to="'/dashboard/messages'">
+        <router-link
+          class="dash-header-btn dash-notification-badge"
+          :to="'/dashboard/messages'"
+        >
           <img src="@/assets/images/message.png" />
+          <span
+            class="notification-badge"
+            v-if="number && number.newMessages > 0"
+          >
+            {{ number && number.newMessages }}
+          </span>
         </router-link>
       </li>
       <li
@@ -18,8 +27,11 @@
           @click.prevent="toggleNotifications"
         >
           <img src="@/assets/images/notification.png" />
-          <span class="notification-badge">
-            {{ notifications && notifications.length }}
+          <span
+            class="notification-badge"
+            v-if="number && number.newNotifications > 0"
+          >
+            {{ number.newNotifications }}
           </span>
         </button>
         <div
@@ -30,10 +42,13 @@
           <ul class="list-group">
             <li class="list-group-item active">Notifications</li>
             <li
-              class="list-group-item one-notification"
+              class="list-group-item one-notification position-relative"
               v-for="(notification, index) in notifications"
               :key="index"
             >
+              <span class="date">
+                {{ notification.createdAt | date("YYYY.MM.DD") }}
+              </span>
               <div class="noti-subject">
                 {{ notification.subject }}
               </div>
@@ -41,13 +56,15 @@
                 {{ notification.content | truncate(70) }}
               </div>
             </li>
-            <li class="list-group-item text-center">
+            <!-- <li
+              class="list-group-item text-center"
+            >
               <router-link
                 class="text-blue-dark"
                 :to="'/dashboard/notifications'"
                 >See all notifications</router-link
               >
-            </li>
+            </li> -->
           </ul>
         </div>
       </li>
@@ -91,12 +108,14 @@ export default {
       isUserDropdownOn: false,
       notifications: [],
       showNotifications: false,
+      number: {},
     };
   },
   created() {
-    AxiosHelper.get("notification/company").then((response) => {
+    this.profile && this.profile.companyId && AxiosHelper.get("notification/company").then((response) => {
       this.notifications = response.data.result;
     });
+    this.checkNoficationsNumber();
   },
   methods: {
     hideUserDropDown() {
@@ -108,9 +127,30 @@ export default {
     },
     toggleNotifications() {
       this.showNotifications = !this.showNotifications;
+      let notificationsToMarkAsRead = [];
+      this.notifications.map((e) => {
+        if (e.firstread === null) {
+          notificationsToMarkAsRead = [...notificationsToMarkAsRead, e.id];
+        }
+      });
+      const data = {
+        notifications: notificationsToMarkAsRead.toString(),
+      };
+      console.log("hey", data);
+      AxiosHelper.put("notification/read", data).then(() => {
+        this.checkNoficationsNumber();
+      });
+      //   .catch(() => {});
     },
     hideNotifications() {
       this.showNotifications = false;
+    },
+    checkNoficationsNumber() {
+      AxiosHelper.get("countsNew")
+        .then((res) => {
+          this.number = res.data.result;
+        })
+        .catch(() => {});
     },
     logout() {
       localStorage.removeItem("profile");
@@ -152,6 +192,10 @@ export default {
 .dash-notification-badge {
   position: relative;
 }
+.wrap-notifications {
+  max-height: 600px;
+  overflow-y: auto;
+}
 .notification-badge {
   position: absolute;
   top: 3px;
@@ -165,8 +209,29 @@ export default {
   color: #fff;
   text-align: center;
 }
+.date {
+  position: absolute;
+  top: 13px;
+  right: 10px;
+  font-size: 14px;
+  color: #a5a5a5;
+}
 .list-group-item.active {
   background: #06adef;
   border: none;
+}
+.noti-subject {
+  color: #565656;
+  font-size: 16px;
+  width: 80%;
+}
+.noti-content {
+  color: #a5a5a5;
+  font-size: 14px;
+}
+.one-notification {
+  margin: 10px 15px 10px 15px;
+  border: none;
+  background: #f0f2f8;
 }
 </style>

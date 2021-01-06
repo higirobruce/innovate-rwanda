@@ -22,7 +22,7 @@
                 {{ notification.subject }}
               </div>
               <div class="noti-content">
-                {{ notification.content  }}
+                {{ notification.content }}
               </div>
             </li>
           </ul>
@@ -66,9 +66,11 @@ export default {
   },
   created() {
     this.loadBusinessActivities();
-    AxiosHelper.get("notification/company").then((response) => {
-      this.notifications = response.data.result;
-    });
+    this.profile &&
+      this.profile.companyId &&
+      AxiosHelper.get("notification/company").then((response) => {
+        this.notifications = response.data.result;
+      });
   },
   methods: {
     submitEditActivity() {

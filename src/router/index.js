@@ -253,6 +253,13 @@ const router = new Router({
       },
     },
     {
+      path: "/dashboard/settings/reset-password",
+      component: () => import("@/pages/dashboard/settings/reset.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
       path: "/dashboard/settings/business-activities",
       component: () => import("@/pages/dashboard/settings/activities.vue"),
       meta: {
@@ -262,6 +269,20 @@ const router = new Router({
     {
       path: "/dashboard/settings/company-types",
       component: () => import("@/pages/dashboard/settings/types.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings/categories",
+      component: () => import("@/pages/dashboard/settings/categories.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings/event-types",
+      component: () => import("@/pages/dashboard/settings/event-types.vue"),
       meta: {
         layout: "dashboard-layout",
       },

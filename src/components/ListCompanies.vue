@@ -15,7 +15,7 @@
             />
             <img
               v-else
-              src="@/assets/images/logo_placeholder.svg"
+              src="@/assets/images/logo_placeholder.png"
               :alt="company.coName"
             />
           </router-link>

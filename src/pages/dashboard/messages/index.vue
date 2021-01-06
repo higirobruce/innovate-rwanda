@@ -7,7 +7,7 @@
       <div class="dash-container" v-if="messages && profile && profile.role === 'normal'">
         <div class="wrap-messages">
           <div class="wrap-senders">
-            <div class="wrap-search">
+            <div class="wrap-search" v-if="!_.isEmpty(message)">
               <div class="form-group">
                 <input
                   type="text"

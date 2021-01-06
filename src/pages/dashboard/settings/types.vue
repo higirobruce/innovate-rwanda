@@ -8,9 +8,9 @@
       <div class="dash-container">
         <div class="wrap-dash-box">
           <h1 class="font-weight-light text-blue-dark h3">
-            Business Types
+            Business types
             <span class="float-right">
-              <button class="btn" @click.prevent="addActivity" type="button">
+              <button class="btn btn-sm font-weight-bold btn-primary-outline" @click.prevent="addActivity" type="button">
                 Add
               </button>
             </span>
@@ -35,6 +35,12 @@
                 </button>
               </span>
             </li>
+            <li
+              v-if="!loading && _.size(types) === 0"
+              class="list-group-item px-1 py-4"
+            >
+              No type yet
+            </li>
           </ul>
         </div>
       </div>
@@ -47,8 +53,8 @@
         :width="600"
       >
         <DeleteModal
-          :url="`business-activities/remove-activity?activityId=${recordId}`"
-          entity="activity"
+          :url="`company-types/remove-type?type=${recordId}`"
+          entity="company type"
         />
       </modal>
       <!-- ADD NEW ACTIVITY -->
@@ -253,6 +259,7 @@ export default {
       this.$modal.show("openDeleteRecord");
     },
     addActivity() {
+      this.form = {};
       this.$modal.show("openAddActivity");
     },
     editType(act) {

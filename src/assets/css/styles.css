@@ -959,10 +959,3 @@ select {
   width: 400px;
   background: #fff;
 }
-.noti-subject {
-  color: #565656;
-}
-.noti-content {
-  color: #a5a5a5;
-  font-size: 15px;
-}

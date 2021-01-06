@@ -120,47 +120,51 @@
                   />
                   <img
                     v-else
-                    src="@/assets/images/logo_placeholder.svg"
+                    src="@/assets/images/logo_placeholder.png"
                     :alt="post.coName"
                   />
                 </router-link>
               </div>
             </div>
             <div class="col-sm-12 col-md-8 col-lg-10">
-              <router-link :to="`/job/${post.id}`">
-                <h2 class="mb-1">{{ post.title }}</h2>
-                <div>
-                  <div class="mb-2 co-info mt-2">
-                    <div class="text-blue">
-                      <i class="icon-company" />
-                      {{ post.Company.companyName }}
-                    </div>
-                    <span class="mr-3">
-                      <i class="icon-calendar" />
-                      Published
-                      <span class="ml-2"
-                        >{{ post.createdAt | date("DD-MM-YYYY") }}
-                      </span>
-                    </span>
-                    |
-                    <span>
-                      <i class="icon-calendar" />
-                      Deadline
-                      <span class="ml-2"
-                        >{{ post.deadlineDate | date("DD-MM-YYYY") }}
-                      </span>
-                    </span>
+              <h2 class="mb-1">
+                <router-link class="text-blue" :to="`/job/${post.id}`">
+                  {{ post.title }}
+                </router-link>
+              </h2>
+              <div>
+                <div class="mb-2 co-info mt-2">
+                  <div class="text-blue">
+                    <i class="icon-company" />
+                    {{ post.Company.companyName }}
                   </div>
-                  <div class="mb-2 co-info">
-                    <i class="icon-tag" />
-                    <span class="ml-2">{{ post.category }} </span>
-                  </div>
-                  <div class="mb-2 co-info" v-if="post.jobDetailsDocument">
+                  <span class="mr-3">
+                    <i class="icon-calendar" />
+                    Published
+                    <span class="ml-2"
+                      >{{ post.createdAt | date("DD-MM-YYYY") }}
+                    </span>
+                  </span>
+                  |
+                  <span>
+                    <i class="icon-calendar" />
+                    Deadline
+                    <span class="ml-2"
+                      >{{ post.deadlineDate | date("DD-MM-YYYY") }}
+                    </span>
+                  </span>
+                </div>
+                <div class="mb-2 co-info">
+                  <i class="icon-tag" />
+                  <span class="ml-2">{{ post.category }} </span>
+                </div>
+                <div class="mb-2 co-info" v-if="post.jobDetailsDocument">
+                  <router-link class="text-blue-dark" :to="`/redirect/${IMAGE_URL}${post.jobDetailsDocument}`" target="_blank">
                     <i class="icon-file" />
                     <span class="ml-2">Attachment</span>
-                  </div>
+                  </router-link>
                 </div>
-              </router-link>
+              </div>
             </div>
             <div class="info-separator clear my-3">&nbsp;</div>
           </div>

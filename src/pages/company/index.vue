@@ -11,7 +11,7 @@
             />
             <img
               v-else
-              src="@/assets/images/logo_placeholder.svg"
+              src="@/assets/images/logo_placeholder.png"
               :alt="company.company.coName"
             />
             <h1>{{ company.company.coName }}</h1>
@@ -189,7 +189,13 @@
                     class="wrap-map"
                     v-if="company.company && company.company.officeAddress"
                   >
-                    <h3>Location</h3>
+                    <h3>
+                      Location
+
+                      <span class="mx-3 font-weight-bold text-blue-dark">
+                        {{ convertLatLng(company.company.officeAddress).place }}
+                      </span>
+                    </h3>
                     <GmapMap
                       :center="convertLatLng(company.company.officeAddress)"
                       :zoom="17"
@@ -228,7 +234,7 @@
                   />
                   <img
                     v-else
-                    src="@/assets/images/logo_placeholder.svg"
+                    src="@/assets/images/logo_placeholder.png"
                     :alt="company.coName"
                   />
                   <h4>

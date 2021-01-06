@@ -20,7 +20,6 @@
           <button
             :disabled="
               job.title === '' ||
-              job.category === '' ||
               job.deadlineDate === '' ||
               job.deadlineTime === '' ||
               job.description === ''
@@ -72,8 +71,8 @@
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
               <div class="content-form-sidebar">
-                <h3 class="h6">Job type</h3>
-                <div class="form-group">
+                <!-- <h3 class="h6">Job type</h3> -->
+                <!-- <div class="form-group">
                   <select
                     class="form-control form-control-lg"
                     name="category"
@@ -90,7 +89,7 @@
                     </option>
                     <option value="other">Other category</option>
                   </select>
-                </div>
+                </div> -->
                 <div class="form-group" v-if="showOtherCategoryInput">
                   <h3 class="h6">Specify other category</h3>
                   <input
@@ -289,15 +288,15 @@ export default {
       this.file = this.$refs.file.files[0];
       this.fileName = this.file.name;
     },
-    changeCategory(e) {
-      if (e.target.value === "other") {
-        this.showOtherCategoryInput = true;
-        this.job.category = "";
-      } else {
-        this.showOtherCategoryInput = false;
-        this.job.category = e.target.value;
-      }
-    },
+    // changeCategory(e) {
+    //   if (e.target.value === "other") {
+    //     this.showOtherCategoryInput = true;
+    //     this.job.category = "";
+    //   } else {
+    //     this.showOtherCategoryInput = false;
+    //     this.job.category = e.target.value;
+    //   }
+    // },
     publishNow(status) {
       this.savePost(status);
     },

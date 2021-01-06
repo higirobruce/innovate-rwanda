@@ -15,7 +15,7 @@
             />
             <img
               v-else
-              src="@/assets/images/logo_placeholder.svg"
+              src="@/assets/images/logo_placeholder.png"
               :alt="company.company.coName"
             />
             <button class="btn-upload" @click="openUploadCompanyLogo">
@@ -38,7 +38,7 @@
                 class="status approved"
                 v-if="company.company.status === 'approved'"
               >
-                Company is approved
+                Public
               </span>
               <span
                 class="status pending"
@@ -50,7 +50,7 @@
                 class="status declined"
                 v-if="company.company.status === 'declined'"
               >
-                Company is rejected
+                Rejected
               </span>
             </h3>
             <div class="text-capitalize">
@@ -337,13 +337,19 @@
           >
             <EditCompanyLocation :company="company.company" /> </modal
           >˝
-          <div class="my-3">Our office</div>
+          <div class="my-3">
+            Our office:
+            <span class="mx-3 font-weight-bold text-blue-dark">
+              {{ convertLatLng(company.company).place }}
+            </span>
+          </div>
+
           <div class="wrap-map" v-if="company.company.officeAddress">
             <GmapMap
               :center="convertLatLng(company.company)"
               :zoom="17"
               map-type-id="terrain"
-              style="width: 1000px; height: 700px"
+              style="max-width: 1000px; height: 700px"
             >
               <GmapMarker
                 :position="convertLatLng(company.company)"
@@ -362,6 +368,8 @@
               Add location
             </button>
           </div>
+
+            <div class="clear"></div>
         </div>
 
         <!-- Update activities -->
@@ -619,7 +627,6 @@ export default {
   max-width: 1000px;
   width: 100%;
   margin: 0 auto;
-  display: block;
+  float: left;
 }
-
 </style>

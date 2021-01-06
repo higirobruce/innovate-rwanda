@@ -19,7 +19,13 @@
         </div>
       </div>
       <div class="dash-container">
-        <div v-if="profile.role === 'normal'">
+        <div
+          v-if="
+            profile.role === 'normal' ||
+            profile.role === 'admin-blog' ||
+            profile.role === 'super-admin'
+          "
+        >
           <h4 class="h5">
             <router-link :to="'/dashboard/content'" class="btn btn-back">
               <i class="icon-arrow-left" />
@@ -71,10 +77,10 @@
                   v-for="(act, index) in post.AudienceForPosts"
                   :key="index"
                 >
-                  <span>
+                  <span v-if="act.BusinessActivity && act.BusinessActivity.name">
                     {{ act.BusinessActivity.name }}
                   </span>
-                  <button @click.prevent="removeActivityFromPost(act.activity)">
+                  <button v-if="act.BusinessActivity && act.BusinessActivity.name" @click.prevent="removeActivityFromPost(act.activity)">
                     <img src="@/assets/images/remove.png" />
                   </button>
                 </div>

@@ -3,12 +3,12 @@
     <component :is="layout">
       <div class="page-info">
         <h2 class="h2 font-weight-bold">Settings</h2>
-        <MenuSettings active="activities" />
+        <MenuSettings active="event-types" />
       </div>
       <div class="dash-container">
         <div class="wrap-dash-box">
           <h1 class="font-weight-light text-blue-dark h3">
-            Business activities
+            Event types
             <span class="float-right">
               <button class="btn btn-sm font-weight-bold btn-primary-outline" @click.prevent="addActivity" type="button">
                 Add
@@ -19,24 +19,27 @@
           <div v-if="loading">
             <Loading />
           </div>
-          <ul
-            v-if="!loading && listOfBusinessActivities"
-            class="list-group list-group-flush"
-          >
+          <ul v-if="!loading && types" class="list-group list-group-flush">
             <li
               class="list-group-item py-4"
-              v-for="(act, index) in listOfBusinessActivities"
+              v-for="(act, index) in types"
               :key="index"
             >
               {{ act.name }}
               <span class="float-right wrap-actions">
-                <button type="button" @click.prevent="editActivity(act)">
+                <button type="button" @click.prevent="editType(act)">
                   <img src="@/assets/images/edit.png" alt="edit" />
                 </button>
                 <button @click.prevent="deleteRecord(act.id)">
                   <img src="@/assets/images/delete.png" alt="delete" />
                 </button>
               </span>
+            </li>
+            <li
+              v-if="!loading && _.size(types) === 0"
+              class="list-group-item px-1 py-4"
+            >
+              No type yet
             </li>
           </ul>
         </div>
@@ -50,8 +53,8 @@
         :width="600"
       >
         <DeleteModal
-          :url="`business-activities/remove-activity?activityId=${recordId}`"
-          entity="activity"
+          :url="`events-types/remove-type?type=${recordId}`"
+          entity="type"
         />
       </modal>
       <!-- ADD NEW ACTIVITY -->
@@ -62,10 +65,10 @@
         :height="340"
         :width="600"
       >
-        <h3 class="p-4 bottom-shadow shadow">Create business activity</h3>
+        <h3 class="p-4 bottom-shadow shadow">Create event type</h3>
         <div class="m-4">
-          <form @submit="submitActivity">
-            <h4 class="mt-3">Activity name</h4>
+          <form @submit="submitType">
+            <h4 class="mt-3">Type</h4>
             <div
               :class="`${
                 $v.form.$invalid === true
@@ -78,7 +81,7 @@
                 v-model="form.name"
                 required
                 class="form-control custom-input"
-                placeholder="Company name"
+                placeholder="Type"
               />
             </div>
           </form>
@@ -86,7 +89,7 @@
         <div class="my-2 mx-4">
           <span class="float-left">
             <button
-              @click="submitActivity"
+              @click="submitType"
               class="btn btn-success-outline float-right"
             >
               Submit
@@ -102,17 +105,17 @@
       </modal>
       <!-- EDIT ACTIVITY -->
       <modal
-        name="openEditActivity"
+        name="openEditType"
         :adaptive="true"
         :scrollable="true"
         :height="340"
         :width="600"
       >
-        <h3 class="p-4 bottom-shadow shadow">Edit business activity</h3>
+        <h3 class="p-4 bottom-shadow shadow">Edit event type</h3>
 
         <div class="m-4">
-          <form @submit="submitEditActivity">
-            <h4 class="mt-3">Activity name</h4>
+          <form @submit="submitEditType">
+            <h4 class="mt-3">Type</h4>
             <div
               :class="`${
                 $v.activity.$invalid === true
@@ -125,7 +128,7 @@
                 v-model="activity.name"
                 required
                 class="form-control custom-input"
-                placeholder="Activity name"
+                placeholder="Company name"
               />
             </div>
           </form>
@@ -133,7 +136,7 @@
         <div class="my-2 mx-4">
           <span class="float-left">
             <button
-              @click="submitEditActivity"
+              @click="submitEditType"
               class="btn btn-success-outline float-right"
             >
               Submit
@@ -166,11 +169,11 @@ Vue.use(Vuelidate);
 import { required, minLength, maxLength } from "vuelidate/lib/validators";
 
 export default {
-  name: "dashboard",
+  name: "event-types-dashboard",
   components: { MenuSettings, DeleteModal, Loading },
   data() {
     return {
-      listOfBusinessActivities: [],
+      types: [],
       recordId: "",
       form: {
         name: "",
@@ -184,22 +187,22 @@ export default {
     };
   },
   created() {
-    this.loadBusinessActivities();
+    this.loadEventTypes();
   },
   methods: {
-    submitEditActivity() {
+    submitEditType() {
       this.edited = false;
       this.editing = true;
-      AxiosHelper.patch("business-activities/edit-activity", this.activity)
+      AxiosHelper.patch("events-types/edit-type", this.activity)
         .then(() => {
           Vue.$toast.open({
-            message: "Business activity has been edited successfully",
+            message: "Event type has been edited successfully",
             type: "success",
           });
-          this.loadBusinessActivities();
+          this.loadEventTypes();
           this.edited = true;
           this.editing = false;
-          this.$modal.hide("openEditActivity");
+          this.$modal.hide("openEditType");
         })
         .catch(() => {
           this.editing = false;
@@ -210,16 +213,16 @@ export default {
           });
         });
     },
-    submitActivity() {
+    submitType() {
       this.added = false;
       this.adding = true;
-      AxiosHelper.post("business-activities/add-activity", this.form)
+      AxiosHelper.post("events-types/add-type", this.form)
         .then(() => {
           Vue.$toast.open({
-            message: "Business activity has been added successfully",
+            message: "Event type has been added successfully",
             type: "success",
           });
-          this.loadBusinessActivities();
+          this.loadEventTypes();
           this.added = true;
           this.adding = false;
           this.$modal.hide("openAddActivity");
@@ -233,10 +236,10 @@ export default {
           });
         });
     },
-    loadBusinessActivities() {
-      AxiosHelper.get("business-activities")
+    loadEventTypes() {
+      AxiosHelper.get("events-types")
         .then((response) => {
-          this.listOfBusinessActivities = response.data.result;
+          this.types = response.data.result;
           this.loading = false;
         })
         .catch(() => (this.loading = false));
@@ -246,15 +249,16 @@ export default {
       this.$modal.show("openDeleteRecord");
     },
     addActivity() {
+      this.form = {};
       this.$modal.show("openAddActivity");
     },
-    editActivity(act) {
+    editType(act) {
       this.activity = act;
-      this.$modal.show("openEditActivity");
+      this.$modal.show("openEditType");
     },
     closeModal() {
       this.$modal.hide("openAddActivity");
-      this.$modal.hide("openEditActivity");
+      this.$modal.hide("openEditType");
     },
   },
   computed: {

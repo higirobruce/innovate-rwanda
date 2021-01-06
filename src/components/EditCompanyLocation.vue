@@ -30,13 +30,18 @@
             </v-text-field>
           </template>
         </gmap-autocomplete> -->
-        <GmapAutocomplete
-          :position.sync="place"
-          @keyup.enter="usePlace"
-          @place_changed="setPlace"
-        >
-        </GmapAutocomplete>
-        <button @click="usePlace">Add</button>
+        <div class="py-3">
+          <GmapAutocomplete
+            :position.sync="place"
+            @keyup.enter="setPlace"
+            @place_changed="setPlace"
+          >
+          </GmapAutocomplete>
+          <!-- <button class="mx-2 border py-1 px-3" @click="usePlace">Add</button> -->
+          <span>
+            {{ officeAddress.place }}
+          </span>
+        </div>
         <div>
           {{ starting_point }}
         </div>
@@ -45,18 +50,21 @@
             :center="place"
             :zoom="15"
             map-type-id="terrain"
-            style="width: 940px; height: 430px"
+            style="width: 940px; height: 410px"
           >
             <GmapMarker
-              :position="convertLatLng()"
+              :position="officeAddress"
               :draggable="true"
-              @drag="updateCoordinates"
+              @drag="updateCoordinates()"
             />
           </GmapMap>
         </div>
       </div>
       <div class="mt-4">
-        <button @click="submitCompanyInfo" class="btn btn-success-outline mr-2">
+        <button
+          @click.prevent="submitCompanyInfo"
+          class="btn btn-success-outline mr-2"
+        >
           Update location
         </button>
       </div>
@@ -71,7 +79,6 @@ import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {
     key: "AIzaSyBOcgzwN-u8KLJ2JHeeJON8St0jAkD2u_8",
-    // key: "AIzaSyAs37zlR3-DucdN_ArQfHPLSJ5Eay1tdUs",
     libraries: "places",
     v: "3.26",
     installComponents: true,
@@ -84,12 +91,18 @@ export default {
     return {
       companyInfo: {},
       officeAddress: null,
+      placeName: "",
       place: { lat: -1.9535713202050946, lng: 30.09239731494155 },
       starting_point: "",
     };
   },
   mounted() {
     this.companyInfo = { ...this.company };
+    this.officeAddress = {
+      lat: -1.9535713202050946,
+      lng: 30.09239731494155,
+      place: "",
+    };
   },
   methods: {
     setPlace(place) {
@@ -97,24 +110,31 @@ export default {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
       };
+      console.log("place name", place);
+      this.officeAddress.lat = place.geometry.location.lat();
+      this.officeAddress.lng = place.geometry.location.lng();
+      this.officeAddress.place = place.formatted_address;
+      this.companyInfo.officeAddress = JSON.stringify(this.officeAddress);
     },
     locationChanged() {
       console.log("hey", this.starting_point);
     },
-    convertLatLng() {
-      let latLng = this.place;
-      if (this.companyInfo && this.companyInfo.officeAddress) {
-        latLng = JSON.parse(this.companyInfo.officeAddress);
-      }
-      return latLng;
-    },
+    // convertLatLng() {
+    //   let latLng = this.place;
+    //   if (this.companyInfo && this.companyInfo.officeAddress) {
+    //     latLng = JSON.parse(this.companyInfo.officeAddress);
+    //   }
+    //   return latLng;
+    // },
     convertToObject(object) {
       return JSON.parse(object);
     },
     updateCoordinates(location) {
+      console.log("yes", location);
       this.officeAddress = {
         lat: location.latLng.lat(),
         lng: location.latLng.lng(),
+        place: "",
       };
       this.companyInfo.officeAddress = JSON.stringify(this.officeAddress);
     },
@@ -123,18 +143,17 @@ export default {
     // },
     usePlace(place) {
       console.log("pl", place);
-      if (this.place) {
-        this.markers.push({
-          position: {
-            lat: this.place.geometry.location.lat(),
-            lng: this.place.geometry.location.lng(),
-          },
-        });
-        this.place = null;
-      }
+      // if (this.place) {
+      //   this.markers.push({
+      //     position: {
+      //       lat: this.place.geometry.location.lat(),
+      //       lng: this.place.geometry.location.lng(),
+      //     },
+      //   });
+      //   this.place = null;
+      // }
     },
-    submitCompanyInfo(evt) {
-      evt.preventDefault();
+    submitCompanyInfo() {
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
         .then(() => {
           Vue.$toast.open({

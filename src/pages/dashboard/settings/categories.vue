@@ -1,0 +1,456 @@
+<template>
+  <div>
+    <component :is="layout">
+      <div class="page-info">
+        <h2 class="h2 font-weight-bold">Settings</h2>
+        <MenuSettings active="categories" />
+      </div>
+      <div class="dash-container">
+        <div class="wrap-dash-box">
+          <h1 class="font-weight-light text-blue-dark h3">
+            Company categories
+            <span class="float-right">
+              <button
+                class="btn btn-sm font-weight-bold btn-primary-outline"
+                @click.prevent="addCategory"
+                type="button"
+              >
+                Add
+              </button>
+            </span>
+          </h1>
+          <div class="clear"></div>
+          <div v-if="loading">
+            <Loading />
+          </div>
+          <ul v-if="!loading && types" class="list-group list-group-flush">
+            <li
+              class="list-group-item py-4"
+              v-for="(act, index) in types"
+              :key="index"
+            >
+              <img
+                v-if="act.image"
+                class="d-block float-left"
+                width="55"
+                height="55"
+                :src="`${IMAGE_URL}c_fill,g_center,w_80,h_80/${act.image}`"
+              />
+              <img
+                v-else
+                class="d-block float-left"
+                width="55"
+                height="55"
+                src="@/assets/images/logo_placeholder.png"
+              />
+              <span class="float-left py-1 px-4">
+                {{ act.name }}
+                <br />
+                <a
+                  @click.prevent="addCategoryImage(act)"
+                  class="cursor-pointer text-blue font-weight-bold my-2"
+                  >Update category image</a
+                >
+              </span>
+              <span class="float-right wrap-actions">
+                <button type="button" @click.prevent="editType(act)">
+                  <img src="@/assets/images/edit.png" alt="edit" />
+                </button>
+                <button @click.prevent="deleteRecord(act.id)">
+                  <img src="@/assets/images/delete.png" alt="delete" />
+                </button>
+              </span>
+            </li>
+            <li
+              v-if="!loading && _.size(types) === 0"
+              class="list-group-item px-1 py-4"
+            >
+              No category created yet
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- DELETE ACTIVITY -->
+      <modal
+        name="openDeleteRecord"
+        :adaptive="true"
+        :scrollable="true"
+        :height="240"
+        :width="600"
+      >
+        <DeleteModal
+          :url="`company-categories/remove-category?categoryId=${recordId}`"
+          entity="type"
+        />
+      </modal>
+      <!-- ADD NEW ACTIVITY -->
+      <modal
+        name="openAddCategory"
+        :adaptive="true"
+        :scrollable="true"
+        :height="340"
+        :width="600"
+      >
+        <h3 class="p-4 bottom-shadow shadow">Create company category</h3>
+        <div class="m-4">
+          <form @submit="submitCategory">
+            <h4 class="mt-3">Name</h4>
+            <div
+              :class="`${
+                $v.form.$invalid === true
+                  ? 'form-group has-error'
+                  : 'form-group'
+              }`"
+            >
+              <input
+                type="text"
+                v-model="form.name"
+                required
+                class="form-control custom-input"
+                placeholder="Type"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="my-2 mx-4">
+          <span class="float-left">
+            <button
+              @click="submitCategory"
+              class="btn btn-success-outline float-right"
+            >
+              Submit
+            </button>
+          </span>
+          <span class="float-right">
+            <button @click="closeModal" class="btn btn-gray-outline mr-2">
+              Close
+            </button>
+          </span>
+          <Loading v-if="adding && !added" />
+        </div>
+      </modal>
+      <!-- EDIT ACTIVITY -->
+      <modal
+        name="openUploadCategoryImage"
+        :adaptive="true"
+        :scrollable="true"
+        :height="550"
+        :width="560"
+      >
+        <h3 class="p-4 bottom-shadow shadow">Category image</h3>
+
+        <div class="my-2 mx-4">
+          <button
+            class="btn btn-gray-outline btn-block mx-auto"
+            @click="$refs.FileInput.click()"
+          >
+            Browse logo
+          </button>
+        </div>
+        <div class="m-4 wrap-image-cropper">
+          <img
+            v-if="currentCategory && currentCategory.image && !selectedFile"
+            :src="`${IMAGE_URL}c_fill,g_center,h_420,w_420/${currentCategory.image}`"
+            class="current-image"
+          />
+          <img
+            v-if="currentCategory && !currentCategory.image && !selectedFile"
+            src="@/assets/images/logo_placeholder.png"
+            class="current-image"
+            height="60"
+          />
+          <input
+            ref="FileInput"
+            type="file"
+            style="display: none"
+            @change="onFileSelect"
+          />
+          <VueCropper
+            v-show="selectedFile"
+            ref="cropper"
+            :src="selectedFile"
+            alt="Source Image"
+            :aspectRatio="aspectRatio"
+          ></VueCropper>
+        </div>
+        <div class="clear"></div>
+        <div class="my-2 mx-4">
+          <span class="float-left">
+            <button
+              @click="submiCategoryImage"
+              class="btn btn-success-outline float-right"
+            >
+              Upload &amp; Update
+            </button>
+          </span>
+          <span class="float-right">
+            <button @click="closeModal" class="btn btn-gray-outline mr-2">
+              Close
+            </button>
+          </span>
+          <Loading v-if="editing && !edited" />
+        </div>
+      </modal>
+      <!-- EDIT ACTIVITY -->
+      <modal
+        name="openEditType"
+        :adaptive="true"
+        :scrollable="true"
+        :height="340"
+        :width="600"
+      >
+        <h3 class="p-4 bottom-shadow shadow">Edit company category</h3>
+
+        <div class="m-4">
+          <form @submit="submitEditCategory">
+            <h4 class="mt-3">Type</h4>
+            <div
+              :class="`${
+                $v.activity.$invalid === true
+                  ? 'form-group has-error'
+                  : 'form-group'
+              }`"
+            >
+              <input
+                type="text"
+                v-model="activity.name"
+                required
+                class="form-control custom-input"
+                placeholder="Company name"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="my-2 mx-4">
+          <span class="float-left">
+            <button
+              @click="submitEditCategory"
+              class="btn btn-success-outline float-right"
+            >
+              Submit
+            </button>
+          </span>
+          <span class="float-right">
+            <button @click="closeModal" class="btn btn-gray-outline mr-2">
+              Close
+            </button>
+          </span>
+          <Loading v-if="editing && !edited" />
+        </div>
+      </modal>
+    </component>
+  </div>
+</template>
+
+<script>
+import Vue from "vue";
+import axios from "axios";
+import MenuSettings from "@/components/MenuSettings";
+import AxiosHelper from "@/helpers/AxiosHelper";
+import DeleteModal from "@/components/DeleteModal";
+import Loading from "@/components/Loading";
+
+import VueCropper from "vue-cropperjs";
+import "cropperjs/dist/cropper.css";
+
+import VModal from "vue-js-modal";
+Vue.use(VModal);
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
+
+import { required, minLength, maxLength } from "vuelidate/lib/validators";
+
+export default {
+  name: "company-categories-dashboard",
+  components: { MenuSettings, DeleteModal, Loading, VueCropper },
+  data() {
+    return {
+      types: [],
+      recordId: "",
+      form: {
+        name: "",
+      },
+      currentCategory: "",
+      activity: {},
+      loading: true,
+      added: false,
+      adding: false,
+      editing: false,
+      edited: false,
+      mime_type: "",
+      cropedImage: "",
+      autoCrop: false,
+      selectedFile: "",
+      aspectRatio: 1,
+      image: "",
+      dialog: false,
+      files: "",
+      uploading: false,
+    };
+  },
+  created() {
+    this.loadCompanyCategories();
+  },
+  methods: {
+    submiCategoryImage() {
+      this.uploading = true;
+      this.cropedImage = this.$refs.cropper.getCroppedCanvas().toDataURL();
+      this.$refs.cropper.getCroppedCanvas().toBlob((blob) => {
+        const formData = new FormData();
+        formData.append("file", blob);
+        formData.append("upload_preset", "wjjxv2a4");
+        formData.append("cloud_name", "dbvxqoznr");
+        const config = {
+          headers: { "X-Requested-With": "XMLHttpRequest" },
+        };
+        axios
+          .post(
+            "https://api.cloudinary.com/v1_1/dbvxqoznr/image/upload",
+            formData,
+            config
+          )
+          .then((response) => {
+            // update company information
+            console.log("upload", response.data);
+            const img_url = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
+            this.activity.image = img_url;
+            this.submitEditCategory();
+          })
+          .catch(() => {
+            this.uploading = false;
+          });
+      }, this.mime_type);
+    },
+    submitEditCategory() {
+      this.edited = false;
+      this.editing = true;
+      AxiosHelper.patch("company-categories/edit-category", this.activity)
+        .then(() => {
+          Vue.$toast.open({
+            message: "Category has been edited successfully",
+            type: "success",
+          });
+          this.loadCompanyCategories();
+          this.edited = true;
+          this.editing = false;
+          this.$modal.hide("openEditType");
+        })
+        .catch(() => {
+          this.editing = false;
+          Vue.$toast.open({
+            message:
+              "Sorry, something went wrong while updating your social media accounts",
+            type: "error",
+          });
+        });
+    },
+    submitCategory() {
+      this.added = false;
+      this.adding = true;
+      AxiosHelper.post("company-categories/add-category", this.form)
+        .then(() => {
+          Vue.$toast.open({
+            message: "Category has been added successfully",
+            type: "success",
+          });
+          this.loadCompanyCategories();
+          this.added = true;
+          this.adding = false;
+          this.$modal.hide("openAddCategory");
+        })
+        .catch(() => {
+          this.adding = false;
+          Vue.$toast.open({
+            message:
+              "Sorry, something went wrong while updating your social media accounts",
+            type: "error",
+          });
+        });
+    },
+    loadCompanyCategories() {
+      AxiosHelper.get("company-categories")
+        .then((response) => {
+          this.types = response.data.result;
+          this.loading = false;
+        })
+        .catch(() => (this.loading = false));
+    },
+    deleteRecord(id) {
+      this.recordId = id;
+      this.$modal.show("openDeleteRecord");
+    },
+    addCategory() {
+      this.form = {};
+      this.$modal.show("openAddCategory");
+    },
+    addCategoryImage(cat) {
+      this.selectedFile = "";
+      this.currentCategory = cat;
+      this.activity = cat;
+      this.$modal.show("openUploadCategoryImage");
+    },
+    editType(act) {
+      this.activity = act;
+      this.$modal.show("openEditType");
+    },
+    closeModal() {
+      this.$modal.hide("openAddCategory");
+      this.$modal.hide("openEditType");
+      this.$modal.hide("openUploadCategoryImage");
+    },
+    onFileSelect(e) {
+      const file = e.target.files[0];
+      this.mime_type = file.type;
+      console.log(this.mime_type);
+      if (typeof FileReader === "function") {
+        this.dialog = true;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          this.selectedFile = event.target.result;
+          this.$refs.cropper.replace(this.selectedFile);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert("Sorry, FileReader API not supported");
+      }
+    },
+  },
+  computed: {
+    layout() {
+      return this.$route.meta.layout;
+    },
+  },
+  validations: {
+    form: {
+      name: {
+        required,
+        minLength: minLength(3),
+        maxLength: maxLength(25),
+      },
+    },
+    activity: {
+      name: {
+        required,
+        minLength: minLength(3),
+        maxLength: maxLength(25),
+      },
+    },
+  },
+};
+</script>
+
+<style scoped>
+.wrap-image-cropper {
+  max-height: 230px;
+  overflow-y: auto;
+}
+.current-image {
+  max-width: 100%;
+  min-width: 120px;
+  width: auto;
+  display: block;
+  margin: 0 auto;
+  max-height: 300px;
+  height: auto;
+}
+</style>

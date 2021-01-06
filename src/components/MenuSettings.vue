@@ -10,8 +10,8 @@
     </li>
     <li
       :class="{
-        'list-inline-item mr-5 list-active': active == 'password',
-        'list-inline-item mr-5': active != 'password',
+        'list-inline-item mr-5 list-active': active == 'reset',
+        'list-inline-item mr-5': active != 'reset',
       }"
     >
       <router-link exact :to="'/dashboard/settings/reset-password'"
@@ -44,6 +44,34 @@
     >
       <router-link exact :to="'/dashboard/settings/company-types'"
         >Company type</router-link
+      >
+    </li>
+    <li
+      :class="{
+        'list-inline-item mr-5 list-active': active == 'categories',
+        'list-inline-item mr-5': active != 'categories',
+      }"
+      v-if="
+        profile &&
+        (profile.role === 'admin-company' || profile.role === 'super-admin')
+      "
+    >
+      <router-link exact :to="'/dashboard/settings/categories'"
+        >Categories</router-link
+      >
+    </li>
+    <li
+      :class="{
+        'list-inline-item mr-5 list-active': active == 'event-types',
+        'list-inline-item mr-5': active != 'event-types',
+      }"
+      v-if="
+        profile &&
+        (profile.role === 'admin-company' || profile.role === 'super-admin')
+      "
+    >
+      <router-link exact :to="'/dashboard/settings/event-types'"
+        >Event types</router-link
       >
     </li>
   </ul>
