@@ -277,12 +277,12 @@
               <span class="text-blue-dark">{{
                 company.company.customerBase || "-"
               }}</span>
-              <button
-                @click="updateCustomerBAse"
+              <!-- <button
+                @click="updateCustomerBase"
                 class="btn btn-transparent mx-1 px-1"
               >
                 Update
-              </button>
+              </button> -->
             </div>
             <modal
               name="openEditCustomerBase"
@@ -521,7 +521,7 @@ export default {
     openUploadCompanyLogo() {
       this.$modal.show("uploadCompanyLogo");
     },
-    updateCustomerBAse() {
+    updateCustomerBase() {
       this.$modal.show("openEditCustomerBase");
     },
     toggleShow() {
@@ -608,6 +608,7 @@ export default {
   border-radius: 4px;
 }
 .logo-mycompany img {
+  width: 100%;
   border-radius: 4px;
 }
 .btn-upload {

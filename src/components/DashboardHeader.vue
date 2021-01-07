@@ -2,7 +2,6 @@
   <div class="wrap-dash-header">
     <ul class="list-inline my-2 mr-4 py-1 float-right">
       <li
-        v-if="profile && profile.role === 'normal'"
         class="list-inline-item px-1 position-relative"
       >
         <router-link
@@ -19,7 +18,6 @@
         </router-link>
       </li>
       <li
-        v-if="profile && profile.role === 'normal'"
         class="list-inline-item px-1 position-relative"
       >
         <button
@@ -43,7 +41,7 @@
             <li class="list-group-item active">Notifications</li>
             <li
               class="list-group-item one-notification position-relative"
-              v-for="(notification, index) in notifications"
+              v-for="(notification, index) in notifications.slice(0,20)"
               :key="index"
             >
               <span class="date">
@@ -56,7 +54,7 @@
                 {{ notification.content | truncate(70) }}
               </div>
             </li>
-            <!-- <li
+            <li
               class="list-group-item text-center"
             >
               <router-link
@@ -64,7 +62,7 @@
                 :to="'/dashboard/notifications'"
                 >See all notifications</router-link
               >
-            </li> -->
+            </li>
           </ul>
         </div>
       </li>

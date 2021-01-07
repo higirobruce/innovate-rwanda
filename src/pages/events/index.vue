@@ -68,7 +68,6 @@
                 </h3>
                 <div>
                   <span>
-                    by
                     <span class="text-blue">{{ post.category }}</span>
                   </span>
                   <span class="float-right">
@@ -118,7 +117,6 @@
                 </h3>
                 <div>
                   <span>
-                    by
                     <span class="text-blue">{{ post.category }}</span>
                   </span>
                   <span class="float-right">

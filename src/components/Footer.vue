@@ -96,7 +96,7 @@
           We use cookies to offer you a bbetter experience and analyze site
           traffic. By continuing to use this website, you consent to the use of
           cookies in accordance with our
-          <router-link :to="'/cookies'">Cookie Policy</router-link>
+          <router-link :to="'/cookies-policy'">Cookie Policy</router-link>
         </div>
         <button @click.prevent="accept" type="button">Accept</button>
       </div>

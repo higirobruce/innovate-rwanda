@@ -19,7 +19,7 @@
                 }`"
               >
                 <input
-                  type="text"
+                  type="password"
                   v-model="user.password"
                   required
                   class="form-control custom-input"
@@ -35,7 +35,7 @@
                 }`"
               >
                 <input
-                  type="text"
+                  type="password"
                   v-model="user.confirmPassword"
                   required
                   class="form-control custom-input"

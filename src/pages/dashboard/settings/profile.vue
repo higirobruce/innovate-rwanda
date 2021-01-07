@@ -82,7 +82,7 @@
               </div>
             </form>
           </div>
-          <div class="border-top my-4 py-4" v-if="profile && profile.companyId">
+          <div class="border-top my-4 py-4">
             <h2 class="text-blue-dark h5">
               Permanently delete this account and company
             </h2>
@@ -95,7 +95,7 @@
               @click.prevent="deleteAccount"
               class="btn btn-danger-outline"
             >
-              Delete account
+              De-register this company
             </button>
           </div>
         </div>

@@ -245,7 +245,7 @@
             </div>
           </div>
           <div class="co-loadmore">
-            <router-link :to="'/'">Load more</router-link>
+            <router-link :to="'/directory/companies'">Load more</router-link>
           </div>
         </div>
         <div class="my-5 py-5" v-if="notfound && _.isEmpty(company)">
