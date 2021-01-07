@@ -337,7 +337,7 @@
           >
             <EditCompanyLocation :company="company.company" /> </modal
           >˝
-          <div class="my-3">
+          <div class="my-3" v-if="company.company.officeAddress">
             Our office:
             <span class="mx-3 font-weight-bold text-blue-dark">
               {{ convertLatLng(company.company).place }}
