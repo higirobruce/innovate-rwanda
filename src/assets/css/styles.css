@@ -86,6 +86,12 @@ input::placeholder {
 .bg-blue {
   background: #06adef;
 }
+.text-orange {
+  color: #ef8700;
+}
+.bg-orange {
+  background: #ef8700;
+}
 .text-blue-light-1 {
   color: #f3fbfe;
 }

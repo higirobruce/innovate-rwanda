@@ -1,46 +1,8 @@
 <template>
   <div class="bg-white">
     <component :is="layout">
+      <Welcome />
       <div class="container">
-        <!-- welcome to innovate -->
-        <div class="welcome-screen text-sm-center text-md-center text-lg-left">
-          <div class="welcome-info">
-            <h1 class="text-blue-dark mb-4">
-              Bringing Rwanda's Innovation Community Together
-            </h1>
-            <router-link
-              :to="'/join'"
-              class="btn btn-lg font-weight-bold btn-primary-outline mt-3 mr-lg-5 mt-3"
-            >
-              Join the community
-            </router-link>
-            <router-link
-              :to="'/about'"
-              class="btn btn-lg font-weight-bold btn-secondary-outline mt-3"
-            >
-              Learn more
-            </router-link>
-            <div class="clear"></div>
-            <form @submit="search" class="home-search my-4">
-              <input
-                v-model="query"
-                type="text"
-                placeholder="Search the directory..."
-              />
-              <button
-                type="submit"
-                :disabled="_.isEmpty(query)"
-                @click.prevent="search"
-                class="btn btn-transparent"
-              >
-                <img src="@/assets/images/search.png" alt="Search" />
-              </button>
-            </form>
-          </div>
-          <div class="innovate-bg">
-            <img src="@/assets/images/bg-welcome-innovate.png" alt="Innovate" />
-          </div>
-        </div>
         <!-- What we do -->
         <div class="home-about text-center my-4 py-4">
           <h2 class="text-blue-dark py-3">What We Do</h2>
@@ -222,6 +184,7 @@ import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 import { required, email } from "vuelidate/lib/validators";
 import Loading from "@/components/Loading";
+import Welcome from "@/components/Welcome2";
 import { VueAgile } from "vue-agile";
 
 export default {
@@ -229,6 +192,7 @@ export default {
   components: {
     Loading,
     agile: VueAgile,
+    Welcome,
   },
   data() {
     return {
@@ -359,26 +323,6 @@ export default {
 
 <style scoped>
 @media (min-width: 1025px) {
-  .welcome-screen {
-    height: 800px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
-    z-index: 0;
-  }
-  .innovate-bg {
-    width: 1350px;
-    position: absolute;
-    right: -90px;
-    bottom: 0;
-    z-index: -1;
-  }
-  .innovate-bg img {
-    position: relative;
-    right: -10px;
-    width: 100%;
-  }
   .wrap-home-categories {
     display: flex;
     gap: 20px;
@@ -386,58 +330,10 @@ export default {
   }
 }
 @media (max-width: 1024px) {
-  .welcome-screen {
-    text-align: center;
-  }
-  .welcome-info {
-    padding: 35px 0 0 0;
-  }
-  .innovate-bg {
-    width: 100%;
-    position: relative;
-  }
-  .innovate-bg img {
-    position: relative;
-    left: -70px;
-    width: 100%;
-    margin: 0 auto;
-    display: block;
-  }
   .wrap-home-categories {
     display: flex;
     flex-wrap: wrap;
   }
-}
-.welcome-screen {
-  width: 100%;
-}
-.welcome-info {
-  width: 100%;
-  max-width: 900px;
-}
-.home-search {
-  background: #f0f2f8;
-  padding: 3px 6px;
-  width: 100%;
-  max-width: 496px;
-  display: grid;
-  grid-template-areas: "search-input search-button";
-  grid-template-columns: 5fr 1fr;
-  grid-gap: 5px;
-}
-.home-search input {
-  grid-area: search-input;
-  background: transparent;
-  padding: 3px 15px;
-  border: none;
-}
-.home-search input::placeholder {
-  color: #c0c6d8;
-}
-.home-search button {
-  grid-area: search-button;
-  width: 80px;
-  padding: 5px 0;
 }
 .home-about {
   max-width: 920px;
