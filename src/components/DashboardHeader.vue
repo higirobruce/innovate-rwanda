@@ -1,9 +1,7 @@
 <template>
   <div class="wrap-dash-header">
     <ul class="list-inline my-2 mr-4 py-1 float-right">
-      <li
-        class="list-inline-item px-1 position-relative"
-      >
+      <li class="list-inline-item px-1 position-relative">
         <router-link
           class="dash-header-btn dash-notification-badge"
           :to="'/dashboard/messages'"
@@ -17,9 +15,7 @@
           </span>
         </router-link>
       </li>
-      <li
-        class="list-inline-item px-1 position-relative"
-      >
+      <li class="list-inline-item px-1 position-relative">
         <button
           class="dash-header-btn dash-notification-badge"
           @click.prevent="toggleNotifications"
@@ -41,7 +37,7 @@
             <li class="list-group-item active">Notifications</li>
             <li
               class="list-group-item one-notification position-relative"
-              v-for="(notification, index) in notifications.slice(0,20)"
+              v-for="(notification, index) in notifications.slice(0, 20)"
               :key="index"
             >
               <span class="date">
@@ -54,9 +50,7 @@
                 {{ notification.content | truncate(70) }}
               </div>
             </li>
-            <li
-              class="list-group-item text-center"
-            >
+            <li class="list-group-item text-center">
               <router-link
                 class="text-blue-dark"
                 :to="'/dashboard/notifications'"
@@ -98,6 +92,7 @@
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
 import { mixin as clickaway } from "vue-clickaway";
+import { EventBus } from "@/helpers/event-bus.js";
 export default {
   mixins: [clickaway],
   name: "dashboard-header",
@@ -109,17 +104,23 @@ export default {
       number: {},
     };
   },
-  created() {
-    this.profile && this.profile.companyId && AxiosHelper.get("notification/company").then((response) => {
-      this.notifications = response.data.result;
+  create() {
+    EventBus.$on("reload-notification-number", () => {
+      this.checkNoficationsNumber();
     });
+  },
+  mounted() {
+    this.profile &&
+      this.profile.companyId &&
+      AxiosHelper.get("notification/company").then((response) => {
+        this.notifications = response.data.result;
+      });
     this.checkNoficationsNumber();
   },
   methods: {
     hideUserDropDown() {
       this.isUserDropdownOn = false;
     },
-
     toggleUserDropDown() {
       this.isUserDropdownOn = !this.isUserDropdownOn;
     },
@@ -134,11 +135,9 @@ export default {
       const data = {
         notifications: notificationsToMarkAsRead.toString(),
       };
-      console.log("hey", data);
       AxiosHelper.put("notification/read", data).then(() => {
         this.checkNoficationsNumber();
       });
-      //   .catch(() => {});
     },
     hideNotifications() {
       this.showNotifications = false;

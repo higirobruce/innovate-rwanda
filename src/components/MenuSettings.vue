@@ -29,7 +29,7 @@
       "
     >
       <router-link exact :to="'/dashboard/settings/business-activities'"
-        >Business Activities</router-link
+        >Business activities</router-link
       >
     </li>
     <li
@@ -43,7 +43,7 @@
       "
     >
       <router-link exact :to="'/dashboard/settings/company-types'"
-        >Company type</router-link
+        >Company types</router-link
       >
     </li>
     <li

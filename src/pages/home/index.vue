@@ -14,13 +14,14 @@
             >
               Join the community
             </router-link>
-            <router-link :to="'/about'"
+            <router-link
+              :to="'/about'"
               class="btn btn-lg font-weight-bold btn-secondary-outline mt-3"
             >
               Learn more
             </router-link>
             <div class="clear"></div>
-            <!-- <form @submit="search" class="home-search my-4">
+            <form @submit="search" class="home-search my-4">
               <input
                 v-model="query"
                 type="text"
@@ -34,7 +35,7 @@
               >
                 <img src="@/assets/images/search.png" alt="Search" />
               </button>
-            </form> -->
+            </form>
           </div>
           <div class="innovate-bg">
             <img src="@/assets/images/bg-welcome-innovate.png" alt="Innovate" />
@@ -96,30 +97,27 @@
         <div class="container text-center my-5">
           <h2 class="text-blue-dark font-weight-bold py-3 mb-4">Categories</h2>
           <div class="wrap-home-categories">
-            <div
-              v-for="(category, index) in categories.slice(
-                startingPoint,
-                endingPoint
-              )"
-              class="one-category"
-              :style="{ borderColor: category.color }"
-              :key="index"
-            >
-              <img :src="category.icon" :alt="category.name" />
-              <h3>
-                {{ category.name }}
-              </h3>
-            </div>
-            <div class="wrap-dots">
-              <button
-                :class="{ active: selectedPage === 1 }"
-                @click="pageOne(0, 5)"
-              ></button>
-              <button
-                :class="{ active: selectedPage === 2 }"
-                @click="pageTwo(5, 10)"
-              ></button>
-            </div>
+            <agile :options="options">
+              <div
+                v-for="(category, index) in categories"
+                class="slide one-category"
+                :key="index"
+              >
+                <img
+                  v-if="category.image"
+                  :src="`${IMAGE_URL}c_fill,g_center,w_1200/${category.image}`"
+                  :alt="category.name"
+                />
+                <img
+                  v-else
+                  src="@/assets/images/innovate-lamp.png"
+                  :alt="category.name"
+                />
+                <h3>
+                  {{ category.name }}
+                </h3>
+              </div>
+            </agile>
           </div>
         </div>
       </div>
@@ -135,15 +133,17 @@
               @mouseover="partnerHoverUrl(num)"
               @mouseout="partnerMouseoutUrl(num)"
             >
-              <img
-                :src="
-                  partnerUrl(
-                    partners[num].isHover
-                      ? partners[num].hover
-                      : partners[num].image
-                  )
-                "
-              />
+              <router-link :to="`redirect/${partners[num].link}`">
+                <img
+                  :src="
+                    partnerUrl(
+                      partners[num].isHover
+                        ? partners[num].hover
+                        : partners[num].image
+                    )
+                  "
+                />
+              </router-link>
             </div>
           </div>
           <div class="wrap-partners-row-1">
@@ -154,15 +154,17 @@
               @mouseover="partnerHoverUrl(num)"
               @mouseout="partnerMouseoutUrl(num)"
             >
-              <img
-                :src="
-                  partnerUrl(
-                    partners[num].isHover
-                      ? partners[num].hover
-                      : partners[num].image
-                  )
-                "
-              />
+              <router-link :to="`redirect/${partners[num].link}`">
+                <img
+                  :src="
+                    partnerUrl(
+                      partners[num].isHover
+                        ? partners[num].hover
+                        : partners[num].image
+                    )
+                  "
+                />
+              </router-link>
             </div>
           </div>
 
@@ -220,100 +222,58 @@ import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 import { required, email } from "vuelidate/lib/validators";
 import Loading from "@/components/Loading";
+import { VueAgile } from "vue-agile";
 
 export default {
   name: "home",
   components: {
     Loading,
+    agile: VueAgile,
   },
   data() {
     return {
-      categories: [
-        {
-          name: "Tech companies",
-          icon: require("@/assets/images/cat-companies.svg"),
-          color: "#00AEEF",
-        },
-        {
-          name: "Co-working spaces",
-          icon: require("@/assets/images/cat-space.svg"),
-          color: "#EF8700",
-        },
-        {
-          name: "Business networks",
-          icon: require("@/assets/images/cat-network.svg"),
-          color: "#0066AB",
-        },
-        {
-          name: "Accelerators",
-          icon: require("@/assets/images/cat-accelerator.svg"),
-          color: "#C82027",
-        },
-        {
-          name: "Government agencies",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#009040",
-        },
-        {
-          name: "Ecosystem builders",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#45454",
-        },
-        {
-          name: "Financer/Investors",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#45454",
-        },
-        {
-          name: "Academic/Research institutions",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#45454",
-        },
-        {
-          name: "Incubators",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#45454",
-        },
-        {
-          name: "Talent Development",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#45454",
-        },
-      ],
+      categories: [],
       partners: {
         0: {
           image: "myict-b.png",
           hover: "myict.png",
+          link: "miniict.gov.rw",
           isHover: false,
         },
         1: {
           image: "giz-b.png",
           hover: "giz.png",
+          link: "giz.de",
           isHover: false,
         },
         2: {
           image: "rdb-b.png",
           hover: "rdb.png",
+          link: "rdb.rw",
           isHover: false,
         },
         3: {
           image: "dtc-b.png",
           hover: "dtc.png",
+          link: "digicenter.rw",
           isHover: false,
         },
         4: {
           image: "jica-b.png",
           hover: "jica.png",
+          link: "jica.go.jp",
           isHover: false,
         },
         5: {
           image: "ict_chamber-b.png",
           hover: "ict_chamber.png",
+          link: "ictchamber.rw",
           isHover: false,
         },
         6: {
           image: "risa-b.png",
           hover: "risa.png",
+          link: "risa.rw",
           isHover: false,
         },
       },
@@ -327,7 +287,20 @@ export default {
       subscribing: false,
       subscribed: false,
       query: "",
+      options: {
+        infinite: true,
+        slidesToShow: 5,
+        initialSlide: 0,
+        navButtons: false,
+        dots: false,
+        autoplay: true,
+      },
     };
+  },
+  created() {
+    AxiosHelper.get("company-categories", this.subscribe).then((response) => {
+      this.categories = response.data.result;
+    });
   },
   methods: {
     search() {
@@ -411,13 +384,6 @@ export default {
     gap: 20px;
     flex-wrap: wrap;
   }
-  .one-category {
-    padding: 25px 0 10px 0;
-    border-width: 2px;
-    border-style: solid;
-    width: calc(20% - 20px);
-    border-radius: 3px;
-  }
 }
 @media (max-width: 1024px) {
   .welcome-screen {
@@ -440,14 +406,6 @@ export default {
   .wrap-home-categories {
     display: flex;
     flex-wrap: wrap;
-  }
-  .one-category {
-    padding: 25px 0 10px 0;
-    border-width: 2px;
-    margin-bottom: 25px;
-    border-style: solid;
-    width: calc(100%);
-    border-radius: 3px;
   }
 }
 .welcome-screen {
@@ -495,18 +453,6 @@ export default {
   justify-content: flex-start;
 }
 
-.one-category img {
-  display: block;
-  max-width: 90px;
-  margin: 5px auto;
-  height: 100px;
-}
-.one-category h3 {
-  padding: 10px 0;
-  font-size: 23px;
-  font-weight: 700;
-  height: 65px;
-}
 .wrap-partners-row-1 {
   margin: 0 auto;
   max-width: 900px;

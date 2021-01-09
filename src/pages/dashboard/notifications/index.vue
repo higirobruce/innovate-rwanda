@@ -14,15 +14,21 @@
             class="list-group list-group-flush"
           >
             <li
-              class="list-group-item py-4"
+              class="list-group-item wrap-notification py-4"
               v-for="(notification, index) in notifications"
               :key="index"
             >
-              <div class="noti-subject">
-                {{ notification.subject }}
-              </div>
+              <img src="@/assets/images/notification.png" />
               <div class="noti-content">
-                {{ notification.content }}
+                <h3 class="h5 font-weight-light text-blue">
+                  {{ notification.subject }}
+                </h3>
+                <div>
+                  {{ notification.content }}
+                </div>
+                <div class="text-danger">
+                  {{ notification.createdAt | date("MMM DD, YY") }}
+                </div>
               </div>
             </li>
           </ul>
@@ -167,4 +173,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.wrap-notification {
+  display: flex;
+}
+.wrap-notification img {
+  height: 30px;
+  width: 25px;
+  margin: 5px 40px 0 0;
+}
+</style>

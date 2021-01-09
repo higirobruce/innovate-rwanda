@@ -736,7 +736,7 @@ input[type="number"] {
 }
 
 /* Reset Select */
-select {
+.filter-select select {
   -webkit-appearance: none;
   -moz-appearance: none;
   -ms-appearance: none;
@@ -749,7 +749,7 @@ select {
   color: #1b2958;
 }
 /* Remove IE arrow */
-select::-ms-expand {
+.filter-select select::-ms-expand {
   display: none;
 }
 /* Custom Select */
@@ -766,7 +766,7 @@ select::-ms-expand {
   background: #1b2958;
   overflow: hidden;
 }
-select {
+.filter-select select {
   flex: 1;
   padding: 0 0;
   cursor: pointer;
@@ -958,4 +958,64 @@ select {
   z-index: 13000;
   width: 400px;
   background: #fff;
+}
+
+.agile {
+  width: 100%;
+}
+.agile__actions {
+  margin-top: 20px;
+}
+.agile__nav-button {
+  background: transparent;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 24px;
+  transition-duration: 0.3s;
+}
+.agile__nav-button:hover {
+  color: #888;
+}
+.agile__dot {
+  margin: 0 10px;
+}
+.agile__dot button {
+  background-color: #eee;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: block;
+  height: 10px;
+  font-size: 0;
+  line-height: 0;
+  margin: 0;
+  padding: 0;
+  transition-duration: 0.3s;
+  width: 10px;
+}
+.agile__dot--current button,
+.agile__dot:hover button {
+  background-color: #888;
+}
+
+.slide {
+  width: 250px;
+  margin: 0 10px;
+  height: 240px;
+  border: 2px solid #06adef;
+  cursor: pointer;
+}
+
+.one-category img {
+  display: block;
+  max-width: 90px;
+  margin: 20px auto;
+  height: 100px;
+}
+.one-category h3 {
+  padding: 10px 0;
+  font-size: 23px;
+  font-weight: 700;
+  height: 65px;
 }

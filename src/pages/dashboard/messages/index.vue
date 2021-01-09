@@ -4,7 +4,10 @@
       <div class="page-info px-5">
         <h2 class="h2 font-weight-bold">Messages</h2>
       </div>
-      <div class="dash-container" v-if="messages && profile && profile.role === 'normal'">
+      <div
+        class="dash-container"
+        v-if="messages && profile && profile.role === 'normal'"
+      >
         <div class="wrap-messages">
           <div class="wrap-senders">
             <div class="wrap-search" v-if="!_.isEmpty(message)">
@@ -63,6 +66,7 @@
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
 import ReadMessage from "@/components/ReadMessage";
+import { EventBus } from "@/helpers/event-bus.js";
 export default {
   name: "messages",
   components: {
@@ -91,6 +95,19 @@ export default {
           this.messages = response.data.result;
           this.message = response.data.result[0];
           this.activeMessage = response.data.result[0].id;
+
+          let messagesToMarkAsRead = [];
+          this.messages.map((e) => {
+            if (e.firstread === null) {
+              messagesToMarkAsRead = [...messagesToMarkAsRead, e.id];
+            }
+          });
+          const data = {
+            messages: messagesToMarkAsRead.toString(),
+          };
+          AxiosHelper.put("message/read", data).then(() => {
+            EventBus.$emit("reload-notification-number");
+          });
         })
         .catch(() => {
           this.messagesLoaded = false;

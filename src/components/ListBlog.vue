@@ -49,6 +49,7 @@
               >
             </div>
           </div>
+          <div class="clear"></div>
         </div>
       </div>
     </div>
@@ -105,7 +106,7 @@ export default {
   },
   methods: {
     filterHtml(str) {
-      return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 200)}...`;
+      return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 100)}...`;
     },
     goToPrevious() {
       this.currentPage = this.currentPage - 1;
@@ -133,6 +134,9 @@ export default {
 </script>
 
 <style scoped>
+.wrap-one-post {
+  height: 490px;
+}
 .wrap-posts {
   padding: 40px;
   box-shadow: 0px 17px 36px #1b295814;

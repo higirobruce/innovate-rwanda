@@ -52,9 +52,6 @@
               </router-link>
             </div>
             <div class="py-2 float-right" v-else>
-              <button class="btn btn-transparent">
-                <img src="@/assets/images/search.svg" alt="Search" />
-              </button>
               <router-link
                 :to="'/login'"
                 class="btn font-weight-bold btn-primary-outline mr-2"
@@ -69,9 +66,16 @@
               </router-link>
             </div>
           </div>
-          <button class="auth-btn" @click="toggleAuthModal">
+          <button
+            v-if="_.isEmpty(profile)"
+            class="auth-btn"
+            @click="toggleAuthModal"
+          >
             <img class="avatar" src="@/assets/images/user-avatar.svg" />
           </button>
+          <router-link class="auth-btn" v-else :to="'/dashboard'">
+            <img class="avatar" src="@/assets/images/user-avatar.svg" />
+          </router-link>
         </div>
       </div>
     </div>
@@ -83,7 +87,7 @@
       <div class="sidebar-nav mt-5">
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
-            <router-link :to="'/'">About</router-link>
+            <router-link :to="'/about'">About</router-link>
           </li>
           <li class="list-group-item">
             <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
@@ -100,9 +104,6 @@
           <li class="list-group-item">
             <router-link :to="'/find-talent'">Find Talents</router-link>
           </li>
-          <li class="list-group-item">
-            <router-link :to="'/search'">Search</router-link>
-          </li>
         </ul>
       </div>
     </div>
@@ -113,14 +114,18 @@
           <i class="icon" />
         </button>
         <div class="auth-wrap-btns mb-4">
-          <button
+          <router-link
+            :to="'/login'"
             class="btn btn-block font-weight-bold btn-primary-outline mr-2"
           >
             Login
-          </button>
-          <button class="btn btn-block font-weight-bold btn-primary mt-4">
+          </router-link>
+          <router-link
+            :to="'/join'"
+            class="btn btn-block font-weight-bold btn-primary mt-4"
+          >
             Join The Community
-          </button>
+          </router-link>
         </div>
       </div>
     </div>

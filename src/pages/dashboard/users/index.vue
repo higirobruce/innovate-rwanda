@@ -19,7 +19,7 @@
         </div>
         <div class="dash-container">
           <table
-            class="table"
+            class="table table-responsive-sm"
             v-if="
               (!loading && profile.role === 'admin-user') ||
               profile.role === 'super-admin'
@@ -43,29 +43,24 @@
                 :class="`${profile.id === user.id ? 'my-account' : ''}`"
               >
                 <td>
-                  <span class="cursor-pointer text-blue">
+                  <span class="cursor-pointer">
                     {{ user.firstName }} {{ user.lastName }}
                   </span>
                 </td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.jobTitle || "-" }}</td>
                 <td>
-                  <select
-                    v-if="user.role !== 'normal' && profile.id !== user.id"
-                    class="form-control form-control-sm"
-                    @change="changeRole($event)"
-                    name="role"
+                  <span
+                    @click.prevent="changeRole(user)"
+                    class="role-button"
+                    v-if="user.role !== 'normal'"
                   >
-                    <option
-                      v-for="(role, index) in roles"
-                      :value="user.text"
-                      :key="index"
-                      :selected="user.role === role.text"
-                    >
-                      {{ role.name }}
-                    </option>
-                  </select>
-                  <span v-if="user.role === 'normal'"> Normal </span>
+                    {{ generateRole(user.role) }}
+                    <img src="@/assets/images/arrow-down.png" alt="edit" />
+                  </span>
+                  <span v-else class="role-button">
+                    {{ generateRole(user.role) }}
+                  </span>
                 </td>
                 <td class="d-flex align-content-center flex-wrap">
                   <span class="status pending" v-if="user.status === 'new'">
@@ -103,14 +98,30 @@
             name="openChangeRole"
             :adaptive="true"
             :scrollable="true"
-            :height="240"
-            :width="600"
+            :height="400"
+            :width="360"
           >
-            <h3 class="p-4 bottom-shadow shadow">Role</h3>
-            <div class="p-4">
-              Do you really want to assign this role to
-              <b>{{ user.firstName }} {{ user.lastName }}</b
-              >?
+            <!--  -->
+            <h3 class="p-4 bottom-shadow shadow text-truncate">Change role</h3>
+            <div class="px-4 py-2">
+              <div
+                class="form-check list-check-role"
+                v-for="(role, index) in roles"
+                :key="index"
+              >
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  :name="role.text"
+                  :id="`id-${role.text}`"
+                  :value="role.text"
+                  :checked="role.text === selectedRole"
+                  v-on:change="roleSelected(role.text)"
+                />
+                <label class="form-check-label" :for="`id-${role.text}`">
+                  {{ role.name }}
+                </label>
+              </div>
             </div>
             <div class="my-2 mx-4">
               <span class="float-left">
@@ -118,7 +129,7 @@
                   @click="changeRoleAnyway"
                   class="btn btn-success-outline mr-2"
                 >
-                  Change role
+                  Update
                 </button>
               </span>
               <span class="float-right">
@@ -157,30 +168,31 @@ export default {
       userRole: "",
       changingRole: false,
       user: {},
-      role: "",
+      selectedRole: "",
+      currentUser: "",
       roles: [
         {
           name: "Administrator",
           text: "super-admin",
         },
         {
-          name: "Users",
+          name: "User  admin",
           text: "admin-user",
         },
         {
-          name: "Blog",
+          name: "Blog  admin",
           text: "admin-blog",
         },
         {
-          name: "Events",
+          name: "Event  admin",
           text: "admin-event",
         },
         {
-          name: "Jobs",
+          name: "Job admin",
           text: "admin-job",
         },
         {
-          name: "Companies",
+          name: "Company admin",
           text: "admin-job",
         },
       ],
@@ -191,6 +203,19 @@ export default {
     this.loadUsers();
   },
   methods: {
+    generateRole(e) {
+      let converted = "";
+      if(e === 'normal') return "Company owner"
+      this.roles.map((r) => {
+        if (r.text === e) {
+          converted = r.name;
+        }
+      });
+      return converted
+    },
+    roleSelected(e) {
+      this.selectedRole = e;
+    },
     regiserUser() {
       this.$modal.show("openRegister");
     },
@@ -236,16 +261,17 @@ export default {
       this.users = this.temporaryUsers;
       this.$modal.hide("openChangeRole");
     },
-    changeRole(e) {
-      console.log("en solo", e);
+    changeRole(user) {
       this.changingRole = true;
-      this.users = [];
-      // this.user = user;
+      this.currentUser = user;
       this.$modal.show("openChangeRole");
     },
     changeRoleAnyway() {
-      AxiosHelper.put(`users/change-role/${this.user.id}`)
+      AxiosHelper.put(`users/change-role/${this.currentUser.id}`, {
+        role: this.selectedRole,
+      })
         .then(() => {
+          this.loadUsers();
           Vue.$toast.open({
             message: `Role of ${this.user.firstName} has been updated successfully`,
             type: "success",
@@ -278,20 +304,23 @@ table .form-control {
   background: #f0f2f8;
   border: none !important;
 }
-.overlay {
-  position: relative;
-}
-.overlay.covered::before {
-  position: absolute;
-  content: "";
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.9);
-  z-index: 10;
-}
 .my-account {
-  background: #EFF2F7 !important;
+  background: #f7f9fc !important;
+}
+.role-button {
+  background: #eff2f7;
+  padding: 6px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.role-button img {
+  width: 20px;
+  padding: 0 4px;
+}
+.list-check-role {
+  padding: 7px 18px;
+}
+.form-check label {
+  cursor: pointer;
 }
 </style>

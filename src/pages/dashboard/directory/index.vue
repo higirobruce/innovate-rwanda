@@ -13,7 +13,7 @@
       </div>
       <div class="dash-container">
         <table
-          class="table"
+          class="table table-responsive-sm"
           v-if="
             profile &&
             (profile.role === 'admin-company' ||
@@ -50,7 +50,7 @@
               </td>
               <td style="max-width: 200px">
                 <span v-if="!_.isEmpty(dir.ActivitiesOfCompanies)">
-                  <spac
+                  <span
                     v-for="(act, index) in dir.ActivitiesOfCompanies.slice(
                       0,
                       3
@@ -59,7 +59,7 @@
                   >
                   <span v-if="index !== 0">,</span>
                     {{ act.BusinessActivity.name }}
-                  </spac>
+                  </span>
                   <span v-if="dir.ActivitiesOfCompanies.length >= 3">
                     and more</span
                   >
@@ -71,19 +71,19 @@
                     class="status text-capitalize approved"
                     v-if="dir.status === 'approved'"
                   >
-                    Company is approved
+                    Approved
                   </span>
                   <span
                     class="status text-capitalize pending"
                     v-if="dir.status === 'pending'"
                   >
-                    Pending approval
+                    Pending
                   </span>
                   <span
                     class="status text-capitalize declined"
                     v-if="dir.status === 'declined'"
                   >
-                    Company is rejected
+                    Rejected
                   </span>
                 </div>
               </td>
