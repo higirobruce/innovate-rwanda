@@ -28,55 +28,85 @@
           </button>
         </form>
       </div>
-      <div class="container">
-        <div class="wrap-companies" v-if="!_.isEmpty(directory)">
-          <div
-            class="row one-company"
-            v-for="(company, index) in directory"
-            :key="index"
-          >
-            <div class="col-sm-12 col-md-4 col-lg-2">
-              <div class="company-logo">
-                <router-link :to="`/company/${company.slug}`">
-                  <img
-                    v-if="company && company.logo"
-                    :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${company.logo}`"
-                    :alt="company.coName"
-                  />
-                  <img
-                    v-else
-                    src="@/assets/images/logo_placeholder.png"
-                    :alt="company.coName"
-                  />
-                </router-link>
-              </div>
-            </div>
-            <div class="col-sm-12 col-md-8 col-lg-10">
-              <router-link :to="`/company/${company.slug}`">
-                <h2>{{ company.coName }}</h2>
-                <div>
-                  <div class="mb-2 co-info" v-if="company.yearFounded">
-                    <i class="icon-calendar" />
-                    <span class="ml-2">{{ company.yearFounded }} </span>
-                  </div>
-                  <div class="mb-2 co-info" v-if="company.districtBasedIn">
-                    <i class="icon-marker-stroked" />
-                    <span class="ml-2">{{ company.districtBasedIn }} </span>
-                  </div>
-                  <div class="mb-2 co-info" v-if="company.mainAreaOfInterest">
-                    <i class="icon-pound" />
-                    <span class="ml-2">{{ company.mainAreaOfInterest }} </span>
-                  </div>
-                  <div class="mb-2 co-info" v-if="company.shortDescription">
-                    <i class="icon-comment" />
-                    <span class="ml-2">{{ company.shortDescription }} </span>
-                  </div>
-                </div>
-              </router-link>
-            </div>
-            <div class="info-separator clear my-3">&nbsp;</div>
+      <div class="wrap-filters-box">
+        <div class="wrap-filters">
+          <div class="filter-select">
+            <select
+              name="district"
+              v-model="districtBasedIn"
+              @change="changeLocation($event)"
+              required
+            >
+              <option value="" selected disabled>Location</option>
+              <option
+                v-for="(district, index) in allDistricts"
+                v-bind:value="district"
+                :key="index"
+              >
+                {{ district }}
+              </option>
+            </select>
           </div>
+          <div class="filter-select">
+            <select
+              name="district"
+              v-model="yearFounded"
+              @change="changeYearfound($event)"
+              required
+            >
+              <option value="" selected disabled>Year founded</option>
+              <option
+                v-for="(year, index) in 22"
+                v-bind:value="new Date().getFullYear() - year + 1"
+                :key="index"
+              >
+                {{ new Date().getFullYear() - year + 1 }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-select">
+            <select
+              name="district"
+              v-model="selectedActivity"
+              @change="changeActivity($event)"
+              required
+            >
+              <option value="" selected disabled>Activity</option>
+              <option
+                v-for="(act, index) in listOfBusinessActivities"
+                v-bind:value="act.id"
+                :key="index"
+              >
+                {{ act.name }}
+              </option>
+            </select>
+          </div>
+          <span class="float-right">
+            <div class="filter-select" style="max-width: 220px">
+              <select
+                name="district"
+                v-model="sortBy"
+                @change="changeSort($event)"
+                required
+              >
+                <option value="" disabled selected>Sort by</option>
+                <option v-bind:value="'date,asc'">Year founded(Asc)</option>
+                <option v-bind:value="'date,desc'">Year founded(Desc)</option>
+                <option v-bind:value="'name,asc'">Company name(A-Z)</option>
+                <option v-bind:value="'name,desc'">Company name(Z-A)</option>
+              </select>
+            </div>
+            <button type="button" @click.prevent="resetFilter">
+              Reset filters
+            </button>
+          </span>
         </div>
+      </div>
+      <div class="container">
+        <div v-if="!_.isEmpty(directory)">
+          <ListCompanies :companies="directory" />
+        </div>
+
         <div v-if="loaded && _.isEmpty(directory)" class="empty-post">
           <img src="@/assets/images/empty.png" />
           <h2 class="my-0 py-0 font-weight-light h3">Companies not found</h2>
@@ -90,10 +120,13 @@
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
 import PageHeader from "@/components/PageHeader";
+import ListCompanies from "@/components/ListCompanies";
+import { Districts } from "rwanda";
 export default {
-  name: "enablers",
+  name: "companies",
   components: {
     PageHeader,
+    ListCompanies,
   },
   data() {
     return {
@@ -101,6 +134,12 @@ export default {
       query: "",
       loading: false,
       loaded: false,
+      yearFounded: "",
+      selectedActivity: "",
+      allDistricts: [],
+      districtBasedIn: "",
+      listOfBusinessActivities: [],
+      sortBy: "",
     };
   },
   computed: {
@@ -109,10 +148,71 @@ export default {
     },
   },
   created() {
+    // loading business activities
+    AxiosHelper.get("business-activities")
+      .then((response) => {
+        this.listOfBusinessActivities = response.data.result;
+      })
+      .catch(() => {});
+    // loading all districts
+    this.allDistricts = Districts();
+    // load companies
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {
       this.search(value);
+      this.query = value;
     } else {
+      this.loadCompanies();
+    }
+  },
+  methods: {
+    resetFilter() {
+      this.districtBasedIn = "";
+      this.yearFounded = "";
+      this.selectedActivity = "";
+      this.sortBy = "";
+      this.directory = [];
+      this.loadCompanies();
+    },
+    changeLocation(e) {
+      this.yearFounded = "";
+      this.selectedActivity = "";
+      this.sortBy = "";
+      this.loadCompaniesWithFilter("location", e.target.value);
+    },
+    changeYearfound(e) {
+      this.districtBasedIn = "";
+      this.selectedActivity = "";
+      this.sortBy = "";
+      this.loadCompaniesWithFilter("year-founded", e.target.value);
+    },
+    changeActivity(e) {
+      this.districtBasedIn = "";
+      this.sortBy = "";
+      this.yearFounded = "";
+      this.loadCompaniesWithFilter("activities", e.target.value);
+    },
+    changeSort(e) {
+      this.districtBasedIn = "";
+      this.selectedActivity = "";
+      this.yearFounded = "";
+      this.directory = [];
+      const sortBy = e.target.value.split(",")[0];
+      const sortValue = e.target.value.split(",")[1];
+      AxiosHelper.get(
+        `directory/sort/Enabler?sortBy=${sortBy}&sortValue=${sortValue}`
+      )
+        .then((response) => {
+          this.directory = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+          this.directory = [];
+        });
+    },
+    loadCompanies() {
       AxiosHelper.get("directory/public/Enabler")
         .then((response) => {
           this.directory = response.data.result;
@@ -123,9 +223,21 @@ export default {
           this.loaded = true;
           this.directory = [];
         });
-    }
-  },
-  methods: {
+    },
+    loadCompaniesWithFilter(filter, value) {
+      this.directory = [];
+      AxiosHelper.get(
+        `directory/filter/Enabler?filterBy=${filter}&filterValue=${value}`
+      )
+        .then((response) => {
+          this.directory = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+        });
+    },
     search(query) {
       AxiosHelper.get(`directory/search?searchValue=${query}`)
         .then((response) => {
@@ -142,29 +254,4 @@ export default {
 };
 </script>
 <style scoped>
-.wrap-companies {
-  padding: 40px;
-  box-shadow: 0px 17px 36px #1b295814;
-  border-radius: 3px;
-  margin: 0 auto;
-  max-width: 1200px;
-  background: #ffffff;
-}
-.one-company {
-  margin: 25px 0;
-}
-.company-logo {
-  margin: 25px;
-  border-radius: 4px;
-}
-.company-logo img {
-  max-width: 140px;
-  border-radius: 4px;
-}
-.one-company h2 {
-  margin: 20px 0;
-  font-size: 26px;
-  font-weight: 900;
-  color: #1b2958;
-}
 </style>

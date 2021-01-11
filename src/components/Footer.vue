@@ -93,7 +93,7 @@
     <div class="wrap-cookie" v-if="firstTime">
       <div class="cookie">
         <div>
-          We use cookies to offer you a bbetter experience and analyze site
+          We use cookies to offer you a better experience and analyze site
           traffic. By continuing to use this website, you consent to the use of
           cookies in accordance with our
           <router-link :to="'/cookies-policy'">Cookie Policy</router-link>

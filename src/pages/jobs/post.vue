@@ -74,7 +74,7 @@
           </div>
         </div>
         <div class="more-posts mt-5">
-          <router-link :to="'/jobs'">More Jobs</router-link>
+          <router-link :to="'/find-talent'">Find jobs</router-link>
         </div>
       </div>
       <div

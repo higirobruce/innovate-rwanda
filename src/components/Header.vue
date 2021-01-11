@@ -155,6 +155,7 @@ export default {
 <style scoped>
 .wrap-header {
   position: relative;
+  z-index: 120000;
 }
 
 @media (min-width: 1025px) {

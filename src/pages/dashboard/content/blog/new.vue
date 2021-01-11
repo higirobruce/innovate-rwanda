@@ -20,7 +20,7 @@
           <button
             @click="publishAPost('pending')"
             :disabled="
-              post.title === '' || post.category === '' || post.content === ''
+              post.title === '' || post.content === ''
             "
             class="btn font-weight-bold btn-success-outline ml-3"
           >

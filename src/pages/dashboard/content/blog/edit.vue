@@ -12,9 +12,15 @@
           >
           <button
             @click="updateArticle"
-            class="btn font-weight-bold btn-success-outline ml-3"
+            class="btn font-weight-bold btn-primary-outline ml-3"
           >
             Update
+          </button>
+          <button
+            @click="publishArticle"
+            class="btn font-weight-bold btn-success-outline ml-3"
+          >
+            Publish
           </button>
         </div>
       </div>
@@ -77,10 +83,15 @@
                   v-for="(act, index) in post.AudienceForPosts"
                   :key="index"
                 >
-                  <span v-if="act.BusinessActivity && act.BusinessActivity.name">
+                  <span
+                    v-if="act.BusinessActivity && act.BusinessActivity.name"
+                  >
                     {{ act.BusinessActivity.name }}
                   </span>
-                  <button v-if="act.BusinessActivity && act.BusinessActivity.name" @click.prevent="removeActivityFromPost(act.activity)">
+                  <button
+                    v-if="act.BusinessActivity && act.BusinessActivity.name"
+                    @click.prevent="removeActivityFromPost(act.activity)"
+                  >
                     <img src="@/assets/images/remove.png" />
                   </button>
                 </div>
@@ -238,6 +249,7 @@ export default {
       imageUpdated: false,
       showOtherCategoryInput: false,
       listOfBusinessActivities: [],
+      message: ""
     };
   },
   beforeCreate() {
@@ -327,8 +339,16 @@ export default {
       }
     },
     updateArticle() {
+      const status = this.post.status;
       this.editing = true;
       this.savePost(status);
+      this.message = "Blog has been updated successfully";
+    },
+    publishArticle() {
+      const status = "pending";
+      this.editing = true;
+      this.savePost(status);
+      this.message = "Blog has been submitted. It will be published after review";
     },
     savePost(status) {
       this.post.status = status;
@@ -352,7 +372,7 @@ export default {
         .then(() => {
           this.created = true;
           Vue.$toast.open({
-            message: "Blog has been created successfully",
+            message: this.message,
             type: "success",
           });
         })

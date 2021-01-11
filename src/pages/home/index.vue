@@ -184,7 +184,7 @@ import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 import { required, email } from "vuelidate/lib/validators";
 import Loading from "@/components/Loading";
-import Welcome from "@/components/Welcome2";
+import Welcome from "@/components/Welcome3";
 import { VueAgile } from "vue-agile";
 
 export default {

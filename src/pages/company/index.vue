@@ -9,11 +9,6 @@
               :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${company.company.logo}`"
               :alt="company.company.coName"
             />
-            <img
-              v-else
-              src="@/assets/images/logo_placeholder.png"
-              :alt="company.company.coName"
-            />
             <h1>{{ company.company.coName }}</h1>
           </div>
           <div class="company-body mb-3">
@@ -30,14 +25,14 @@
                       {{ company.company.coWebsite }}
                     </router-link>
                   </h5>
-                  <img src="@/assets/images/globe.svg" />
+                  <img src="@/assets/images/globe.png" />
                 </div>
                 <div class="company-small-info">
                   <h4>Location</h4>
                   <h5>
                     {{ company.company.districtBasedIn }}
                   </h5>
-                  <img src="@/assets/images/map-marker.svg" />
+                  <img src="@/assets/images/map-marker.png" />
                 </div>
                 <div class="info-separator clear my-3">&nbsp;</div>
                 <div class="company-small-info">
@@ -45,7 +40,7 @@
                   <h5>
                     {{ company.company.yearFounded }}
                   </h5>
-                  <img src="@/assets/images/calendar-alt.svg" />
+                  <img src="@/assets/images/calendar-alt.png" />
                 </div>
                 <div class="company-small-info">
                   <h4>Social media</h4>
@@ -113,7 +108,7 @@
                       <i class="icon-linkedin-alt mr-2" />
                     </router-link>
                   </div>
-                  <img src="@/assets/images/hashtag.svg" />
+                  <img src="@/assets/images/hashtag.png" />
                 </div>
                 <div class="info-separator clear my-3">&nbsp;</div>
                 <div
@@ -124,7 +119,7 @@
                   <h5>
                     {{ company.company.contactPhone }}
                   </h5>
-                  <img src="@/assets/images/phone.svg" />
+                  <img src="@/assets/images/phone.png" />
                 </div>
                 <div
                   class="company-small-info"
@@ -134,7 +129,7 @@
                   <h5>
                     {{ company.company.contactEmail }}
                   </h5>
-                  <img src="@/assets/images/email.svg" />
+                  <img src="@/assets/images/email.png" />
                 </div>
 
                 <div
@@ -214,8 +209,8 @@
             </div>
           </div>
         </div>
-        <div class="wrap-similar-companies">
-          <h3 class="text-center text-blue-dark">Similart companies</h3>
+        <div class="wrap-similar-companies" v-if="_.size(company.similarCompanies) > 0">
+          <h3 class="text-center text-blue-dark">Similar companies</h3>
           <div class="text-center similar-desc mb-4">
             based on areas of interests
           </div>
@@ -230,12 +225,12 @@
                   <img
                     v-if="co && co.logo"
                     :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${co.logo}`"
-                    :alt="company.coName"
+                    :alt="co.coName"
                   />
                   <img
                     v-else
                     src="@/assets/images/logo_placeholder.png"
-                    :alt="company.coName"
+                    :alt="co.coName"
                   />
                   <h4>
                     {{ co.companyName }}
