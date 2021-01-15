@@ -8,13 +8,13 @@
         </h1>
         <router-link
           :to="'/join'"
-          class="btn btn-lg font-weight-bold bg-blue text-white mt-3 mr-lg-5 mt-3"
+          class="btn btn-home btn-lg font-weight-bold bg-blue text-white mt-3 mr-lg-5 mt-3"
         >
           Join the community
         </router-link>
         <router-link
           :to="'/about'"
-          class="btn btn-lg font-weight-bold bg-orange text-white mt-3"
+          class="btn btn-home btn-lg font-weight-bold bg-orange text-white mt-3"
         >
           Learn more
         </router-link>
@@ -46,15 +46,15 @@ export default {
   name: "welcome",
   data() {
     return {
-      query: ""
-    }
+      query: "",
+    };
   },
   methods: {
     search() {
       this.$router.push(`/directory/companies?search=${this.query}`);
     },
-  }
-}
+  },
+};
 </script>
 <style scoped>
 @media (min-width: 1025px) {
@@ -96,6 +96,18 @@ export default {
     width: 100%;
     margin: 0 auto;
     display: block;
+  }
+  .btn-home {
+    margin-right: 10px;
+  }
+}
+@media (max-width: 768px) {
+  .btn-home {
+    display: block;
+    margin: 10px 0;
+  }
+  .innovate-bg {
+    display: none;
   }
 }
 .welcome-screen {

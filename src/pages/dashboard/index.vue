@@ -115,28 +115,9 @@ export default {
 
 <style scoped>
 .wrap-home-dash {
-  height: 100vh;
+  min-height: 100vh;
 }
-.dash-welcome {
-  padding: 50px;
-  box-shadow: 0px 17px 36px #1b295814;
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: 1380px;
-  margin: 40px auto;
-}
-.dash-welcome img {
-  width: 300px;
-  float: right;
-}
-.welcome-content div {
-  max-width: 580px;
-}
-.welcome-content {
-  flex: 0 0 calc(100% - 400px);
-}
+
 .welcome-img {
   width: 400px;
 }
@@ -158,5 +139,47 @@ export default {
 .one-counter h4 {
   color: #5e7c8d;
   font-size: 22px;
+}
+
+@media (min-width: 1025px) {
+  .dash-welcome {
+    padding: 50px;
+    box-shadow: 0px 17px 36px #1b295814;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1380px;
+    margin: 40px auto;
+  }
+  .dash-welcome img {
+    width: 300px;
+    float: right;
+  }
+  .welcome-content {
+    flex: 0 0 calc(100% - 400px);
+  }
+  .welcome-content div {
+    max-width: 580px;
+  }
+}
+@media (max-width: 1024px) {
+  .dash-welcome {
+    padding: 30px;
+    box-shadow: 0px 17px 36px #1b295814;
+    border-radius: 3px;
+    display: block;
+    width: 100%;
+    margin: 20px auto;
+  }
+  .welcome-content {
+    width: 100%;
+  }
+  .welcome-content div {
+    width: 100%;
+  }
+  .dash-welcome img {
+    display: none;
+  }
 }
 </style>

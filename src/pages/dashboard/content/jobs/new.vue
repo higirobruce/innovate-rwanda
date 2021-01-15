@@ -31,6 +31,7 @@
             Publish
           </button>
         </div>
+        <div class="clear" />
       </div>
       <div class="dash-container">
         <div v-if="profile.role === 'normal'">

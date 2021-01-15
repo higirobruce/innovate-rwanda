@@ -11,10 +11,11 @@
             >Add New Post</router-link
           >
         </div>
+        <div class="clear" />
       </div>
       <div class="dash-container">
         <table
-          class="table"
+          class="table table-responsive-sm"
           v-if="
             profile &&
             (profile.role === 'normal' ||
@@ -27,7 +28,6 @@
               <th scope="col">Title</th>
               <th scope="col">Author</th>
               <th scope="col">Company</th>
-              <th scope="col">Category</th>
               <th scope="col">Target group</th>
               <th scope="col">Date</th>
               <th scope="col">Status</th>
@@ -45,15 +45,16 @@
                 </span>
               </td>
               <td>{{ post.User.lastName }} {{ post.User.firstName }}</td>
-               <td>{{ post.Company.companyName }}</td>
-              <td>{{ post.category }}</td>
+              <td>{{ post.Company.companyName }}</td>
               <td>
                 <div
                   class="co-badge no-button"
                   v-for="(act, index) in post.AudienceForPosts.slice(0, 1)"
                   :key="index"
                 >
-                  <span v-if="act.BusinessActivity && act.BusinessActivity.name">
+                  <span
+                    v-if="act.BusinessActivity && act.BusinessActivity.name"
+                  >
                     {{ act.BusinessActivity.name }}
                   </span>
                 </div>
@@ -211,9 +212,4 @@ export default {
 </script>
 
 <style scoped>
-.page-info a {
-  position: absolute;
-  right: 30px;
-  bottom: 15px;
-}
 </style>

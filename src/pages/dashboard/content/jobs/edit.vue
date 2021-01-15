@@ -12,11 +12,26 @@
           >
           <button
             @click="updatePost"
-            class="btn font-weight-bold btn-success-outline ml-3"
+            class="btn font-weight-bold btn-primary-outline ml-3"
           >
             Update
           </button>
+          <button
+            v-if="post.status === 'approved'"
+            @click="unpublishPost"
+            class="btn font-weight-bold btn-danger-outline ml-3"
+          >
+            Unpublish
+          </button>
+          <button
+            v-if="post.status === 'draft'"
+            @click="publishPost"
+            class="btn font-weight-bold btn-success-outline ml-3"
+          >
+            Publish
+          </button>
         </div>
+        <div class="clear" />
       </div>
       <div class="dash-container">
         <div v-if="profile.role === 'normal'">
@@ -108,19 +123,23 @@
                   accept="application/pdf"
                   @change="handleFileUpload()"
                 />
-                <div class="media mt-3 p-3 bg-white rounded" v-if="!selectedFile && post.jobDetailsDocument">
+                <div
+                  class="media mt-3 p-3 bg-white rounded"
+                  v-if="!selectedFile && post.jobDetailsDocument"
+                >
                   <img
                     class="align-self-start mr-3"
                     src="@/assets/images/pdf.png"
                   />
                   <div class="media-body">
                     <h5 class="mt-2">Preview</h5>
-                    <p>
-                      Job attachment
-                    </p>
+                    <p>Job attachment</p>
                   </div>
                 </div>
-                <div class="media mt-3 p-3 bg-white rounded" v-if="selectedFile">
+                <div
+                  class="media mt-3 p-3 bg-white rounded"
+                  v-if="selectedFile"
+                >
                   <img
                     class="align-self-start mr-3"
                     src="@/assets/images/pdf.png"
@@ -331,10 +350,26 @@ export default {
       }
     },
     updatePost() {
+      const status = this.post.status;
       this.editing = true;
-      this.savePost();
+      this.savePost(status);
     },
-    savePost() {
+    publishPost() {
+      const status = "pending";
+      this.editing = true;
+      this.savePost(status);
+      this.message =
+        "Job has been submitted. It will be published after review";
+    },
+    unpublishPost() {
+      const status = "draft";
+      this.editing = true;
+      this.savePost(status);
+      this.message =
+        "Job has marked as draft. If you want to published again, please reflesh the page and click on publish";
+    },
+    savePost(status) {
+      this.post.status = status;
       this.uploading = true;
       this.created = false;
       if (this.selectedFile) {

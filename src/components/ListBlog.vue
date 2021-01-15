@@ -30,10 +30,10 @@
                 class="text-blue-dark font-weight-bold"
                 :to="`blog/${post.id}`"
               >
-                {{ post.title | truncate(58) }}
+                {{ post.title | truncate(42) }}
               </router-link>
             </h2>
-            <div class="post-content mb-2">
+            <div class="post-content d-none d-sm-block mb-2">
               {{ filterHtml(post.content) }}
             </div>
             <div>
@@ -42,9 +42,8 @@
                 <span class="text-blue"
                   >{{ post.User.lastName }} {{ post.User.firstName }}</span
                 >
-              </span>
-              <span class="float-right">
-                <i class="icon-calendar mr-2" />
+                <br />
+                <!-- <i class="icon-calendar mr-2" /> -->
                 {{ post.createdAt | date("MMM YYYY") }}</span
               >
             </div>
@@ -106,7 +105,7 @@ export default {
   },
   methods: {
     filterHtml(str) {
-      return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 100)}...`;
+      return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 80)}...`;
     },
     goToPrevious() {
       this.currentPage = this.currentPage - 1;
@@ -134,35 +133,6 @@ export default {
 </script>
 
 <style scoped>
-.wrap-one-post {
-  height: 490px;
-}
-.wrap-posts {
-  padding: 40px;
-  box-shadow: 0px 17px 36px #1b295814;
-  border-radius: 3px;
-  margin: 0 auto;
-  max-width: 1200px;
-  background: #ffffff;
-  margin-bottom: 40px;
-}
-.one-company {
-  margin: 25px 0;
-}
-.company-logo {
-  margin: 25px;
-  border-radius: 4px;
-}
-.company-logo img {
-  max-width: 140px;
-  border-radius: 4px;
-}
-.one-company h2 {
-  margin: 20px 0;
-  font-size: 26px;
-  font-weight: 900;
-  color: #1b2958;
-}
 .wrap-pagination {
   padding: 25px 0;
 }

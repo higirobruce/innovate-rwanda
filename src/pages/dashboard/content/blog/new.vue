@@ -7,13 +7,13 @@
         <div class="wrap-content-head-btns" v-if="profile.role === 'normal'">
           <router-link
             :to="'/dashboard/content'"
-            class="btn font-weight-bol btn-gray-outline"
+            class="btn font-weight-bol btn-gray-outline mr-3"
             >Cancel</router-link
           >
           <button
             @click="saveAsDraft('draft')"
             :disabled="post.title === ''"
-            class="btn font-weight-bold btn-primary-outline ml-3"
+            class="btn font-weight-bold btn-primary-outline mr-3"
           >
             Save as draft
           </button>
@@ -22,11 +22,12 @@
             :disabled="
               post.title === '' || post.content === ''
             "
-            class="btn font-weight-bold btn-success-outline ml-3"
+            class="btn font-weight-bold btn-success-outline mr-3"
           >
             Publish
           </button>
         </div>
+        <div class="clear" />
       </div>
       <div class="dash-container">
         <div v-if="profile.role === 'normal'">

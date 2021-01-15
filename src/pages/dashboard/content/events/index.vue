@@ -12,10 +12,11 @@
             >Add New Event</router-link
           >
         </div>
+        <div class="clear" />
       </div>
       <div class="dash-container">
         <table
-          class="table"
+          class="table table-responsive-sm"
           v-if="
             profile &&
             (profile.role === 'normal' ||
@@ -210,11 +211,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.page-info a {
-  position: absolute;
-  right: 30px;
-  bottom: 15px;
-}
-</style>

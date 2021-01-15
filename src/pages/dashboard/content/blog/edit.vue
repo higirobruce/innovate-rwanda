@@ -17,12 +17,21 @@
             Update
           </button>
           <button
+            v-if="post.status === 'pending' || post.status === 'draft'"
             @click="publishArticle"
             class="btn font-weight-bold btn-success-outline ml-3"
           >
             Publish
           </button>
+          <button
+            v-if="post.status === 'approved'"
+            @click="unpublishArticle"
+            class="btn font-weight-bold btn-danger-outline ml-3"
+          >
+            Unpublish
+          </button>
         </div>
+        <div class="clear" />
       </div>
       <div class="dash-container">
         <div
@@ -38,7 +47,7 @@
               <span class="ml-3"> Back </span>
             </router-link>
             <span class="text-blue-dark font-weight-bold">
-              {{ post.title }}
+              {{ post.title | truncate(65) }}
             </span>
           </h4>
           <div class="alert alert-info" v-if="editing">
@@ -59,6 +68,11 @@
                   placeholder="Post Title"
                 />
               </div>
+
+              <div class="alert alert-info" v-if="_.size(post.title) > 65">
+                We are recommend short titles. Preferably not more thatn 65
+                characters
+              </div>
               <div class="form-group">
                 <div class="form-group">
                   <textarea
@@ -72,11 +86,6 @@
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
               <div class="content-form-sidebar">
-                <h3 class="h6">Category</h3>
-                <div class="h4 mb-4">
-                  {{ post.category }}
-                </div>
-
                 <h3 class="h6">Which group are you trying to reach?</h3>
                 <div
                   class="co-badge"
@@ -98,15 +107,6 @@
                 <a @click="updateActivities" class="btn btn-transparent px-1">
                   Add
                 </a>
-                <div class="form-group" v-if="showOtherCategoryInput">
-                  <h3 class="h6 my-3">Specify other category</h3>
-                  <input
-                    class="form-control custom-input"
-                    v-model="post.category"
-                    type="text"
-                    placeholder="Type category..."
-                  />
-                </div>
                 <h3 class="h6 my-3">Featured Image</h3>
                 <button
                   class="btn btn-block select-image"
@@ -200,7 +200,6 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
-import categories from "@/data/blogCategories.js";
 import { VueEditor } from "vue2-editor";
 let marked = require("marked");
 import VModal from "vue-js-modal";
@@ -224,7 +223,6 @@ export default {
         image: "",
         status: "pending",
         author: "",
-        category: "",
       },
       toobar: [["bold", "italic", "underline"]],
       editorSettings: {
@@ -234,7 +232,6 @@ export default {
           },
         },
       },
-      categories: [],
       mime_type: "",
       cropedImage: "",
       autoCrop: false,
@@ -247,9 +244,8 @@ export default {
       created: false,
       editing: false,
       imageUpdated: false,
-      showOtherCategoryInput: false,
       listOfBusinessActivities: [],
-      message: ""
+      message: "",
     };
   },
   beforeCreate() {
@@ -263,9 +259,6 @@ export default {
   created() {
     this.slug = this.$route.params.slug;
     this.loadPost();
-  },
-  mounted() {
-    this.categories = categories;
   },
   methods: {
     // load post
@@ -329,15 +322,6 @@ export default {
           });
         });
     },
-    changeCategory(e) {
-      if (e.target.value === "other") {
-        this.showOtherCategoryInput = true;
-        this.post.category = "";
-      } else {
-        this.showOtherCategoryInput = false;
-        this.post.category = e.target.value;
-      }
-    },
     updateArticle() {
       const status = this.post.status;
       this.editing = true;
@@ -348,7 +332,15 @@ export default {
       const status = "pending";
       this.editing = true;
       this.savePost(status);
-      this.message = "Blog has been submitted. It will be published after review";
+      this.message =
+        "Blog has been submitted. It will be published after review";
+    },
+    unpublishArticle() {
+      const status = "draft";
+      this.editing = true;
+      this.savePost(status);
+      this.message =
+        "Blog has been marked as draft. If you want to published again, please reflesh the page and click on publish";
     },
     savePost(status) {
       this.post.status = status;

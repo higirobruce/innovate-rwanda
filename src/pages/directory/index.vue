@@ -4,7 +4,7 @@
       <div class="wrap-choose-section">
         <h1>Choose a preferred section</h1>
         <div class="row">
-          <div class="col-sm-12 col-lg-6 one-box">
+          <div class="col-sm-12 col-lg-4 col-md-4 one-box">
             <div class="box-image">
               <img src="@/assets/images/enablers.svg" alt="type" />
             </div>
@@ -17,11 +17,24 @@
               Discover <img src="@/assets/images/arrow-right.png"
             /></router-link>
           </div>
-          <div class="col-sm-12 col-lg-6 one-box">
+          <div class="col-sm-12 col-lg-4 col-md-4 one-box">
             <div class="box-image">
               <img src="@/assets/images/companies.svg" alt="type" />
             </div>
             <h3>Tech Companies</h3>
+            <div>
+              Our community listing of tech and innovation companies in the
+              ecosystem.
+            </div>
+            <router-link :to="'/directory/companies'" class="btn">
+              Discover <img src="@/assets/images/arrow-right.png"
+            /></router-link>
+          </div>
+          <div class="col-sm-12 col-lg-4 col-md-4 one-box">
+            <div class="box-image">
+              <img src="@/assets/images/companies.svg" alt="type" />
+            </div>
+            <h3>Government institutions</h3>
             <div>
               Our community listing of tech and innovation companies in the
               ecosystem.
@@ -53,8 +66,9 @@ export default {
 <style scoped>
 .wrap-choose-section {
   margin: 25px auto 55px auto;
-  max-width: 800px;
+  max-width: 1100px;
 }
+
 .wrap-choose-section h1 {
   color: #00aeef;
   font-size: 48px;
@@ -63,7 +77,7 @@ export default {
 }
 .one-box h3 {
   color: #1b2958;
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 600;
 }
 .one-box div {
@@ -95,5 +109,28 @@ export default {
   position: absolute;
   right: 18px;
   top: 14px;
+}
+
+@media (max-width: 1025px) {
+  .wrap-choose-section {
+    margin: 0 auto 55px auto;
+    padding: 0 30px;
+  }
+  .wrap-choose-section h1 {
+    color: #00aeef;
+    font-size: 48px;
+    margin: 10px 0;
+    padding: 5px 0;
+  }
+  .one-box {
+    margin-bottom: 25px;
+    padding: 25px;
+    background: #ffffff;
+    box-shadow: 0px 17px 36px #1b295814;
+  }
+  .one-box div {
+    height: auto;
+    margin-top: 10px;
+  }
 }
 </style>

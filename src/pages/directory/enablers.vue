@@ -100,6 +100,7 @@
               Reset filters
             </button>
           </span>
+          <div class="clear" />
         </div>
       </div>
       <div class="container">

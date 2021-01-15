@@ -53,7 +53,7 @@
                   <span
                     @click.prevent="changeRole(user)"
                     class="role-button"
-                    v-if="user.role !== 'normal'"
+                    v-if="user.role !== 'normal' && profile.id !== user.id"
                   >
                     {{ generateRole(user.role) }}
                     <img src="@/assets/images/arrow-down.png" alt="edit" />
@@ -193,7 +193,7 @@ export default {
         },
         {
           name: "Company admin",
-          text: "admin-job",
+          text: "admin-company",
         },
       ],
     };
@@ -295,11 +295,6 @@ export default {
 </script>
 
 <style scoped>
-.page-info a {
-  position: absolute;
-  right: 30px;
-  bottom: 15px;
-}
 table .form-control {
   background: #f0f2f8;
   border: none !important;

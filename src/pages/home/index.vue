@@ -92,16 +92,12 @@
               class="one-partner"
               v-for="(num, index) in [0, 1, 2]"
               :key="index"
-              @mouseover="partnerHoverUrl(num)"
-              @mouseout="partnerMouseoutUrl(num)"
             >
               <router-link :to="`redirect/${partners[num].link}`">
                 <img
                   :src="
                     partnerUrl(
-                      partners[num].isHover
-                        ? partners[num].hover
-                        : partners[num].image
+                      partners[num].hover
                     )
                   "
                 />
@@ -120,9 +116,7 @@
                 <img
                   :src="
                     partnerUrl(
-                      partners[num].isHover
-                        ? partners[num].hover
-                        : partners[num].image
+                     partners[num].hover
                     )
                   "
                 />
@@ -357,6 +351,9 @@ export default {
 .one-partner {
   padding: 15px;
   cursor: pointer;
+}
+.one-partner:hover {
+  opacity: 0.5;
 }
 .one-partner img {
   width: 100%;

@@ -29,6 +29,7 @@
         </form>
       </div>
       <div class="wrap-filters-box">
+        <!-- <button class="btn btn-primary" type="button">Filter companies</button> -->
         <div class="wrap-filters">
           <div class="filter-select">
             <select
@@ -100,6 +101,7 @@
               Reset filters
             </button>
           </span>
+          <div class="clear" />
         </div>
       </div>
       <div class="container">

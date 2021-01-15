@@ -71,10 +71,10 @@
             class="auth-btn"
             @click="toggleAuthModal"
           >
-            <img class="avatar" src="@/assets/images/user-avatar.svg" />
+            <img class="avatar profile" src="@/assets/images/user-avatar.svg" />
           </button>
           <router-link class="auth-btn" v-else :to="'/dashboard'">
-            <img class="avatar" src="@/assets/images/user-avatar.svg" />
+            <img class="avatar profile" src="@/assets/images/user-avatar.svg" />
           </router-link>
         </div>
       </div>
@@ -219,8 +219,13 @@ export default {
   }
 }
 .sidebar-btn img,
-.auth-btn img {
+.auth-btn img.menu {
   width: 26px;
+}
+.auth-btn img.profile {
+  width: 42px;
+  margin-top: 10px;
+  border: 1p solid red;
 }
 
 .main-logo img {
