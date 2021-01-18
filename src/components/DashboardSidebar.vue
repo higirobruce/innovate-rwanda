@@ -26,7 +26,7 @@
         </router-link>
       </li>
       <li class="nav-item" v-if="profile.role === 'normal'">
-        <router-link :to="'/dashboard/my-company'">
+        <router-link :to="`/dashboard/my-company/${profile.companyId}`">
           <img src="@/assets/images/icon-company.png" />
           <div>My Company</div>
         </router-link>

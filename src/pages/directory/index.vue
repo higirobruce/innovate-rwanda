@@ -1,23 +1,27 @@
 <template>
   <div>
     <component :is="layout">
-      <div class="wrap-choose-section">
+      <div class="wrap-choose-section" v-if="!_.isEmpty(types)">
         <h1>Choose a preferred section</h1>
         <div class="row">
-          <div class="col-sm-12 col-lg-4 col-md-4 one-box">
+          <div
+            class="col-sm-12 col-lg-4 col-md-4 one-box"
+            v-for="(type, index) in types"
+            :key="index"
+          >
             <div class="box-image">
               <img src="@/assets/images/enablers.svg" alt="type" />
             </div>
-            <h3>Ecosystem Enablers</h3>
+            <h3>{{ type.name }}</h3>
             <div>
               Companies, organizations and service providers working together to
               foster growth in the Ecosystem
             </div>
-            <router-link :to="'/directory/enablers'" class="btn">
+            <router-link :to="`/directory/${type.slug}`" class="btn">
               Discover <img src="@/assets/images/arrow-right.png"
             /></router-link>
           </div>
-          <div class="col-sm-12 col-lg-4 col-md-4 one-box">
+          <!-- <div class="col-sm-12 col-lg-4 col-md-4 one-box">
             <div class="box-image">
               <img src="@/assets/images/companies.svg" alt="type" />
             </div>
@@ -42,7 +46,7 @@
             <router-link :to="'/directory/companies'" class="btn">
               Discover <img src="@/assets/images/arrow-right.png"
             /></router-link>
-          </div>
+          </div> -->
         </div>
       </div>
     </component>
@@ -51,10 +55,26 @@
 
 
 <script>
+import AxiosHelper from "@/helpers/AxiosHelper";
 export default {
-  name: "enablers",
+  name: "institutions",
   data() {
-    return {};
+    return {
+      types: [],
+    };
+  },
+  created() {
+    this.loadCompanyTypes();
+  },
+  methods: {
+    loadCompanyTypes() {
+      AxiosHelper.get("company-types")
+        .then((response) => {
+          this.types = response.data.result;
+          this.loading = false;
+        })
+        .catch(() => (this.loading = false));
+    },
   },
   computed: {
     layout() {
@@ -79,6 +99,7 @@ export default {
   color: #1b2958;
   font-size: 30px;
   font-weight: 600;
+  min-height: 70px;
 }
 .one-box div {
   height: 80px;
@@ -111,7 +132,13 @@ export default {
   top: 14px;
 }
 
-@media (max-width: 1025px) {
+@media (min-width: 1025px) {
+  .one-box {
+    margin-bottom: 25px;
+    padding: 25px;
+  }
+}
+@media (max-width: 1024px) {
   .wrap-choose-section {
     margin: 0 auto 55px auto;
     padding: 0 30px;

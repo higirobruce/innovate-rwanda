@@ -70,7 +70,7 @@
                     Active
                   </span>
                   <span
-                    class="status declined"
+                    class="status deleted"
                     v-if="user.status === 'inactive'"
                   >
                     Inactive

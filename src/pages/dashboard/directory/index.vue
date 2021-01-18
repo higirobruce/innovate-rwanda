@@ -4,12 +4,36 @@
       <div class="page-info px-5">
         <h2 class="h2 font-weight-bold">Directory</h2>
         <ul class="page-nav list-inline">
-          <li class="list-inline-item mr-5 list-active">
-            <router-link exact :to="'/dashboard/directory'"
-              >Companies list</router-link
+          <li
+            :class="`${
+              _.isEmpty(currentStatus)
+                ? 'list-inline-item mr-5 list-active'
+                : 'list-inline-item mr-5'
+            }`"
+          >
+            <button
+              class="btn btn-transparent text-blue"
+              @click.prevent="resetDirStatus"
             >
+              All Companies
+            </button>
+          </li>
+          <li
+            :class="`${
+              currentStatus === 'pending'
+                ? 'list-inline-item mr-5 list-active'
+                : 'list-inline-item mr-5'
+            }`"
+          >
+            <button
+              class="btn btn-transparent text-blue"
+              @click.prevent="loadPendingDir"
+            >
+              Pending approval
+            </button>
           </li>
         </ul>
+        <br />
       </div>
       <div class="dash-container">
         <table
@@ -34,7 +58,12 @@
             </tr>
           </thead>
           <tbody v-if="directory && directory.result">
-            <tr v-for="(dir, index) in directory.result" :key="index">
+            <tr
+              v-for="(dir, index) in directory.result.filter(
+                (d) => d.status != currentStatus
+              )"
+              :key="index"
+            >
               <td>
                 <span
                   class="cursor-pointer text-blue"
@@ -57,7 +86,7 @@
                     )"
                     :key="index"
                   >
-                  <span v-if="index !== 0">,</span>
+                    <span v-if="index !== 0">,</span>
                     {{ act.BusinessActivity.name }}
                   </span>
                   <span v-if="dir.ActivitiesOfCompanies.length >= 3">
@@ -85,17 +114,20 @@
                   >
                     Rejected
                   </span>
+                  <span
+                    class="status text-capitalize deleted"
+                    v-if="dir.status === 'deleted'"
+                  >
+                    Rejected
+                  </span>
                 </div>
               </td>
               <td>
                 <div class="wrap-actions">
-                  <button @click="loadCompany(dir.id)">
+                  <router-link :to="`/dashboard/my-company/${dir.id}`">
                     <img src="@/assets/images/view.png" alt="view" />
-                  </button>
-                  <button @click="openCompanyEdit(dir.id)">
-                    <img src="@/assets/images/edit.png" alt="edit" />
-                  </button>
-                  <button @click="deleteCompany(dir.coName, dir.id)">
+                  </router-link>
+                  <button v-if="profile.role === 'super-admin' && dir.status !== 'deleted'" @click="deleteCompany(dir.coName, dir.id)">
                     <img src="@/assets/images/delete.png" alt="delete" />
                   </button>
                 </div>
@@ -209,6 +241,7 @@ export default {
       notAllowed: false,
       companyIdEdit: "",
       inputCompanyToDelete: "",
+      currentStatus: "",
     };
   },
   created() {
@@ -232,6 +265,7 @@ export default {
   },
   mounted() {
     this.$modal.hide("companyInfo");
+    this.currentStatus = this.$route.params.status;
   },
   computed: {
     layout() {
@@ -239,6 +273,12 @@ export default {
     },
   },
   methods: {
+    loadPendingDir() {
+      this.currentStatus = "pending";
+    },
+    resetDirStatus() {
+      this.currentStatus = "";
+    },
     convertToObject(object) {
       return JSON.parse(object);
     },
@@ -293,7 +333,20 @@ export default {
       this.$modal.hide("deleteCompany");
     },
     deleteAnyway(id) {
-      console.log("id", id);
+      AxiosHelper.delete(`company/delete/${id}`)
+        .then(() => {
+          Vue.$toast.open({
+            message: "We have deleted your information.",
+            type: "success",
+          });
+          this.$modal.hide("deleteCompany");
+        })
+        .catch(() => {
+          Vue.$toast.open({
+            message: "Sorry, something went wrong. try again later!",
+            type: "error",
+          });
+        });
     },
     deleteCompany(name, id) {
       this.companyToDeleteName = name;

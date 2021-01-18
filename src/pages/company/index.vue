@@ -177,7 +177,16 @@
                   <div class="info-separator my-3">&nbsp;</div>
                   <h3>Customer base</h3>
                   <div>
-                    {{ company.company.customerBase || "-" }}
+                    <span
+                      class="text-blue-dark"
+                      v-for="(base, index) in JSON.parse(
+                        company.company.customerBase
+                      )"
+                      :key="index"
+                    >
+                      <span v-if="index > 0"> , </span>
+                      {{ base }}
+                    </span>
                   </div>
                   <div class="info-separator my-3">&nbsp;</div>
                   <div
@@ -209,7 +218,10 @@
             </div>
           </div>
         </div>
-        <div class="wrap-similar-companies" v-if="_.size(company.similarCompanies) > 0">
+        <div
+          class="wrap-similar-companies"
+          v-if="_.size(company.similarCompanies) > 0"
+        >
           <h3 class="text-center text-blue-dark">Similar companies</h3>
           <div class="text-center similar-desc mb-4">
             based on areas of interests

@@ -215,7 +215,6 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
-import categories from "@/data/blogCategories.js";
 import { VueEditor } from "vue2-editor";
 let marked = require("marked");
 import VModal from "vue-js-modal";
@@ -242,7 +241,6 @@ export default {
         category: "",
         status: "",
       },
-      categories: [],
       mime_type: "",
       cropedImage: "",
       autoCrop: false,
@@ -272,9 +270,6 @@ export default {
   created() {
     this.slug = this.$route.params.slug;
     this.loadPost();
-  },
-  mounted() {
-    this.categories = categories;
   },
   methods: {
     handleFileUpload() {

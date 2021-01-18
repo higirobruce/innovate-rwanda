@@ -77,6 +77,13 @@ const router = new Router({
       },
     },
     {
+      path: "/directory/:slug",
+      component: () => import("@/pages/directory/slug.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
       path: "/directory/companies",
       component: () => import("@/pages/directory/companies.vue"),
       meta: {
@@ -104,13 +111,13 @@ const router = new Router({
         layout: "dashboard-layout",
       },
     },
-    {
-      path: "/dashboard/directory/pending",
-      component: () => import("@/pages/dashboard/directory/pending.vue"),
-      meta: {
-        layout: "dashboard-layout",
-      },
-    },
+    // {
+    //   path: "/dashboard/directory/pending",
+    //   component: () => import("@/pages/dashboard/directory/pending.vue"),
+    //   meta: {
+    //     layout: "dashboard-layout",
+    //   },
+    // },
     {
       path: "/dashboard/directory/area-of-interests",
       component: () =>
@@ -120,7 +127,7 @@ const router = new Router({
       },
     },
     {
-      path: "/dashboard/my-company",
+      path: "/dashboard/my-company/:companyId",
       component: () => import("@/pages/dashboard/mycompany/index.vue"),
       meta: {
         layout: "dashboard-layout",

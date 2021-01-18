@@ -159,7 +159,7 @@
         <div class="mt-4">
           <span class="float-left">
             <button
-              @click="submitCompanyInfo"
+              @click.prevent="submitCompanyInfo"
               class="btn btn-success-outline mr-2"
             >
               Save
@@ -252,13 +252,12 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$modal.hide("EditcompanyInfo");
+      this.$modal.hide("editCompanyInfo");
     },
     changeInterest(e) {
       this.companyInfo.businessActivityId = e.target.value;
     },
-    submitCompanyInfo(evt) {
-      evt.preventDefault();
+    submitCompanyInfo() {
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
         .then(() => {
           Vue.$toast.open({

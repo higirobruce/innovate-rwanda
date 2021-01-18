@@ -8,9 +8,13 @@
       <div class="dash-container">
         <div class="wrap-dash-box">
           <h1 class="font-weight-light text-blue-dark h3">
-            Business types
+            Company/Institution types
             <span class="float-right">
-              <button class="btn btn-sm font-weight-bold btn-primary-outline" @click.prevent="addActivity" type="button">
+              <button
+                class="btn btn-sm font-weight-bold btn-primary-outline"
+                @click.prevent="addActivity"
+                type="button"
+              >
                 Add
               </button>
             </span>
@@ -21,11 +25,16 @@
           </div>
           <ul v-if="!loading && types" class="list-group list-group-flush">
             <li
-              class="list-group-item py-4"
+              class="list-group-item py-4 px-0"
               v-for="(act, index) in types"
               :key="index"
             >
-              {{ act.name }}
+              <div>
+                <h4 class="h5 p-0 m-0">
+                  {{ act.name }}
+                </h4>
+                <div>{{ act.name }}</div>
+              </div>
               <span class="float-right wrap-actions">
                 <button type="button" @click.prevent="editType(act)">
                   <img src="@/assets/images/edit.png" alt="edit" />
@@ -62,13 +71,13 @@
         name="openAddActivity"
         :adaptive="true"
         :scrollable="true"
-        :height="340"
+        :height="440"
         :width="600"
       >
         <h3 class="p-4 bottom-shadow shadow">Create company type</h3>
         <div class="m-4">
           <form @submit="submitType">
-            <h4 class="mt-3">Type</h4>
+            <h4 class="mt-3">Institution type</h4>
             <div
               :class="`${
                 $v.form.$invalid === true
@@ -81,12 +90,24 @@
                 v-model="form.name"
                 required
                 class="form-control custom-input"
-                placeholder="Type"
+                placeholder="Institution type..."
               />
             </div>
-            <div class="my-3" v-if="!_.isEmpty(generateSlug(form.name))">
-              Type slug:
-              {{ generateSlug(form.name) }}
+            <h4 class="mt-3">Description</h4>
+            <div
+              :class="`${
+                $v.form.$invalid === true
+                  ? 'form-group has-error'
+                  : 'form-group'
+              }`"
+            >
+              <input
+                type="text"
+                v-model="form.description"
+                required
+                class="form-control custom-input"
+                placeholder="Typp description..."
+              />
             </div>
           </form>
         </div>
@@ -181,7 +202,7 @@ export default {
       recordId: "",
       form: {
         name: "",
-        slug: "",
+        description: "",
       },
       activity: {},
       loading: true,
@@ -241,11 +262,6 @@ export default {
           });
         });
     },
-    generateSlug(name) {
-      const n = name.replaceAll(/\s/g, "").replace(/[^a-zA-Z ]/g, "");
-      this.form.slug = n;
-      return n;
-    },
     loadCompanyTypes() {
       AxiosHelper.get("company-types")
         .then((response) => {
@@ -281,12 +297,12 @@ export default {
       name: {
         required,
         minLength: minLength(3),
-        maxLength: maxLength(25),
+        maxLength: maxLength(55),
       },
-      slug: {
+      description: {
         required,
-        minLength: minLength(3),
-        maxLength: maxLength(25),
+        minLength: minLength(10),
+        maxLength: maxLength(140),
       },
     },
     activity: {

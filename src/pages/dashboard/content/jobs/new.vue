@@ -72,25 +72,6 @@
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
               <div class="content-form-sidebar">
-                <!-- <h3 class="h6">Job type</h3> -->
-                <!-- <div class="form-group">
-                  <select
-                    class="form-control form-control-lg"
-                    name="category"
-                    v-model="job.category"
-                    @change="changeCategory($event)"
-                  >
-                    <option value="" selected disabled>Select category</option>
-                    <option
-                      v-for="(cat, index) in categories"
-                      v-bind:value="cat.name"
-                      :key="index"
-                    >
-                      {{ cat.name }}
-                    </option>
-                    <option value="other">Other category</option>
-                  </select>
-                </div> -->
                 <div class="form-group" v-if="showOtherCategoryInput">
                   <h3 class="h6">Specify other category</h3>
                   <input
@@ -226,7 +207,6 @@ import Vue from "vue";
 import axios from "axios";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import MenuContent from "@/components/MenuContent";
-import categories from "@/data/blogCategories.js";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
 import VModal from "vue-js-modal";
@@ -256,7 +236,6 @@ export default {
       listOfBusinessActivities: "",
       selectedBusinessActivities: [],
       activities: [],
-      categories: [],
       mime_type: "",
       cropedImage: "",
       autoCrop: true,
@@ -281,23 +260,12 @@ export default {
       })
       .catch(() => {});
   },
-  mounted() {
-    this.categories = categories;
-  },
+  
   methods: {
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
       this.fileName = this.file.name;
     },
-    // changeCategory(e) {
-    //   if (e.target.value === "other") {
-    //     this.showOtherCategoryInput = true;
-    //     this.job.category = "";
-    //   } else {
-    //     this.showOtherCategoryInput = false;
-    //     this.job.category = e.target.value;
-    //   }
-    // },
     publishNow(status) {
       this.savePost(status);
     },

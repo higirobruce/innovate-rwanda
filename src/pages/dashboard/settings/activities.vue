@@ -24,7 +24,7 @@
             class="list-group list-group-flush"
           >
             <li
-              class="list-group-item py-4"
+              class="list-group-item py-4 px-0"
               v-for="(act, index) in listOfBusinessActivities"
               :key="index"
             >

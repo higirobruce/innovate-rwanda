@@ -44,21 +44,23 @@
                   placeholder="Company name"
                 />
               </div>
-              <h4 class="mt-3">Job title</h4>
-              <div
-                :class="`${
-                  $v.user.jobTitle.$invalid === true
-                    ? 'form-group has-error'
-                    : 'form-group'
-                }`"
-              >
-                <input
-                  type="text"
-                  v-model="user.jobTitle"
-                  required
-                  class="form-control custom-input"
-                  placeholder="Company name"
-                />
+              <div v-if="profile.role === 'normal'">
+                <h4 class="mt-3">Job title</h4>
+                <div
+                  :class="`${
+                    $v.user.jobTitle.$invalid === true
+                      ? 'form-group has-error'
+                      : 'form-group'
+                  }`"
+                >
+                  <input
+                    type="text"
+                    v-model="user.jobTitle"
+                    required
+                    class="form-control custom-input"
+                    placeholder="Company name"
+                  />
+                </div>
               </div>
               <h4 class="mt-3">Your email</h4>
               <div class="form-group">
@@ -255,7 +257,6 @@ export default {
         maxLength: maxLength(25),
       },
       jobTitle: {
-        required,
         minLength: minLength(2),
         maxLength: maxLength(25),
       },

@@ -287,6 +287,20 @@
                     </div>
                   </div>
                 </div>
+                <div>
+                  <div class="form-check mt-2">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      v-model="agreed"
+                      :value="agreed"
+                    />
+                    I have read and agree to the
+                    <router-link :to="'/'"> privacy policy </router-link>
+                    and
+                    <router-link :to="'/'"> terms </router-link>
+                  </div>
+                </div>
                 <div class="row">
                   <div class="col-12">
                     <div
@@ -303,6 +317,7 @@
                       </div>
                     </div>
                     <button
+                      :disabled="!agreed"
                       @click.prevent="registerAccount"
                       class="btn btn-lg font-weight-bold btn-primary-outline mr-lg-5 mt-3"
                     >
@@ -387,6 +402,7 @@ export default {
       error: {},
       errorHappened: false,
       submitted: false,
+      agreed: false,
       user: {
         firstName: "",
         lastName: "",
@@ -584,5 +600,14 @@ h2 {
 .register-form h4 {
   font-weight: 300;
   color: #1b2958;
+}
+input[type="checkbox"] {
+  margin-top: 8px;
+  -ms-transform: scale(1.6); /* IE */
+  -moz-transform: scale(1.6); /* FF */
+  -webkit-transform: scale(1.6); /* Safari and Chrome */
+  -o-transform: scale(1.6); /* Opera */
+  padding: 8px;
+  cursor: pointer;
 }
 </style>
