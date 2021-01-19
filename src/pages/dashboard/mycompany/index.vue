@@ -30,9 +30,15 @@
               >
                 Rejected
               </span>
+              <span
+                class="status deleted"
+                v-if="company.company.status === 'deleted'"
+              >
+                Deleted
+              </span>
             </h2>
             <div class="text-capitalize mb-2">
-              {{ company.company.coType }}
+              {{ company.company.CompanyType.name }}
             </div>
             <div
               class="alert alert-danger mt-3"
@@ -616,7 +622,7 @@ export default {
       }
     },
     loadCompanyInfo() {
-      AxiosHelper.get(`company/my-company/${this.companyId}`)
+      AxiosHelper.get(`company/${this.companyId}`)
         .then((response) => {
           this.company = response.data.result;
           this.socialMedia =

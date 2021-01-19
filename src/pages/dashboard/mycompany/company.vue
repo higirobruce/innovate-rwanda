@@ -554,7 +554,7 @@ export default {
       }
     },
     loadCompanyInfo() {
-      AxiosHelper.get(`company/my-company/${this.companyId}`)
+      AxiosHelper.get(`company/${this.companyId}`)
         .then((response) => {
           this.company = response.data.result;
           this.socialMedia =

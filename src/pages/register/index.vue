@@ -296,9 +296,9 @@
                       :value="agreed"
                     />
                     I have read and agree to the
-                    <router-link :to="'/'"> privacy policy </router-link>
+                    <router-link :to="'/privacy-policy'"> privacy policy </router-link>
                     and
-                    <router-link :to="'/'"> terms </router-link>
+                    <router-link :to="'/terms'"> terms </router-link>
                   </div>
                 </div>
                 <div class="row">
@@ -424,7 +424,8 @@ export default {
   },
   created() {
     // loading all districts
-    this.allDistricts = Districts();
+    const dist = Districts();
+    this.allDistricts = dist.sort();
     // loading company types
     AxiosHelper.get("company-types")
       .then((response) => {

@@ -402,11 +402,17 @@ input.custom-input {
 .wrap-switch-toggle .switch-text.active {
   color: #00aeef;
 }
+.wrap-actions {
+  margin-top: 7px;
+}
 .wrap-actions button,
 .wrap-actions a {
-  border: none;
+  border: 1px solid #cdcdcd;
   background: transparent;
-  margin: auto 5px;
+  margin:0 10px 0 0;
+  padding: 4px 10px;
+  border-radius: 3px;
+  color: #898989;
 }
 
 /* table */

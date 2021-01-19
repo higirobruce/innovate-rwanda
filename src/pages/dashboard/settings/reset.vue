@@ -4,6 +4,8 @@
       <div class="page-info">
         <h2 class="h2 font-weight-bold">Settings</h2>
         <MenuSettings active="reset" />
+        <div class="clear" />
+        <br />
       </div>
       <div class="dash-container">
         <div class="wrap-dash-box">

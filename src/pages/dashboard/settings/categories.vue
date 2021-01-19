@@ -4,6 +4,8 @@
       <div class="page-info">
         <h2 class="h2 font-weight-bold">Settings</h2>
         <MenuSettings active="categories" />
+        <div class="clear" />
+        <br />
       </div>
       <div class="dash-container">
         <div class="wrap-dash-box">
@@ -29,37 +31,44 @@
               v-for="(act, index) in types"
               :key="index"
             >
-              <img
-                v-if="act.image"
-                class="d-block float-left"
-                width="55"
-                height="55"
-                :src="`${IMAGE_URL}c_fill,g_center,w_80,h_80/${act.image}`"
-              />
-              <img
-                v-else
-                class="d-block float-left"
-                width="55"
-                height="55"
-                src="@/assets/images/logo_placeholder.png"
-              />
-              <span class="float-left py-1 px-4">
-                {{ act.name }}
-                <br />
-                <a
-                  @click.prevent="addCategoryImage(act)"
-                  class="cursor-pointer text-blue font-weight-bold my-2"
-                  >Update category image</a
-                >
-              </span>
-              <span class="float-right wrap-actions">
-                <button type="button" @click.prevent="editType(act)">
-                  <img src="@/assets/images/edit.png" alt="edit" />
-                </button>
-                <button @click.prevent="deleteRecord(act.id)">
-                  <img src="@/assets/images/delete.png" alt="delete" />
-                </button>
-              </span>
+              <div class="row">
+                <div class="col-2">
+                  <div
+                    class="image cursor-pointer"
+                    @click.prevent="addCategoryImage(act)"
+                  >
+                    <img
+                      v-if="act.image"
+                      class="d-block float-left"
+                      :src="`${IMAGE_URL}c_fill,g_center,w_80,h_80/${act.image}`"
+                    />
+                    <img
+                      v-else
+                      class="d-block float-left"
+                      src="@/assets/images/logo_placeholder.png"
+                    />
+                    <button @click.prevent="addCategoryImage(act)">
+                      <img src="@/assets/images/change-photo.png" />
+                    </button>
+                  </div>
+                </div>
+                <div class="col-10">
+                  <div>
+                    <h5 class="p-0 m-0">
+                      {{ act.name }}
+                    </h5>
+                    <div class="wrap-actions">
+                      <button type="button" @click.prevent="editType(act)">
+                        <img src="@/assets/images/edit.png" alt="edit" /> Edit
+                      </button>
+                      <button @click.prevent="deleteRecord(act.id)">
+                        <img src="@/assets/images/delete.png" alt="delete" />
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </li>
             <li
               v-if="!loading && _.size(types) === 0"
@@ -134,8 +143,8 @@
         name="openUploadCategoryImage"
         :adaptive="true"
         :scrollable="true"
-        :height="550"
-        :width="560"
+        :height="650"
+        :width="700"
       >
         <h3 class="p-4 bottom-shadow shadow">Category image</h3>
 
@@ -148,17 +157,21 @@
           </button>
         </div>
         <div class="m-4 wrap-image-cropper">
-          <img
+          <div
             v-if="currentCategory && currentCategory.image && !selectedFile"
-            :src="`${IMAGE_URL}c_fill,g_center,h_420,w_420/${currentCategory.image}`"
             class="current-image"
-          />
-          <img
+          >
+            <img
+              :src="`${IMAGE_URL}c_fill,g_center,h_420,w_420/${currentCategory.image}`"
+              class="current-image"
+            />
+          </div>
+          <div
+            class="current-image"
             v-if="currentCategory && !currentCategory.image && !selectedFile"
-            src="@/assets/images/logo_placeholder.png"
-            class="current-image"
-            height="60"
-          />
+          >
+            <img src="@/assets/images/logo_placeholder.png" />
+          </div>
           <input
             ref="FileInput"
             type="file"
@@ -171,6 +184,7 @@
             :src="selectedFile"
             alt="Source Image"
             :aspectRatio="aspectRatio"
+            :img-style="{ width: '500px', height: '400px' }"
           ></VueCropper>
         </div>
         <div class="clear"></div>
@@ -315,6 +329,7 @@ export default {
             const img_url = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
             this.activity.image = img_url;
             this.submitEditCategory();
+            this.$modal.hide("openUploadCategoryImage");
           })
           .catch(() => {
             this.uploading = false;
@@ -441,16 +456,42 @@ export default {
 
 <style scoped>
 .wrap-image-cropper {
-  max-height: 230px;
+  max-height: 450px;
   overflow-y: auto;
 }
 .current-image {
-  max-width: 100%;
-  min-width: 120px;
-  width: auto;
-  display: block;
+  width: 350px;
+  height: 350px;
   margin: 0 auto;
-  max-height: 300px;
-  height: auto;
+  display: block;
+}
+.current-image img {
+  width: 350px;
+  margin: 0 auto;
+  display: block;
+}
+.list-group-item span a {
+  padding: 20px 0;
+}
+.list-group-item span a img {
+  width: 22px;
+}
+.image {
+  position: relative;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+.image button {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+}
+.image {
+  width: 70px;
+  height: 70px;
 }
 </style>

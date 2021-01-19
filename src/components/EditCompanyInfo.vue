@@ -198,8 +198,8 @@ import {
 } from "vuelidate/lib/validators";
 
 const checkYear = (value) => {
-  console.log(value)
-  return true
+  console.log(value);
+  return true;
 };
 
 import vSelect from "vue-select";
@@ -239,7 +239,8 @@ export default {
   },
   created() {
     // loading all districts
-    this.allDistricts = Districts();
+    const dist = Districts();
+    this.allDistricts = dist.sort();
     // loading business activities
     AxiosHelper.get("business-activities")
       .then((response) => {

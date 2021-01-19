@@ -27,7 +27,12 @@
                   {{ notification.content }}
                 </div>
                 <div class="text-danger">
-                  {{ notification.createdAt | date("MMM DD, YY") }}
+                  <span>
+                    {{ notification.createdAt | date("MMM DD, YY") }}
+                  </span>
+                  <span v-if="notification.linkForMore" class="float-right">
+                    <router-link :to="`/${notification.linkForMore}`">Read more</router-link>
+                  </span>
                 </div>
               </div>
             </li>

@@ -4,13 +4,19 @@
       <div class="page-info">
         <h2 class="h2 font-weight-bold">Settings</h2>
         <MenuSettings active="activities" />
+        <div class="clear" />
+        <br />
       </div>
       <div class="dash-container">
         <div class="wrap-dash-box">
           <h1 class="font-weight-light text-blue-dark h3">
             Business activities
             <span class="float-right">
-              <button class="btn btn-sm font-weight-bold btn-primary-outline" @click.prevent="addActivity" type="button">
+              <button
+                class="btn btn-sm font-weight-bold btn-primary-outline"
+                @click.prevent="addActivity"
+                type="button"
+              >
                 Add
               </button>
             </span>

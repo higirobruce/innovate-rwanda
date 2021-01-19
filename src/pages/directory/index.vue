@@ -10,43 +10,26 @@
             :key="index"
           >
             <div class="box-image">
-              <img src="@/assets/images/enablers.svg" alt="type" />
+              <img
+                v-if="type.image"
+                :src="`${IMAGE_URL}c_fill,g_center,h_420,w_420/${type.image}`"
+                :alt="type.name"
+              />
+              <img
+                v-else
+                src="@/assets/images/enablers.svg"
+                :alt="type.name"
+              />
             </div>
             <h3>{{ type.name }}</h3>
             <div>
-              Companies, organizations and service providers working together to
-              foster growth in the Ecosystem
+              {{ type.description }}
             </div>
+
             <router-link :to="`/directory/${type.slug}`" class="btn">
               Discover <img src="@/assets/images/arrow-right.png"
             /></router-link>
           </div>
-          <!-- <div class="col-sm-12 col-lg-4 col-md-4 one-box">
-            <div class="box-image">
-              <img src="@/assets/images/companies.svg" alt="type" />
-            </div>
-            <h3>Tech Companies</h3>
-            <div>
-              Our community listing of tech and innovation companies in the
-              ecosystem.
-            </div>
-            <router-link :to="'/directory/companies'" class="btn">
-              Discover <img src="@/assets/images/arrow-right.png"
-            /></router-link>
-          </div>
-          <div class="col-sm-12 col-lg-4 col-md-4 one-box">
-            <div class="box-image">
-              <img src="@/assets/images/companies.svg" alt="type" />
-            </div>
-            <h3>Government institutions</h3>
-            <div>
-              Our community listing of tech and innovation companies in the
-              ecosystem.
-            </div>
-            <router-link :to="'/directory/companies'" class="btn">
-              Discover <img src="@/assets/images/arrow-right.png"
-            /></router-link>
-          </div> -->
         </div>
       </div>
     </component>

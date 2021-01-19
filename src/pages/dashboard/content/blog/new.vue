@@ -28,6 +28,7 @@
           </button>
         </div>
         <div class="clear" />
+        <br />
       </div>
       <div class="dash-container">
         <div v-if="profile.role === 'normal'">
