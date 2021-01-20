@@ -161,7 +161,7 @@
         name="openEditType"
         :adaptive="true"
         :scrollable="true"
-        :height="650"
+        :height="450"
         :width="700"
       >
         <h3 class="p-4 bottom-shadow shadow">Edit company type</h3>

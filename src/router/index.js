@@ -141,6 +141,27 @@ const router = new Router({
       },
     },
     {
+      path: "/dashboard/resources",
+      component: () => import("@/pages/dashboard/resources/index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/resources/new",
+      component: () => import("@/pages/dashboard/resources/new.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/resources/edit/:id",
+      component: () => import("@/pages/dashboard/resources/edit.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
       path: "/dashboard/content",
       component: () => import("@/pages/dashboard/content/blog/index.vue"),
       meta: {
@@ -248,6 +269,20 @@ const router = new Router({
     {
       path: "/job/:slug",
       component: () => import("@/pages/jobs/post.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/resources",
+      component: () => import("@/pages/resources/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/resources/:id",
+      component: () => import("@/pages/resources/post.vue"),
       meta: {
         layout: "default-layout",
       },

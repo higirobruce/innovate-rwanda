@@ -10,5 +10,8 @@ Vue.mixin({
     IMAGE_URL() {
       return "https://res.cloudinary.com/dbvxqoznr/image/upload/";
     },
+    BACKEND_URL() {
+      return "localhost:5000/";
+    },
   },
 });

@@ -2,12 +2,14 @@
   <div>
     <component :is="layout">
       <div class="page-info px-5 position-relative">
-        <h2 class="h2 font-weight-bold">Contents</h2>
-        <MenuContent active="jobs" />
-        <div class="wrap-content-head-btns" v-if="profile.role === 'normal'">
+        <h2 class="h2 font-weight-bold">Resources</h2>
+        <div
+          class="wrap-content-head-btns"
+          v-if="profile.role === 'super-admin'"
+        >
           <router-link
-            :to="'/dashboard/content/jobs'"
-            class="btn font-weight-bol btn-gray-outline ml-3"
+            :to="'/dashboard/resources'"
+            class="btn font-weight-bol btn-gray-outline"
             >Cancel</router-link
           >
           <button
@@ -16,28 +18,14 @@
           >
             Update
           </button>
-          <button
-            v-if="post.status === 'approved'"
-            @click="unpublishPost"
-            class="btn font-weight-bold btn-danger-outline ml-3"
-          >
-            Unpublish
-          </button>
-          <button
-            v-if="post.status === 'draft'"
-            @click="publishPost"
-            class="btn font-weight-bold btn-success-outline ml-3"
-          >
-            Publish
-          </button>
         </div>
         <div class="clear" />
         <br />
       </div>
       <div class="dash-container">
-        <div v-if="profile.role === 'normal'">
+        <div v-if="profile.role === 'super-admin'">
           <h4 class="h5">
-            <router-link :to="'/dashboard/content/jobs'" class="btn btn-back">
+            <router-link :to="'/dashboard/resources'" class="btn btn-back">
               <i class="icon-arrow-left" />
               <span class="ml-3"> Back </span>
             </router-link>
@@ -51,7 +39,7 @@
           <div class="alert alert-success" v-if="created && !uploading">
             Your content has been created successfully!
           </div>
-          <!-- FORM: EDIT JOBS -->
+          <!-- FORM: EDIT RESOURCES -->
           <div class="row">
             <div class="col-sm-12 col-md-8 col-l-8">
               <div class="form-group">
@@ -67,54 +55,46 @@
                 <div class="form-group">
                   <textarea
                     style="height: auto"
-                    rows="16"
+                    rows="5"
                     class="form-control"
                     v-model="post.description"
                   ></textarea>
+                </div>
+                <div class="text-info">
+                  Description should not exceed 255 characters
                 </div>
               </div>
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
               <div class="content-form-sidebar">
-                <h3 class="h6">Category</h3>
+                <h3 class="h6">Resource type</h3>
                 <div class="h4 mb-4">
-                  {{ post.category }}
+                  <div class="my-3">
+                    <select
+                      class="form-control form-control-lg"
+                      name="district"
+                      v-model="post.type"
+                    >
+                      <option value="" selected disabled>Select type</option>
+                      <option
+                        v-for="(type, index) in resourceTypes"
+                        v-bind:value="type"
+                        :key="index"
+                        :selected="post.type === type"
+                      >
+                        {{ type }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
 
-                <h3 class="h6">Which group are you trying to reach?</h3>
-                <div
-                  class="co-badge"
-                  v-for="(act, index) in post.AudienceForPosts"
-                  :key="index"
-                >
-                  <span>
-                    {{ act.BusinessActivity.name }}
-                  </span>
-                  <button @click.prevent="removeActivityFromPost(act.activity)">
-                    <img src="@/assets/images/remove.png" />
-                  </button>
-                </div>
-                <a @click="updateActivities" class="btn btn-transparent px-1">
-                  Add
-                </a>
-                <div class="form-group" v-if="showOtherCategoryInput">
-                  <h3 class="h6 my-3">Specify other category</h3>
-                  <input
-                    class="form-control custom-input"
-                    v-model="post.category"
-                    type="text"
-                    placeholder="Type category..."
-                  />
-                </div>
-                <h3 class="h6 my-3">Job attachment</h3>
+                <h3 class="h6 my-3">Resource attachment</h3>
                 <button
                   class="btn btn-block select-image"
                   @click="$refs.file.click()"
                 >
-                  <span v-if="post.jobDetailsDocument">
-                    Change job attachment
-                  </span>
-                  <span v-else> Select job attachment </span>
+                  <span v-if="post.file"> Change resource attachment </span>
+                  <span v-else> Select resource attachment </span>
                 </button>
                 <input
                   type="file"
@@ -126,7 +106,7 @@
                 />
                 <div
                   class="media mt-3 p-3 bg-white rounded"
-                  v-if="!selectedFile && post.jobDetailsDocument"
+                  v-if="!selectedFile && post.file"
                 >
                   <img
                     class="align-self-start mr-3"
@@ -134,7 +114,7 @@
                   />
                   <div class="media-body">
                     <h5 class="mt-2">Preview</h5>
-                    <p>Job attachment</p>
+                    <p>Resource attachment</p>
                   </div>
                 </div>
                 <div
@@ -219,6 +199,7 @@ import "cropperjs/dist/cropper.css";
 import { VueEditor } from "vue2-editor";
 let marked = require("marked");
 import VModal from "vue-js-modal";
+import resourceTypes from "@/data/resourceTypes.js";
 Vue.use(VModal);
 
 export default {
@@ -230,17 +211,13 @@ export default {
   },
   data() {
     return {
-      slug: "",
+      id: "",
       post: {
         id: "",
         title: "",
         description: "",
-        jobDetailsDocument: "",
-        deadlineDate: "",
-        deadlineTime: "",
-        companyId: "",
-        category: "",
-        status: "",
+        type: "",
+        file: "",
       },
       mime_type: "",
       cropedImage: "",
@@ -258,19 +235,15 @@ export default {
       listOfBusinessActivities: [],
       file: "",
       fileName: "",
+      resourceTypes: [],
     };
   },
-  beforeCreate() {
-    // loading business activities
-    AxiosHelper.get("business-activities")
-      .then((response) => {
-        this.listOfBusinessActivities = response.data.result;
-      })
-      .catch(() => {});
-  },
   created() {
-    this.slug = this.$route.params.slug;
+    this.id = this.$route.params.id;
     this.loadPost();
+  },
+  mounted() {
+    this.resourceTypes = resourceTypes;
   },
   methods: {
     handleFileUpload() {
@@ -280,7 +253,7 @@ export default {
     },
     // load post
     loadPost() {
-      AxiosHelper.get(`jobs/info/${this.slug}`)
+      AxiosHelper.get(`resources/${this.id}`)
         .then((response) => {
           this.post = response.data.result;
           this.loaded = true;
@@ -288,52 +261,6 @@ export default {
         .catch(() => {
           this.loading = false;
           this.loaded = true;
-        });
-    },
-    addActivityToPost(id, name) {
-      const data = {
-        post: this.post.id,
-        activity: id,
-        type: "job",
-      };
-      AxiosHelper.post("post/add-activity", data)
-        .then(() => {
-          this.loadPost();
-          Vue.$toast.open({
-            message: `"${name}" activity have been added successfully`,
-            type: "success",
-          });
-        })
-        .catch((error) => {
-          if (error.response.status === 409) {
-            Vue.$toast.open({
-              message: "Activity has been already added",
-              type: "warning",
-            });
-          } else {
-            Vue.$toast.open({
-              message: "Sorry, something went wrong. Try again later",
-              type: "error",
-            });
-          }
-        });
-    },
-    removeActivityFromPost(id) {
-      AxiosHelper.delete(
-        `post/remove-activity?post=${this.post.id}&activity=${id}&type=job`
-      )
-        .then(() => {
-          this.loadPost();
-          Vue.$toast.open({
-            message: `Activity has been removed successfully`,
-            type: "success",
-          });
-        })
-        .catch(() => {
-          Vue.$toast.open({
-            message: "Sorry, something went wrong. Try again later",
-            type: "error",
-          });
         });
     },
     changeCategory(e) {
@@ -350,20 +277,6 @@ export default {
       this.editing = true;
       this.savePost(status);
     },
-    publishPost() {
-      const status = "pending";
-      this.editing = true;
-      this.savePost(status);
-      this.message =
-        "Job has been submitted. It will be published after review";
-    },
-    unpublishPost() {
-      const status = "draft";
-      this.editing = true;
-      this.savePost(status);
-      this.message =
-        "Job has marked as draft. If you want to published again, please reflesh the page and click on publish";
-    },
     savePost(status) {
       this.post.status = status;
       this.uploading = true;
@@ -375,18 +288,12 @@ export default {
         this.submitPostNow();
       }
     },
-    updateActivities() {
-      this.$modal.show("openEditBusinessActivies");
-    },
-    closeModal() {
-      this.$modal.hide("openEditBusinessActivies");
-    },
     submitPostNow() {
-      AxiosHelper.patch(`jobs/edit`, this.post)
+      AxiosHelper.patch(`resources/edit-resource`, this.post)
         .then(() => {
           this.created = true;
           Vue.$toast.open({
-            message: "Job has been created successfully",
+            message: "Resource has been created successfully",
             type: "success",
           });
         })
@@ -395,7 +302,7 @@ export default {
           this.uploading = false;
           this.created = false;
           Vue.$toast.open({
-            message: "Sorry, something went wrong while updating this jobb",
+            message: "Sorry, something went wrong. Try again later",
             type: "error",
           });
         });
@@ -410,18 +317,13 @@ export default {
       const config = {
         headers: { "X-Requested-With": "XMLHttpRequest" },
       };
-      File
-        .upload(
-          "upload",
-          formData,
-          config
-        )
+      File.upload("upload", formData, config)
         .then((response) => {
-          this.post.jobDetailsDocument = response.data.file;
+          this.post.file = response.data.file;
           this.submitPostNow();
         })
         .catch((err) => {
-          console.log("err", err)
+          console.log("err", err);
         });
     },
     onFileSelect(e) {

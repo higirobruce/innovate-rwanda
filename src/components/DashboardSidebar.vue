@@ -53,6 +53,15 @@
           <div>Content</div>
         </router-link>
       </li>
+      <li
+        class="nav-item"
+        v-if="profile.role === 'super-admin'"
+      >
+        <router-link :to="'/dashboard/resources'">
+          <img src="@/assets/images/icon-resources.png" />
+          <div>Resources</div>
+        </router-link>
+      </li>
       <li class="nav-item" v-if="profile.role === 'admin-event'">
         <router-link :to="'/dashboard/content/events'">
           <img src="@/assets/images/icon-content.png" />

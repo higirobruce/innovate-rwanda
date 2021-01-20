@@ -12,7 +12,7 @@
           class="page-overlay"
           :style="{ 'background-color': 'rgba(4, 137, 187, 0.83)' }"
         ></div>
-        <h1>Find talents</h1>
+        <h1>Sourcing talent in the ecosystem</h1>
         <div class="subtitle">
           Our community listing of tech and innovation companies in the
           ecosystem
@@ -155,12 +155,8 @@
                     </span>
                   </span>
                 </div>
-                <div class="mb-2 co-info">
-                  <i class="icon-tag" />
-                  <span class="ml-2">{{ post.category }} </span>
-                </div>
                 <div class="mb-2 co-info" v-if="post.jobDetailsDocument">
-                  <router-link class="text-blue-dark" :to="`/redirect/${IMAGE_URL}${post.jobDetailsDocument}`" target="_blank">
+                  <router-link class="text-blue-dark" :to="`/redirect/${BACKEND_URL}${post.jobDetailsDocument}`" target="_blank">
                     <i class="icon-file" />
                     <span class="ml-2">Attachment</span>
                   </router-link>

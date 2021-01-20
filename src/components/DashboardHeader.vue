@@ -188,6 +188,7 @@ export default {
 }
 .dash-notification-badge {
   position: relative;
+  background: none;
 }
 .wrap-notifications {
   max-height: 600px;

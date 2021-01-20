@@ -232,7 +232,7 @@
               v-for="(co, index) in company.similarCompanies"
               :key="index"
             >
-              <router-link :to="`/company/${co.slug}`">
+              <a class="cursor-pointer" @click.prevent="goToCompany(co.slug)">
                 <div class="co-similar">
                   <img
                     v-if="co && co.logo"
@@ -248,7 +248,7 @@
                     {{ co.companyName }}
                   </h4>
                 </div>
-              </router-link>
+              </a>
             </div>
           </div>
           <div class="co-loadmore">
@@ -291,21 +291,31 @@ export default {
     };
   },
   created() {
+    this.company = {};
+  },
+  mounted() {
     this.notfound = false;
     this.slug = this.$route.params.slug;
-    AxiosHelper.get(`company/public/${this.slug}`)
-      .then((response) => {
-        this.company = response.data.result;
-        this.loaded = true;
-      })
-      .catch(() => {
-        this.notfound = true;
-        this.loaded = false;
-      });
+    this.loadCompanyInfo(this.slug);
   },
   methods: {
+    goToCompany(slug) {
+       window.scrollTo(0,0);
+      this.loadCompanyInfo(slug);
+    },
     convertToObject(object) {
       return JSON.parse(object);
+    },
+    loadCompanyInfo(slug) {
+      AxiosHelper.get(`company/public/${slug}`)
+        .then((response) => {
+          this.company = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.notfound = true;
+          this.loaded = false;
+        });
     },
     convertLatLng(officeAddress) {
       let latLng = { lat: -1.9535713202050946, lng: 30.09239731494155 };
@@ -354,6 +364,11 @@ export default {
   padding-left: 45px;
   width: 50%;
   float: left;
+}
+@media screen and (max-width: 760px) {
+  .company-small-info {
+    width: 100%;
+  }
 }
 .company-large-info {
   position: relative;

@@ -37,6 +37,11 @@
                   >Find Talent</router-link
                 >
               </li>
+              <li class="list-inline-item">
+                <router-link active :to="'/resources'"
+                  >Resources</router-link
+                >
+              </li>
             </ul>
           </div>
           <div class="wrap-hotlinks">

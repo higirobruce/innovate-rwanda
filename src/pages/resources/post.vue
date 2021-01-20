@@ -4,7 +4,7 @@
       <PageHeaderSm
         image="bg-why.png"
         rgba="rgba(4, 137, 187, 0.83)"
-        title="Find talents"
+        title="Sourcing talent in the ecosystem"
       />
       <div
         class="container"

@@ -205,8 +205,8 @@
 
 <script>
 import Vue from "vue";
-import axios from "axios";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import File from "@/helpers/File";
 import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
@@ -347,19 +347,18 @@ export default {
       const config = {
         headers: { "X-Requested-With": "XMLHttpRequest" },
       };
-      axios
-        .post(
-          "https://api.cloudinary.com/v1_1/dbvxqoznr/image/upload",
+      File
+        .upload(
+          "upload",
           formData,
           config
         )
         .then((response) => {
-          this.job.jobDetailsDocument = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
+          this.job.jobDetailsDocument = response.data.file;
           this.submitPostNow();
         })
-        .catch(() => {
-          this.uploading = false;
-          this.created = false;
+        .catch((err) => {
+          console.log("err", err)
         });
     },
     onFileSelect(e) {
