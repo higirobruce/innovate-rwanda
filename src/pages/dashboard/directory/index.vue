@@ -57,15 +57,6 @@
         </div>
       </div>
       <modal
-        name="companyInfo"
-        :adaptive="true"
-        :scrollable="true"
-        :height="700"
-        :width="960"
-      >
-        <CompanyInfo :company="company" />
-      </modal>
-      <modal
         name="EditcompanyInfo"
         :adaptive="true"
         :scrollable="true"

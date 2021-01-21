@@ -9,15 +9,20 @@
           <th scope="col">Business activity</th>
           <th scope="col">Activities</th>
           <th scope="col">Status</th>
-          <th scope="col">Actions</th>
+          <th scope="col">
+            <span class="float-right mr-3"> Actions </span>
+          </th>
         </tr>
       </thead>
       <tbody v-if="directory && directory">
         <tr v-for="(dir, index) in directory" :key="index">
           <td>
-             <router-link class="text-blue" :to="`/dashboard/my-company/${dir.id}`">
+            <router-link
+              class="text-blue"
+              :to="`/dashboard/my-company/${dir.id}`"
+            >
               {{ dir.coName }}
-             </router-link>
+            </router-link>
           </td>
           <td>{{ dir.createdAt | date("DD MMM, YYYY") }}</td>
           <td>{{ dir.CompanyType.name }}</td>
@@ -67,7 +72,12 @@
             </div>
           </td>
           <td>
-            <div class="wrap-actions">
+            <div class="wrap-actions float-right">
+              <a
+                class="text-blue-dark cursor-pointer"
+                @click="loadCompany(dir.id)"
+                >Approve/Decline</a
+              >
               <router-link :to="`/dashboard/my-company/${dir.id}`">
                 <img src="@/assets/images/view.png" alt="view" />
               </router-link>
@@ -130,19 +140,34 @@
         </span>
       </div>
     </modal>
+
+    <modal
+      name="companyInfo"
+      :adaptive="true"
+      :scrollable="true"
+      :height="700"
+      :width="960"
+    >
+      <CompanyInfo :company="company" />
+    </modal>
   </div>
 </template>
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import CompanyInfo from "@/components/CompanyInfo";
 export default {
   name: "list-companies",
   props: ["directory"],
+  components: {
+    CompanyInfo,
+  },
   data() {
     return {
       companyToDeleteName: "",
       companyToDeleteId: "",
       inputCompanyToDelete: "",
+      company: {},
     };
   },
   methods: {
@@ -150,6 +175,31 @@ export default {
       this.companyToDeleteName = name;
       this.companyToDeleteId = id;
       this.$modal.show("deleteCompany");
+    },
+    loadCompany(id) {
+      this.company = {};
+      this.loadingCompany = true;
+      this.errorCompany = "";
+      AxiosHelper.get(`company/${id}`)
+        .then((response) => {
+          this.company = response.data.result;
+          this.loadingDirectory = false;
+          this.loadingCompany = false;
+          this.$modal.show("companyInfo");
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            this.errorCompany = error.response.data.error;
+          } else {
+            this.errorCompany = "Something went wrong, try again later";
+          }
+          Vue.$toast.open({
+            message: this.errorCompany,
+            type: "error",
+          });
+          this.loadingDirectory = false;
+          this.loadingCompany = false;
+        });
     },
     deleteAnyway(id) {
       AxiosHelper.delete(`company/delete/${id}`)
