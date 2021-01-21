@@ -12,7 +12,7 @@
           class="page-overlay"
           :style="{ 'background-color': 'rgba(4, 137, 187, 0.83)' }"
         ></div>
-        <h1>Resources</h1>
+        <h1>Resources {{ FILE_URL }}</h1>
       </div>
       <div class="container">
         <div v-if="!_.isEmpty(posts)">
@@ -39,7 +39,7 @@
         </div>
         <div v-if="loaded && _.isEmpty(posts)" class="empty-post">
           <img src="@/assets/images/empty.png" />
-          <h2 class="my-0 py-0 font-weight-light h3">No jobs found</h2>
+          <h2 class="my-0 py-0 font-weight-light h3">No resources found</h2>
         </div>
       </div>
       <modal
@@ -63,7 +63,7 @@
             {{ resource.description }}
           </div>
           <router-link
-            :to="`/redirect/${BACKEND_URL}${resource.file}`"
+            :to="`/redirect/${FILE_URL}${resource.file}`"
             target="_blank"
             >Download the document</router-link
           >
@@ -79,6 +79,8 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import PageHeader from "@/components/PageHeader";
 import moment from "moment";
 import VModal from "vue-js-modal";
+
+
 Vue.use(VModal);
 Vue.use(moment);
 export default {

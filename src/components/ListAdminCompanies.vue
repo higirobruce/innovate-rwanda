@@ -15,9 +15,9 @@
       <tbody v-if="directory && directory">
         <tr v-for="(dir, index) in directory" :key="index">
           <td>
-            <span class="cursor-pointer text-blue" @click="loadCompany(dir.id)">
+             <router-link class="text-blue" :to="`/dashboard/my-company/${dir.id}`">
               {{ dir.coName }}
-            </span>
+             </router-link>
           </td>
           <td>{{ dir.createdAt | date("DD MMM, YYYY") }}</td>
           <td>{{ dir.CompanyType.name }}</td>

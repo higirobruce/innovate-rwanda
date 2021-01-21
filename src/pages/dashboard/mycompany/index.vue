@@ -47,7 +47,7 @@
                 profile.role === 'admin-company'
               "
             >
-              You are viewing this page because you are admin.
+              You are viewing this page because you are an admin.
               <router-link :to="'/dashboard/directory'">
                 See all companies
               </router-link>

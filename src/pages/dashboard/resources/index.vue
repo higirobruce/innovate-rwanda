@@ -51,7 +51,7 @@
               <td>
                 <router-link
                   class="btn btn-outline-secondary"
-                  :to="`/redirect/${BACKEND_URL}${post.file}`"
+                  :to="`/redirect/${FILE_URL}${post.file}`"
                   target="_blank"
                 >
                   <i class="icon-file" />
