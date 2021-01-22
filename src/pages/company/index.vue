@@ -252,7 +252,7 @@
             </div>
           </div>
           <div class="co-loadmore">
-            <router-link :to="'/directory/companies'">Load more</router-link>
+            <router-link :to="`/directory/${meta.slug}`">Load more</router-link>
           </div>
         </div>
         <div class="my-5 py-5" v-if="notfound && _.isEmpty(company)">
@@ -288,6 +288,7 @@ export default {
       slug: "",
       notfound: false,
       loaded: false,
+      meta: ""
     };
   },
   created() {
@@ -310,6 +311,7 @@ export default {
       AxiosHelper.get(`company/public/${slug}`)
         .then((response) => {
           this.company = response.data.result;
+          this.meta = response.data.meta;
           this.loaded = true;
         })
         .catch(() => {

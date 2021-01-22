@@ -2,6 +2,7 @@
   <div>
     <component :is="layout">
       <div
+      v-if="meta"
         class="page-header"
         :style="{
           'background-image':
@@ -12,10 +13,9 @@
           class="page-overlay"
           :style="{ 'background-color': 'rgba(4, 137, 187, 0.83)' }"
         ></div>
-        <h1>Tech Companies</h1>
+        <h1>{{ meta.name }}</h1>
         <div class="subtitle">
-          Our community listing of tech and innovation companies in the
-          ecosystem.
+          {{ meta.description }}
         </div>
         <form @submit="search" class="page-search">
           <input
@@ -143,6 +143,7 @@ export default {
       districtBasedIn: "",
       listOfBusinessActivities: [],
       sortBy: "",
+      meta: ""
     };
   },
   computed: {
@@ -220,6 +221,7 @@ export default {
       AxiosHelper.get(`directory/public/${this.slug}`)
         .then((response) => {
           this.directory = response.data.result;
+          this.meta = response.data.meta;
           this.loaded = true;
         })
         .catch(() => {

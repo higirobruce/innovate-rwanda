@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Delete</h3>
+    <h3 class="p-4">Delete</h3>
     <div class="p-4">Do you really want to delete this {{ entity }}?</div>
     <div class="my-2 mx-4">
       <span class="float-left">

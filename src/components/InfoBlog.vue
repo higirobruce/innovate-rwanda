@@ -1,6 +1,6 @@
 <template>
   <div v-if="post">
-    <h3 class="p-4 bottom-shadow shadow">
+    <h3 class="p-4">
       Blog: {{ post.title }}
       <span class="status approved" v-if="post.status === 'approved'">
         Published

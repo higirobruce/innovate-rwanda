@@ -72,6 +72,9 @@
                 :height="640"
                 :width="920"
               >
+                <button type="button" @click.prevent="closeModal" class="close">
+                  <img src="@/assets/images/close.png" />
+                </button>
                 <EditCompanyInfo :company="company.company" />
               </modal>
               <div class="company-info">
@@ -98,6 +101,13 @@
                         :height="650"
                         :width="650"
                       >
+                        <button
+                          type="button"
+                          @click.prevent="closeModal"
+                          class="close"
+                        >
+                          <img src="@/assets/images/close.png" />
+                        </button>
                         <UploadCompanyLogo :company="company.company" />
                       </modal>
                     </div>
@@ -276,6 +286,20 @@
                             :height="500"
                             :width="650"
                           >
+                            <button
+                              type="button"
+                              @click.prevent="closeModal"
+                              class="close"
+                            >
+                              <img src="@/assets/images/close.png" />
+                            </button>
+                            <button
+                              type="button"
+                              @click.prevent="closeModal"
+                              class="close"
+                            >
+                              <img src="@/assets/images/close.png" />
+                            </button>
                             <EditSocial :company="company.company" />
                           </modal>
                         </div>
@@ -360,7 +384,14 @@
                   :height="335"
                   :width="550"
                 >
-                  <h3 class="p-4 bottom-shadow shadow">Customer base</h3>
+                  <button
+                    type="button"
+                    @click.prevent="closeModal"
+                    class="close"
+                  >
+                    <img src="@/assets/images/close.png" />
+                  </button>
+                  <h3 class="p-4">Customer base</h3>
                   <div class="px-4 py-2">
                     <form>
                       <div
@@ -419,6 +450,9 @@
                 :height="400"
                 :width="920"
               >
+                <button type="button" @click.prevent="closeModal" class="close">
+                  <img src="@/assets/images/close.png" />
+                </button>
                 <EditCompanySummary :company="company.company" /> </modal
               >˝
               <div class="my-3">Company summary</div>
@@ -444,6 +478,9 @@
                 :height="700"
                 :width="920"
               >
+                <button type="button" @click.prevent="closeModal" class="close">
+                  <img src="@/assets/images/close.png" />
+                </button>
                 <EditCompanyLocation :company="company.company" /> </modal
               >˝
               <div class="my-3" v-if="company.company.officeAddress">
@@ -468,7 +505,7 @@
                 </GmapMap>
               </div>
               <div class="my-3" v-else>
-                <h3>You did not provide the office location yet</h3>
+                <h3>No office location yet</h3>
                 <button
                   class="border bg-white cursor-pointer py-2 px-4"
                   @click="openEditCompanyLocation"
@@ -488,7 +525,10 @@
               :height="660"
               :width="550"
             >
-              <h3 class="p-4 bottom-shadow shadow">Business activities</h3>
+              <button type="button" @click.prevent="closeModal" class="close">
+                <img src="@/assets/images/close.png" />
+              </button>
+              <h3 class="p-4">Business activities</h3>
               <div class="px-4">
                 <div
                   class="wrap-modal"
@@ -701,6 +741,12 @@ export default {
     },
     closeModal() {
       this.$modal.hide("openEditBusinessActivies");
+      this.$modal.hide("editCompanyInfo");
+      this.$modal.hide("uploadCompanyLogo");
+      this.$modal.hide("editSocialMedia");
+      this.$modal.hide("editCompanySummary");
+      this.$modal.hide("editCompanyLocation");
+      this.$modal.hide("openEditCustomerBase");
     },
     addActivityToCompany(id, name) {
       const data = {

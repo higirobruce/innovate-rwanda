@@ -403,7 +403,7 @@ input.custom-input {
   color: #00aeef;
 }
 .wrap-actions {
-  margin-top: 7px;
+  margin-top: 4px;
 }
 .wrap-actions button,
 .wrap-actions a {
@@ -415,7 +415,7 @@ input.custom-input {
   color: #898989;
 }
 .wrap-actions button img {
-  height: 14px;
+  height: 12px;
 }
 
 /* table */
@@ -712,7 +712,8 @@ input.custom-input {
   background: none;
 }
 .empty-post {
-  width: 700px;
+  width: 100%;
+  max-width: 700px;
   margin: 0 auto 120px auto;
   display: block;
   text-align: center;
@@ -1065,30 +1066,53 @@ input[type="number"] {
   background-color: #888;
 }
 
-.slide {
+.wrap-one-slide {
+  padding: 10px;
   width: 250px;
-  margin: 0 10px;
+}
+.slide {
+  width: 100%;
+  margin: 0 10px!important;
   height: 240px;
   border: 2px solid #06adef;
   cursor: pointer;
 }
 
-.one-category img {
+.slide img {
   display: block;
   max-width: 90px;
   margin: 20px auto;
   height: 100px;
 }
-.one-category h3 {
+.slide h3 {
   padding: 10px 0;
   font-size: 23px;
   font-weight: 700;
   height: 65px;
 }
 
+@media screen and (max-width: 740px) {
+  .slide {
+    margin: 0 5px!important;
+    height: 200px;
+  }
+  .slide img {
+    max-width: 70px;
+    margin: 10px auto;
+    height: 80px;
+  }
+  .slide h3 {
+    padding: 6px 0;
+    font-size: 16px;
+    font-weight: 700;
+    height: 45px;
+  }
+}
+
 .vm--modal .close {
   padding: 15px;
+  margin: 10px;
 }
 .vm--modal .close img {
-  width: 30px;
+  width: 26px;
 }

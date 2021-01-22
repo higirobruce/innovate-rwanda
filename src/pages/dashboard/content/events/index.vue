@@ -56,7 +56,9 @@
                   v-for="(act, index) in post.AudienceForPosts.slice(0, 1)"
                   :key="index"
                 >
-                  <span v-if=" act.BusinessActivity &&  act.BusinessActivity.name">
+                  <span
+                    v-if="act.BusinessActivity && act.BusinessActivity.name"
+                  >
                     {{ act.BusinessActivity.name }}
                   </span>
                 </div>
@@ -125,6 +127,9 @@
           :height="700"
           :width="1100"
         >
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
           <InfoEvent :id="postId" />
         </modal>
         <modal
@@ -134,6 +139,9 @@
           :height="240"
           :width="600"
         >
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
           <DeleteModal
             :url="`events/delete?eventId=${recordId}`"
             entity="event"
@@ -173,7 +181,7 @@ export default {
     AxiosHelper.get(url)
       .then((response) => {
         this.posts = response.data.result;
-        console.log("response",response.data)
+        console.log("response", response.data);
         this.loading = false;
       })
       .catch((error) => {
@@ -203,6 +211,10 @@ export default {
     deleteRecord(id) {
       this.recordId = id;
       this.$modal.show("openDeleteRecord");
+    },
+    closeModal() {
+      this.$modal.hide("openInfoEvent");
+      this.$modal.hide("openDeleteRecord");
     },
   },
   computed: {

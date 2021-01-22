@@ -37,13 +37,9 @@
           <tbody v-if="resources">
             <tr v-for="(post, index) in resources" :key="index">
               <td style="max-width: 220px">
-                <router-link
-                  :to="`/resource/${post.id}`"
-                  class="cursor-pointer text-blue"
-                  target="_blank"
-                >
+                <span>
                   {{ post.title | truncate(120) }}
-                </router-link>
+                </span>
               </td>
               <td style="max-width: 220px">
                 {{ post.description | truncate(120) }}
@@ -61,13 +57,6 @@
               <td>{{ post.createdAt | date("DD/MM/YYYY") }}</td>
               <td>
                 <div class="wrap-actions float-right">
-                  <router-link
-                    v-if="post.status !== 'deleted'"
-                    target="_blank"
-                    :to="`/resources/${post.id}`"
-                  >
-                    <img src="@/assets/images/view.png" alt="view" />
-                  </router-link>
                   <router-link :to="`/dashboard/resources/edit/${post.id}`">
                     <img src="@/assets/images/edit.png" alt="edit" />
                   </router-link>
@@ -90,6 +79,9 @@
           :height="700"
           :width="1100"
         >
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
           <InfoJob :id="postId" />
         </modal>
         <modal
@@ -99,6 +91,9 @@
           :height="240"
           :width="600"
         >
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
           <DeleteModal
             :url="`resources/remove-resource?resourceId=${recordId}`"
             entity="resource"
@@ -131,10 +126,7 @@ export default {
   },
   created() {
     this.loading = true;
-    // let url = "/resources";
-    // if (this.profile.role === "normal" && this.profile.companyId) {
-    //   url = `jobs/company/${this.profile.companyId}`;
-    // }
+    
     AxiosHelper.get("resources")
       .then((response) => {
         this.resources = response.data.result;
@@ -167,6 +159,10 @@ export default {
     deleteRecord(id) {
       this.recordId = id;
       this.$modal.show("openDeleteRecord");
+    },
+    closeModal() {
+      this.$modal.hide("openInfoJob");
+      this.$modal.hide("openDeleteRecord");
     },
   },
   computed: {

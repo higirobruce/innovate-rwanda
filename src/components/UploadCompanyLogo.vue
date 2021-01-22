@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Update company logo</h3>
+    <h3 class="p-4">Update company logo</h3>
     <div class="px-4 py-2">
       <div class="wrap-modal" style="max-height: 420px; overflow: scroll">
         <img

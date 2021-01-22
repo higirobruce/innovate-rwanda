@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">
+    <h3 class="p-4">
       Company:
       <span v-if="company && Object.keys(company).length">{{
         company.company.coName
@@ -198,9 +198,7 @@ export default {
               "Company' status has been updated. We are updating company's directory",
             type: "success",
           });
-          // setTimeout(() => {
-          //   this.$router.go();
-          // }, 2000);
+          // reload dir
         })
         .catch(() => {
           Vue.$toast.open({

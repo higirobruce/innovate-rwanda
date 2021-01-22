@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Business activities</h3>
+    <h3 class="p-4">Business activities</h3>
     <div class="px-4">
         <div class="wrap-modal" style="max-height: 500px; overflow: scroll">
           <div class="row mt-1">

@@ -313,7 +313,7 @@
               :height="335"
               :width="550"
             >
-              <h3 class="p-4 bottom-shadow shadow">Customer base</h3>
+              <h3 class="p-4">Customer base</h3>
               <div class="px-4 py-2">
                 <form>
                   <div
@@ -438,7 +438,7 @@
           :height="660"
           :width="550"
         >
-          <h3 class="p-4 bottom-shadow shadow">Business activities</h3>
+          <h3 class="p-4">Business activities</h3>
           <div class="px-4">
             <div class="wrap-modal" style="max-height: 500px; overflow: scroll">
               <div class="row mt-1">

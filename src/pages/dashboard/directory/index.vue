@@ -11,10 +11,7 @@
                 : 'list-inline-item mr-5'
             }`"
           >
-            <button
-              class="text-blue"
-              @click.prevent="resetDirStatus"
-            >
+            <button class="text-blue" @click.prevent="resetDirStatus">
               All Companies
             </button>
           </li>
@@ -25,11 +22,8 @@
                 : 'list-inline-item mr-5'
             }`"
           >
-            <button
-              class="text-blue"
-              @click.prevent="loadPendingDir"
-            >
-              Pending approval
+            <button class="text-blue" @click.prevent="loadPendingDir">
+              Pending Approval
             </button>
           </li>
         </ul>
@@ -63,6 +57,9 @@
         :height="660"
         :width="960"
       >
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
         <EditCompanyInfo :company="company.company" />
       </modal>
     </component>
@@ -77,6 +74,7 @@ import CompanyInfo from "@/components/CompanyInfo";
 import NotAllowed from "@/components/NotAllowed";
 import EditCompanyInfo from "@/components/EditCompanyInfo";
 import ListAdminCompanies from "@/components/ListAdminCompanies.vue";
+import { EventBus } from "@/helpers/event-bus.js";
 export default {
   name: "directory",
   components: {
@@ -104,24 +102,11 @@ export default {
     };
   },
   created() {
-    this.loadingDirectory = true;
-    AxiosHelper.get("directory/admin")
-      .then((response) => {
-        this.directory = response.data;
-        this.companies = this.directory.result;
-        this.loadingDirectory = false;
-      })
-      .catch((error) => {
-        if (error.response.status === 404 || error.response.status === 400) {
-          this.error = "No companies found at this moment";
-        } else if (error.response.status === 403) {
-          this.error = "No companies found at this moment";
-          this.notAllowed = true;
-        } else {
-          this.error = "Something went wrong, try again later";
-        }
-        this.loadingDirectory = false;
-      });
+    EventBus.$on("reload-company-dir", () => {
+      console.log("res");
+      this.loadCompanies();
+    });
+    this.loadCompanies();
   },
   mounted() {
     this.$modal.hide("companyInfo");
@@ -133,9 +118,31 @@ export default {
     },
   },
   methods: {
+    loadCompanies() {
+      this.loadingDirectory = true;
+      AxiosHelper.get("directory/admin")
+        .then((response) => {
+          this.directory = response.data;
+          this.companies = this.directory.result;
+          this.loadingDirectory = false;
+        })
+        .catch((error) => {
+          if (error.response.status === 404 || error.response.status === 400) {
+            this.error = "No companies found at this moment";
+          } else if (error.response.status === 403) {
+            this.error = "No companies found at this moment";
+            this.notAllowed = true;
+          } else {
+            this.error = "Something went wrong, try again later";
+          }
+          this.loadingDirectory = false;
+        });
+    },
     loadPendingDir() {
       this.currentStatus = "pending";
-      this.companies = this.directory && this.directory.result.filter((d) => d.status === "pending" );
+      this.companies =
+        this.directory &&
+        this.directory.result.filter((d) => d.status === "pending");
     },
     resetDirStatus() {
       this.currentStatus = "";
@@ -193,6 +200,9 @@ export default {
     },
     cancelDelete() {
       this.$modal.hide("deleteCompany");
+    },
+    closeModal() {
+      this.$modal.hide("EditcompanyInfo");
     },
   },
 };

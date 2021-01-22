@@ -133,7 +133,11 @@
             :height="660"
             :width="550"
           >
-            <h3 class="p-4 bottom-shadow shadow">Business activities</h3>
+
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
+            <h3 class="p-4">Business activities</h3>
             <div class="px-4">
               <div
                 class="wrap-modal"

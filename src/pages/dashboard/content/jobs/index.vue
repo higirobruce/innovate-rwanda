@@ -121,6 +121,9 @@
           :height="700"
           :width="1100"
         >
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
           <InfoJob :id="postId" />
         </modal>
         <modal
@@ -130,10 +133,10 @@
           :height="240"
           :width="600"
         >
-          <DeleteModal
-            :url="`jobs/delete?jobId=${recordId}`"
-            entity="job"
-          />
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
+          <DeleteModal :url="`jobs/delete?jobId=${recordId}`" entity="job" />
         </modal>
       </div>
     </component>
@@ -198,6 +201,10 @@ export default {
     deleteRecord(id) {
       this.recordId = id;
       this.$modal.show("openDeleteRecord");
+    },
+    closeModal() {
+      this.$modal.hide("openInfoJob");
+      this.$modal.hide("openDeleteRecord");
     },
   },
   computed: {

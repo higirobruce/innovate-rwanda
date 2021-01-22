@@ -73,11 +73,27 @@
           </td>
           <td>
             <div class="wrap-actions float-right">
-              <a
+              <!-- <a
                 class="text-blue-dark cursor-pointer"
                 @click="loadCompany(dir.id)"
                 >Approve/Decline</a
+              > -->
+
+              <button
+                v-if="dir.status === 'pending' || dir.status === 'declined'"
+                @click="openApprove(dir.id)"
+                class="btn btn-sm btn-success-outline mr-2"
               >
+                Approve
+              </button>
+              <button
+                v-if="dir.status === 'pending' || dir.status === 'approved'"
+                @click="openDecline(dir.id)"
+                class="btn btn-sm btn-danger-outline"
+              >
+                Decline
+              </button>
+
               <router-link :to="`/dashboard/my-company/${dir.id}`">
                 <img src="@/assets/images/view.png" alt="view" />
               </router-link>
@@ -102,7 +118,10 @@
       :minHeight="350"
       :width="600"
     >
-      <h3 class="p-4 bottom-shadow shadow">Are you absolutely sure?</h3>
+      <button type="button" @click.prevent="closeModal" class="close">
+        <img src="@/assets/images/close.png" />
+      </button>
+      <h3 class="p-4">Are you absolutely sure?</h3>
       <div class="px-4 py-1 h6 font-weight-light">
         This action cannot be undone. This will permanently delete
         <b>{{ companyToDeleteName }}</b> company and all information attached to
@@ -122,7 +141,7 @@
       </div>
       <div class="py-3 px-4">
         <span class="float-left">
-          <button class="btn btn-success-outline mr-2" @click="cancelDelete">
+          <button class="btn btn-success-outline mr-2" @click="closeModal">
             Cancel
           </button>
           <button
@@ -134,7 +153,7 @@
           </button>
         </span>
         <span class="float-right">
-          <button @click="cancelDelete" class="btn btn-gray-outline mr-2">
+          <button @click="closeModal" class="btn btn-gray-outline mr-2">
             Close
           </button>
         </span>
@@ -148,7 +167,65 @@
       :height="700"
       :width="960"
     >
+      <button type="button" @click.prevent="closeModal" class="close">
+        <img src="@/assets/images/close.png" />
+      </button>
       <CompanyInfo :company="company" />
+    </modal>
+
+    <!-- Approve -->
+    <modal
+      name="approveCompany"
+      :adaptive="true"
+      :scrollable="true"
+      :height="220"
+      :minHeight="180"
+      :width="600"
+    >
+      <button type="button" @click.prevent="closeModal" class="close">
+        <img src="@/assets/images/close.png" />
+      </button>
+      <h3 class="p-4">Approve company</h3>
+      <div class="px-4 py-1 h6 font-weight-light">
+        Are you sure you want to approve this company?
+      </div>
+      <div class="py-3 px-4">
+        <span class="float-left">
+          <button class="btn btn-primary-outline mr-2" @click="closeModal">
+            Cancel
+          </button>
+          <button @click.prevent="approveCompany" class="btn btn-success">
+            Approve
+          </button>
+        </span>
+      </div>
+    </modal>
+    <!-- Decline -->
+    <modal
+      name="declineCompany"
+      :adaptive="true"
+      :scrollable="true"
+      :height="220"
+      :minHeight="180"
+      :width="600"
+    >
+      <button type="button" @click.prevent="closeModal" class="close">
+        <img src="@/assets/images/close.png" />
+      </button>
+      <h3 class="p-4">Decline company</h3>
+      <div class="px-4 py-1 h6 font-weight-light">
+        Are you sure you want to decline this company?
+      </div>
+      <div class="py-3 px-4">
+        <span class="float-left">
+          <button class="btn btn-primary-outline mr-2" @click="closeModal">
+            Cancel
+          </button>
+          <button @click.prevent="declineCompany" class="btn btn-danger">
+            Decline
+          </button>
+        </span>
+      </div>
     </modal>
   </div>
 </template>
@@ -156,6 +233,7 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import CompanyInfo from "@/components/CompanyInfo";
+import { EventBus } from "@/helpers/event-bus.js";
 export default {
   name: "list-companies",
   props: ["directory"],
@@ -167,14 +245,66 @@ export default {
       companyToDeleteName: "",
       companyToDeleteId: "",
       inputCompanyToDelete: "",
+      companyToApprove: "",
+      companyToDecline: "",
       company: {},
     };
   },
   methods: {
+    openApprove(id) {
+      this.companyToApprove = id;
+      this.$modal.show("approveCompany");
+    },
+    openDecline(id) {
+      this.companyToDecline = id;
+      this.$modal.show("declineCompany");
+    },
     deleteCompany(name, id) {
       this.companyToDeleteName = name;
       this.companyToDeleteId = id;
       this.$modal.show("deleteCompany");
+    },
+    approveCompany() {
+      const data = {
+        id: this.companyToApprove,
+        decision: "approved",
+      };
+      AxiosHelper.put("company/approve-decline", data)
+        .then(() => {
+          Vue.$toast.open({
+            message: "Company has been approved successfully",
+            type: "success",
+          });
+          EventBus.$emit("reload-company-dir");
+        })
+        .catch(() => {
+          Vue.$toast.open({
+            message: "Sorry, something went wrong. try again later!",
+            type: "error",
+          });
+        });
+      this.$modal.hide("approveCompany");
+    },
+    declineCompany() {
+      const data = {
+        id: this.companyToDecline,
+        decision: "declined",
+      };
+      AxiosHelper.put("company/approve-decline", data)
+        .then(() => {
+          Vue.$toast.open({
+            message: "Company has been declined successfully",
+            type: "success",
+          });
+          EventBus.$emit("reload-company-dir");
+        })
+        .catch(() => {
+          Vue.$toast.open({
+            message: "Sorry, something went wrong. try again later!",
+            type: "error",
+          });
+        });
+      this.$modal.hide("declineCompany");
     },
     loadCompany(id) {
       this.company = {};
@@ -220,9 +350,18 @@ export default {
           });
         });
     },
-    cancelDelete() {
+    closeModal() {
       this.$modal.hide("deleteCompany");
+      this.$modal.hide("approveCompany");
+      this.$modal.hide("declineCompany");
+      this.$modal.hide("companyInfo");
     },
   },
 };
 </script>
+<style scoped>
+td {
+  /* text-align: center; */
+  vertical-align: middle;
+}
+</style>

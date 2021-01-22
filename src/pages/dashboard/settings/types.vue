@@ -89,6 +89,9 @@
         :height="240"
         :width="600"
       >
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
         <DeleteModal
           :url="`company-types/remove-type?type=${recordId}`"
           entity="company type"
@@ -102,7 +105,10 @@
         :height="440"
         :width="600"
       >
-        <h3 class="p-4 bottom-shadow shadow">Create company type</h3>
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
+        <h3 class="p-4">Create company type</h3>
         <div class="m-4">
           <form @submit="submitType">
             <h4 class="mt-3">Institution type</h4>
@@ -164,7 +170,10 @@
         :height="450"
         :width="700"
       >
-        <h3 class="p-4 bottom-shadow shadow">Edit company type</h3>
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
+        <h3 class="p-4">Edit company type</h3>
 
         <div class="m-4">
           <form @submit="submitEditType">
@@ -228,7 +237,10 @@
         :height="650"
         :width="700"
       >
-        <h3 class="p-4 bottom-shadow shadow">Category image</h3>
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
+        <h3 class="p-4">Category image</h3>
 
         <div class="my-2 mx-4">
           <button
@@ -440,6 +452,7 @@ export default {
       this.$modal.hide("openAddActivity");
       this.$modal.hide("openEditType");
       this.$modal.hide("openUploadCategoryImage");
+      this.$modal.hide("openDeleteRecord");
     },
     onFileSelect(e) {
       const file = e.target.files[0];

@@ -12,7 +12,11 @@
           <h1 class="font-weight-light text-blue-dark h3">
             Event types
             <span class="float-right">
-              <button class="btn btn-sm font-weight-bold btn-primary-outline" @click.prevent="addActivity" type="button">
+              <button
+                class="btn btn-sm font-weight-bold btn-primary-outline"
+                @click.prevent="addActivity"
+                type="button"
+              >
                 Add
               </button>
             </span>
@@ -54,6 +58,9 @@
         :height="240"
         :width="600"
       >
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
         <DeleteModal
           :url="`events-types/remove-type?type=${recordId}`"
           entity="type"
@@ -67,7 +74,10 @@
         :height="340"
         :width="600"
       >
-        <h3 class="p-4 bottom-shadow shadow">Create event type</h3>
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
+        <h3 class="p-4">Create event type</h3>
         <div class="m-4">
           <form @submit="submitType">
             <h4 class="mt-3">Type</h4>
@@ -113,7 +123,7 @@
         :height="340"
         :width="600"
       >
-        <h3 class="p-4 bottom-shadow shadow">Edit event type</h3>
+        <h3 class="p-4">Edit event type</h3>
 
         <div class="m-4">
           <form @submit="submitEditType">
@@ -260,6 +270,7 @@ export default {
     },
     closeModal() {
       this.$modal.hide("openAddActivity");
+      this.$modal.hide("openDeleteRecord");
       this.$modal.hide("openEditType");
     },
   },

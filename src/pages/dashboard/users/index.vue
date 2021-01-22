@@ -101,7 +101,9 @@
             :height="400"
             :width="360"
           >
-            <!--  -->
+            <button type="button" @click.prevent="closeModal" class="close">
+              <img src="@/assets/images/close.png" />
+            </button>
             <h3 class="p-4 bottom-shadow shadow text-truncate">Change role</h3>
             <div class="px-4 py-2">
               <div
@@ -146,6 +148,9 @@
             :height="660"
             :width="800"
           >
+            <button type="button" @click.prevent="closeModal" class="close">
+              <img src="@/assets/images/close.png" />
+            </button>
             <NewUser />
           </modal>
         </div>
@@ -205,13 +210,13 @@ export default {
   methods: {
     generateRole(e) {
       let converted = "";
-      if(e === 'normal') return "Company owner"
+      if (e === "normal") return "Company owner";
       this.roles.map((r) => {
         if (r.text === e) {
           converted = r.name;
         }
       });
-      return converted
+      return converted;
     },
     roleSelected(e) {
       this.selectedRole = e;
@@ -260,6 +265,7 @@ export default {
       this.changingRole = false;
       this.users = this.temporaryUsers;
       this.$modal.hide("openChangeRole");
+      this.$modal.hide("openRegister");
     },
     changeRole(user) {
       this.changingRole = true;

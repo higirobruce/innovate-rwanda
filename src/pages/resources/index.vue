@@ -13,6 +13,9 @@
           :style="{ 'background-color': 'rgba(4, 137, 187, 0.83)' }"
         ></div>
         <h1>Resources</h1>
+        <div class="subtitle">
+         You will find some useful content about how to do business in the Rwandan tech ecosystem for your needs here
+        </div>
       </div>
       <div class="container">
         <div v-if="!_.isEmpty(posts)">

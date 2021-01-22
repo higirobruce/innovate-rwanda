@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Social media</h3>
+    <h3 class="p-4">Social media</h3>
     <div class="p-3">
       <div class="row">
         <div class="col-12">

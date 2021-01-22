@@ -112,7 +112,10 @@
         :height="430"
         :width="700"
       >
-        <h3 class="p-4 bottom-shadow shadow">Delete account &amp; company</h3>
+       <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
+        <h3 class="p-4">Delete account &amp; company</h3>
         <div class="mx-4 mt-4">We're sorry to see your go</div>
         <div class="mx-4 my-2">
           Deleting your account will remove all your profile and company

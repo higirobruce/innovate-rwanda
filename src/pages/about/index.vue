@@ -9,33 +9,75 @@
       />
       <div class="container">
         <div class="wrap-about">
-          <h2 class="text-blue-dark">Boosting and growing Rwanda start-ups and the ecosystem</h2>
-          <div class="my-4">
-            At Innovate Rwanda, we believe that the future of the Rwandan
-            economy and the region stems around innovation. We are here to
-            empower and endow start-ups in the Rwanda eco-system with the
-            opportunity to collaborate and work together. We are also the
-            linkage to the outside world.
+          <div class="row">
+            <div class="col-sm-12 col-md-3 col-lg-5">
+              <div class="p-3">
+                <div class="image">
+                  <img src="@/assets/images/about-rocket.png" />
+                </div>
+                <h2 class="text-blue-dark h1" style="max-width: 300px">
+                  Boosting and growing Rwanda start-ups and the ecosystem
+                </h2>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-9 col-lg-7">
+              <div class="my-4 py-5">
+                Innovate Rwanda also has a refined list of innovation ecosystem
+                enablers, who in most cases are corporations, government
+                institutions, regulators and other bigger companies that are
+                looking to innovate their working models. These enablers can
+                both provide income to the start-ups through projects,
+                collaborations, access to facilities, access to information and
+                capacity building, exposure to real market projects etc.
+              </div>
+            </div>
           </div>
-
-          <h2 class="text-blue-dark">Innovation for organizations and corporations</h2>
-          <div class="my-4">
-            Innovate Rwanda also has a refined list of innovation ecosystem
-            enablers, who in most cases are corporations, government
-            institutions, regulators and other bigger companies that are looking
-            to innovate their working models. These enablers can both provide
-            income to the start-ups through projects, collaborations, access to
-            facilities, access to information and capacity building, exposure to
-            real market projects etc.
+          <div class="divider my-4"></div>
+          <div class="row">
+            <div class="col-sm-12 col-md-3 col-lg-5">
+              <div class="p-3">
+                <div class="image">
+                  <img src="@/assets/images/about-idea.png" />
+                </div>
+                <h2 class="text-blue-dark h1" style="max-width: 300px">
+                  Innovation for organizations and corporations
+                </h2>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-9 col-lg-7">
+              <div class="my-4 py-5">
+                Innovate Rwanda also has a refined list of innovation ecosystem
+                enablers, who in most cases are corporations, government
+                institutions, regulators and other bigger companies that are
+                looking to innovate their working models. These enablers can
+                both provide income to the start-ups through projects,
+                collaborations, access to facilities, access to information and
+                capacity building, exposure to real market projects etc.
+              </div>
+            </div>
           </div>
-
-          <h2 class="text-blue-dark">Democratize capital and ecosystem growth</h2>
-          <div class="my-4">
-            The platform has an event, talent acquisition and blog section for
-            success stories, intercompany collaboration from the platform,
-            pitching access, funding as well as showcase possibilities within
-            the Rwandan tech ecosystem. These sections are meant to promote
-            collaboration in the Rwandan tech ecosystem, the region and abroad
+          <div class="divider my-4"></div>
+          <div class="row">
+            <div class="col-sm-12 col-md-3 col-lg-5">
+              <div class="p-3">
+                <div class="image">
+                  <img src="@/assets/images/about-connect.png" />
+                </div>
+                <h2 class="text-blue-dark h1" style="max-width: 300px">
+                  Democratize capital and ecosystem growth
+                </h2>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-9 col-lg-7">
+              <div class="my-4 py-5">
+                The platform has an event, talent acquisition and blog section
+                for success stories, intercompany collaboration from the
+                platform, pitching access, funding as well as showcase
+                possibilities within the Rwandan tech ecosystem. These sections
+                are meant to promote collaboration in the Rwandan tech
+                ecosystem, the region and abroad
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -67,7 +109,14 @@ export default {
   padding: 60px 40px;
   box-shadow: 0px 17px 36px #1b295814;
 }
+.wrap-about .divider {
+  background: #c0c6d8;
+}
 .wrap-about h2 {
-  font-size: 22px;
+  font-size: 28px;
+}
+.wrap-about img {
+  width: 80px;
+  margin: 10px 0;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Edit info</h3>
+    <h3 class="p-4">Edit info</h3>
     <div class="px-4 py-2">
       <form @submit="submitCompanyInfo">
         <div class="wrap-modal" style="max-height: 450px; overflow: scroll">

@@ -4,7 +4,7 @@
       <div class="container">
         <div class="wrap-middle-header">
           <button class="sidebar-btn" @click="toggleMenu">
-            <img src="@/assets/images/menu.svg" />
+            <img src="@/assets/images/menu.png" />
           </button>
           <div class="wrap-logo">
             <div class="main-logo">
@@ -38,9 +38,7 @@
                 >
               </li>
               <li class="list-inline-item">
-                <router-link active :to="'/resources'"
-                  >Resources</router-link
-                >
+                <router-link active :to="'/resources'">Resources</router-link>
               </li>
             </ul>
           </div>
@@ -109,35 +107,45 @@
           <li class="list-group-item">
             <router-link :to="'/find-talent'">Find Talents</router-link>
           </li>
+          <li class="list-inline-item">
+            <router-link active :to="'/resources'">Resources</router-link>
+          </li>
         </ul>
       </div>
     </div>
     <!-- AuthButtonModal -->
-    <div class="wrap-auth-modal" v-if="isAuthModelOpen">
-      <div class="auth-modal">
-        <button class="close" @click="isAuthModelOpen = false">
-          <i class="icon" />
-        </button>
-        <div class="auth-wrap-btns mb-4">
-          <router-link
-            :to="'/login'"
-            class="btn btn-block font-weight-bold btn-primary-outline mr-2"
-          >
-            Login
-          </router-link>
-          <router-link
-            :to="'/join'"
-            class="btn btn-block font-weight-bold btn-primary mt-4"
-          >
-            Join The Community
-          </router-link>
-        </div>
+    <modal
+      name="openJoin"
+      :adaptive="true"
+      :scrollable="true"
+      :height="250"
+      :width="420"
+    >
+      <button type="button" @click.prevent="closeModal" class="close">
+        <img src="@/assets/images/close.png" />
+      </button>
+      <div class="auth-wrap-btns py-5 my-3">
+        <router-link
+          :to="'/login'"
+          class="btn btn-block font-weight-bold btn-primary-outline mr-2"
+        >
+          Login
+        </router-link>
+        <router-link
+          :to="'/join'"
+          class="btn btn-block font-weight-bold btn-primary mt-4"
+        >
+          Join The Community
+        </router-link>
       </div>
-    </div>
+    </modal>
   </div>
 </template>
 
 <script>
+import Vue from "vue";
+import VModal from "vue-js-modal";
+Vue.use(VModal);
 export default {
   data() {
     return {
@@ -150,7 +158,10 @@ export default {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
     toggleAuthModal() {
-      this.isAuthModelOpen = !this.isAuthModelOpen;
+      this.$modal.show("openJoin");
+    },
+    closeModal() {
+      this.$modal.hide("openJoin");
     },
   },
 };

@@ -55,6 +55,9 @@
         :height="240"
         :width="600"
       >
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
         <DeleteModal
           :url="`business-activities/remove-activity?activityId=${recordId}`"
           entity="activity"
@@ -68,7 +71,10 @@
         :height="340"
         :width="600"
       >
-        <h3 class="p-4 bottom-shadow shadow">Create business activity</h3>
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
+        <h3 class="p-4">Create business activity</h3>
         <div class="m-4">
           <form @submit="submitActivity">
             <h4 class="mt-3">Activity name</h4>
@@ -114,7 +120,10 @@
         :height="340"
         :width="600"
       >
-        <h3 class="p-4 bottom-shadow shadow">Edit business activity</h3>
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
+        <h3 class="p-4">Edit business activity</h3>
 
         <div class="m-4">
           <form @submit="submitEditActivity">

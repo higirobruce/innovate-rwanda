@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Create a user</h3>
+    <h3 class="p-4">Create a user</h3>
     <div class="px-4">
       <form @submit="register">
         <div

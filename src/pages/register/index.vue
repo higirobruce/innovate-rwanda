@@ -296,9 +296,9 @@
                       :value="agreed"
                     />
                     I have read and agree to the
-                    <router-link :to="'/privacy-policy'"> privacy policy </router-link>
+                    <router-link target="_blank" :to="'/privacy-policy'"> privacy policy </router-link>
                     and
-                    <router-link :to="'/terms'"> terms </router-link>
+                    <router-link target="_blank" :to="'/terms'"> terms </router-link>
                   </div>
                 </div>
                 <div class="row">

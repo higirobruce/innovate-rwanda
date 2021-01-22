@@ -158,7 +158,10 @@
             :height="660"
             :width="550"
           >
-            <h3 class="p-4 bottom-shadow shadow">Business activities</h3>
+            <button type="button" @click.prevent="closeModal" class="close">
+              <img src="@/assets/images/close.png" />
+            </button>
+            <h3 class="p-4">Business activities</h3>
             <div class="px-4">
               <div
                 class="wrap-modal"
@@ -261,7 +264,7 @@ export default {
       })
       .catch(() => {});
   },
-  
+
   methods: {
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
@@ -347,18 +350,13 @@ export default {
       const config = {
         headers: { "X-Requested-With": "XMLHttpRequest" },
       };
-      File
-        .upload(
-          "upload",
-          formData,
-          config
-        )
+      File.upload("upload", formData, config)
         .then((response) => {
           this.job.jobDetailsDocument = response.data.file;
           this.submitPostNow();
         })
         .catch((err) => {
-          console.log("err", err)
+          console.log("err", err);
         });
     },
     onFileSelect(e) {

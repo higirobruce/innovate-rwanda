@@ -135,6 +135,9 @@
           :height="660"
           :width="1100"
         >
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
           <InfoBlog :id="postId" />
         </modal>
         <modal
@@ -144,6 +147,9 @@
           :height="240"
           :width="600"
         >
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
           <DeleteModal :url="`blog/delete/${recordId}`" entity="blog" />
         </modal>
       </div>
@@ -202,6 +208,10 @@ export default {
     deleteRecord(id) {
       this.recordId = id;
       this.$modal.show("openDeleteRecord");
+    },
+    closeModal() {
+      this.$modal.hide("openInfoBlog");
+      this.$modal.hide("openDeleteRecord");
     },
   },
   computed: {

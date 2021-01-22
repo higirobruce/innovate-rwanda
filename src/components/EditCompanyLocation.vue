@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Company location</h3>
+    <h3 class="p-4">Company location</h3>
     <div class="px-4 py-2">
       <div class="wrap-modal" style="max-height: 550px; overflow: scroll">
         <div class="mt-1 mb-3 text-success">

@@ -54,33 +54,30 @@
           </div>
         </div>
       </div>
-      <!-- Categories -->
       <div class="home-categories bg-blue-light-1 my-4 py-4">
         <div class="container text-center my-5">
           <h2 class="text-blue-dark font-weight-bold py-3 mb-4">Categories</h2>
-          <div class="wrap-home-categories">
-            <agile :options="options">
-              <div
-                v-for="(category, index) in categories"
-                class="slide one-category"
-                :key="index"
-              >
-                <img
-                  v-if="category.image"
-                  :src="`${IMAGE_URL}c_fill,g_center,w_1200/${category.image}`"
-                  :alt="category.name"
-                />
-                <img
-                  v-else
-                  src="@/assets/images/innovate-lamp.png"
-                  :alt="category.name"
-                />
-                <h3>
-                  {{ category.name }}
-                </h3>
-              </div>
-            </agile>
-          </div>
+          <agile v-if="categories && !_.isEmpty(categories)" :options="options">
+            <div
+              class="slide"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
+              <img
+                v-if="category.image"
+                :src="`${IMAGE_URL}c_fill,g_center,w_1200/${category.image}`"
+                :alt="category.name"
+              />
+              <img
+                v-else
+                src="@/assets/images/innovate-lamp.png"
+                :alt="category.name"
+              />
+              <h3>
+                {{ category.name }}
+              </h3>
+            </div>
+          </agile>
         </div>
       </div>
       <div class="my-4 py-4">
@@ -94,13 +91,7 @@
               :key="index"
             >
               <router-link :to="`redirect/${partners[num].link}`">
-                <img
-                  :src="
-                    partnerUrl(
-                      partners[num].hover
-                    )
-                  "
-                />
+                <img :src="partnerUrl(partners[num].hover)" />
               </router-link>
             </div>
           </div>
@@ -113,13 +104,7 @@
               @mouseout="partnerMouseoutUrl(num)"
             >
               <router-link :to="`redirect/${partners[num].link}`">
-                <img
-                  :src="
-                    partnerUrl(
-                     partners[num].hover
-                    )
-                  "
-                />
+                <img :src="partnerUrl(partners[num].hover)" />
               </router-link>
             </div>
           </div>
@@ -180,13 +165,12 @@ import { required, email } from "vuelidate/lib/validators";
 import Loading from "@/components/Loading";
 import Welcome from "@/components/Welcome3";
 import { VueAgile } from "vue-agile";
-
 export default {
   name: "home",
   components: {
     Loading,
     agile: VueAgile,
-    Welcome,
+    Welcome
   },
   data() {
     return {
@@ -245,13 +229,35 @@ export default {
       subscribing: false,
       subscribed: false,
       query: "",
-      options: {
+      settings: {
+        dots: true,
+        adaptiveHeight: true,
+        arrows: true,
+        edgeFriction: 0.35,
         infinite: true,
+        speed: 500,
         slidesToShow: 5,
-        initialSlide: 0,
+        slidesToScroll: 5,
+        swipeToSlide: true,
+        centerMode: true,
+        centerPadding: "20px",
+      },
+      options: {
+        slidesToShow: 2,
         navButtons: false,
-        dots: false,
-        autoplay: true,
+        dots: true,
+        autoplaySpeed: 5000,
+        speed: 2500,
+        infinite: true,
+        initialSlide: 0,
+        responsive: [
+          {
+            breakpoint: 740,
+            settings: {
+              slidesToShow: 5,
+            },
+          },
+        ],
       },
     };
   },
@@ -261,6 +267,12 @@ export default {
     });
   },
   methods: {
+    showPrev() {
+      this.$refs.carousel.prev();
+    },
+    showNext() {
+      this.$refs.carousel.next();
+    },
     search() {
       this.$router.push(`/directory/companies?search=${this.query}`);
     },
@@ -293,7 +305,18 @@ export default {
             email: "",
           };
         })
-        .catch(() => {
+        .catch((error) => {
+          if (error.response.status === 409) {
+            Vue.$toast.open({
+              message: "You have already subscribed",
+              type: "warning",
+            });
+          } else {
+            Vue.$toast.open({
+              message: "Sorry, something went wrong. try again later!",
+              type: "error",
+            });
+          }
           this.subscribed = false;
         });
       this.subscribing = false;
