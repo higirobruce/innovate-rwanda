@@ -5,7 +5,7 @@
         <h2 class="h2 font-weight-bold">Resources</h2>
         <div
           class="wrap-content-head-btns"
-          v-if="profile.role === 'super-admin'"
+          v-if="profile && profile.role !== 'normal'"
         >
           <router-link
             :to="'/dashboard/resources'"
@@ -23,7 +23,7 @@
         <br />
       </div>
       <div class="dash-container">
-        <div v-if="profile.role === 'super-admin'">
+        <div v-if="profile && profile.role !== 'normal'">
           <h4 class="h5">
             <router-link :to="'/dashboard/resources'" class="btn btn-back">
               <i class="icon-arrow-left" />

@@ -55,7 +55,7 @@
       </li>
       <li
         class="nav-item"
-        v-if="profile.role === 'super-admin'"
+        v-if="profile && profile.role !== 'normal'"
       >
         <router-link :to="'/dashboard/resources'">
           <img src="@/assets/images/icon-resources.png" />

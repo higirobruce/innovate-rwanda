@@ -7,8 +7,7 @@
           <router-link
             :to="'/dashboard/resources/new'"
             v-if="
-              (profile && profile.role === 'admin-admin') ||
-              profile.role === 'super-admin'
+              profile && profile.role !== 'normal'
             "
             class="btn font-weight-bold btn-primary-outline"
           >
@@ -21,7 +20,7 @@
       <div class="dash-container">
         <table
           class="table table-responsive-sm"
-          v-if="profile && profile.role === 'super-admin'"
+          v-if="profile && profile.role !== 'normal'"
         >
           <thead>
             <tr>
