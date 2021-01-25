@@ -354,7 +354,7 @@
               <div class="company-info">
                 <div>
                   <span>
-                    Customer base:
+                    Client base:
                     <span
                       class="text-blue-dark"
                       v-for="(base, index) in JSON.parse(
@@ -371,7 +371,7 @@
                     >
                       <span
                         v-if="_.size(JSON.parse(company.company.customerBase))"
-                        >Add customer base</span
+                        >Add client base</span
                       >
                       <span v-else>Update</span>
                     </button>
@@ -391,7 +391,7 @@
                   >
                     <img src="@/assets/images/close.png" />
                   </button>
-                  <h3 class="p-4">Customer base</h3>
+                  <h3 class="p-4">Client base</h3>
                   <div class="px-4 py-2">
                     <form>
                       <div
@@ -617,7 +617,6 @@ export default {
   },
   created() {
     this.companyId = this.$route.params.companyId;
-    console.log("hey", this.companyId);
   },
   beforeCreate() {
     // loading business activities
@@ -651,7 +650,6 @@ export default {
           )
         ) {
           arr = [...arr, e.target.value];
-          console.log("arr", arr);
           this.company.company.customerBase = JSON.stringify(arr);
         } else {
           const newArray = arr.filter(function (el) {
@@ -726,7 +724,7 @@ export default {
       )
         .then(() => {
           Vue.$toast.open({
-            message: "Customer base has been updated successfully",
+            message: "Client base has been updated successfully",
             type: "success",
           });
           this.$modal.hide("openEditCustomerBase");
@@ -786,8 +784,7 @@ export default {
             type: "success",
           });
         })
-        .catch((err) => {
-          console.log("err", err.response);
+        .catch(() => {
           Vue.$toast.open({
             message: "Sorry, something went wrong. Try again later",
             type: "error",

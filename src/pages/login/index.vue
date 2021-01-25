@@ -65,7 +65,9 @@
         </div>
         <div v-else class="text-center py-5 my-5">
           <h1 class="h3">You are already logged in.<br /></h1>
-          <router-link class="my-3 btn btn-lg font-weight-bold btn-primary-outline" :to="'/dashboard'"
+          <router-link
+            class="my-3 btn btn-lg font-weight-bold btn-primary-outline"
+            :to="'/dashboard'"
             >Go to dashboard</router-link
           >
         </div>
@@ -126,8 +128,7 @@ export default {
           // window.location.href = '/dashboard';
           this.$router.push("/dashboard");
         })
-        .catch((error) => {
-          console.log("error", error);
+        .catch(() => {
           this.errorMessage = "Something went wrong";
           this.unauthorized = true;
           this.logging = false;

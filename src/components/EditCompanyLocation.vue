@@ -110,14 +110,10 @@ export default {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
       };
-      console.log("place name", place);
       this.officeAddress.lat = place.geometry.location.lat();
       this.officeAddress.lng = place.geometry.location.lng();
       this.officeAddress.place = place.formatted_address;
       this.companyInfo.officeAddress = JSON.stringify(this.officeAddress);
-    },
-    locationChanged() {
-      console.log("hey", this.starting_point);
     },
     // convertLatLng() {
     //   let latLng = this.place;
@@ -130,7 +126,6 @@ export default {
       return JSON.parse(object);
     },
     updateCoordinates(location) {
-      console.log("yes", location);
       this.officeAddress = {
         lat: location.latLng.lat(),
         lng: location.latLng.lng(),

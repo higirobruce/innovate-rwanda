@@ -66,8 +66,8 @@
             <div class="info-separator">&nbsp;</div>
             <div class="company-info">
               <div>
-                Customer base:
-                <span class="text-blue-dark">Business to Business</span>
+                Client base:
+                <!-- <span class="text-blue-dark">Business to Business</span> -->
               </div>
             </div>
           </div>
@@ -191,8 +191,7 @@ export default {
         };
       }
       AxiosHelper.put("company/approve-decline", data)
-        .then((res) => {
-          console.log("res", res)
+        .then(() => {
           Vue.$toast.open({
             message:
               "Company' status has been updated. We are updating company's directory",

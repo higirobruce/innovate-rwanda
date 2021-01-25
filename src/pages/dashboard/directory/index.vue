@@ -4,27 +4,15 @@
       <div class="page-info px-5">
         <h2 class="h2 font-weight-bold">Directory</h2>
         <ul class="page-nav list-inline">
-          <li
-            :class="`${
-              _.isEmpty(currentStatus)
-                ? 'list-inline-item mr-5 list-active'
-                : 'list-inline-item mr-5'
-            }`"
-          >
-            <button class="text-blue" @click.prevent="resetDirStatus">
+          <li class="list-inline-item list-active mr-5">
+            <router-link class="text-blue" :to="'/dashboard/directory'">
               All Companies
-            </button>
+            </router-link>
           </li>
-          <li
-            :class="`${
-              currentStatus === 'pending'
-                ? 'list-inline-item mr-5 list-active'
-                : 'list-inline-item mr-5'
-            }`"
-          >
-            <button class="text-blue" @click.prevent="loadPendingDir">
+          <li class="list-inline-item mr-5">
+            <router-link class="text-blue" :to="'/dashboard/directory/pending'">
               Pending Approval
-            </button>
+            </router-link>
           </li>
         </ul>
         <br />
@@ -103,7 +91,6 @@ export default {
   },
   created() {
     EventBus.$on("reload-company-dir", () => {
-      console.log("res");
       this.loadCompanies();
     });
     this.loadCompanies();
@@ -123,7 +110,10 @@ export default {
       AxiosHelper.get("directory/admin")
         .then((response) => {
           this.directory = response.data;
-          this.companies = this.directory.result;
+          // this.companies = this.directory.result;
+          this.companies =
+            this.directory &&
+            this.directory.result.filter((d) => d.status !== "pending");
           this.loadingDirectory = false;
         })
         .catch((error) => {

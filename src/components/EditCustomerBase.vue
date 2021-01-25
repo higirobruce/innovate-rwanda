@@ -92,7 +92,7 @@ export default {
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
         .then(() => {
           Vue.$toast.open({
-            message: "Customer base has been updated successfully",
+            message: "Client base has been updated successfully",
             type: "success",
           });
           setTimeout(() => {

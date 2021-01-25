@@ -164,10 +164,9 @@
             :height="660"
             :width="550"
           >
-
-          <button type="button" @click.prevent="closeModal" class="close">
-            <img src="@/assets/images/close.png" />
-          </button>
+            <button type="button" @click.prevent="closeModal" class="close">
+              <img src="@/assets/images/close.png" />
+            </button>
             <h3 class="p-4">Business activities</h3>
             <div class="px-4">
               <div
@@ -394,8 +393,7 @@ export default {
             type: "success",
           });
         })
-        .catch((err) => {
-          console.log("e", err);
+        .catch(() => {
           this.uploading = false;
           this.created = false;
           Vue.$toast.open({
@@ -414,19 +412,12 @@ export default {
       const config = {
         headers: { "X-Requested-With": "XMLHttpRequest" },
       };
-      File
-        .upload(
-          "upload",
-          formData,
-          config
-        )
+      File.upload("upload", formData, config)
         .then((response) => {
           this.post.jobDetailsDocument = response.data.file;
           this.submitPostNow();
         })
-        .catch((err) => {
-          console.log("err", err)
-        });
+        .catch(() => {});
     },
     onFileSelect(e) {
       const file = e.target.files[0];

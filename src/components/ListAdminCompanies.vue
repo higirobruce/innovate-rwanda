@@ -73,26 +73,20 @@
           </td>
           <td>
             <div class="wrap-actions float-right">
-              <!-- <a
-                class="text-blue-dark cursor-pointer"
-                @click="loadCompany(dir.id)"
-                >Approve/Decline</a
-              > -->
-
-              <button
+              <!-- <button
                 v-if="dir.status === 'pending' || dir.status === 'declined'"
                 @click="openApprove(dir.id)"
                 class="btn btn-sm btn-success-outline mr-2"
               >
                 Approve
-              </button>
-              <button
+              </button> -->
+              <!-- <button
                 v-if="dir.status === 'pending' || dir.status === 'approved'"
                 @click="openDecline(dir.id)"
                 class="btn btn-sm btn-danger-outline"
               >
                 Decline
-              </button>
+              </button> -->
 
               <router-link :to="`/dashboard/my-company/${dir.id}`">
                 <img src="@/assets/images/view.png" alt="view" />
@@ -269,7 +263,7 @@ export default {
         id: this.companyToApprove,
         decision: "approved",
       };
-      AxiosHelper.put("company/approve-decline", data)
+      AxiosHelper.put("company/manage", data)
         .then(() => {
           Vue.$toast.open({
             message: "Company has been approved successfully",
@@ -290,7 +284,7 @@ export default {
         id: this.companyToDecline,
         decision: "declined",
       };
-      AxiosHelper.put("company/approve-decline", data)
+      AxiosHelper.put("company/manage", data)
         .then(() => {
           Vue.$toast.open({
             message: "Company has been declined successfully",

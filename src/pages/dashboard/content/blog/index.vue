@@ -162,6 +162,7 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import MenuContent from "@/components/MenuContent";
 import InfoBlog from "@/components/InfoBlog";
 import DeleteModal from "@/components/DeleteModal";
+import { EventBus } from "@/helpers/event-bus.js";
 export default {
   name: "blog",
   components: {
@@ -175,32 +176,39 @@ export default {
       loading: false,
       postId: {},
       recordId: "",
+      url: "",
     };
   },
   created() {
     this.loading = true;
-    let url = "blog/all";
+    this.url = "blog/all";
     if (this.profile.role === "normal" && this.profile.companyId) {
-      url = `blog/company/${this.profile.companyId}`;
+      this.url = `blog/company/${this.profile.companyId}`;
     }
-    AxiosHelper.get(url)
-      .then((response) => {
-        this.posts = response.data.result;
-        this.loading = false;
-      })
-      .catch((error) => {
-        if (error.response.status === 404 || error.response.status === 400) {
-          this.error = "No content yet!";
-        } else if (error.response.status === 403) {
-          this.error = "No companies found at this moment";
-          this.notAllowed = true;
-        } else {
-          this.error = "Something went wrong, try again later";
-        }
-        this.loading = false;
-      });
+    this.loadPosts();
+    EventBus.$on("reload-posts", () => {
+      this.loadPosts();
+    });
   },
   methods: {
+    loadPosts() {
+      AxiosHelper.get(this.url)
+        .then((response) => {
+          this.posts = response.data.result;
+          this.loading = false;
+        })
+        .catch((error) => {
+          if (error.response.status === 404 || error.response.status === 400) {
+            this.error = "No content yet!";
+          } else if (error.response.status === 403) {
+            this.error = "No companies found at this moment";
+            this.notAllowed = true;
+          } else {
+            this.error = "Something went wrong, try again later";
+          }
+          this.loading = false;
+        });
+    },
     loadPost(postId) {
       this.postId = postId;
       this.$modal.show("openInfoBlog");

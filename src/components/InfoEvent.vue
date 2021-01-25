@@ -39,7 +39,7 @@
             v-for="(act, index) in post.AudienceForPosts"
             :key="index"
           >
-            <span v-if=" act.BusinessActivity &&  act.BusinessActivity.name">
+            <span v-if="act.BusinessActivity && act.BusinessActivity.name">
               {{ act.BusinessActivity.name }}
             </span>
           </div>
@@ -93,6 +93,7 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import VModal from "vue-js-modal";
+import { EventBus } from "@/helpers/event-bus.js";
 Vue.use(VModal);
 let marked = require("marked");
 
@@ -143,9 +144,8 @@ export default {
                 : "Event has been declined. We are updating list...",
             type: "success",
           });
-          setTimeout(() => {
-            // this.$router.go();
-          }, 3000);
+          EventBus.$emit("reload-events");
+          this.$modal.hide("openInfoEvent");
         })
         .catch(() => {
           Vue.$toast.open({

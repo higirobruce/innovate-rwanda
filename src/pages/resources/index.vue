@@ -14,7 +14,8 @@
         ></div>
         <h1>Resources</h1>
         <div class="subtitle">
-         You will find some useful content about how to do business in the Rwandan tech ecosystem for your needs here
+          You will find some useful content about how to do business in the
+          Rwandan tech ecosystem for your needs here
         </div>
       </div>
       <div class="container">
@@ -83,7 +84,6 @@ import PageHeader from "@/components/PageHeader";
 import moment from "moment";
 import VModal from "vue-js-modal";
 
-
 Vue.use(VModal);
 Vue.use(moment);
 export default {
@@ -110,9 +110,7 @@ export default {
       .then((response) => {
         this.posts = response.data.result;
       })
-      .catch(() => {
-        console.log("something went wrong");
-      });
+      .catch(() => {});
     this.timeNow = moment().format("YYYY-MM-DD");
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {

@@ -26,16 +26,22 @@
           </span>
         </div>
         <div v-if="post.description" v-html="previewText"></div>
-        <div
-          class="media my-3 p-3 bg-white border rounded"
-          v-if="post.jobDetailsDocument"
+        <router-link
+          class="text-blue-dark"
+          :to="`/redirect/${FILE_URL}${post.jobDetailsDocument}`"
+          target="_blank"
         >
-          <img class="align-self-start mr-3" src="@/assets/images/pdf.png" />
-          <div class="media-body">
-            <h5 class="mt-2">Preview</h5>
-            <p>Job attachment</p>
+          <div
+            class="media my-3 p-3 bg-white border rounded"
+            v-if="post.jobDetailsDocument"
+          >
+            <img class="align-self-start mr-3" src="@/assets/images/pdf.png" />
+            <div class="media-body">
+              <h5 class="mt-2">Preview</h5>
+              <p>Job attachment</p>
+            </div>
           </div>
-        </div>
+        </router-link>
         <div class="mb-2">
           <div
             class="co-badge"

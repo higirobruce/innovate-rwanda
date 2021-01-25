@@ -4,7 +4,7 @@
       <PageHeaderSm
         image="bg-why.png"
         rgba="rgba(4, 137, 187, 0.83)"
-        title="Find talents"
+        title="Find talent"
       />
       <div
         class="container"
@@ -42,15 +42,7 @@
               <span class="ml-2"
                 >{{ post.deadlineDate | date("DD-MM-YYYY") }}
               </span>
-              <span class="ml-1"
-                >{{ post.deadlineTime  }} CAT
-              </span>
-            </span>
-          </div>
-          <div class="my-2">
-            <span>
-              <i class="icon-tag mr-2" />
-              {{ post.category }}
+              <span class="ml-1">{{ post.deadlineTime }} CAT </span>
             </span>
           </div>
         </div>
@@ -62,6 +54,22 @@
         ></div>
 
         <div class="clear"></div>
+        <router-link
+          class="text-blue-dark"
+          :to="`/redirect/${FILE_URL}${post.jobDetailsDocument}`"
+          target="_blank"
+        >
+          <div
+            class="media my-3 p-3 bg-white border rounded"
+            v-if="post.jobDetailsDocument"
+          >
+            <img class="align-self-start mr-3" src="@/assets/images/pdf.png" />
+            <div class="media-body">
+              <h5 class="mt-2">Preview</h5>
+              <p>Job attachment</p>
+            </div>
+          </div>
+        </router-link>
         <div class="my-4">
           <div
             class="co-badge"

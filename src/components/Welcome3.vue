@@ -13,10 +13,10 @@
           Join the community
         </router-link>
         <router-link
-          :to="'/about'"
+          :to="'/directory'"
           class="btn btn-home btn-lg font-weight-bold bg-orange text-white mt-3"
         >
-          Learn more
+          Explore Community
         </router-link>
         <div class="clear"></div>
         <form @submit="search" class="home-search my-4">
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     search() {
-      this.$router.push(`/directory/companies?search=${this.query}`);
+      this.$router.push(`/directory/startupcompany?search=${this.query}`);
     },
   },
 };

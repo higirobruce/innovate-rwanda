@@ -173,7 +173,7 @@ export default {
         },
         {
           name: "Companies",
-          text: "admin-job",
+          text: "admin-company",
         },
       ],
     };

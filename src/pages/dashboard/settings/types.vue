@@ -366,7 +366,6 @@ export default {
           )
           .then((response) => {
             // update company information
-            console.log("upload", response.data);
             const img_url = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
             this.activity.image = img_url;
             this.submitEditType();

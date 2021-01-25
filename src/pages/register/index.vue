@@ -431,7 +431,6 @@ export default {
       .then((response) => {
         this.coTypes = response.data.result;
       })
-      .catch(() => {});
     // loading business activities
     AxiosHelper.get("business-activities")
       .then((response) => {

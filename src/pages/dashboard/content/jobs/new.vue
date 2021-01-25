@@ -322,7 +322,6 @@ export default {
       }
     },
     submitPostNow() {
-      console.log("this.job", this.job);
       AxiosHelper.post("jobs/post", this.job)
         .then(() => {
           this.created = true;
@@ -355,9 +354,6 @@ export default {
           this.job.jobDetailsDocument = response.data.file;
           this.submitPostNow();
         })
-        .catch((err) => {
-          console.log("err", err);
-        });
     },
     onFileSelect(e) {
       const file = e.target.files[0];

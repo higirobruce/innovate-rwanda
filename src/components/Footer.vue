@@ -81,8 +81,9 @@
     <div class="wrap-copyright">
       <div class="container">
         <div class="trademark float-lg-left">
-          Trademark Notice: Innovate Rwanda Is A Registered Trademark Of Kigali
-          Innovation City.
+          &copy; Copyright {{ new Date().getFullYear() }}, Innovate Rwanda
+          <!-- Trademark Notice: Innovate Rwanda Is A Registered Trademark Of Kigali
+          Innovation City. -->
         </div>
         <div class="copyright-links float-sm-left float-lg-right">
           <router-link :to="'/terms'" class="mr-4">Terms</router-link>

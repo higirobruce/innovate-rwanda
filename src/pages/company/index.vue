@@ -175,7 +175,7 @@
                     {{ company.company.BusinessActivity.name }}
                   </div>
                   <div class="info-separator my-3">&nbsp;</div>
-                  <h3>Customer base</h3>
+                  <h3>Client base</h3>
                   <div>
                     <span
                       class="text-blue-dark"

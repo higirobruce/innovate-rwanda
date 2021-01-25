@@ -40,11 +40,11 @@
             >
               <option value="" selected disabled>Company</option>
               <option
-                v-for="(company, index) in companies"
-                v-bind:value="company.id"
+                v-for="(type, index) in coTypes"
+                v-bind:value="type.slug"
                 :key="index"
               >
-                {{ company.coName }}
+                {{ type.name }}
               </option>
             </select>
           </div>
@@ -121,12 +121,12 @@
 <script>
 import PageHeader from "@/components/PageHeader";
 import AxiosHelper from "@/helpers/AxiosHelper";
-import ListBlog from "@/components/ListBlog"
+import ListBlog from "@/components/ListBlog";
 export default {
   name: "blog",
   components: {
     PageHeader,
-    ListBlog
+    ListBlog,
   },
   data() {
     return {
@@ -140,9 +140,13 @@ export default {
       listOfBusinessActivities: "",
       sortBy: "",
       yearFounded: "",
+      coTypes: [],
     };
   },
   created() {
+    AxiosHelper.get("company-types").then((response) => {
+      this.coTypes = response.data.result;
+    });
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {
       this.search(value);
@@ -154,7 +158,6 @@ export default {
       .then((response) => {
         this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {});
     AxiosHelper.get("directory/public")
       .then((response) => {
         this.companies = response.data.result;
@@ -170,9 +173,10 @@ export default {
     changeCompany(e) {
       this.selectedCompany = "";
       this.selectedActivity = "";
+      this.yearFounded = "";
       this.sortBy = "";
       this.selectedCompany = e.target.value;
-      this.loadBlogWithFilter("company", this.selectedCompany);
+      this.loadBlogWithFilter("company-type", this.selectedCompany);
     },
     changeActivity(e) {
       this.sortBy = "";

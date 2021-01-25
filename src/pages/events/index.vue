@@ -30,6 +30,83 @@
           </button>
         </form>
       </div>
+
+      <div class="wrap-filters-box">
+        <div class="wrap-filters">
+          <div class="filter-select">
+            <select
+              name="company"
+              v-model="selectedCompany"
+              @change="changeCompany($event)"
+              required
+            >
+              <option value="" selected disabled>Company</option>
+              <option
+                v-for="(type, index) in coTypes"
+                v-bind:value="type.slug"
+                :key="index"
+              >
+                {{ type.name }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-select">
+            <select
+              name="year"
+              v-model="yearFounded"
+              @change="changeYearfound($event)"
+              required
+            >
+              <option value="" selected disabled>Year</option>
+              <option
+                v-for="(year, index) in 4"
+                v-bind:value="new Date().getFullYear() - year + 1"
+                :key="index"
+              >
+                {{ new Date().getFullYear() - year + 1 }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-select">
+            <select
+              name="activity"
+              v-model="selectedActivity"
+              @change="changeActivity($event)"
+              required
+            >
+              <option value="" selected disabled>Activity</option>
+              <option
+                v-for="(act, index) in listOfBusinessActivities"
+                v-bind:value="act.id"
+                :key="index"
+              >
+                {{ act.name }}
+              </option>
+            </select>
+          </div>
+
+          <span class="float-right">
+            <div class="filter-select" style="max-width: 220px">
+              <select
+                name="sort"
+                v-model="sortBy"
+                @change="changeSort($event)"
+                required
+              >
+                <option value="" disabled selected>Sort by</option>
+                <option v-bind:value="'date,asc'">Date(Asc)</option>
+                <option v-bind:value="'date,desc'">Date(Desc)</option>
+                <option v-bind:value="'title,asc'">Title(A-Z)</option>
+                <option v-bind:value="'title,desc'">Title(Z-A)</option>
+              </select>
+            </div>
+            <button type="button" @click.prevent="resetFilter">
+              Reset filters
+            </button>
+          </span>
+          <div class="clear" />
+        </div>
+      </div>
       <div class="container">
         <h2
           class="h2 pb-4 text-blue-dark text-center"
@@ -125,6 +202,7 @@
                   >
                 </div>
               </div>
+              <div class="clear"></div>
             </div>
           </div>
         </div>
@@ -162,14 +240,73 @@ export default {
       loading: false,
       loaded: false,
       timeNow: "",
+      selectedCompany: "",
+      selectedActivity: "",
+      listOfBusinessActivities: "",
+      sortBy: "",
+      yearFounded: "",
+      coTypes: [],
     };
   },
   created() {
+    AxiosHelper.get("company-types").then((response) => {
+      this.coTypes = response.data.result;
+    });
+    AxiosHelper.get("business-activities").then((response) => {
+      this.listOfBusinessActivities = response.data.result;
+    });
     this.timeNow = moment().format("YYYY-MM-DD");
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {
       this.search(value);
     } else {
+      this.loadEvents();
+    }
+  },
+  methods: {
+    changeCompany(e) {
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.sortBy = "";
+      this.yearFounded = "";
+      this.selectedCompany = e.target.value;
+      this.loadEventsWithFilter("company-type", this.selectedCompany);
+    },
+    changeActivity(e) {
+      this.sortBy = "";
+      this.yearFounded = "";
+      this.selectedCompany = "";
+      this.loadEventsWithFilter("topic", e.target.value);
+    },
+    changeYearfound(e) {
+      this.sortBy = "";
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.loadEventsWithFilter("year", e.target.value);
+    },
+    loadEventsWithFilter(filter, value) {
+      this.posts = [];
+      AxiosHelper.get(
+        `events/public/filter?filterBy=${filter}&filterValue=${value}`
+      )
+        .then((response) => {
+          this.posts = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+        });
+    },
+    resetFilter() {
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.yearFounded = "";
+      this.sortBy = "";
+      this.posts = [];
+      this.loadEvents();
+    },
+    loadEvents() {
       AxiosHelper.get("events/public")
         .then((response) => {
           this.posts = response.data.result;
@@ -180,9 +317,27 @@ export default {
           this.loaded = true;
           this.posts = [];
         });
-    }
-  },
-  methods: {
+    },
+    changeSort(e) {
+      this.selectedCompany = "";
+      this.selectedActivity = "";
+      this.yearFounded = "";
+      this.posts = [];
+      const sortBy = e.target.value.split(",")[0];
+      const sortValue = e.target.value.split(",")[1];
+      AxiosHelper.get(
+        `events/public/sort?sortBy=${sortBy}&sortValue=${sortValue}`
+      )
+        .then((response) => {
+          this.posts = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+          this.posts = [];
+        });
+    },
     getPastEvents() {
       let pastEvents = [];
       if (this.posts && this.posts.length > 0) {
@@ -197,7 +352,6 @@ export default {
     getUpcomingEvents() {
       let comingEvents = [];
       if (this.posts && this.posts.length > 0) {
-        console.log("hey", this.posts.length);
         this.posts.forEach((event) => {
           if (event.eventDate >= this.timeNow) {
             comingEvents = [...comingEvents, event];
@@ -245,3 +399,14 @@ export default {
   },
 };
 </script>
+<style scoped>
+@media (max-width: 1024px) {
+  .wrap-one-event h2 {
+    font-size: 18px !important;
+  }
+  .post-info,
+  .post-info h3 {
+    font-size: 16px;
+  }
+}
+</style>

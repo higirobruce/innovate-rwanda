@@ -39,11 +39,11 @@
             >
               <option value="" selected disabled>Company</option>
               <option
-                v-for="(company, index) in companies"
-                v-bind:value="company.id"
+                v-for="(type, index) in coTypes"
+                v-bind:value="type.slug"
                 :key="index"
               >
-                {{ company.coName }}
+                {{ type.name }}
               </option>
             </select>
           </div>
@@ -156,7 +156,11 @@
                   </span>
                 </div>
                 <div class="mb-2 co-info" v-if="post.jobDetailsDocument">
-                  <router-link class="text-blue-dark" :to="`/redirect/${FILE_URL}${post.jobDetailsDocument}`" target="_blank">
+                  <router-link
+                    class="text-blue-dark"
+                    :to="`/redirect/${FILE_URL}${post.jobDetailsDocument}`"
+                    target="_blank"
+                  >
                     <i class="icon-file" />
                     <span class="ml-2">Attachment</span>
                   </router-link>
@@ -198,6 +202,7 @@ export default {
       listOfBusinessActivities: "",
       sortBy: "",
       yearFounded: "",
+      coTypes: [],
     };
   },
   computed: {
@@ -206,13 +211,13 @@ export default {
     },
   },
   created() {
-    AxiosHelper.get("jobs/public")
-      .then((response) => {
-        this.posts = response.data.result;
-      })
-      .catch(() => {
-        console.log("something went wrong");
-      });
+    AxiosHelper.get("company-types").then((response) => {
+      this.coTypes = response.data.result;
+    });
+    // loading company types
+    AxiosHelper.get("jobs/public").then((response) => {
+      this.posts = response.data.result;
+    });
     this.timeNow = moment().format("YYYY-MM-DD");
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {
@@ -256,7 +261,7 @@ export default {
       this.selectedActivity = "";
       this.sortBy = "";
       this.selectedCompany = e.target.value;
-      this.loadJobsWithFilter("company", this.selectedCompany);
+      this.loadJobsWithFilter("company-type", this.selectedCompany);
     },
     changeYearfound(e) {
       this.sortBy = "";

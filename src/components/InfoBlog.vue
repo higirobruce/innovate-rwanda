@@ -95,6 +95,7 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import VModal from "vue-js-modal";
+import { EventBus } from "@/helpers/event-bus.js";
 Vue.use(VModal);
 
 let marked = require("marked");
@@ -155,9 +156,8 @@ export default {
                 : "Blog has been declined. We are updating blog list...",
             type: "success",
           });
-          setTimeout(() => {
-            this.$router.go();
-          }, 3000);
+          EventBus.$emit("reload-posts");
+          this.$modal.hide("openInfoBlog");
         })
         .catch(() => {
           Vue.$toast.open({

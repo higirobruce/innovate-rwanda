@@ -111,13 +111,13 @@ const router = new Router({
         layout: "dashboard-layout",
       },
     },
-    // {
-    //   path: "/dashboard/directory/pending",
-    //   component: () => import("@/pages/dashboard/directory/pending.vue"),
-    //   meta: {
-    //     layout: "dashboard-layout",
-    //   },
-    // },
+    {
+      path: "/dashboard/directory/pending",
+      component: () => import("@/pages/dashboard/directory/pending.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
     {
       path: "/dashboard/directory/area-of-interests",
       component: () =>

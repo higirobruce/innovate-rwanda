@@ -352,8 +352,7 @@ export default {
             type: "success",
           });
         })
-        .catch((err) => {
-          console.log("e", err);
+        .catch(() => {
           this.uploading = false;
           this.created = false;
           Vue.$toast.open({

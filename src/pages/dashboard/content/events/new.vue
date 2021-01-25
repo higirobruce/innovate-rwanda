@@ -21,7 +21,6 @@
             @click="publishPost('pending')"
             :disabled="
               event.title === '' ||
-              event.category === '' ||
               event.eventDate === '' ||
               event.eventTime === '' ||
               event.content === ''
@@ -73,24 +72,25 @@
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
               <div class="content-form-sidebar">
-
-                <h3 class="h6">Event type</h3>
-                <div class="form-group">
-                  <select
-                    class="form-control form-control-lg"
-                    name="category"
-                    v-model="event.category"
-                    @change="changeCategory($event)"
-                  >
-                    <option value="" selected disabled>Select type</option>
-                    <option
-                      v-for="(cat, index) in types"
-                      v-bind:value="cat.name"
-                      :key="index"
+                <div v-if="_.size(types)">
+                  <h3 class="h6">Event type</h3>
+                  <div class="form-group">
+                    <select
+                      class="form-control form-control-lg"
+                      name="category"
+                      v-model="event.category"
+                      @change="changeCategory($event)"
                     >
-                      {{ cat.name }}
-                    </option>
-                  </select>
+                      <option value="" selected disabled>Select type</option>
+                      <option
+                        v-for="(cat, index) in types"
+                        v-bind:value="cat.name"
+                        :key="index"
+                      >
+                        {{ cat.name }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
                 <div class="form-group" v-if="showOtherCategoryInput">
                   <h3 class="h6">Specify other category</h3>
@@ -169,10 +169,9 @@
             :height="660"
             :width="550"
           >
-
-          <button type="button" @click.prevent="closeModal" class="close">
-            <img src="@/assets/images/close.png" />
-          </button>
+            <button type="button" @click.prevent="closeModal" class="close">
+              <img src="@/assets/images/close.png" />
+            </button>
             <h3 class="p-4">Business activities</h3>
             <div class="px-4">
               <div
@@ -276,16 +275,14 @@ export default {
         this.listOfBusinessActivities = response.data.result;
       })
       .catch(() => {});
-      
   },
   mounted() {
-    this.loadEventTypes()
+    this.loadEventTypes();
   },
   methods: {
     loadEventTypes() {
       AxiosHelper.get("events-types")
         .then((response) => {
-          console.log("response", response)
           this.types = response.data.result;
           this.loading = false;
         })
@@ -301,7 +298,6 @@ export default {
       }
     },
     publishPost(status) {
-      console.log("hey", status, this.event)
       this.savePost(status);
     },
     saveAsDraft(status) {
@@ -356,7 +352,7 @@ export default {
       AxiosHelper.post("events", this.event)
         .then(() => {
           this.created = true;
-          this.event = {}
+          this.event = {};
           Vue.$toast.open({
             message: "Blog has been created successfully",
             type: "success",

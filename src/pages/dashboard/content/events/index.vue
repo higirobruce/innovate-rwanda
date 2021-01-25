@@ -91,13 +91,12 @@
               </td>
               <td>
                 <div class="wrap-actions">
-                  <router-link
+                  <a
                     v-if="post.status !== 'deleted'"
-                    target="_blank"
-                    :to="`/events/${post.id}`"
+                    @click="loadPost(post.id)"
                   >
                     <img src="@/assets/images/view.png" alt="view" />
-                  </router-link>
+                  </a>
                   <router-link
                     v-if="
                       (profile.role === 'normal' ||
@@ -157,6 +156,7 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import MenuContent from "@/components/MenuContent";
 import InfoEvent from "@/components/InfoEvent";
 import DeleteModal from "@/components/DeleteModal";
+import { EventBus } from "@/helpers/event-bus.js";
 export default {
   name: "content",
   components: {
@@ -170,33 +170,39 @@ export default {
       loading: false,
       postId: {},
       recordId: "",
+      url: "",
     };
   },
   created() {
     this.loading = true;
-    let url = "events/all";
+    this.url = "events/all";
     if (this.profile.role === "normal" && this.profile.companyId) {
-      url = `events/company/${this.profile.companyId}`;
+      this.url = `events/company/${this.profile.companyId}`;
     }
-    AxiosHelper.get(url)
-      .then((response) => {
-        this.posts = response.data.result;
-        console.log("response", response.data);
-        this.loading = false;
-      })
-      .catch((error) => {
-        if (error.response.status === 404 || error.response.status === 400) {
-          this.error = "No content yet!";
-        } else if (error.response.status === 403) {
-          this.error = "No companies found at this moment";
-          this.notAllowed = true;
-        } else {
-          this.error = "Something went wrong, try again later";
-        }
-        this.loading = false;
-      });
+    this.loadEvents();
+    EventBus.$on("reload-events", () => {
+      this.loadEvents();
+    });
   },
   methods: {
+    loadEvents() {
+      AxiosHelper.get(this.url)
+        .then((response) => {
+          this.posts = response.data.result;
+          this.loading = false;
+        })
+        .catch((error) => {
+          if (error.response.status === 404 || error.response.status === 400) {
+            this.error = "No content yet!";
+          } else if (error.response.status === 403) {
+            this.error = "No companies found at this moment";
+            this.notAllowed = true;
+          } else {
+            this.error = "Something went wrong, try again later";
+          }
+          this.loading = false;
+        });
+    },
     convertTagsArray(object) {
       const arr = object
         .substring(1, object.length - 1)

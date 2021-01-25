@@ -521,7 +521,6 @@ export default {
   },
   created() {
     this.companyId = this.$route.params.companyId;
-    console.log("hey", this.companyId);
   },
   beforeCreate() {
     // loading business activities
@@ -618,7 +617,7 @@ export default {
       )
         .then(() => {
           Vue.$toast.open({
-            message: "Customer base has been updated successfully",
+            message: "Client base has been updated successfully",
             type: "success",
           });
           this.$modal.hide("openEditCustomerBase");
@@ -672,8 +671,7 @@ export default {
             type: "success",
           });
         })
-        .catch((err) => {
-          console.log("err", err.response);
+        .catch(() => {
           Vue.$toast.open({
             message: "Sorry, something went wrong. Try again later",
             type: "error",

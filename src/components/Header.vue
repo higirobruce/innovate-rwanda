@@ -179,25 +179,21 @@ export default {
     max-width: 220px;
   }
   .wrap-middle-header {
-    display: grid;
-    grid-template-areas: "wrap-logo wrap-main-nav wrap-hotlinks";
-    grid-template-columns: 1fr 3fr 2fr;
-    grid-gap: 20px;
+    display: flex;
     height: auto;
   }
   .wrap-logo {
-    grid-area: wrap-logo;
-    max-width: 220px;
+    width: 220px;
   }
   .main-logo {
     margin: 4px 0;
     position: relative;
   }
   .wrap-main-nav {
-    grid-area: wrap-main-nav;
+    width: calc(100% - 520px);
   }
   .wrap-hotlinks {
-    grid-area: wrap-hotlinks;
+    width: 300px;
     padding: 5px 0;
   }
   .sidebar-btn,
@@ -318,6 +314,24 @@ export default {
 }
 .sidebar-nav li a {
   color: #5e7c8d;
+}
+@media (min-width: 1024px) and (max-width: 1240px) {
+  .wrap-main-nav a {
+    font-size: 13px;
+    padding: 0 2px;
+    font-weight: 100;
+  }
+  .wrap-hotlinks .btn {
+    padding: auto 3px !important;
+    font-size: 12px;
+  }
+  .wrap-main-nav {
+    width: calc(100% - 480px);
+  }
+  .wrap-hotlinks {
+    width: 260px;
+    padding: 5px 0;
+  }
 }
 </style>
 

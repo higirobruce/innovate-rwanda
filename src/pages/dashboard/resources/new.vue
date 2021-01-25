@@ -64,7 +64,9 @@
                   v-model="resource.description"
                 ></textarea>
               </div>
-              <div class="text-info">Description should not exceed 255 characters</div>
+              <div class="text-info">
+                Description should not exceed 255 characters
+              </div>
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
               <div class="content-form-sidebar">
@@ -198,8 +200,7 @@ export default {
           this.uploading = false;
           this.created = false;
           Vue.$toast.open({
-            message:
-              "Sorry, something went wrong. try again later",
+            message: "Sorry, something went wrong. try again later",
             type: "error",
           });
         });
@@ -217,9 +218,7 @@ export default {
           this.resource.file = response.data.file;
           this.submitPostNow();
         })
-        .catch((err) => {
-          console.log("err", err);
-        });
+        .catch(() => {});
     },
     onFileSelect(e) {
       const file = e.target.files[0];
