@@ -1,7 +1,5 @@
 <template>
-  <footer
-    :style="`${firstTime ? 'padding-bottom: 90px' : ''}`"
-  >
+  <footer :style="`${firstTime ? 'padding-bottom: 90px' : ''}`">
     <!-- Footer -->
     <div class="wrap-footer">
       <div class="container position-relative">
@@ -55,15 +53,15 @@
           <div class="float-lg-left">
             <h4 class="h6">Follow us</h4>
             <div>
-              <router-link :to="'/'">
+              <!-- <router-link :to="'/'">
                 <i class="icon-facebook-official mr-2"
-              /></router-link>
-              <router-link :to="'/'">
+              /></router-link> -->
+              <a target="_blank" href="https://twitter.com/innovate_rwanda">
                 <i class="icon-twitter mr-2"
-              /></router-link>
-              <router-link :to="'/'">
+              /></a>
+              <!-- <router-link :to="'/'">
                 <i class="icon-instagram mr-2"
-              /></router-link>
+              /></router-link> -->
             </div>
           </div>
           <div class="float-lg-right">
@@ -160,6 +158,20 @@ export default {
   color: #ffffff;
   background: #06adef;
   font-weight: bold;
+}
+@media screen and (max-width: 760px) {
+  .cookie {
+    display: block;
+    width: 96%;
+    padding: 2%;
+  }
+  .cookie div {
+    width: 100%;
+  }
+  .cookie button {
+    margin: 5px 0;
+    float: left;
+  }
 }
 footer {
   color: #ffffff;

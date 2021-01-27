@@ -739,8 +739,8 @@
       <p><span style="font-weight: 400">Innovate Rwanda </span></p>
       <p><span style="font-weight: 400">Kigali</span></p>
       <p><span style="font-weight: 400">Rwanda </span></p>
-      <p><span style="font-weight: 400">Phone: (+250) 780 000 000</span></p>
-      <p><span style="font-weight: 400">privacy@innovaterwanda.rw</span></p>
+      <!-- <p><span style="font-weight: 400">Phone: (+250) 780 000 000</span></p> -->
+      <p><span style="font-weight: 400">info@innovaterwanda.rw</span></p>
     </component>
   </div>
 </template>

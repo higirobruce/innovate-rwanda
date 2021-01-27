@@ -86,9 +86,7 @@
                   </div>
                 </div>
                 <!-- email -->
-                <h4 class="text-center mt-3">
-                  And your company email address?
-                </h4>
+                <h4 class="text-center mt-3">And your work email address?</h4>
                 <div class="row mt-4">
                   <div class="col-12">
                     <div class="form-group">
@@ -134,7 +132,13 @@
                 </div>
                 <!-- company/institution -->
                 <h4 class="text-center mt-3">
-                  What is the name of your company?
+                  <span v-if="currentType === 'governmentagency'"
+                    >What is the name of your Institution?</span
+                  >
+                  <span v-else-if="currentType === 'ecosystemenablers'"
+                    >What is the name of your Organization?
+                  </span>
+                  <span v-else> What is the name of your company? </span>
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -172,7 +176,7 @@
                         placeholder="Company's website"
                       />
                     </div>
-                    <div class="small">e.g.: example.com</div>
+                    <div class="small">Example: example.com</div>
                     <div
                       class="my-1 alert alert-danger small py-1"
                       v-if="
@@ -185,7 +189,13 @@
                 </div>
                 <!-- job title -->
                 <h4 class="text-center mt-3">
-                  What is your job title at the company?
+                  <span v-if="currentType === 'governmentagency'"
+                    >What is your job title at the institution?</span
+                  >
+                  <span v-else-if="currentType === 'ecosystemenablers'"
+                    >What is your job title at the organization?</span
+                  >
+                  <span v-else> What is your job title at the company? </span>
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -211,7 +221,13 @@
                 </div>
                 <!-- district -->
                 <h4 class="text-center mt-3">
-                  What District are you based in?
+                  <span v-if="currentType === 'governmentagency'"
+                    >What District are your head offices based in?
+                  </span>
+                  <span v-else-if="currentType === 'ecosystemenablers'"
+                    >What District are your main offices based in?
+                  </span>
+                  <span v-else> What District are you based in? </span>
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -242,7 +258,18 @@
                 </div>
                 <!-- area -->
                 <h4 class="text-center mt-3">
-                  What is your main business activity closely fits your company?
+                  <span v-if="currentType === 'governmentagency'"
+                    >What is the main business activity or sector that closely
+                    fits your institutions’ Mandate?</span
+                  >
+                  <span v-else-if="currentType === 'ecosystemenablers'"
+                    >What is the main business activity or sector that closely
+                    fits your organizations’ Mandate?</span
+                  >
+                  <span v-else>
+                    What is your main business activity closely fits your
+                    company?</span
+                  >
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -273,7 +300,15 @@
                 </div>
                 <!-- description -->
                 <h4 class="text-center mt-3">
-                  Short description about the company
+                  <span v-if="currentType === 'governmentagency'"
+                    >Short description about your institution</span
+                  >
+                  <span v-else-if="currentType === 'ecosystemenablers'"
+                    >Short description about your organization</span
+                  >
+                  <span v-else>
+                    Short description about the company</span
+                  >
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -296,9 +331,13 @@
                       :value="agreed"
                     />
                     I have read and agree to the
-                    <router-link target="_blank" :to="'/privacy-policy'"> privacy policy </router-link>
+                    <router-link target="_blank" :to="'/privacy-policy'">
+                      privacy policy
+                    </router-link>
                     and
-                    <router-link target="_blank" :to="'/terms'"> terms </router-link>
+                    <router-link target="_blank" :to="'/terms'">
+                      terms
+                    </router-link>
                   </div>
                 </div>
                 <div class="row">
@@ -427,10 +466,9 @@ export default {
     const dist = Districts();
     this.allDistricts = dist.sort();
     // loading company types
-    AxiosHelper.get("company-types")
-      .then((response) => {
-        this.coTypes = response.data.result;
-      })
+    AxiosHelper.get("company-types").then((response) => {
+      this.coTypes = response.data.result;
+    });
     // loading business activities
     AxiosHelper.get("business-activities")
       .then((response) => {

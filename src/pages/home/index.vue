@@ -124,14 +124,18 @@
 
               <button
                 :disabled="$v.subscribe.email.$invalid"
-                @click="subscribeNow"
+                @click.prevent="subscribeNow"
                 type="button"
               >
-                Subscribe
+                <div
+                  v-if="subscribing && !subscribed"
+                  class="spinner-border"
+                  role="status"
+                >
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <span v-else> Subscribe </span>
               </button>
-            </div>
-            <div v-if="subscribing && !subscribed">
-              <Loading />
             </div>
             <div
               class="text-success text-center"
@@ -170,7 +174,7 @@ export default {
   components: {
     Loading,
     agile: VueAgile,
-    Welcome
+    Welcome,
   },
   data() {
     return {
@@ -301,6 +305,7 @@ export default {
       AxiosHelper.post("subscribe", this.subscribe)
         .then(() => {
           this.subscribed = true;
+          this.subscribing = false;
           this.subscribe = {
             email: "",
           };
@@ -318,8 +323,8 @@ export default {
             });
           }
           this.subscribed = false;
+          this.subscribing = false;
         });
-      this.subscribing = false;
     },
   },
   computed: {

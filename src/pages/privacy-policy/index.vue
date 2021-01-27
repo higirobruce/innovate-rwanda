@@ -46,7 +46,7 @@
           regulating the functions and responsibilities that are required in
           compliance with applicable data protection regulations. To contact
           Innovate Rwanda for any questions regarding this privacy policy,
-          please contact us at privacy@innovaterwanda.rw.</span
+          please contact us at info@innovaterwanda.rw.</span
         >
       </p>
       <h3>2. Purposes of the processing and legal basis</h3>
@@ -156,7 +156,7 @@
         <span style="font-weight: 400"
           >Users may, at any time, exercise their rights of access,
           rectification deletion, opposition, limitation and portability of
-          their data sending an email to privacy@innovaterwanda.rw.</span
+          their data sending an email to info@innovaterwanda.rw.</span
         >
       </p>
       <p>
@@ -172,7 +172,7 @@
         <span style="font-weight: 400"
           >Users may contact our Data Protection Officer for any questions about
           the processing of personal data, sending an email to
-          privacy@innovaterwanda.rw.</span
+          info@innovaterwanda.rw.</span
         >
       </p>
       <h3>9. Required nature of the data requested</h3>
