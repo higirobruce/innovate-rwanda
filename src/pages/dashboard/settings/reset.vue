@@ -25,7 +25,7 @@
                   v-model="user.password"
                   required
                   class="form-control custom-input"
-                  placeholder="Company name"
+                  placeholder="New password"
                 />
               </div>
               <h4 class="mt-3">Retype new password</h4>
@@ -41,7 +41,7 @@
                   v-model="user.confirmPassword"
                   required
                   class="form-control custom-input"
-                  placeholder="Company name"
+                  placeholder="Type new password"
                 />
               </div>
               <div>

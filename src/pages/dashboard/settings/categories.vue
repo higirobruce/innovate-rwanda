@@ -32,7 +32,7 @@
               :key="index"
             >
               <div class="row">
-                <div class="col-2">
+                <div class="col-sm-12 col-md-2 col-lg-2">
                   <div
                     class="image cursor-pointer"
                     @click.prevent="addCategoryImage(act)"
@@ -52,7 +52,7 @@
                     </button>
                   </div>
                 </div>
-                <div class="col-10">
+                <div class="col-sm-12 col-md-10 col-lg-10">
                   <div>
                     <h5 class="p-0 m-0">
                       {{ act.name }}

@@ -517,16 +517,16 @@ input.custom-input {
   color: #fff;
 }
 .status.approved {
-  background: #2ab363;
+  background: #74d19b;
 }
 .status.pending {
-  background: #3390dd;
+  background: #68abe2;
 }
 .status.declined {
-  background: #e98e26;
+  background: #f0ae63;
 }
 .status.deleted {
-  background: #e42121;
+  background: #eb5454;
 }
 
 .page-nav {
@@ -1072,20 +1072,25 @@ input[type="number"] {
 }
 .slide {
   width: 100%;
-  margin: 0 10px!important;
-  height: 240px;
-  border: 2px solid #06adef;
+  margin: 0!important;
+  height: 250px;
+  padding: 5px;
   cursor: pointer;
 }
+.wrap-cat {
+  width: 100%;
+  margin: 5px!important;
+  height: 240px;
+  border: 2px solid #a8a8a8cb;
+}
 
-.slide img {
+.wrap-cat img {
   display: block;
-  max-width: 90px;
-  margin: 20px auto;
-  height: 100px;
+  max-width: 120px;
+  margin: 20px auto 6px auto;
 }
 .slide h3 {
-  padding: 10px 0;
+  padding: 5px 0 10px 0;
   font-size: 23px;
   font-weight: 700;
   height: 65px;

@@ -63,19 +63,21 @@
               v-for="(category, index) in categories"
               :key="index"
             >
-              <img
-                v-if="category.image"
-                :src="`${IMAGE_URL}c_fill,g_center,w_1200/${category.image}`"
-                :alt="category.name"
-              />
-              <img
-                v-else
-                src="@/assets/images/innovate-lamp.png"
-                :alt="category.name"
-              />
-              <h3>
-                {{ category.name }}
-              </h3>
+              <div class="wrap-cat">
+                <img
+                  v-if="category.image"
+                  :src="`${IMAGE_URL}c_fill,g_center,w_1200/${category.image}`"
+                  :alt="category.name"
+                />
+                <img
+                  v-else
+                  src="@/assets/images/innovate-lamp.png"
+                  :alt="category.name"
+                />
+                <h3>
+                  {{ category.name }}
+                </h3>
+              </div>
             </div>
           </agile>
         </div>

@@ -13,7 +13,7 @@ export default {
   },
   created() {
     this.url = this.$route.params.url;
-    location.href = `http://www.${this.url}`;
+    location.href = `http://${this.url}`;
   },
 };
 </script>

@@ -174,31 +174,84 @@ export default {
   z-index: 120000;
 }
 
-@media (min-width: 1025px) {
-  .main-logo {
-    max-width: 220px;
-  }
-  .wrap-middle-header {
-    display: flex;
-    height: auto;
-  }
+.wrap-middle-header {
+  display: flex;
+  height: auto;
+}
+@media (min-width: 1241px) {
   .wrap-logo {
-    width: 220px;
+    width: 200px;
   }
   .main-logo {
-    margin: 4px 0;
+    max-width: 200px;
+    margin: 10px 0;
     position: relative;
-  }
-  .wrap-main-nav {
-    width: calc(100% - 520px);
   }
   .wrap-hotlinks {
     width: 300px;
     padding: 5px 0;
   }
+  .wrap-main-nav {
+    width: -webkit-calc(100% - 470px);
+    width: -moz-calc(100% - 470px);
+    width: calc(100% - 470px);
+  }
   .sidebar-btn,
   .auth-btn {
     display: none;
+  }
+  .list-inline-item {
+    margin: 0 !important;
+  }
+  .wrap-main-nav a {
+    font-size: 13px;
+    padding: 0 0px;
+    font-weight: 100;
+  }
+  .wrap-hotlinks .btn {
+    padding: 12px 20px !important;
+    font-size: 12px;
+    margin: 8px 5px !important;
+  }
+  .sidebar-btn,
+  .auth-btn {
+    display: none;
+  }
+}
+@media screen and (min-width: 1024px) and (max-width: 1240px) {
+  .wrap-logo {
+    width: 150px;
+  }
+  .main-logo {
+    max-width: 150px;
+    margin: 10px 0;
+    position: relative;
+  }
+  .wrap-hotlinks {
+    width: 240px;
+    padding: 5px 0;
+  }
+  .wrap-main-nav {
+    width: -webkit-calc(100% - 380px);
+    width: -moz-calc(100% - 380px);
+    width: calc(100% - 380px);
+  }
+  .sidebar-btn,
+  .auth-btn {
+    display: none;
+  }
+  .list-inline-item {
+    margin: 0 !important;
+  }
+  .wrap-main-nav a {
+    font-size: 13px;
+    padding: 0 0px;
+    font-weight: 100;
+  }
+  .wrap-hotlinks .btn {
+    padding: 8px 12px !important;
+    font-size: 12px;
+    margin: 8px 2px !important;
   }
 }
 @media (max-width: 1024px) {
@@ -314,24 +367,6 @@ export default {
 }
 .sidebar-nav li a {
   color: #5e7c8d;
-}
-@media (min-width: 1024px) and (max-width: 1240px) {
-  .wrap-main-nav a {
-    font-size: 13px;
-    padding: 0 2px;
-    font-weight: 100;
-  }
-  .wrap-hotlinks .btn {
-    padding: auto 3px !important;
-    font-size: 12px;
-  }
-  .wrap-main-nav {
-    width: calc(100% - 480px);
-  }
-  .wrap-hotlinks {
-    width: 260px;
-    padding: 5px 0;
-  }
 }
 </style>
 

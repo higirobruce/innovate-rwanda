@@ -171,6 +171,7 @@
                         type="text"
                         name="website"
                         v-model.trim="$v.user.coWebsite.$model"
+                        @input="changingWeb(user.coWebsite)"
                         required
                         class="form-control custom-input"
                         placeholder="Company's website"
@@ -185,6 +186,7 @@
                     >
                       Provide a valid website
                     </div>
+                    {{ webChanged }}
                   </div>
                 </div>
                 <!-- job title -->
@@ -306,9 +308,7 @@
                   <span v-else-if="currentType === 'ecosystemenablers'"
                     >Short description about your organization</span
                   >
-                  <span v-else>
-                    Short description about the company</span
-                  >
+                  <span v-else> Short description about the company</span>
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -420,10 +420,22 @@ Vue.use(Vuelidate);
 
 import { required, minLength, email } from "vuelidate/lib/validators";
 
-const checkWebsite = (value) =>
-  /^([a-z0-9])(([a-z0-9-]{1,61})?[a-z0-9]{1})?(\.[a-z0-9](([a-z0-9-]{1,61})?[a-z0-9]{1})?)?(\.[a-zA-Z]{2,4})+$/i.test(
-    value
-  );
+const checkWebsite = (value) => {
+  var pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
+  return !!pattern.test(value);
+};
+// const checkWebsite = (value) =>
+//   /^([a-z0-9])(([a-z0-9-]{1,61})?[a-z0-9]{1})?(\.[a-z0-9](([a-z0-9-]{1,61})?[a-z0-9]{1})?)?(\.[a-zA-Z]{2,4})+$/i.test(
+//     value
+//   );
 
 import PageHeader from "@/components/PageHeader";
 export default {
@@ -456,6 +468,7 @@ export default {
         businessActivityId: "",
         shortDescription: "",
       },
+      webChanged: "",
       allDistricts: [],
       listOfBusinessActivities: [],
       coTypes: [],
@@ -477,6 +490,13 @@ export default {
       .catch(() => {});
   },
   methods: {
+    changingWeb(domain){
+      let web = domain;
+      web = this._.replace(web, 'https://', '')
+      web = this._.replace(web, 'http://', '')
+      web = this._.replace(web, 'www.', '')
+      return this.webChanged = web;
+    },
     chooseType(type) {
       this.registered = false;
       if (this.currentType === type) {

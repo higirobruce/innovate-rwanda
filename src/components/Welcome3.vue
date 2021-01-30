@@ -57,7 +57,33 @@ export default {
 };
 </script>
 <style scoped>
-@media (min-width: 1025px) {
+@media (min-width: 1241px) {
+      .welcome-screen {
+    height: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    z-index: 0;
+  }
+  .innovate-bg {
+    width: 100%;
+    max-width: 1500px;
+    position: absolute;
+    right: 0px;
+    left: 0;
+    margin: 0 auto;
+    display: block;
+    bottom: 0;
+    z-index: -1;
+  }
+  .innovate-bg img {
+    position: relative;
+    right: 0px;
+    width: 100%;
+  }
+}
+@media (min-width: 1025px) and (max-width: 1240px) {
   .welcome-screen {
     height: 800px;
     display: flex;

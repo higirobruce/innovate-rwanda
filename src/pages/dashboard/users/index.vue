@@ -31,8 +31,8 @@
                 <th scope="col">email</th>
                 <th scope="col">Job</th>
                 <th scope="col">Role</th>
-                <th scope="col">Status</th>
                 <th scope="col">Date</th>
+                <th scope="col">Status</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -62,6 +62,7 @@
                     {{ generateRole(user.role) }}
                   </span>
                 </td>
+                <td>{{ user.createdAt | date("DD/MM/YYYY") }}</td>
                 <td class="d-flex align-content-center flex-wrap">
                   <span class="status pending" v-if="user.status === 'new'">
                     Account not verified
@@ -76,11 +77,29 @@
                     Inactive
                   </span>
                 </td>
-                <td>{{ user.createdAt | date("DD/MM/YYYY") }}</td>
                 <td>
                   <div class="wrap-actions">
                     <button
-                      @click="deleteUser(user.email)"
+                      class="btn btn-sm bg-success text-white"
+                      @click="
+                        openActivateUser(
+                          user.email,
+                          `${user.firstName} ${user.lastName}`
+                        )
+                      "
+                      v-if="
+                        profile.id !== user.id && user.status === 'inactive'
+                      "
+                    >
+                      Activate
+                    </button>
+                    <button
+                      @click="
+                        openDeleteUser(
+                          user.email,
+                          `${user.firstName} ${user.lastName}`
+                        )
+                      "
                       v-if="profile.id !== user.id && user.status === 'active'"
                     >
                       <img src="@/assets/images/delete.png" alt="delete" />
@@ -153,6 +172,73 @@
             </button>
             <NewUser />
           </modal>
+
+          <modal
+            name="openDeleteRecord"
+            :adaptive="true"
+            :scrollable="true"
+            :height="220"
+            :width="600"
+          >
+            <button type="button" @click.prevent="closeModal" class="close">
+              <img src="@/assets/images/close.png" />
+            </button>
+            <h3 class="p-4">Delete</h3>
+            <div class="px-4">
+              Are you absolutely sure you want to delete "<b>{{
+                userToDelete
+              }}</b
+              >"?
+            </div>
+            <div class="my-4 mx-4">
+              <span class="float-left">
+                <button
+                  @click="closeModal"
+                  class="btn btn-primary-outline mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  @click="deleteUser"
+                  class="btn btn-danger-outline float-right"
+                >
+                  Delete
+                </button>
+              </span>
+            </div>
+          </modal>
+          <modal
+            name="openActivateRecord"
+            :adaptive="true"
+            :scrollable="true"
+            :height="220"
+            :width="600"
+          >
+            <button type="button" @click.prevent="closeModal" class="close">
+              <img src="@/assets/images/close.png" />
+            </button>
+            <h3 class="p-4">Activate: {{ userToActivate }}</h3>
+            <div class="px-4">
+              Do you want to activate "<b>{{ userToActivate }}</b
+              >"?
+            </div>
+            <div class="my-4 mx-4">
+              <span class="float-left">
+                <button
+                  @click="closeModal"
+                  class="btn btn-primary-outline mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  @click="activateUser"
+                  class="btn btn-success float-right"
+                >
+                  Activate
+                </button>
+              </span>
+            </div>
+          </modal>
         </div>
       </div>
     </component>
@@ -175,6 +261,10 @@ export default {
       user: {},
       selectedRole: "",
       currentUser: "",
+      recordEmail: "",
+      userToDelete: "",
+      activateEmail: "",
+      userToActivate: "",
       roles: [
         {
           name: "Administrator",
@@ -224,8 +314,18 @@ export default {
     regiserUser() {
       this.$modal.show("openRegister");
     },
-    deleteUser(email) {
-      AxiosHelper.delete(`users/deactivate/${email}`)
+    openDeleteUser(email, name) {
+      this.recordEmail = email;
+      this.userToDelete = name;
+      this.$modal.show("openDeleteRecord");
+    },
+    openActivateUser(email, name) {
+      this.activateEmail = email;
+      this.userToActivate = name;
+      this.$modal.show("openActivateRecord");
+    },
+    deleteUser() {
+      AxiosHelper.delete(`users/deactivate/${this.recordEmail}`)
         .then(() => {
           this.loadUsers();
           Vue.$toast.open({
@@ -239,6 +339,24 @@ export default {
             type: "error",
           });
         });
+      this.$modal.hide("openDeleteRecord");
+    },
+    activateUser() {
+      AxiosHelper.put(`users/activate/${this.activateEmail}`)
+        .then(() => {
+          this.loadUsers();
+          Vue.$toast.open({
+            message: `User has been activate successfully`,
+            type: "success",
+          });
+        })
+        .catch(() => {
+          Vue.$toast.open({
+            message: "Sorry, something went wrong. try again later!",
+            type: "error",
+          });
+        });
+      this.$modal.hide("openActivateRecord");
     },
     loadUsers() {
       this.loading = true;
@@ -266,6 +384,8 @@ export default {
       this.users = this.temporaryUsers;
       this.$modal.hide("openChangeRole");
       this.$modal.hide("openRegister");
+      this.$modal.hide("openDeleteRecord");
+      this.$modal.hide("openActivateRecord");
     },
     changeRole(user) {
       this.changingRole = true;
