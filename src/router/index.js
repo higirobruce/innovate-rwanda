@@ -35,6 +35,13 @@ const router = new Router({
       },
     },
     {
+      path: "/unsubscribe",
+      component: () => import("@/pages/unsubscribe/index.vue"),
+      meta: {
+        layout: "auth-layout",
+      },
+    },
+    {
       path: "/forgot-password",
       component: () => import("@/pages/forgot-password/index.vue"),
       meta: {

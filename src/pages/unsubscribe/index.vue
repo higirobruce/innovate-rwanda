@@ -1,29 +1,59 @@
 <template>
   <div>
     <component :is="layout">
-      <PageHeader
-        image="auth-bg.jpg"
-        rgba="rgba(4, 137, 187, 0.83)"
-        title="Unsubscribe"
-        subtitle=""
-      />
       <div class="m-2 radius-2">
         <div class="m-3 py-4">
-          <div class="row" v-if="loaded">
+          <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 h-100">
-              <div class="text-center"></div>
-              <div class="mx-auto text-center" style="max-width: 450px">
-                <h2 class="font-weight-light">Unsubscribe</h2>
-                <div v-if="!verified && loaded">
-                  <!-- <Loading /> -->
-                </div>
-                <!-- <div v-if="verified">
-                  <div class="alert alert-success">
-                    Welcome to Innovate Rwanda. Your account has been verified.
-                    Please, click
-                    <router-link :to="'/login'">here</router-link> to login
+              <div class="mx-auto" style="max-width: 600px">
+                <div class="wrap-unsubscribe p-5 my-3 bg-white shadow">
+                  <div class="image">
+                    <img src="@/assets/images/envelope.png" alt="Unsubscribe" />
                   </div>
-                </div> -->
+                  <h2 class="text-center font-weight-light">Unsubscribe</h2>
+                  <div v-if="!unsubscribed">
+                    <div>
+                      Provide your email to unsubscribe.<br />We will stop
+                      sending you notifications your email.
+                    </div>
+
+                    <form @submit.prevent="unsubscribing">
+                      <div class="my-3 form-group">
+                        <div class="form-group">
+                          <input
+                            type="text"
+                            v-model="email"
+                            required
+                            class="form-control custom-input"
+                            placeholder="Event Title"
+                          />
+                        </div>
+                        <button
+                          :disabled="!_.size(email)"
+                          @click.prevent="unsubscribing"
+                          type="button"
+                          class="btn btn-primary"
+                        >
+                          Unsubscribe
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="text-success" v-if="unsubscribed && !loading">
+                    You have been successfully unsubscribed from our
+                    notifications.
+
+                    <div class="my-4">
+                      <router-link class="btn btn-gray-outline" :to="'/'"
+                        >Go home</router-link
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div v-if="!unsubscribed && loading">
+                  <Loading />
+                </div>
               </div>
             </div>
           </div>
@@ -37,34 +67,34 @@
 <script>
 import Loading from "@/components/Loading";
 import PageHeader from "@/components/PageHeader";
-// import AxiosHelper from "@/helpers/AxiosHelper";
+import AxiosHelper from "@/helpers/AxiosHelper";
 export default {
   components: {
     Loading,
     PageHeader,
   },
-  name: "Verify",
+  name: "unsubscribe",
   data() {
     return {
-      token: "",
-      loaded: false,
-      verified: false,
-      response: {},
+      email: "",
+      loading: false,
+      unsubscribed: false,
     };
   },
-  created() {
-    this.loaded = true;
-    this.token = this.$route.params.token;
-  },
-  mounted() {
-    // AxiosHelper.get(`activate-account/${this.token}`)
-    //   .then((response) => {
-    //     this.response = response.data.message;
-    //     this.verified = true;
-    //   })
-    //   .catch(() => {
-    //     this.verified = false;
-    //   });
+  methods: {
+    unsubscribing() {
+      this.loading = true;
+      AxiosHelper.put(`unsubscribe`, {
+        email: this.email,
+      })
+        .then(() => {
+          this.unsubscribed = true;
+        })
+        .catch(() => {
+          this.unsubscribed = false;
+        });
+      this.loading = false;
+    },
   },
   computed: {
     layout() {
@@ -79,5 +109,10 @@ export default {
   min-height: 50vh;
   display: flex;
   align-items: center;
+}
+.wrap-unsubscribe .image {
+  width: 120px;
+  margin: 10px auto;
+  display: block;
 }
 </style>
