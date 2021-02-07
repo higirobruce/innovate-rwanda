@@ -4,7 +4,12 @@
     <div class="mx-4 py-2">
       <form @submit="submitCompanyInfo">
         <div
-          style="width: 100%;max-height: 410px; overflow-y: auto; overflow-x: hidden"
+          style="
+            width: 100%;
+            max-height: 410px;
+            overflow-y: auto;
+            overflow-x: hidden;
+          "
         >
           <div class="row">
             <div class="col-lg-8 col-sm-12">
@@ -159,9 +164,10 @@
           "
           class="alert alert-danger"
         >
-          We don't recommend you to update company's information when it is
-          approved. However, if you do so, your changes will be published after
-          being reviewed
+          fter clicking on update button below, your institution/entity will be
+          pending review. You will wait for an approval from the Innovate Rwanda
+          team. We want to make sure you follow the guidelines for updating your
+          institution or entity's information
         </div>
         <div class="mt-2 mb-3">
           <button
@@ -262,6 +268,7 @@ export default {
       this.companyInfo.businessActivityId = e.target.value;
     },
     submitCompanyInfo() {
+      this.companyInfo.status = "pending";
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
         .then(() => {
           Vue.$toast.open({
