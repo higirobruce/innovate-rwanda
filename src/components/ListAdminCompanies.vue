@@ -19,7 +19,7 @@
           <td>
             <router-link
               class="text-blue"
-              :to="`/dashboard/my-company/${dir.id}`"
+              :to="`/dashboard/company/${dir.id}`"
             >
               {{ dir.coName }}
             </router-link>
@@ -73,22 +73,7 @@
           </td>
           <td>
             <div class="wrap-actions float-right">
-              <!-- <button
-                v-if="dir.status === 'pending' || dir.status === 'declined'"
-                @click="openApprove(dir.id)"
-                class="btn btn-sm btn-success-outline mr-2"
-              >
-                Approve
-              </button> -->
-              <!-- <button
-                v-if="dir.status === 'pending' || dir.status === 'approved'"
-                @click="openDecline(dir.id)"
-                class="btn btn-sm btn-danger-outline"
-              >
-                Decline
-              </button> -->
-
-              <router-link :to="`/dashboard/my-company/${dir.id}`">
+              <router-link :to="`/dashboard/company/${dir.id}`">
                 <img src="@/assets/images/view.png" alt="view" />
               </router-link>
               <button

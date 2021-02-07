@@ -41,7 +41,7 @@
               {{ company.company.CompanyType.name }}
             </div>
             <div
-              class="alert alert-danger mt-3"
+              class="alert alert-warning mt-3"
               v-if="
                 profile.role === 'super-admin' ||
                 profile.role === 'admin-company'
@@ -309,6 +309,32 @@
                 </div>
               </div>
               <div class="info-separator">&nbsp;</div>
+              <div
+                v-if="
+                  profile.companyId === company.company.id &&
+                  company &&
+                  company.company.status === 'declined' &&
+                  !_.isEmpty(company.company.messages)
+                "
+              >
+                <div class="company-info">
+                  <div class="alert alert-warning">
+                    <h5 class="my-2 alert-heading">Alert</h5>
+                    Your company has been declined. <br />
+                    <div>Message: {{ _.last(company.company.messages) }}</div>
+                    <hr />
+                    <div>
+                      <button
+                        @click.prevent="resubmitCompany"
+                        class="btn btn-danger"
+                      >
+                        Resubmit company
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="info-separator">&nbsp;</div>
+              </div>
               <div class="company-info">
                 <div>
                   Main business activity:
@@ -518,6 +544,32 @@
               <div class="clear"></div>
             </div>
 
+            <!-- RESUBMIT COMPANY -->
+            <modal
+              name="openResubmitCompany"
+              :adaptive="true"
+              :scrollable="true"
+              :height="220"
+              :width="600"
+            >
+              <button type="button" @click.prevent="closeModal" class="close">
+                <img src="@/assets/images/close.png" />
+              </button>
+              <h3 class="px-4 pt-4">Resubmit company's information</h3>
+              <div class="mx-4 py-2">
+                By resubmitting company's information, you agree that you
+                applied changes requested.
+              </div>
+
+              <div class="my-2 mx-4">
+                <button @click="closeModal" class="btn btn-gray-outline mr-2">
+                  Cancel
+                </button>
+                <button @click="resubmitNow" class="btn btn-success-outline">
+                  Resubmit
+                </button>
+              </div>
+            </modal>
             <modal
               name="openEditBusinessActivies"
               :adaptive="true"
@@ -595,7 +647,7 @@ Vue.use(VueGoogleMaps, {
   },
 });
 export default {
-  name: "my-company",
+  name: "company",
   components: {
     EditSocial,
     EditCompanyInfo,
@@ -659,6 +711,27 @@ export default {
         }
       }
     },
+    resubmitNow() {
+      const data = {
+        id: this.company.company.id,
+        decision: "pending",
+      };
+      AxiosHelper.put("company/manage", data)
+        .then(() => {
+          this.loadCompanyInfo();
+          Vue.$toast.open({
+            message: "Resubmitted",
+            type: "success",
+          });
+        })
+        .catch(() => {
+          Vue.$toast.open({
+            message: "Sorry, something went wrong. try again later!",
+            type: "error",
+          });
+        });
+      this.$modal.hide("openResubmitCompany");
+    },
     loadCompanyInfo() {
       AxiosHelper.get(`company/${this.companyId}`)
         .then((response) => {
@@ -711,6 +784,9 @@ export default {
     openUploadCompanyLogo() {
       this.$modal.show("uploadCompanyLogo");
     },
+    resubmitCompany() {
+      this.$modal.show("openResubmitCompany");
+    },
     updateCustomerBase() {
       this.$modal.show("openEditCustomerBase");
     },
@@ -745,6 +821,7 @@ export default {
       this.$modal.hide("editCompanySummary");
       this.$modal.hide("editCompanyLocation");
       this.$modal.hide("openEditCustomerBase");
+      this.$modal.hide("openResubmitCompany");
     },
     addActivityToCompany(id, name) {
       const data = {

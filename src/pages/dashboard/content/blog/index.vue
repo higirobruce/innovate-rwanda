@@ -107,9 +107,9 @@
                   </router-link>
                   <router-link
                     v-if="
+                      (post.status === 'draft' || post.status === 'pending') &&
                       (profile.role === 'normal' ||
-                        profile.role === 'super-admin') &&
-                      post.status !== 'deleted'
+                        profile.role === 'super-admin')
                     "
                     :to="`/dashboard/content/blog/edit/${post.id}`"
                   >

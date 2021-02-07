@@ -4,8 +4,7 @@
     <div class="px-4 py-2">
       <form @submit="submitCompanyInfo">
         <div class="wrap-modal" style="max-height: 450px; overflow: scroll">
-          <!-- main area of interest -->
-          <h4 class="mt-3">Company summary</h4>
+          <h5 class="mt-3">Company summary</h5>
           <div class="row mt-4">
             <div class="col-12">
               <div class="form-group">
@@ -30,24 +29,20 @@
           </div>
         </div>
         <div class="mt-4">
-          <span class="float-left">
-            <button
-              type="submit"
-              @click="submitCompanyInfo"
-              class="btn btn-success-outline mr-2"
-            >
-              Save
-            </button>
-          </span>
-          <span class="float-right">
-            <button
-              type="button"
-              @click="closeModal"
-              class="btn btn-gray-outline mr-2"
-            >
-              Close
-            </button>
-          </span>
+          <button
+            type="button"
+            @click="closeModal"
+            class="btn btn-gray-outline mr-2"
+          >
+            Close
+          </button>
+          <button
+            type="submit"
+            @click="submitCompanyInfo"
+            class="btn btn-success-outline mr-2"
+          >
+            Save
+          </button>
         </div>
       </form>
     </div>

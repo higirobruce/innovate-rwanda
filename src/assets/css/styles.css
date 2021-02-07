@@ -1121,3 +1121,6 @@ input[type="number"] {
 .vm--modal .close img {
   width: 26px;
 }
+.table > tbody > tr > td {
+  vertical-align: middle;
+}

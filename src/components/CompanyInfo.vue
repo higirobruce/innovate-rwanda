@@ -60,14 +60,12 @@
               <div>Business activitivies</div>
               <div class="my-3">
                 -
-                <!-- <div class="co-badge">Business consulting</div> -->
               </div>
             </div>
             <div class="info-separator">&nbsp;</div>
             <div class="company-info">
               <div>
                 Client base:
-                <!-- <span class="text-blue-dark">Business to Business</span> -->
               </div>
             </div>
           </div>

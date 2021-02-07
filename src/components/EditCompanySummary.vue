@@ -1,13 +1,21 @@
 <template>
   <div>
-    <h3 class="p-4">Edit info</h3>
-    <div class="px-4 py-2">
+    <h3 class="px-4 pt-4">Edit info</h3>
+    <div class="mx-4 py-2">
+      <div
+        v-if="profile.companyId === company.id && company.status === 'approved'"
+        class="alert alert-danger"
+      >
+        We don't recommend you to update company's information when it is
+        approved. However, if you do so, your changes will be published after
+        being reviewed
+      </div>
       <form @submit="submitCompanyInfo">
-        <div class="wrap-modal" style="max-height: 450px; overflow: scroll">
+        <div style="max-height: 410px; overflow-y: auto; overflow-x: hidden">
           <!-- main area of interest -->
-          <h4 class="mt-3">Company summary</h4>
-          <div class="row mt-4">
+          <div class="row">
             <div class="col-12">
+              <h5 class="mt-1">Company summary</h5>
               <div class="form-group">
                 <textarea
                   class="form-control"
@@ -20,7 +28,7 @@
             </div>
           </div>
         </div>
-        <div class="mt-4">
+        <div class="mt-2 mb-3">
           <span class="float-left">
             <button
               type="submit"
@@ -34,7 +42,7 @@
             <button
               type="button"
               @click="closeModal"
-              class="btn btn-gray-outline mr-2"
+              class="btn btn-gray-outline"
             >
               Close
             </button>
@@ -54,10 +62,7 @@ Vue.use(VModal);
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
-import {
-  required,
-  minLength,
-} from "vuelidate/lib/validators";
+import { required, minLength } from "vuelidate/lib/validators";
 
 import vSelect from "vue-select";
 

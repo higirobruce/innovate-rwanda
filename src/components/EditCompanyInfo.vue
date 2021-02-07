@@ -1,12 +1,14 @@
 <template>
   <div>
-    <h3 class="p-4">Edit info</h3>
-    <div class="px-4 py-2">
+    <h3 class="px-4 pt-4">Edit info</h3>
+    <div class="mx-4 py-2">
       <form @submit="submitCompanyInfo">
-        <div class="wrap-modal" style="max-height: 450px; overflow: scroll">
-          <div class="row mt-4">
+        <div
+          style="width: 100%;max-height: 410px; overflow-y: auto; overflow-x: hidden"
+        >
+          <div class="row">
             <div class="col-lg-8 col-sm-12">
-              <h4 class="mt-3">Company name</h4>
+              <h5 class="mt-3">Company name</h5>
               <div
                 :class="`${
                   $v.companyInfo.coName.$invalid === true
@@ -24,7 +26,7 @@
               </div>
             </div>
             <div class="col-lg-4 col-sm-12">
-              <h4 class="mt-3">Year founded</h4>
+              <h5 class="mt-3">Year founded</h5>
               <div
                 :class="`${
                   $v.companyInfo.yearFounded.$invalid === true
@@ -40,10 +42,8 @@
                 />
               </div>
             </div>
-          </div>
-          <div class="row mt-4">
             <div class="col-lg-6 col-sm-12">
-              <h4 class="mt-3">Contact email</h4>
+              <h5 class="mt-3">Contact email</h5>
 
               <div
                 :class="`${
@@ -88,7 +88,7 @@
               </div>
             </div>
             <div class="col-lg-6 col-sm-12">
-              <h4 class="mt-3">Phone number</h4>
+              <h5 class="mt-3">Phone number</h5>
               <div
                 :class="`${
                   $v.companyInfo.contactPhone.$invalid === true
@@ -131,11 +131,8 @@
                 >
               </div>
             </div>
-          </div>
-          <!-- district -->
-          <h4 class="mt-3">What District are you based in?</h4>
-          <div class="row mt-4">
             <div class="col-12">
+              <h5 class="my-3">What District are you based in?</h5>
               <div class="form-group">
                 <select
                   class="form-control form-control-lg"
@@ -156,24 +153,30 @@
             </div>
           </div>
         </div>
-        <div class="mt-4">
-          <span class="float-left">
-            <button
-              @click.prevent="submitCompanyInfo"
-              class="btn btn-success-outline mr-2"
-            >
-              Save
-            </button>
-          </span>
-          <span class="float-right">
-            <button
-              type="button"
-              @click.prevent="closeModal"
-              class="btn btn-gray-outline mr-2"
-            >
-              Close
-            </button>
-          </span>
+        <div
+          v-if="
+            profile.companyId === company.id && company.status === 'approved'
+          "
+          class="alert alert-danger"
+        >
+          We don't recommend you to update company's information when it is
+          approved. However, if you do so, your changes will be published after
+          being reviewed
+        </div>
+        <div class="mt-2 mb-3">
+          <button
+            type="button"
+            @click.prevent="closeModal"
+            class="btn btn-gray-outline mr-2"
+          >
+            Close
+          </button>
+          <button
+            @click.prevent="submitCompanyInfo"
+            class="btn btn-success-outline"
+          >
+            Update
+          </button>
         </div>
       </form>
     </div>

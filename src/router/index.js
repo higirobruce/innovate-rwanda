@@ -134,7 +134,7 @@ const router = new Router({
       },
     },
     {
-      path: "/dashboard/my-company/:companyId",
+      path: "/dashboard/company/:companyId",
       component: () => import("@/pages/dashboard/mycompany/index.vue"),
       meta: {
         layout: "dashboard-layout",

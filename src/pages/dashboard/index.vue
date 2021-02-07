@@ -1,6 +1,15 @@
 <template>
   <div class="wrap-home-dash">
     <component :is="layout">
+      <div
+        class="wrap-messages"
+        v-if="company && company.company && company.company.status === 'declined'"
+      >
+        <div class="alert alert-warning shadow-sm">
+          The registration of company "{{ company.company.coName }}" was
+          declined. Go to  <router-link class="font-weight-bold text-blue-dark" :to="`/dashboard/company/${company.company.id}`">My Profile</router-link> for more information
+        </div>
+      </div>
       <div class="dash-welcome">
         <div class="welcome-content">
           <h1 class="h2 font-weight-bold text-blue-dark">Welcome</h1>
@@ -34,18 +43,18 @@
           <div class="col-sm-12 col-lg-4">
             <div class="one-counter">
               <router-link :to="'/dashboard/users'">
-              <img src="@/assets/images/counter-users.png" />
-              <h3 class="ml-2">{{ summary.usersCount }}</h3>
-              <h4 class="ml-2">Users</h4>
+                <img src="@/assets/images/counter-users.png" />
+                <h3 class="ml-2">{{ summary.usersCount }}</h3>
+                <h4 class="ml-2">Users</h4>
               </router-link>
             </div>
           </div>
           <div class="col-sm-12 col-lg-4">
             <div class="one-counter">
               <router-link :to="'/dashboard/directory'">
-              <img src="@/assets/images/counter-pending.png" />
-              <h3 class="ml-2">{{ summary.pendingRequestsCount }}</h3>
-              <h4 class="ml-2">Pending Registration Requests</h4>
+                <img src="@/assets/images/counter-pending.png" />
+                <h3 class="ml-2">{{ summary.pendingRequestsCount }}</h3>
+                <h4 class="ml-2">Pending Registration Requests</h4>
               </router-link>
             </div>
           </div>
@@ -97,6 +106,8 @@ export default {
   data() {
     return {
       summary: {},
+      company: {},
+      companyId: null,
     };
   },
   computed: {
@@ -104,7 +115,19 @@ export default {
       return this.$route.meta.layout;
     },
   },
+  mounted() {
+    this.loadCompanyInfo();
+  },
+  methods: {
+    loadCompanyInfo() {
+      this.companyId &&
+        AxiosHelper.get(`company/${this.companyId}`).then((response) => {
+          this.company = response.data.result;
+        });
+    },
+  },
   created() {
+    this.companyId = (this.profile && this.profile.companyId) || null;
     this.loadingDirectory = true;
     if (this.profile.role === "normal") {
       AxiosHelper.get("countersCo").then((response) => {
@@ -127,10 +150,16 @@ export default {
 .welcome-img {
   width: 400px;
 }
+.wrap-messages {
+  width: 100%;
+  max-width: 1380px;
+  margin: 20px auto 0 auto;
+  display: block;
+}
 .wrap-counters {
   width: 100%;
   max-width: 1380px;
-  margin: 40px auto;
+  margin: 20px auto 40px auto;
 }
 .one-counter {
   padding: 50px;
@@ -156,7 +185,7 @@ export default {
     align-items: center;
     width: 100%;
     max-width: 1380px;
-    margin: 40px auto;
+    margin: 20px auto 40px auto;
   }
   .dash-welcome img {
     width: 300px;
