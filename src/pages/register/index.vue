@@ -132,13 +132,7 @@
                 </div>
                 <!-- company/institution -->
                 <h4 class="text-center mt-3">
-                  <span v-if="currentType === 'governmentagency'"
-                    >What is the name of your Institution?</span
-                  >
-                  <span v-else-if="currentType === 'ecosystemenablers'"
-                    >What is the name of your Organization?
-                  </span>
-                  <span v-else> What is the name of your company? </span>
+                  What is the name of your organization/entiry?
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -490,12 +484,12 @@ export default {
       .catch(() => {});
   },
   methods: {
-    changingWeb(domain){
+    changingWeb(domain) {
       let web = domain;
-      web = this._.replace(web, 'https://', '')
-      web = this._.replace(web, 'http://', '')
-      web = this._.replace(web, 'www.', '')
-      return this.webChanged = web;
+      web = this._.replace(web, "https://", "");
+      web = this._.replace(web, "http://", "");
+      web = this._.replace(web, "www.", "");
+      return (this.webChanged = web);
     },
     chooseType(type) {
       this.registered = false;

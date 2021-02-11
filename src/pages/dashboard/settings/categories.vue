@@ -229,7 +229,7 @@
 
         <div class="m-4">
           <form @submit="submitEditCategory">
-            <h4 class="mt-3">Type</h4>
+            <h4 class="mt-3">Category</h4>
             <div
               :class="`${
                 $v.activity.$invalid === true
@@ -242,7 +242,7 @@
                 v-model="activity.name"
                 required
                 class="form-control custom-input"
-                placeholder="Company name"
+                placeholder="Category"
               />
             </div>
           </form>

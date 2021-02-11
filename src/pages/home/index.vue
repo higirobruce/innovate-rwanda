@@ -114,7 +114,7 @@
           <div class="newsletter-divider my-5"></div>
           <div class="wrap-newsletter mt-5">
             <h5 class="h4 text-center">
-              Keep me updated on news, events, and offers from
+              Keep me updated on news, events, and offers from Innovate Rwanda
             </h5>
             <div class="newsletter-form">
               <input

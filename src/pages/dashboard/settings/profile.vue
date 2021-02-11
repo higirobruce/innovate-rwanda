@@ -27,7 +27,7 @@
                   v-model="user.firstName"
                   required
                   class="form-control custom-input"
-                  placeholder="Company name"
+                  placeholder="First name"
                 />
               </div>
               <h4 class="mt-3">Last name(family name)</h4>
@@ -43,7 +43,7 @@
                   v-model="user.lastName"
                   required
                   class="form-control custom-input"
-                  placeholder="Company name"
+                  placeholder="Last name"
                 />
               </div>
               <div v-if="profile.role === 'normal'">
@@ -60,7 +60,7 @@
                     v-model="user.jobTitle"
                     required
                     class="form-control custom-input"
-                    placeholder="Company name"
+                    placeholder="Job title"
                   />
                 </div>
               </div>
@@ -71,7 +71,7 @@
                   disabled
                   v-model="user.email"
                   class="form-control custom-input"
-                  placeholder="Company name"
+                  placeholder="Your email"
                 />
               </div>
               <div>

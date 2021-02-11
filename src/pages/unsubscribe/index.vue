@@ -25,7 +25,7 @@
                             v-model="email"
                             required
                             class="form-control custom-input"
-                            placeholder="Event Title"
+                            placeholder="Your email"
                           />
                         </div>
                         <button
@@ -49,6 +49,9 @@
                         >Go home</router-link
                       >
                     </div>
+                  </div>
+                  <div class="text-danger" v-if="!unsubscribed && error">
+                    It seems like your email is not subscribed to our notications.
                   </div>
                 </div>
                 <div v-if="!unsubscribed && loading">
@@ -79,19 +82,21 @@ export default {
       email: "",
       loading: false,
       unsubscribed: false,
+      error: false,
     };
   },
   methods: {
     unsubscribing() {
       this.loading = true;
-      AxiosHelper.put(`unsubscribe`, {
-        email: this.email,
-      })
+      this.error = false;
+      AxiosHelper.delete(`unsubscribe/${this.email}`)
         .then(() => {
           this.unsubscribed = true;
+          this.error = false;
         })
         .catch(() => {
           this.unsubscribed = false;
+          this.error = true;
         });
       this.loading = false;
     },

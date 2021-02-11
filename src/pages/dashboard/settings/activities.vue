@@ -90,7 +90,7 @@
                 v-model="form.name"
                 required
                 class="form-control custom-input"
-                placeholder="Company name"
+                placeholder="Activity name"
               />
             </div>
           </form>
