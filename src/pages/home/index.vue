@@ -129,15 +129,15 @@
                 @click.prevent="subscribeNow"
                 type="button"
               >
-                <div
-                  v-if="subscribing && !subscribed"
-                  class="spinner-border"
-                  role="status"
-                >
-                  <span class="sr-only">Loading...</span>
-                </div>
-                <span v-else> Subscribe </span>
+                <span> Subscribe </span>
               </button>
+            </div>
+            <div
+              v-if="subscribing && !subscribed"
+              class="spinner-border"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
             </div>
             <div
               class="text-success text-center"
@@ -419,6 +419,21 @@ export default {
   padding: 10px 22px;
   font-weight: 800;
   border-radius: 3px;
+}
+@media screen and (max-width: 424px) {
+  .newsletter-form {
+    border: none;
+    display: block;
+  }
+  .newsletter-form input {
+    width: 100%;
+    border: 1px solid #c0c6d8;
+  }
+  .newsletter-form button {
+    float: none;
+    display: block;
+    margin: 5px auto;
+  }
 }
 .newsletter-divider {
   background: #c0c6d8;
