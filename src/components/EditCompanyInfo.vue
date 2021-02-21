@@ -164,7 +164,7 @@
           "
           class="alert alert-danger"
         >
-          fter clicking on update button below, your institution/entity will be
+          Clicking on update button below, your institution/entity will be
           pending review. You will wait for an approval from the Innovate Rwanda
           team. We want to make sure you follow the guidelines for updating your
           institution or entity's information

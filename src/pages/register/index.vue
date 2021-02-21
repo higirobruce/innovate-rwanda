@@ -132,7 +132,7 @@
                 </div>
                 <!-- company/institution -->
                 <h4 class="text-center mt-3">
-                  What is the name of your organization/entiry?
+                  What is the name of your organization/entity?
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -156,7 +156,7 @@
                 </div>
                 <!-- website -->
                 <h4 class="text-center mt-3">
-                  What is your company's website?
+                  What is your organisation/entity's website?
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -185,13 +185,7 @@
                 </div>
                 <!-- job title -->
                 <h4 class="text-center mt-3">
-                  <span v-if="currentType === 'governmentagency'"
-                    >What is your job title at the institution?</span
-                  >
-                  <span v-else-if="currentType === 'ecosystemenablers'"
-                    >What is your job title at the organization?</span
-                  >
-                  <span v-else> What is your job title at the company? </span>
+                  What is your job title
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -217,13 +211,7 @@
                 </div>
                 <!-- district -->
                 <h4 class="text-center mt-3">
-                  <span v-if="currentType === 'governmentagency'"
-                    >What District are your head offices based in?
-                  </span>
-                  <span v-else-if="currentType === 'ecosystemenablers'"
-                    >What District are your main offices based in?
-                  </span>
-                  <span v-else> What District are you based in? </span>
+                  What district are your head offices based in?
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -266,6 +254,7 @@
                     What is your main business activity closely fits your
                     company?</span
                   >
+                  What is the main business activity or sector that closely fits your organisation/entity’s Mandate?
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
@@ -296,13 +285,7 @@
                 </div>
                 <!-- description -->
                 <h4 class="text-center mt-3">
-                  <span v-if="currentType === 'governmentagency'"
-                    >Short description about your institution</span
-                  >
-                  <span v-else-if="currentType === 'ecosystemenablers'"
-                    >Short description about your organization</span
-                  >
-                  <span v-else> Short description about the company</span>
+                  Short description about your organisation/entity
                 </h4>
                 <div class="row mt-4">
                   <div class="col-12">
