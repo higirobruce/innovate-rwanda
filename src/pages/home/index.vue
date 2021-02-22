@@ -191,7 +191,7 @@ export default {
         1: {
           image: "giz-b.png",
           hover: "giz.png",
-          link: "giz.de",
+          link: "giz.de/en/worldwide/332.html",
           isHover: false,
         },
         2: {

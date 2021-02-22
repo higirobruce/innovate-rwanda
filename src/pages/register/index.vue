@@ -242,18 +242,6 @@
                 </div>
                 <!-- area -->
                 <h4 class="text-center mt-3">
-                  <span v-if="currentType === 'governmentagency'"
-                    >What is the main business activity or sector that closely
-                    fits your institutions’ Mandate?</span
-                  >
-                  <span v-else-if="currentType === 'ecosystemenablers'"
-                    >What is the main business activity or sector that closely
-                    fits your organizations’ Mandate?</span
-                  >
-                  <span v-else>
-                    What is your main business activity closely fits your
-                    company?</span
-                  >
                   What is the main business activity or sector that closely fits your organisation/entity’s Mandate?
                 </h4>
                 <div class="row mt-4">
