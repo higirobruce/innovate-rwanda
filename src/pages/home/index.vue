@@ -209,7 +209,7 @@ export default {
         4: {
           image: "jica-b.png",
           hover: "jica.png",
-          link: "jica.go.jp",
+          link: "innovation.rw",
           isHover: false,
         },
         5: {
