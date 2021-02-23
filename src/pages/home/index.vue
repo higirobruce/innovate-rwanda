@@ -185,7 +185,7 @@ export default {
         0: {
           image: "myict-b.png",
           hover: "myict.png",
-          link: "miniict.gov.rw",
+          link: "minict.gov.rw",
           isHover: false,
         },
         1: {
