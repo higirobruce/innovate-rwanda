@@ -69,7 +69,7 @@
             <div>
               <router-link :to="'/'" class="email-us">
                 <i class="icon-envelope mr-2" />
-                <span class="">info@innovaterwanda.com</span>
+                <span class="">info@innovaterwanda.rw</span>
               </router-link>
             </div>
           </div>
