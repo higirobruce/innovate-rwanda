@@ -195,9 +195,8 @@ export default {
           isHover: false,
         },
         2: {
-          image: "rdb-b.png",
-          hover: "rdb.png",
-          link: "rdb.rw",
+          image: "kic-b.png",
+          hover: "kic.png",
           isHover: false,
         },
         3: {
