@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer :style="`${firstTime ? 'padding-bottom: 90px' : ''}`">
     <!-- Footer -->
     <div class="wrap-footer">
       <div class="container position-relative">
@@ -23,22 +23,28 @@
             class="footer-links list-inline mx-auto py-3 justify-content-center"
           >
             <li class="list-inline-item">
-              <a href="#">Home</a>
+              <router-link :to="'/'">Home</router-link>
             </li>
             <li class="list-inline-item">
-              <a href="#">About</a>
+              <router-link :to="'/about'">About</router-link>
             </li>
             <li class="list-inline-item">
-              <a href="#">Why Rwanda</a>
+              <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
             </li>
             <li class="list-inline-item">
-              <a href="#">Community Directory</a>
+              <router-link :to="'/directory'">Community Directory</router-link>
             </li>
             <li class="list-inline-item">
-              <a href="#">Events</a>
+              <router-link :to="'/events'">Events</router-link>
             </li>
             <li class="list-inline-item">
-              <a href="#">Resources</a>
+              <router-link :to="'/blog'">Blog</router-link>
+            </li>
+            <li class="list-inline-item">
+              <router-link :to="'/find-talent'">Find talents</router-link>
+            </li>
+            <li class="list-inline-item">
+              <router-link :to="'/resources'">Resources</router-link>
             </li>
           </ul>
         </div>
@@ -47,18 +53,24 @@
           <div class="float-lg-left">
             <h4 class="h6">Follow us</h4>
             <div>
-              <a href="#"> <i class="icon-facebook-official mr-2" /></a>
-              <a href="#"> <i class="icon-twitter mr-2" /></a>
-              <a href="#"> <i class="icon-instagrem mr-2" /></a>
+              <!-- <router-link :to="'/'">
+                <i class="icon-facebook-official mr-2"
+              /></router-link> -->
+              <a target="_blank" href="https://twitter.com/innovate_rwanda">
+                <i class="icon-twitter mr-2"
+              /></a>
+              <!-- <router-link :to="'/'">
+                <i class="icon-instagram mr-2"
+              /></router-link> -->
             </div>
           </div>
           <div class="float-lg-right">
             <h4 class="h6">Email us</h4>
             <div>
-              <a href="#" class="email-us">
-                <i class="icon-facebook-official mr-2" />
-                <span class="">info@innovaterwanda.com</span>
-              </a>
+              <router-link :to="'/'" class="email-us">
+                <i class="icon-envelope mr-2" />
+                <span class="">info@innovaterwanda.rw</span>
+              </router-link>
             </div>
           </div>
         </div>
@@ -67,30 +79,108 @@
     <div class="wrap-copyright">
       <div class="container">
         <div class="trademark float-lg-left">
-          Trademark Notice: Innovate Rwanda Is A Registered Trademark Of Kigali
-          Innovation City.
+          &copy; Copyright {{ new Date().getFullYear() }}, Innovate Rwanda
+          <!-- Trademark Notice: Innovate Rwanda Is A Registered Trademark Of Kigali
+          Innovation City. -->
         </div>
         <div class="copyright-links float-sm-left float-lg-right">
-          <a href="#" class="mr-4">Terms</a>
-          <a href="#" class="mr-4">Privacy</a>
-          <a href="#" class="mr-4">Support</a>
+          <router-link :to="'/terms'" class="mr-4">Terms</router-link>
+          <router-link :to="'/privacy-policy'" class="mr-4"
+            >Privacy</router-link
+          >
+          <router-link :to="'/disclaimer'" class="mr-4">Disclaimer</router-link>
         </div>
+      </div>
+    </div>
+    <div class="wrap-cookie" v-if="firstTime">
+      <div class="cookie">
+        <div>
+          We use cookies to offer you a better experience and analyze site
+          traffic. By continuing to use this website, you consent to the use of
+          cookies in accordance with our
+          <router-link :to="'/cookies-policy'">Cookie Policy</router-link>
+        </div>
+        <button @click.prevent="accept" type="button">Accept</button>
       </div>
     </div>
   </footer>
 </template>
 
 <script>
-export default {};
+export default {
+  name: "",
+  data() {
+    return {
+      firstTime: true,
+    };
+  },
+  mounted() {
+    const accepted = localStorage.getItem("acceptedCookies");
+    if (accepted) {
+      this.firstTime = false;
+    }
+  },
+  methods: {
+    accept() {
+      localStorage.setItem("acceptedCookies", true);
+      this.firstTime = false;
+    },
+  },
+};
 </script>
 
 <style scoped>
+.wrap-cookie {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 0;
+  z-index: 12000;
+  background: #343434;
+}
+.cookie {
+  margin: 0 auto;
+  display: flex;
+  max-width: 1000px;
+  padding: 10px 0;
+  font-size: 14px;
+}
+.cookie a {
+  color: #06adef;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.cookie button {
+  width: 100px;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  background: #06adef;
+  font-weight: bold;
+}
+@media screen and (max-width: 760px) {
+  .cookie {
+    display: block;
+    width: 96%;
+    padding: 2%;
+  }
+  .cookie div {
+    width: 100%;
+  }
+  .cookie button {
+    margin: 5px 0;
+    float: left;
+  }
+}
 footer {
   color: #ffffff;
   background-color: #00abdf;
 }
 .wrap-footer {
   padding: 10px 0 55px 0;
+  position: relative;
+  z-index: 1;
 }
 .footer-bg {
   position: absolute;
@@ -98,7 +188,7 @@ footer {
   left: 0;
   width: 480px;
   height: auto;
-  z-index: 0;
+  z-index: -1;
 }
 .footer-bg img {
   width: 100%;

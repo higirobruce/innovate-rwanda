@@ -9,11 +9,6 @@
               :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${company.company.logo}`"
               :alt="company.company.coName"
             />
-            <img
-              v-else
-              src="@/assets/images/logo_placeholder.svg"
-              :alt="company.company.coName"
-            />
             <h1>{{ company.company.coName }}</h1>
           </div>
           <div class="company-body mb-3">
@@ -22,16 +17,22 @@
                 <div class="company-small-info">
                   <h4>Website</h4>
                   <h5>
-                    {{ company.company.coWebsite }}
+                    <router-link
+                      v-if="!_.isEmpty(company.company.coWebsite)"
+                      :to="`/redirect/${company.company.coWebsite}`"
+                      target="_blank"
+                    >
+                      {{ company.company.coWebsite }}
+                    </router-link>
                   </h5>
-                  <img src="@/assets/images/globe.svg" />
+                  <img src="@/assets/images/globe.png" />
                 </div>
                 <div class="company-small-info">
                   <h4>Location</h4>
                   <h5>
                     {{ company.company.districtBasedIn }}
                   </h5>
-                  <img src="@/assets/images/map-marker.svg" />
+                  <img src="@/assets/images/map-marker.png" />
                 </div>
                 <div class="info-separator clear my-3">&nbsp;</div>
                 <div class="company-small-info">
@@ -39,71 +40,75 @@
                   <h5>
                     {{ company.company.yearFounded }}
                   </h5>
-                  <img src="@/assets/images/calendar-alt.svg" />
+                  <img src="@/assets/images/calendar-alt.png" />
                 </div>
                 <div class="company-small-info">
                   <h4>Social media</h4>
                   <div class="social-links">
-                    <a
+                    <router-link
                       style="color: #1473e6"
-                      :to="''"
+                      target="_blank"
+                      :to="`/redirect/facebook.com/${
+                        convertToObject(company.company.socialMedia).facebook
+                      }`"
                       v-if="
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).facebook
                       "
                     >
                       <i class="icon-facebook-official mr-2" />
-                    </a>
-                    <a
+                    </router-link>
+                    <router-link
                       style="color: #00aeef"
-                      :to="''"
                       target="_blank"
+                      :to="`/redirect/twitter.com/${
+                        convertToObject(company.company.socialMedia).twitter
+                      }`"
                       v-if="
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).twitter
                       "
                     >
                       <i class="icon-twitter mr-2" />
-                    </a>
-                    <a
+                    </router-link>
+                    <router-link
                       style="color: #ff1d77"
-                      :to="''"
-                      target="_blank"
+                      :to="`/redirect/instagram.com/${
+                        convertToObject(company.company.socialMedia).instagram
+                      }`"
                       v-if="
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).instagram
                       "
                     >
-                      <i class="icon-instagrem mr-2" />
-                    </a>
-                    <a
+                      <i class="icon-instagram mr-2" />
+                    </router-link>
+                    <router-link
                       style="color: #ff0000"
-                      target="_blank"
+                      :to="`/redirect/youtube.com/c/${
+                        convertToObject(company.company.socialMedia).youtube
+                      }`"
                       v-if="
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).youtube
                       "
-                      :href="`https://youtube.com/${
-                        convertToObject(company.company.socialMedia).youtube
-                      }`"
                     >
                       <i class="icon-youtube-play mr-2" />
-                    </a>
-                    <a
+                    </router-link>
+                    <router-link
                       style="color: #007bb5"
-                      target="_blank"
+                      :to="`/redirect/linkedin.com/company/${
+                        convertToObject(company.company.socialMedia).linkedin
+                      }`"
                       v-if="
                         company.company.socialMedia &&
                         convertToObject(company.company.socialMedia).linkedin
                       "
-                      :href="`https://youtube.com/c/${
-                        convertToObject(company.company.socialMedia).linkedin
-                      }`"
                     >
                       <i class="icon-linkedin-alt mr-2" />
-                    </a>
+                    </router-link>
                   </div>
-                  <img src="@/assets/images/hashtag.svg" />
+                  <img src="@/assets/images/hashtag.png" />
                 </div>
                 <div class="info-separator clear my-3">&nbsp;</div>
                 <div
@@ -114,17 +119,17 @@
                   <h5>
                     {{ company.company.contactPhone }}
                   </h5>
-                  <img src="@/assets/images/phone.svg" />
+                  <img src="@/assets/images/phone.png" />
                 </div>
                 <div
                   class="company-small-info"
                   v-if="company.company.emailDisplay === true"
                 >
-                  <h4>Contact phone number</h4>
+                  <h4>Contact email</h4>
                   <h5>
                     {{ company.company.contactEmail }}
                   </h5>
-                  <img src="@/assets/images/email.svg" />
+                  <img src="@/assets/images/email.png" />
                 </div>
 
                 <div
@@ -138,18 +143,18 @@
                 </div>
 
                 <div class="company-large-info">
-                  <h4>Areas of interests</h4>
-                  <img src="@/assets/images/phone.svg" />
+                  <h4>Business activitivies</h4>
                   <div class="my-3">
-                    <div class="co-badge">Business consulting</div>
-                    <div class="co-badge">Information Technology Services</div>
-                    <div class="co-badge">Tax and Accounting Consulting</div>
-                    <div class="co-badge">Non-academic courses</div>
-                    <div class="co-badge">Marketing</div>
-                    <div class="co-badge">
-                      Communications &amp; Public Relations
+                    <div
+                      class="co-badge"
+                      v-for="(act, index) in company.company
+                        .ActivitiesOfCompanies"
+                      :key="index"
+                    >
+                      <span>
+                        {{ act.BusinessActivity.name }}
+                      </span>
                     </div>
-                    <div class="co-badge">Mentoring</div>
                   </div>
                 </div>
                 <div class="info-separator clear my-3">&nbsp;</div>
@@ -165,21 +170,36 @@
                     {{ company.company.shortDescription }}
                   </div>
                   <div class="info-separator my-3">&nbsp;</div>
-                  <h3>Main area of interest</h3>
+                  <h3>Main business actity</h3>
                   <div>
-                    {{ company.company.mainAreaOfInterest }}
+                    {{ company.company.BusinessActivity.name }}
                   </div>
                   <div class="info-separator my-3">&nbsp;</div>
-                  <h3>Customer base</h3>
+                  <h3>Client base</h3>
                   <div>
-                    {{ company.company.customerBase || "-" }}
+                    <span
+                      class="text-blue-dark"
+                      v-for="(base, index) in JSON.parse(
+                        company.company.customerBase
+                      )"
+                      :key="index"
+                    >
+                      <span v-if="index > 0"> , </span>
+                      {{ base }}
+                    </span>
                   </div>
                   <div class="info-separator my-3">&nbsp;</div>
                   <div
                     class="wrap-map"
                     v-if="company.company && company.company.officeAddress"
                   >
-                    <h3>Location</h3>
+                    <h3>
+                      Location
+
+                      <span class="mx-3 font-weight-bold text-blue-dark">
+                        {{ convertLatLng(company.company.officeAddress).place }}
+                      </span>
+                    </h3>
                     <GmapMap
                       :center="convertLatLng(company.company.officeAddress)"
                       :zoom="17"
@@ -198,7 +218,49 @@
             </div>
           </div>
         </div>
-        <div v-if="notfound">Company not found</div>
+        <div
+          class="wrap-similar-companies"
+          v-if="_.size(company.similarCompanies) > 0"
+        >
+          <h3 class="text-center text-blue-dark">Similar companies</h3>
+          <div class="text-center similar-desc mb-4">
+            based on areas of interests
+          </div>
+          <div class="row similar-companies">
+            <div
+              class="col-sm-12 col-md-6 col-lg-4"
+              v-for="(co, index) in company.similarCompanies"
+              :key="index"
+            >
+              <a class="cursor-pointer" @click.prevent="goToCompany(co.slug)">
+                <div class="co-similar">
+                  <img
+                    v-if="co && co.logo"
+                    :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${co.logo}`"
+                    :alt="co.coName"
+                  />
+                  <img
+                    v-else
+                    src="@/assets/images/logo_placeholder.png"
+                    :alt="co.coName"
+                  />
+                  <h4>
+                    {{ co.companyName }}
+                  </h4>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="co-loadmore">
+            <router-link :to="`/directory/${meta.slug}`">Load more</router-link>
+          </div>
+        </div>
+        <div class="my-5 py-5" v-if="notfound && _.isEmpty(company)">
+          <div class="empty-post">
+            <img src="@/assets/images/empty.png" />
+            <h2 class="my-0 py-0 font-weight-light h3">Company not found</h2>
+          </div>
+        </div>
       </div>
     </component>
   </div>
@@ -208,17 +270,17 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import * as VueGoogleMaps from "vue2-google-maps";
-import SendMessage from '@/components/SendMessage'
+import SendMessage from "@/components/SendMessage";
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyBzyXzhhqWBsTj305rY30VC1UF_1OHDKgA",
+    key: "AIzaSyBOcgzwN-u8KLJ2JHeeJON8St0jAkD2u_8",
     libraries: "places",
   },
 });
 export default {
   name: "company",
   components: {
-    SendMessage
+    SendMessage,
   },
   data() {
     return {
@@ -226,24 +288,36 @@ export default {
       slug: "",
       notfound: false,
       loaded: false,
+      meta: ""
     };
   },
   created() {
+    this.company = {};
+  },
+  mounted() {
     this.notfound = false;
     this.slug = this.$route.params.slug;
-    AxiosHelper.get(`company/public/${this.slug}`)
-      .then((response) => {
-        this.company = response.data.result;
-        this.loaded = true;
-      })
-      .catch(() => {
-        this.notfound = true;
-        this.loaded = false;
-      });
+    this.loadCompanyInfo(this.slug);
   },
   methods: {
+    goToCompany(slug) {
+       window.scrollTo(0,0);
+      this.loadCompanyInfo(slug);
+    },
     convertToObject(object) {
       return JSON.parse(object);
+    },
+    loadCompanyInfo(slug) {
+      AxiosHelper.get(`company/public/${slug}`)
+        .then((response) => {
+          this.company = response.data.result;
+          this.meta = response.data.meta;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.notfound = true;
+          this.loaded = false;
+        });
     },
     convertLatLng(officeAddress) {
       let latLng = { lat: -1.9535713202050946, lng: 30.09239731494155 };
@@ -293,6 +367,11 @@ export default {
   width: 50%;
   float: left;
 }
+@media screen and (max-width: 760px) {
+  .company-small-info {
+    width: 100%;
+  }
+}
 .company-large-info {
   position: relative;
   margin: 15px 0;
@@ -330,5 +409,42 @@ export default {
 .social-links a {
   font-size: 30px;
   margin: 4px 0 0 5px;
+}
+.wrap-similar-companies {
+  max-width: 940px;
+  margin: 40px auto;
+  display: block;
+}
+.similar-desc {
+  color: #c0c6d8;
+}
+.similar-companies {
+  border-top: 1px solid #cecece;
+  padding-top: 25px;
+}
+.co-similar {
+  border-bottom: 1px solid #cecece;
+  display: flex;
+  padding: 10px 0;
+  align-items: center;
+  justify-content: center;
+}
+.co-similar img {
+  width: 60px;
+}
+.co-similar h4 {
+  padding: 0 20px;
+  width: calc(100% - 60px);
+  color: #1b2958;
+  font-size: 18px;
+}
+.co-loadmore {
+  padding: 30px 0;
+  text-align: center;
+}
+.co-loadmore a {
+  color: #5e7c8d;
+  font-size: 22px;
+  display: block;
 }
 </style>

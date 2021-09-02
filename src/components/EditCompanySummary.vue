@@ -1,13 +1,19 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Edit info</h3>
-    <div class="px-4 py-2">
+    <h3 class="px-4 pt-4">Edit info</h3>
+    <div class="mx-4 py-2">
       <form @submit="submitCompanyInfo">
-        <div class="wrap-modal" style="max-height: 450px; overflow: scroll">
-          <!-- main area of interest -->
-          <h4 class="mt-3">Company summary</h4>
-          <div class="row mt-4">
+        <div
+          style="
+            width: 100%;
+            max-height: 410px;
+            overflow-y: auto;
+            overflow-x: hidden;
+          "
+        >
+          <div class="row">
             <div class="col-12">
+              <h5 class="mt-1">Company summary</h5>
               <div class="form-group">
                 <textarea
                   class="form-control"
@@ -20,25 +26,32 @@
             </div>
           </div>
         </div>
-        <div class="mt-4">
-          <span class="float-left">
-            <button
-              type="submit"
-              @click="submitCompanyInfo"
-              class="btn btn-success-outline mr-2"
-            >
-              Save
-            </button>
-          </span>
-          <span class="float-right">
-            <button
-              type="button"
-              @click="closeModal"
-              class="btn btn-gray-outline mr-2"
-            >
-              Close
-            </button>
-          </span>
+        <div
+          v-if="
+            profile.companyId === company.id && company.status === 'approved'
+          "
+          class="alert alert-danger"
+        >
+          Clicking on update button below, your institution/entity will be
+          pending review. You will wait for an approval from the Innovate Rwanda
+          team. We want to make sure you follow the guidelines for updating your
+          institution or entity's information
+        </div>
+        <div class="mt-2 mb-3">
+          <button
+            type="button"
+            @click="closeModal"
+            class="btn btn-gray-outline mr-2"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            @click="submitCompanyInfo"
+            class="btn btn-success-outline"
+          >
+            Update
+          </button>
         </div>
       </form>
     </div>
@@ -54,15 +67,8 @@ Vue.use(VModal);
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
-import {
-  required,
-  minLength,
-  maxLength,
-  email,
-} from "vuelidate/lib/validators";
+import { required, minLength } from "vuelidate/lib/validators";
 
-const checkWebsite = (value) =>
-  /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value);
 import vSelect from "vue-select";
 
 Vue.component("v-select", vSelect);
@@ -84,6 +90,7 @@ export default {
     },
     submitCompanyInfo(evt) {
       evt.preventDefault();
+      this.companyInfo.status = "pending";
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
         .then(() => {
           Vue.$toast.open({
@@ -111,32 +118,8 @@ export default {
   },
   validations: {
     companyInfo: {
-      coName: {
-        required,
-        minLength: minLength(3),
-        maxLength: maxLength(25),
-      },
-      yearFounded: {},
-      contactEmail: {
-        email,
-      },
-      emailDisplay: {
-        required,
-      },
-      contactPhone: {
-        required,
-        minLength: minLength(3),
-      },
-      phoneDisplay: {
-        required,
-      },
-      coWebsite: {
-        validateWebsite: checkWebsite,
-      },
-      districtBasedIn: {},
-      areaOfInterest: {},
-      mainAreaOfInterest: {},
       shortDescription: {
+        required,
         minLength: minLength(3),
       },
     },

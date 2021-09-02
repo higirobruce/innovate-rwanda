@@ -4,7 +4,7 @@
       <div class="container">
         <div class="wrap-middle-header">
           <button class="sidebar-btn" @click="toggleMenu">
-            <img src="@/assets/images/menu.svg" />
+            <img src="@/assets/images/menu.png" />
           </button>
           <div class="wrap-logo">
             <div class="main-logo">
@@ -16,24 +16,29 @@
           <div class="wrap-main-nav">
             <ul class="list-inline py-3 my-2">
               <li class="list-inline-item">
-                <router-link :to="'/'">About</router-link>
+                <router-link :to="'/about'">About</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
+                <router-link active :to="'/why-rwanda'">Why Rwanda</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/directory'"
+                <router-link active :to="'/directory'"
                   >Community Directory</router-link
                 >
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/events'">Events</router-link>
+                <router-link active :to="'/events'">Events</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/blog'">Blog</router-link>
+                <router-link active :to="'/blog'">Blog</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link :to="'/find-talent'">Find Talent</router-link>
+                <router-link active :to="'/find-talent'"
+                  >Find Talent</router-link
+                >
+              </li>
+              <li class="list-inline-item">
+                <router-link active :to="'/resources'">Resources</router-link>
               </li>
             </ul>
           </div>
@@ -50,9 +55,6 @@
               </router-link>
             </div>
             <div class="py-2 float-right" v-else>
-              <button class="btn btn-transparent">
-                <img src="@/assets/images/search.svg" alt="Search" />
-              </button>
               <router-link
                 :to="'/login'"
                 class="btn font-weight-bold btn-primary-outline mr-2"
@@ -67,21 +69,28 @@
               </router-link>
             </div>
           </div>
-          <button class="auth-btn" @click="toggleAuthModal">
-            <img class="avatar" src="@/assets/images/user-avatar.svg" />
+          <button
+            v-if="_.isEmpty(profile)"
+            class="auth-btn"
+            @click="toggleAuthModal"
+          >
+            <img class="avatar profile" src="@/assets/images/user-avatar.svg" />
           </button>
+          <router-link class="auth-btn" v-else :to="'/dashboard'">
+            <img class="avatar profile" src="@/assets/images/user-avatar.svg" />
+          </router-link>
         </div>
       </div>
     </div>
     <!-- Sidebar -->
     <div class="wrap-sidebar" v-if="isSidebarOpen">
       <button class="close" @click="isSidebarOpen = false">
-       <i class="icon-times" />
+        <i class="icon-times" />
       </button>
       <div class="sidebar-nav mt-5">
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
-            <router-link :to="'/'">About</router-link>
+            <router-link :to="'/about'">About</router-link>
           </li>
           <li class="list-group-item">
             <router-link :to="'/why-rwanda'">Why Rwanda</router-link>
@@ -98,34 +107,45 @@
           <li class="list-group-item">
             <router-link :to="'/find-talent'">Find Talents</router-link>
           </li>
-          <li class="list-group-item">
-            <router-link :to="'/search'">Search</router-link>
+          <li class="list-inline-item">
+            <router-link active :to="'/resources'">Resources</router-link>
           </li>
         </ul>
       </div>
     </div>
     <!-- AuthButtonModal -->
-    <div class="wrap-auth-modal" v-if="isAuthModelOpen">
-      <div class="auth-modal">
-        <button class="close" @click="isAuthModelOpen = false">
-          <i class="icon"  />
-        </button>
-        <div class="auth-wrap-btns mb-4">
-          <button
-            class="btn btn-block font-weight-bold btn-primary-outline mr-2"
-          >
-            Login
-          </button>
-          <button class="btn btn-block font-weight-bold btn-primary mt-4">
-            Join The Community
-          </button>
-        </div>
+    <modal
+      name="openJoin"
+      :adaptive="true"
+      :scrollable="true"
+      :height="250"
+      :width="420"
+    >
+      <button type="button" @click.prevent="closeModal" class="close">
+        <img src="@/assets/images/close.png" />
+      </button>
+      <div class="auth-wrap-btns py-5 my-3">
+        <router-link
+          :to="'/login'"
+          class="btn btn-block font-weight-bold btn-primary-outline mr-2"
+        >
+          Login
+        </router-link>
+        <router-link
+          :to="'/join'"
+          class="btn btn-block font-weight-bold btn-primary mt-4"
+        >
+          Join The Community
+        </router-link>
       </div>
-    </div>
+    </modal>
   </div>
 </template>
 
 <script>
+import Vue from "vue";
+import VModal from "vue-js-modal";
+Vue.use(VModal);
 export default {
   data() {
     return {
@@ -133,13 +153,15 @@ export default {
       isAuthModelOpen: false,
     };
   },
-
   methods: {
     toggleMenu() {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
     toggleAuthModal() {
-      this.isAuthModelOpen = !this.isAuthModelOpen;
+      this.$modal.show("openJoin");
+    },
+    closeModal() {
+      this.$modal.hide("openJoin");
     },
   },
 };
@@ -149,37 +171,87 @@ export default {
 <style scoped>
 .wrap-header {
   position: relative;
+  z-index: 120000;
 }
 
-@media (min-width: 1025px) {
-  .main-logo {
-    max-width: 220px;
-  }
-  .wrap-middle-header {
-    display: grid;
-    grid-template-areas: "wrap-logo wrap-main-nav wrap-hotlinks";
-    grid-template-columns: 1fr 3fr 2fr;
-    grid-gap: 20px;
-    height: auto;
-  }
+.wrap-middle-header {
+  display: flex;
+  height: auto;
+}
+@media (min-width: 1241px) {
   .wrap-logo {
-    grid-area: wrap-logo;
-    max-width: 220px;
+    width: 200px;
   }
   .main-logo {
-    margin: 4px 0;
+    max-width: 200px;
+    margin: 10px 0;
     position: relative;
   }
-  .wrap-main-nav {
-    grid-area: wrap-main-nav;
-  }
   .wrap-hotlinks {
-    grid-area: wrap-hotlinks;
+    width: 300px;
     padding: 5px 0;
+  }
+  .wrap-main-nav {
+    width: -webkit-calc(100% - 470px);
+    width: -moz-calc(100% - 470px);
+    width: calc(100% - 470px);
   }
   .sidebar-btn,
   .auth-btn {
     display: none;
+  }
+  .list-inline-item {
+    margin: 0 !important;
+  }
+  .wrap-main-nav a {
+    font-size: 13px;
+    padding: 0 0px;
+    font-weight: 100;
+  }
+  .wrap-hotlinks .btn {
+    padding: 12px 20px !important;
+    font-size: 12px;
+    margin: 8px 5px !important;
+  }
+  .sidebar-btn,
+  .auth-btn {
+    display: none;
+  }
+}
+@media screen and (min-width: 1024px) and (max-width: 1240px) {
+  .wrap-logo {
+    width: 150px;
+  }
+  .main-logo {
+    max-width: 150px;
+    margin: 10px 0;
+    position: relative;
+  }
+  .wrap-hotlinks {
+    width: 240px;
+    padding: 5px 0;
+  }
+  .wrap-main-nav {
+    width: -webkit-calc(100% - 380px);
+    width: -moz-calc(100% - 380px);
+    width: calc(100% - 380px);
+  }
+  .sidebar-btn,
+  .auth-btn {
+    display: none;
+  }
+  .list-inline-item {
+    margin: 0 !important;
+  }
+  .wrap-main-nav a {
+    font-size: 13px;
+    padding: 0 0px;
+    font-weight: 100;
+  }
+  .wrap-hotlinks .btn {
+    padding: 8px 12px !important;
+    font-size: 12px;
+    margin: 8px 2px !important;
   }
 }
 @media (max-width: 1024px) {
@@ -212,8 +284,13 @@ export default {
   }
 }
 .sidebar-btn img,
-.auth-btn img {
+.auth-btn img.menu {
   width: 26px;
+}
+.auth-btn img.profile {
+  width: 42px;
+  margin-top: 10px;
+  border: 1p solid red;
 }
 
 .main-logo img {
@@ -228,6 +305,18 @@ export default {
   font-size: 15px;
   padding: 0 8px;
   font-weight: 100;
+}
+.wrap-main-nav a.router-link-active {
+  position: relative;
+}
+.wrap-main-nav a.router-link-active::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 4px;
+  background: #00aeef;
+  bottom: -50px;
+  left: 0;
 }
 .wrap-sidebar {
   background: #ffffff;

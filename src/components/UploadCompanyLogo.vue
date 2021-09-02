@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Update company logo</h3>
+    <h3 class="p-4">Update company logo</h3>
     <div class="px-4 py-2">
       <div class="wrap-modal" style="max-height: 420px; overflow: scroll">
         <img
@@ -11,7 +11,7 @@
         />
         <img
           v-if="company && !company.logo && !selectedFile"
-          src="@/assets/images/logo_placeholder.svg"
+          src="@/assets/images/logo_placeholder.png"
           :alt="company.coName"
           class="current-logo"
         />
@@ -108,7 +108,6 @@ export default {
           )
           .then((response) => {
             // update company information
-            console.log("upl;oad", response.data);
             const img_url = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
             this.companyInfo.logo = img_url;
             AxiosHelper.patch(

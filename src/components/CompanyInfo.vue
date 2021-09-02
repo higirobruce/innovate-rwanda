@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">
+    <h3 class="p-4">
       Company:
       <span v-if="company && Object.keys(company).length">{{
         company.company.coName
@@ -57,21 +57,15 @@
             </div>
             <div class="info-separator">&nbsp;</div>
             <div class="company-info">
-              <div>Areas of Interests</div>
+              <div>Business activitivies</div>
               <div class="my-3">
-                <div class="co-badge">Business consulting</div>
-
-                <div class="co-badge">
-                  Communications &amp; Public Relations
-                </div>
-                <div class="co-badge">Mentoring</div>
+                -
               </div>
             </div>
             <div class="info-separator">&nbsp;</div>
             <div class="company-info">
               <div>
-                Customer base:
-                <span class="text-blue-dark">Business to Business</span>
+                Client base:
               </div>
             </div>
           </div>
@@ -145,7 +139,7 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyB4BlTNmRI2uk50yZ-QLat92Vb08U_WNhE",
+    key: "AIzaSyBOcgzwN-u8KLJ2JHeeJON8St0jAkD2u_8",
     libraries: "places",
   },
 });
@@ -195,16 +189,13 @@ export default {
         };
       }
       AxiosHelper.put("company/approve-decline", data)
-        .then((res) => {
-          console.log("res", res)
+        .then(() => {
           Vue.$toast.open({
             message:
               "Company' status has been updated. We are updating company's directory",
             type: "success",
           });
-          // setTimeout(() => {
-          //   this.$router.go();
-          // }, 2000);
+          // reload dir
         })
         .catch(() => {
           Vue.$toast.open({

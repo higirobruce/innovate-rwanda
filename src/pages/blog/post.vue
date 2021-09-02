@@ -3,17 +3,20 @@
     <component :is="layout">
       <PageHeaderSm
         image="bg-why.png"
-        rgba="rgba(212, 121, 2, 0.7)"
+        rgba="rgba(4, 137, 187, 0.83)"
         title="Blog"
       />
-      <div class="container" v-if="post">
+      <div
+        class="container"
+        v-if="loaded && post && post.status === 'approved'"
+      >
         <div class="head-post">
           <h1 class="text-blue-dark font-weight-bold">
             {{ post.title }}
           </h1>
           <div>
             <span class="text-blue">
-              {{ post.author }}
+              {{ post.User.lastName }} {{ post.User.firstName }}
             </span>
             <br />
             {{ post.createdAt | date("DD MMM YYYY") }}
@@ -27,11 +30,32 @@
             class="current-logo"
           />
         </div>
-        <div class="wrap-post-content" :inner-html.prop="post.content"></div>
+
+        <div
+          class="wrap-post-content"
+          v-if="post.content"
+          v-html="previewText"
+        ></div>
+
+        <div>
+          <div
+            class="co-badge"
+            v-for="(act, index) in post.AudienceForPosts"
+            :key="index"
+          >
+            <span v-if="act.BusinessActivity && act.BusinessActivity.name">
+              {{ act.BusinessActivity.name }}
+            </span>
+          </div>
+        </div>
         <div class="more-posts">
           <router-link :to="'/blog'">More Posts</router-link>
         </div>
       </div>
+      <div
+        v-if="loaded && post && post.status !== 'approved'"
+        class="not-found"
+      ></div>
     </component>
   </div>
 </template>
@@ -39,6 +63,7 @@
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
 import PageHeaderSm from "@/components/PageHeaderSm";
+let marked = require("marked");
 export default {
   name: "blog-post",
   components: {
@@ -67,14 +92,29 @@ export default {
     layout() {
       return this.$route.meta.layout;
     },
+    previewText() {
+      marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: true,
+        smartLists: true,
+        smartypants: false,
+      });
+      return marked(this.post.content);
+    },
   },
 };
 </script>
 
 <style scoped>
+.container {
+  max-width: 1280px;
+}
 .head-post {
   margin: 0 auto;
-  max-width: 1280px;
   display: block;
 }
 .head-post h1 {
@@ -83,19 +123,10 @@ export default {
 .wrap-post-image {
   margin: 30px auto 0 auto;
   width: 100%;
-  max-width: 1400px;
   display: block;
 }
 .wrap-post-image img {
   width: 100%;
-}
-.wrap-post-content {
-  margin: 30px auto 0 auto;
-  width: 100%;
-  max-width: 1280px;
-  display: block;
-  text-align: left;
-  padding: 30px 0;
 }
 .more-posts {
   margin: 25px 0;

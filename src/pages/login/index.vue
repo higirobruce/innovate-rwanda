@@ -10,54 +10,66 @@
             />
           </router-link>
         </div>
-        <h2 class="text-center mb-4">Login</h2>
-        <div
-          v-if="!logging && !success && unauthorized"
-          class="my-3 alert alert-danger"
-          role="alert"
-        >
-          Invalid email or password
-        </div>
-        <div class="register-form">
-          <form @submit="login">
-            <div class="row mt-4">
-              <div class="col-12">
-                <div class="form-group">
-                  <input
-                    v-model.trim="$v.user.email.$model"
-                    type="email"
-                    class="form-control custom-input"
-                    placeholder="Email"
-                  />
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="form-group">
-                  <input
-                    type="password"
-                    v-model.trim="$v.user.password.$model"
-                    class="form-control custom-input"
-                    placeholder="Password"
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <button
-                :disabled="$v.$invalid"
-                class="btn font-weight-bold btn-primary btn-lg btn-block shadow"
-              >
-                Login
-              </button>
-            </div>
-            <div>
-              <Loading v-if="logging && !success" />
-            </div>
-          </form>
-          <div class="clear"></div>
-          <div class="py-3 text-center">
-            <router-link :to="'/forgot-password'">Forgot password?</router-link>
+        <div v-if="_.isEmpty(profile)">
+          <h2 class="text-center mb-4">Login</h2>
+          <div
+            v-if="!logging && !success && unauthorized"
+            class="my-3 alert alert-danger"
+            role="alert"
+          >
+            Invalid email or password
           </div>
+          <div class="register-form">
+            <form @submit="login">
+              <div class="row mt-4">
+                <div class="col-12">
+                  <div class="form-group">
+                    <input
+                      v-model.trim="$v.user.email.$model"
+                      type="email"
+                      class="form-control custom-input"
+                      placeholder="Email"
+                    />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <input
+                      type="password"
+                      v-model.trim="$v.user.password.$model"
+                      class="form-control custom-input"
+                      placeholder="Password"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button
+                  :disabled="$v.$invalid"
+                  class="btn font-weight-bold btn-primary btn-lg btn-block shadow"
+                >
+                  Login
+                </button>
+              </div>
+              <div>
+                <Loading v-if="logging && !success" />
+              </div>
+            </form>
+            <div class="clear"></div>
+            <div class="py-3 text-center">
+              <router-link :to="'/forgot-password'"
+                >Forgot password?</router-link
+              >
+            </div>
+          </div>
+        </div>
+        <div v-else class="text-center py-5 my-5">
+          <h1 class="h3">You are already logged in.<br /></h1>
+          <router-link
+            class="my-3 btn btn-lg font-weight-bold btn-primary-outline"
+            :to="'/dashboard'"
+            >Go to dashboard</router-link
+          >
         </div>
       </div>
     </div>
@@ -112,10 +124,11 @@ export default {
           );
           localStorage.setItem("isAuth", true);
           localStorage.setItem("token", response.data.token);
+          // console.log('what?', localStorage.getItem('token'))
+          // window.location.href = '/dashboard';
           this.$router.push("/dashboard");
         })
-        .catch((error) => {
-          console.log("error", error);
+        .catch(() => {
           this.errorMessage = "Something went wrong";
           this.unauthorized = true;
           this.logging = false;
@@ -130,6 +143,11 @@ export default {
       password: {
         required,
         minLength: minLength(6),
+      },
+    },
+    subscribe: {
+      email: {
+        email,
       },
     },
   },

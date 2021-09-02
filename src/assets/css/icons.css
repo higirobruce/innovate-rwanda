@@ -71,9 +71,6 @@
 .icon-twitter:before {
   content: "\6c";
 }
-.icon-instagrem:before {
-  content: "\6d";
-}
 .icon-linkedin-alt:before {
   content: "\6e";
 }
@@ -88,4 +85,16 @@
 }
 .icon-comment:before {
   content: "\66";
+}
+.icon-envelope:before {
+  content: "\72";
+}
+.icon-file:before {
+  content: "\73";
+}
+.icon-company:before {
+  content: "\75";
+}
+.icon-instagram:before {
+  content: "\74";
 }

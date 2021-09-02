@@ -11,35 +11,47 @@
             >Cancel</router-link
           >
           <button
-            @click="saveAsDraft('draft')"
-            :disabled="post.title === ''"
+            @click="updateArticle"
             class="btn font-weight-bold btn-primary-outline ml-3"
           >
-            Save as draft
+            Update
           </button>
           <button
-            @click="publishArticle('pending')"
-            :disabled="
-              post.title === '' || post.category === '' || post.content === ''
-            "
+            v-if="post.status === 'pending' || post.status === 'draft'"
+            @click="publishArticle"
             class="btn font-weight-bold btn-success-outline ml-3"
           >
             Publish
           </button>
+          <button
+            v-if="post.status === 'approved'"
+            @click="unpublishArticle"
+            class="btn font-weight-bold btn-danger-outline ml-3"
+          >
+            Unpublish
+          </button>
         </div>
+        <div class="clear" />
+        <br />
       </div>
       <div class="dash-container">
-        <div v-if="profile.role === 'normal'">
+        <div
+          v-if="
+            profile.role === 'normal' ||
+            profile.role === 'admin-blog' ||
+            profile.role === 'super-admin'
+          "
+        >
           <h4 class="h5">
             <router-link :to="'/dashboard/content'" class="btn btn-back">
               <i class="icon-arrow-left" />
               <span class="ml-3"> Back </span>
             </router-link>
             <span class="text-blue-dark font-weight-bold">
-              {{ post.title }}
+              {{ post.title | truncate(65) }}
             </span>
           </h4>
-          <div class="alert alert-info" v-if="!created && editing">
+          <div class="alert alert-info" v-if="editing">
             Wait, we are editing your content...
           </div>
           <div class="alert alert-success" v-if="created && !uploading">
@@ -57,41 +69,54 @@
                   placeholder="Post Title"
                 />
               </div>
+
+              <div class="alert alert-info" v-if="_.size(post.title) > 65">
+                We are recommend short titles. Preferably not more thatn 65
+                characters
+              </div>
               <div class="form-group">
-                <vue-editor
-                  :editorToolbar="toobar"
-                  v-model="post.content"
-                  :editorOptions="editorSettings"
-                ></vue-editor>
+                <div class="form-group">
+                  <textarea
+                    style="height: auto"
+                    rows="16"
+                    class="form-control"
+                    v-model="post.content"
+                  ></textarea>
+                </div>
               </div>
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
               <div class="content-form-sidebar">
-                <h3 class="h6">Category</h3>
-                <div class="h4 mb-4">
-                  {{ post.category }}
+                <h3 class="h6">Which group are you trying to reach?</h3>
+                <div
+                  class="co-badge"
+                  v-for="(act, index) in post.AudienceForPosts"
+                  :key="index"
+                >
+                  <span
+                    v-if="act.BusinessActivity && act.BusinessActivity.name"
+                  >
+                    {{ act.BusinessActivity.name }}
+                  </span>
+                  <button
+                    v-if="act.BusinessActivity && act.BusinessActivity.name"
+                    @click.prevent="removeActivityFromPost(act.activity)"
+                  >
+                    <img src="@/assets/images/remove.png" />
+                  </button>
                 </div>
-                <h3 class="h6">Tags</h3>
-                <vue-tags-input
-                  v-model="tag"
-                  :tags="tags"
-                  @tags-changed="(newTags) => (tags = newTags)"
-                />
-                <div class="form-group" v-if="showOtherCategoryInput">
-                  <h3 class="h6 my-3">Specify other category</h3>
-                  <input
-                    class="form-control custom-input"
-                    v-model="post.category"
-                    type="text"
-                    placeholder="Type category..."
-                  />
-                </div>
+                <a @click="updateActivities" class="btn btn-transparent px-1">
+                  Add
+                </a>
                 <h3 class="h6 my-3">Featured Image</h3>
-                <button class="btn btn-block" @click="$refs.FileInput.click()">
+                <button
+                  class="btn btn-block select-image"
+                  @click="$refs.FileInput.click()"
+                >
                   <span v-if="post.image"> Change image </span>
                   <span v-else> Select image </span>
                 </button>
-                <div class="image my-3" v-if="!selectedFile">
+                <div class="image my-3" v-if="!selectedFile && post.image">
                   <img
                     :src="`${IMAGE_URL}c_fill,g_center,w_440,h_220/${post.image}`"
                     :alt="post.title"
@@ -115,6 +140,56 @@
               </div>
             </div>
           </div>
+
+          <!-- Update activities -->
+          <modal
+            name="openEditBusinessActivies"
+            :adaptive="true"
+            :scrollable="true"
+            :height="660"
+            :width="550"
+          >
+            <button type="button" @click.prevent="closeModal" class="close">
+              <img src="@/assets/images/close.png" />
+            </button>
+            <h3 class="p-4">Business activities</h3>
+            <div class="px-4">
+              <div
+                class="wrap-modal"
+                style="max-height: 500px; overflow: scroll"
+              >
+                <div class="row mt-1">
+                  <div class="col-12" v-if="listOfBusinessActivities">
+                    <div
+                      v-for="(a, index) in listOfBusinessActivities"
+                      :key="index"
+                    >
+                      <div class="s-one-activity">
+                        {{ a.name }}
+                        <button
+                          @click.prevent="addActivityToPost(a.id, a.name)"
+                          type="button"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-1">
+                <span class="float-right">
+                  <button
+                    type="button"
+                    @click.prevent="closeModal"
+                    class="btn btn-gray-outline mr-2"
+                  >
+                    Close
+                  </button>
+                </span>
+              </div>
+            </div>
+          </modal>
         </div>
         <div v-else class="not-allowed"></div>
       </div>
@@ -129,20 +204,21 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
-import categories from "@/data/blogCategories.js";
-import VueTagsInput from "@johmun/vue-tags-input";
 import { VueEditor } from "vue2-editor";
+let marked = require("marked");
+import VModal from "vue-js-modal";
+Vue.use(VModal);
 
 export default {
-  name: "write-blog",
+  name: "edit-blog",
   components: {
     MenuContent,
     VueCropper,
-    VueTagsInput,
     VueEditor,
   },
   data() {
     return {
+      slug: "",
       post: {
         id: "",
         title: "",
@@ -151,7 +227,6 @@ export default {
         image: "",
         status: "pending",
         author: "",
-        category: "",
       },
       toobar: [["bold", "italic", "underline"]],
       editorSettings: {
@@ -161,9 +236,6 @@ export default {
           },
         },
       },
-      tags: [],
-      tag: "",
-      categories: [],
       mime_type: "",
       cropedImage: "",
       autoCrop: false,
@@ -176,61 +248,108 @@ export default {
       created: false,
       editing: false,
       imageUpdated: false,
-      showOtherCategoryInput: false,
+      listOfBusinessActivities: [],
+      message: "",
     };
   },
-  created() {
-    const slug = this.$route.params.slug;
-    AxiosHelper.get(`blog/info/${slug}`)
+  beforeCreate() {
+    // loading business activities
+    AxiosHelper.get("business-activities")
       .then((response) => {
-        this.post = response.data.result;
-        this.loaded = true;
-        JSON.parse(this.post.tags).map((value) => {
-          this.tags.push({ text: value });
-        });
+        this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {
-        this.loading = false;
-        this.loaded = true;
-      });
+      .catch(() => {});
   },
-  mounted() {
-    this.categories = categories;
+  created() {
+    this.slug = this.$route.params.slug;
+    this.loadPost();
   },
   methods: {
-    convertTags(obj) {
-      console.log(obj);
-      return true;
+    // load post
+    loadPost() {
+      AxiosHelper.get(`blog/info/${this.slug}`)
+        .then((response) => {
+          this.post = response.data.result;
+          this.loaded = true;
+          JSON.parse(this.post.tags).map((value) => {
+            this.tags.push({ text: value });
+          });
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+        });
     },
-    changeCategory(e) {
-      if (e.target.value === "other") {
-        this.showOtherCategoryInput = true;
-        this.post.category = "";
-      } else {
-        this.showOtherCategoryInput = false;
-        this.post.category = e.target.value;
-      }
+    addActivityToPost(id, name) {
+      const data = {
+        post: this.post.id,
+        activity: id,
+        type: "blog",
+      };
+      AxiosHelper.post("post/add-activity", data)
+        .then(() => {
+          this.loadPost();
+          Vue.$toast.open({
+            message: `"${name}" activity have been added successfully`,
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          if (error.response.status === 409) {
+            Vue.$toast.open({
+              message: "Activity has been already added",
+              type: "warning",
+            });
+          } else {
+            Vue.$toast.open({
+              message: "Sorry, something went wrong. Try again later",
+              type: "error",
+            });
+          }
+        });
     },
-    publishArticle(status) {
+    removeActivityFromPost(id) {
+      AxiosHelper.delete(
+        `post/remove-activity?post=${this.post.id}&activity=${id}&type=blog`
+      )
+        .then(() => {
+          this.loadPost();
+          Vue.$toast.open({
+            message: `Activity has been removed successfully`,
+            type: "success",
+          });
+        })
+        .catch(() => {
+          Vue.$toast.open({
+            message: "Sorry, something went wrong. Try again later",
+            type: "error",
+          });
+        });
+    },
+    updateArticle() {
+      const status = this.post.status;
       this.editing = true;
       this.savePost(status);
+      this.message = "Blog has been updated successfully";
     },
-    saveAsDraft(status) {
+    publishArticle() {
+      const status = "pending";
       this.editing = true;
       this.savePost(status);
+      this.message =
+        "Blog has been submitted. It will be published after review";
+    },
+    unpublishArticle() {
+      const status = "draft";
+      this.editing = true;
+      this.savePost(status);
+      this.message =
+        "Blog has been marked as draft. If you want to published again, please reflesh the page and click on publish";
     },
     savePost(status) {
       this.post.status = status;
       this.uploading = true;
       this.created = false;
-      // convert tags
-      let getTags = [];
-      if (this.tags) {
-        for (const value of this.tags) {
-          getTags = [...getTags, value.text];
-        }
-        this.post.tags = JSON.stringify(getTags);
-      }
       if (this.selectedFile) {
         this.uploading = false;
         this.uploadImage();
@@ -238,12 +357,18 @@ export default {
         this.submitPostNow();
       }
     },
+    updateActivities() {
+      this.$modal.show("openEditBusinessActivies");
+    },
+    closeModal() {
+      this.$modal.hide("openEditBusinessActivies");
+    },
     submitPostNow() {
       AxiosHelper.patch(`blog/edit/${this.post.id}`, this.post)
         .then(() => {
           this.created = true;
           Vue.$toast.open({
-            message: "Blog has been created successfully",
+            message: this.message,
             type: "success",
           });
         })
@@ -308,6 +433,19 @@ export default {
     layout() {
       return this.$route.meta.layout;
     },
+    previewText() {
+      marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: true,
+        smartLists: true,
+        smartypants: false,
+      });
+      return marked(this.post.content);
+    },
   },
 };
 </script>
@@ -316,11 +454,6 @@ export default {
 .content-form-sidebar {
   background: #f0f2f8;
   padding: 25px;
-  border-radius: 3px;
-}
-.content-form-sidebar button {
-  border: 1px solid #5e7c8d;
-  background: #f0f2f8;
   border-radius: 3px;
 }
 </style>

@@ -1,20 +1,69 @@
 <template>
   <div class="wrap-dash-header">
     <ul class="list-inline my-2 mr-4 py-1 float-right">
-      <li class="list-inline-item px-1">
-        <router-link class="dash-header-btn" :to="'/dashboard/messages'">
-          <img src="@/assets/images/message.svg" />
+      <li class="list-inline-item px-1 position-relative">
+        <router-link
+          class="dash-header-btn dash-notification-badge"
+          :to="'/dashboard/messages'"
+        >
+          <img src="@/assets/images/message.png" />
+          <span
+            class="notification-badge"
+            v-if="number && number.newMessages > 0"
+          >
+            {{ number && number.newMessages }}
+          </span>
         </router-link>
       </li>
-      <li class="list-inline-item px-1">
-        <router-link class="dash-header-btn" :to="'/dashboard/notifications'">
-          <img src="@/assets/images/notification.svg" />
-        </router-link>
+      <li class="list-inline-item px-1 position-relative">
+        <button
+          class="dash-header-btn dash-notification-badge"
+          @click.prevent="toggleNotifications"
+        >
+          <img src="@/assets/images/notification.png" />
+          <span
+            class="notification-badge"
+            v-if="number && number.newNotifications > 0"
+          >
+            {{ number.newNotifications }}
+          </span>
+        </button>
+        <div
+          v-if="showNotifications"
+          v-on-clickaway="hideNotifications"
+          class="wrap-notifications shadow position-absolute"
+        >
+          <ul class="list-group">
+            <li class="list-group-item active">Notifications</li>
+            <li
+              class="list-group-item one-notification position-relative"
+              v-for="(notification, index) in notifications.slice(0, 20)"
+              :key="index"
+            >
+              <span class="date">
+                {{ notification.createdAt | date("YYYY.MM.DD") }}
+              </span>
+              <div class="noti-subject">
+                {{ notification.subject }}
+              </div>
+              <div class="noti-content">
+                {{ notification.content | truncate(70) }}
+              </div>
+            </li>
+            <li class="list-group-item text-center">
+              <router-link
+                class="text-blue-dark"
+                :to="'/dashboard/notifications'"
+                >See all notifications</router-link
+              >
+            </li>
+          </ul>
+        </div>
       </li>
       <li class="list-inline-item px-1 position-relative">
         <button class="dash-header-user" @click="toggleUserDropDown">
           <div class="image avatar">
-            <img src="@/assets/images/user-avatar.svg" />
+            <img src="@/assets/images/user-avatar.png" />
           </div>
         </button>
         <div
@@ -41,14 +90,32 @@
 </template>
 
 <script>
+import AxiosHelper from "@/helpers/AxiosHelper";
 import { mixin as clickaway } from "vue-clickaway";
+import { EventBus } from "@/helpers/event-bus.js";
 export default {
   mixins: [clickaway],
   name: "dashboard-header",
   data() {
     return {
       isUserDropdownOn: false,
+      notifications: [],
+      showNotifications: false,
+      number: {},
     };
+  },
+  create() {
+    EventBus.$on("reload-notification-number", () => {
+      this.checkNoficationsNumber();
+    });
+  },
+  mounted() {
+    this.profile &&
+      this.profile.companyId &&
+      AxiosHelper.get("notification/company").then((response) => {
+        this.notifications = response.data.result;
+      });
+    this.checkNoficationsNumber();
   },
   methods: {
     hideUserDropDown() {
@@ -56,6 +123,31 @@ export default {
     },
     toggleUserDropDown() {
       this.isUserDropdownOn = !this.isUserDropdownOn;
+    },
+    toggleNotifications() {
+      this.showNotifications = !this.showNotifications;
+      let notificationsToMarkAsRead = [];
+      this.notifications.map((e) => {
+        if (e.firstread === null) {
+          notificationsToMarkAsRead = [...notificationsToMarkAsRead, e.id];
+        }
+      });
+      const data = {
+        notifications: notificationsToMarkAsRead.toString(),
+      };
+      AxiosHelper.put("notification/read", data).then(() => {
+        this.checkNoficationsNumber();
+      });
+    },
+    hideNotifications() {
+      this.showNotifications = false;
+    },
+    checkNoficationsNumber() {
+      AxiosHelper.get("countsNew")
+        .then((res) => {
+          this.number = res.data.result;
+        })
+        .catch(() => {});
     },
     logout() {
       localStorage.removeItem("profile");
@@ -72,6 +164,9 @@ export default {
   width: 100%;
   background: #f0f2f8;
   height: 60px;
+}
+.dash-header-btn {
+  border: 0;
 }
 .dash-header-btn img {
   width: 26px;
@@ -90,5 +185,51 @@ export default {
   width: 280px;
   z-index: 100000;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.dash-notification-badge {
+  position: relative;
+  background: none;
+}
+.wrap-notifications {
+  max-height: 600px;
+  overflow-y: auto;
+}
+.notification-badge {
+  position: absolute;
+  top: 3px;
+  right: -14px;
+  font-size: 12px;
+  padding-top: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #aa1f1f;
+  color: #fff;
+  text-align: center;
+}
+.date {
+  position: absolute;
+  top: 13px;
+  right: 10px;
+  font-size: 14px;
+  color: #a5a5a5;
+}
+.list-group-item.active {
+  background: #06adef;
+  border: none;
+}
+.noti-subject {
+  color: #565656;
+  font-size: 16px;
+  width: 80%;
+}
+.noti-content {
+  color: #a5a5a5;
+  font-size: 14px;
+}
+.one-notification {
+  margin: 10px 15px 10px 15px;
+  border: none;
+  background: #f0f2f8;
 }
 </style>

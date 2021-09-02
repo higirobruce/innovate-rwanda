@@ -1,5 +1,7 @@
 import Vue from "vue";
 
+const { VUE_APP_FILE_URL } = process.env;
+
 Vue.mixin({
   computed: {
     profile() {
@@ -9,6 +11,9 @@ Vue.mixin({
     },
     IMAGE_URL() {
       return "https://res.cloudinary.com/dbvxqoznr/image/upload/";
+    },
+    FILE_URL() {
+      return VUE_APP_FILE_URL;
     },
   },
 });

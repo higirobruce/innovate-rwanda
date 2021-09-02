@@ -1,35 +1,8 @@
 <template>
   <div class="bg-white">
     <component :is="layout">
+      <Welcome />
       <div class="container">
-        <!-- welcome to innovate -->
-        <div class="welcome-screen text-sm-center text-md-center text-lg-left">
-          <div class="welcome-info">
-            <h1 class="text-blue-dark mb-4">
-              Bringing Rwanda's Innovation Community Together
-            </h1>
-            <button
-              class="btn btn-lg font-weight-bold btn-primary-outline mt-3 mr-lg-5 mt-3"
-            >
-              Join the community
-            </button>
-            <button
-              class="btn btn-lg font-weight-bold btn-secondary-outline mt-3"
-            >
-              Learn more
-            </button>
-            <div class="clear"></div>
-            <div class="home-search my-4">
-              <input type="text" placeholder="Search the directory..." />
-              <button type="email" class="btn btn-transparent">
-                <img src="@/assets/images/search.svg" alt="Search" />
-              </button>
-            </div>
-          </div>
-          <div class="innovate-bg">
-            <img src="@/assets/images/bg-welcome-innovate.png" alt="Innovate" />
-          </div>
-        </div>
         <!-- What we do -->
         <div class="home-about text-center my-4 py-4">
           <h2 class="text-blue-dark py-3">What We Do</h2>
@@ -53,7 +26,7 @@
           <div class="row my-5">
             <div class="col-sm-12 col-md-12 col-lg-4">
               <div class="media px-4 py-5 rounded">
-                <img class="mr-3" src="@/assets/images/join-company.svg" />
+                <img class="mr-3" src="@/assets/images/join-company.png" />
                 <div class="media-body">
                   Profile your company, startup or organization to local and
                   global ecosystem players
@@ -62,7 +35,7 @@
             </div>
             <div class="col-sm-12 col-md-12 col-lg-4">
               <div class="media px-4 py-5 rounded">
-                <img class="mr-3" src="@/assets/images/join-partner.svg" />
+                <img class="mr-3" src="@/assets/images/join-partner.png" />
                 <div class="media-body">
                   Discover partners, various avenues for support, resources and
                   events
@@ -81,36 +54,32 @@
           </div>
         </div>
       </div>
-      <!-- Categories -->
       <div class="home-categories bg-blue-light-1 my-4 py-4">
         <div class="container text-center my-5">
           <h2 class="text-blue-dark font-weight-bold py-3 mb-4">Categories</h2>
-          <div class="wrap-home-categories">
+          <agile v-if="categories && !_.isEmpty(categories)" :options="options">
             <div
-              v-for="(category, index) in categories.slice(
-                startingPoint,
-                endingPoint
-              )"
-              class="one-category"
-              :style="{ borderColor: category.color }"
+              class="slide"
+              v-for="(category, index) in categories"
               :key="index"
             >
-              <img :src="category.icon" :alt="category.name" />
-              <h3>
-                {{ category.name }}
-              </h3>
+              <div class="wrap-cat">
+                <img
+                  v-if="category.image"
+                  :src="`${IMAGE_URL}c_fill,g_center,w_1200/${category.image}`"
+                  :alt="category.name"
+                />
+                <img
+                  v-else
+                  src="@/assets/images/innovate-lamp.png"
+                  :alt="category.name"
+                />
+                <h3>
+                  {{ category.name }}
+                </h3>
+              </div>
             </div>
-            <div class="wrap-dots">
-              <button
-                :class="{ active: selectedPage === 1 }"
-                @click="pageOne(0, 5)"
-              ></button>
-              <button
-                :class="{ active: selectedPage === 2 }"
-                @click="pageTwo(5, 10)"
-              ></button>
-            </div>
-          </div>
+          </agile>
         </div>
       </div>
       <div class="my-4 py-4">
@@ -120,50 +89,71 @@
           <div class="wrap-partners-row-1">
             <div
               class="one-partner"
-              v-for="(num, index) in [0,1,2]"
+              v-for="(num, index) in [0, 1, 2]"
               :key="index"
-              @mouseover="partnerHoverUrl(num)"
-              @mouseout="partnerMouseoutUrl(num)"
             >
-              <img
-                :src="
-                  partnerUrl(
-                    partners[num].isHover
-                      ? partners[num].hover
-                      : partners[num].image
-                  )
-                "
-              />
+              <router-link :to="`redirect/${partners[num].link}`">
+                <img :src="partnerUrl(partners[num].hover)" />
+              </router-link>
             </div>
           </div>
           <div class="wrap-partners-row-1">
-           <div
+            <div
               class="one-partner"
-              v-for="(num, index) in [3,4,5,6]"
+              v-for="(num, index) in [3, 4, 5, 6]"
               :key="index"
               @mouseover="partnerHoverUrl(num)"
               @mouseout="partnerMouseoutUrl(num)"
             >
-              <img
-                :src="
-                  partnerUrl(
-                    partners[num].isHover
-                      ? partners[num].hover
-                      : partners[num].image
-                  )
-                "
-              />
+              <router-link :to="`redirect/${partners[num].link}`">
+                <img :src="partnerUrl(partners[num].hover)" />
+              </router-link>
             </div>
           </div>
 
           <div class="newsletter-divider my-5"></div>
           <div class="wrap-newsletter mt-5">
             <h5 class="h4 text-center">
-              Keep me updated on news, events, and offers from
+              Keep me updated on news, events, and offers from Innovate Rwanda
             </h5>
             <div class="newsletter-form">
-              <input type="email" placeholder="Your email address" />
-              <button type="button">Subscribe</button>
+              <input
+                type="email"
+                name="email"
+                v-model.trim="$v.subscribe.email.$model"
+                placeholder="Your email address"
+              />
+
+              <button
+                :disabled="$v.subscribe.email.$invalid"
+                @click.prevent="subscribeNow"
+                type="button"
+              >
+                <span> Subscribe </span>
+              </button>
+            </div>
+            <div
+              v-if="subscribing && !subscribed"
+              class="spinner-border"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+            <div
+              class="text-success text-center"
+              v-if="!subscribing && subscribed"
+            >
+              Thank you for subscribing to our newsletter
+            </div>
+            <div
+              class="text-danger text-center"
+              v-if="
+                $v.subscribe.email.$dirty &&
+                $v.subscribe.email.$invalid &&
+                !subscribed
+              "
+            >
+              Provide a valid email
             </div>
           </div>
         </div>
@@ -173,71 +163,35 @@
 </template>
 
 <script>
+import Vue from "vue";
+import AxiosHelper from "@/helpers/AxiosHelper";
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
+import { required, email } from "vuelidate/lib/validators";
+import Loading from "@/components/Loading";
+import Welcome from "@/components/Welcome3";
+import { VueAgile } from "vue-agile";
 export default {
   name: "home",
+  components: {
+    Loading,
+    agile: VueAgile,
+    Welcome,
+  },
   data() {
     return {
-      categories: [
-        {
-          name: "Tech companies",
-          icon: require("@/assets/images/cat-companies.svg"),
-          color: "#00AEEF",
-        },
-        {
-          name: "Co-working spaces",
-          icon: require("@/assets/images/cat-space.svg"),
-          color: "#EF8700",
-        },
-        {
-          name: "Business networks",
-          icon: require("@/assets/images/cat-network.svg"),
-          color: "#0066AB",
-        },
-        {
-          name: "Accelerators",
-          icon: require("@/assets/images/cat-accelerator.svg"),
-          color: "#C82027",
-        },
-        {
-          name: "Government agencies",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#009040",
-        },
-        {
-          name: "Ecosystem builders",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#45454",
-        },
-        {
-          name: "Financer/Investors",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#45454",
-        },
-        {
-          name: "Academic/Research institutions",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#45454",
-        },
-        {
-          name: "Incubators",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#45454",
-        },
-        {
-          name: "Talent Development",
-          icon: require("@/assets/images/cat-gov.svg"),
-          color: "#45454",
-        },
-      ],
+      categories: [],
       partners: {
         0: {
           image: "myict-b.png",
           hover: "myict.png",
+          link: "minict.gov.rw",
           isHover: false,
         },
         1: {
           image: "giz-b.png",
           hover: "giz.png",
+          link: "giz.de/en/worldwide/332.html",
           isHover: false,
         },
         2: {
@@ -248,30 +202,85 @@ export default {
         3: {
           image: "dtc-b.png",
           hover: "dtc.png",
+          link: "digicenter.rw",
           isHover: false,
         },
         4: {
           image: "jica-b.png",
           hover: "jica.png",
+          link: "innovation.rw",
           isHover: false,
         },
         5: {
           image: "ict_chamber-b.png",
           hover: "ict_chamber.png",
+          link: "ictchamber.rw",
           isHover: false,
         },
         6: {
           image: "risa-b.png",
           hover: "risa.png",
+          link: "risa.rw",
           isHover: false,
         },
       },
       startingPoint: 0,
       endingPoint: 5,
       selectedPage: 1,
+      subscribe: {
+        email: "",
+        status: "subscribed",
+      },
+      subscribing: false,
+      subscribed: false,
+      query: "",
+      settings: {
+        dots: true,
+        adaptiveHeight: true,
+        arrows: true,
+        edgeFriction: 0.35,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 5,
+        swipeToSlide: true,
+        centerMode: true,
+        centerPadding: "20px",
+      },
+      options: {
+        slidesToShow: 2,
+        navButtons: false,
+        dots: true,
+        autoplaySpeed: 5000,
+        speed: 2500,
+        infinite: true,
+        initialSlide: 0,
+        responsive: [
+          {
+            breakpoint: 740,
+            settings: {
+              slidesToShow: 5,
+            },
+          },
+        ],
+      },
     };
   },
+  created() {
+    AxiosHelper.get("company-categories", this.subscribe).then((response) => {
+      this.categories = response.data.result;
+    });
+  },
   methods: {
+    showPrev() {
+      this.$refs.carousel.prev();
+    },
+    showNext() {
+      this.$refs.carousel.next();
+    },
+    search() {
+      this.$router.push(`/directory/companies?search=${this.query}`);
+    },
     pageOne(start, end) {
       this.startingPoint = start;
       this.endingPoint = end;
@@ -291,10 +300,45 @@ export default {
     partnerMouseoutUrl(index) {
       this.partners[index].isHover = false;
     },
+    subscribeNow() {
+      this.subscribing = true;
+      this.subscribed = false;
+      AxiosHelper.post("subscribe", this.subscribe)
+        .then(() => {
+          this.subscribed = true;
+          this.subscribing = false;
+          this.subscribe = {
+            email: "",
+          };
+        })
+        .catch((error) => {
+          if (error.response.status === 409) {
+            Vue.$toast.open({
+              message: "You have already subscribed",
+              type: "warning",
+            });
+          } else {
+            Vue.$toast.open({
+              message: "Sorry, something went wrong. try again later!",
+              type: "error",
+            });
+          }
+          this.subscribed = false;
+          this.subscribing = false;
+        });
+    },
   },
   computed: {
     layout() {
       return this.$route.meta.layout;
+    },
+  },
+  validations: {
+    subscribe: {
+      email: {
+        email,
+        required,
+      },
     },
   },
 };
@@ -302,98 +346,17 @@ export default {
 
 <style scoped>
 @media (min-width: 1025px) {
-  .welcome-screen {
-    height: 800px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
-  }
-  .innovate-bg {
-    width: 1350px;
-    position: absolute;
-    right: -90px;
-    bottom: 0;
-  }
-  .innovate-bg img {
-    position: relative;
-    right: -10px;
-    width: 100%;
-  }
   .wrap-home-categories {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
   }
-  .one-category {
-    padding: 25px 0 10px 0;
-    border-width: 2px;
-    border-style: solid;
-    width: calc(20% - 20px);
-    border-radius: 3px;
-  }
 }
 @media (max-width: 1024px) {
-  .welcome-screen {
-    text-align: center;
-  }
-  .welcome-info {
-    padding: 35px 0 0 0;
-  }
-  .innovate-bg {
-    width: 100%;
-    position: relative;
-  }
-  .innovate-bg img {
-    position: relative;
-    left: -70px;
-    width: 100%;
-    margin: 0 auto;
-    display: block;
-  }
   .wrap-home-categories {
     display: flex;
     flex-wrap: wrap;
   }
-  .one-category {
-    padding: 25px 0 10px 0;
-    border-width: 2px;
-    margin-bottom: 25px;
-    border-style: solid;
-    width: calc(100%);
-    border-radius: 3px;
-  }
-}
-.welcome-screen {
-  width: 100%;
-}
-.welcome-info {
-  width: 100%;
-  max-width: 900px;
-}
-.home-search {
-  background: #f0f2f8;
-  padding: 3px 6px;
-  width: 100%;
-  max-width: 496px;
-  display: grid;
-  grid-template-areas: "search-input search-button";
-  grid-template-columns: 5fr 1fr;
-  grid-gap: 5px;
-}
-.home-search input {
-  grid-area: search-input;
-  background: transparent;
-  padding: 3px 15px;
-  border: none;
-}
-.home-search input::placeholder {
-  color: #c0c6d8;
-}
-.home-search button {
-  grid-area: search-button;
-  width: 80px;
-  padding: 5px 0;
 }
 .home-about {
   max-width: 920px;
@@ -409,18 +372,6 @@ export default {
   justify-content: flex-start;
 }
 
-.one-category img {
-  display: block;
-  max-width: 90px;
-  margin: 5px auto;
-  height: 100px;
-}
-.one-category h3 {
-  padding: 10px 0;
-  font-size: 23px;
-  font-weight: 700;
-  height: 65px;
-}
 .wrap-partners-row-1 {
   margin: 0 auto;
   max-width: 900px;
@@ -429,6 +380,9 @@ export default {
 .one-partner {
   padding: 15px;
   cursor: pointer;
+}
+.one-partner:hover {
+  opacity: 0.5;
 }
 .one-partner img {
   width: 100%;
@@ -464,6 +418,21 @@ export default {
   padding: 10px 22px;
   font-weight: 800;
   border-radius: 3px;
+}
+@media screen and (max-width: 424px) {
+  .newsletter-form {
+    border: none;
+    display: block;
+  }
+  .newsletter-form input {
+    width: 100%;
+    border: 1px solid #c0c6d8;
+  }
+  .newsletter-form button {
+    float: none;
+    display: block;
+    margin: 5px auto;
+  }
 }
 .newsletter-divider {
   background: #c0c6d8;

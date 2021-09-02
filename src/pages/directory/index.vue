@@ -1,32 +1,34 @@
 <template>
   <div>
     <component :is="layout">
-      <div class="wrap-choose-section">
+      <div class="wrap-choose-section" v-if="!_.isEmpty(types)">
         <h1>Choose a preferred section</h1>
         <div class="row">
-          <div class="col-sm-12 col-lg-6 one-box">
+          <div
+            class="col-sm-12 col-lg-4 col-md-4 one-box"
+            v-for="(type, index) in types"
+            :key="index"
+          >
             <div class="box-image">
-              <img src="@/assets/images/enablers.svg" alt="type" />
+              <img
+                v-if="type.image"
+                :src="`${IMAGE_URL}c_fill,g_center,h_420,w_420/${type.image}`"
+                :alt="type.name"
+              />
+              <img
+                v-else
+                src="@/assets/images/enablers.svg"
+                :alt="type.name"
+              />
             </div>
-            <h3>Ecosystem Enablers</h3>
+            <h3>{{ type.name }}</h3>
             <div>
-              Companies, organizations and service providers working together to
-              foster growth in the Ecosystem
+              {{ type.description }}
             </div>
-            <router-link :to="'/directory/enablers'" class="btn">
-              Discover <i class="icon-arrow-right" /></router-link>
-          </div>
-          <div class="col-sm-12 col-lg-6 one-box">
-            <div class="box-image">
-              <img src="@/assets/images/companies.svg" alt="type" />
-            </div>
-            <h3>Tech Companies</h3>
-            <div>
-              Our community listing of tech and innovation companies in the
-              ecosystem.
-            </div>
-            <router-link :to="'/directory/companies'" class="btn">
-              Discover <i class="icon-arrow-right" /></router-link>
+
+            <router-link :to="`/directory/${type.slug}`" class="btn">
+              Discover <img src="@/assets/images/arrow-right.png"
+            /></router-link>
           </div>
         </div>
       </div>
@@ -36,10 +38,26 @@
 
 
 <script>
+import AxiosHelper from "@/helpers/AxiosHelper";
 export default {
-  name: "enablers",
+  name: "institutions",
   data() {
-    return {};
+    return {
+      types: [],
+    };
+  },
+  created() {
+    this.loadCompanyTypes();
+  },
+  methods: {
+    loadCompanyTypes() {
+      AxiosHelper.get("company-types")
+        .then((response) => {
+          this.types = response.data.result;
+          this.loading = false;
+        })
+        .catch(() => (this.loading = false));
+    },
   },
   computed: {
     layout() {
@@ -51,8 +69,9 @@ export default {
 <style scoped>
 .wrap-choose-section {
   margin: 25px auto 55px auto;
-  max-width: 800px;
+  max-width: 1100px;
 }
+
 .wrap-choose-section h1 {
   color: #00aeef;
   font-size: 48px;
@@ -61,8 +80,9 @@ export default {
 }
 .one-box h3 {
   color: #1b2958;
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 600;
+  min-height: 70px;
 }
 .one-box div {
   height: 80px;
@@ -87,5 +107,40 @@ export default {
   top: 18px;
   right: 25px;
   position: absolute;
+}
+.one-box .btn img {
+  width: 18px;
+  position: absolute;
+  right: 18px;
+  top: 14px;
+}
+
+@media (min-width: 1025px) {
+  .one-box {
+    margin-bottom: 25px;
+    padding: 25px;
+  }
+}
+@media (max-width: 1024px) {
+  .wrap-choose-section {
+    margin: 0 auto 55px auto;
+    padding: 0 30px;
+  }
+  .wrap-choose-section h1 {
+    color: #00aeef;
+    font-size: 48px;
+    margin: 10px 0;
+    padding: 5px 0;
+  }
+  .one-box {
+    margin-bottom: 25px;
+    padding: 25px;
+    background: #ffffff;
+    box-shadow: 0px 17px 36px #1b295814;
+  }
+  .one-box div {
+    height: auto;
+    margin-top: 10px;
+  }
 }
 </style>

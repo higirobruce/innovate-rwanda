@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Create a user</h3>
+    <h3 class="p-4">Create a user</h3>
     <div class="px-4">
       <form @submit="register">
         <div
@@ -102,7 +102,7 @@
             <button
               :disabled="$v.$invalid"
               type="submit"
-              @click="register"
+              @click.prevent="register"
               class="btn btn-success float-right"
             >
               Register new user
@@ -173,7 +173,7 @@ export default {
         },
         {
           name: "Companies",
-          text: "admin-job",
+          text: "admin-company",
         },
       ],
     };
@@ -207,12 +207,22 @@ export default {
             message: `User has been registered successfully, he/she should check the message sent to his/her email!`,
             type: "success",
           });
+          setTimeout(() => {
+            this.$router.go();
+          }, 2000);
         })
-        .catch(() => {
-          Vue.$toast.open({
-            message: "Sorry, something went wrong. try again later!",
-            type: "error",
-          });
+        .catch((error) => {
+           if (error.response.status === 409) {
+            Vue.$toast.open({
+              message: "This account already exists",
+              type: "info",
+            });
+          } else {
+            Vue.$toast.open({
+              message: "Sorry, something went wrong. try again later!",
+              type: "error",
+            });
+          }
         });
       this.closeModal();
     },

@@ -7,31 +7,33 @@
         <div class="wrap-content-head-btns" v-if="profile.role === 'normal'">
           <router-link
             :to="'/dashboard/content'"
-            class="btn font-weight-bol btn-gray-outline"
+            class="btn font-weight-bol btn-gray-outline mr-3"
             >Cancel</router-link
           >
           <button
             @click="saveAsDraft('draft')"
             :disabled="post.title === ''"
-            class="btn font-weight-bold btn-primary-outline ml-3"
+            class="btn font-weight-bold btn-primary-outline mr-3"
           >
             Save as draft
           </button>
           <button
-            @click="publishArticle('pending')"
+            @click="publishAPost('pending')"
             :disabled="
-              post.title === '' || post.category === '' || post.content === ''
+              post.title === '' || post.content === ''
             "
-            class="btn font-weight-bold btn-success-outline ml-3"
+            class="btn font-weight-bold btn-success-outline mr-3"
           >
             Publish
           </button>
         </div>
+        <div class="clear" />
+        <br />
       </div>
       <div class="dash-container">
         <div v-if="profile.role === 'normal'">
           <h4 class="h5">
-            <router-link :to="'/dashboard/content/blog'" class="btn btn-back">
+            <router-link :to="'/dashboard/content'" class="btn btn-back">
               <i class="icon-arrow-left" />
               <span class="ml-3"> Back </span>
             </router-link>
@@ -56,34 +58,16 @@
                 />
               </div>
               <div class="form-group">
-                <vue-editor
-                  :editorToolbar="toobar"
+                <textarea
+                  style="height: auto"
+                  rows="16"
+                  class="form-control"
                   v-model="post.content"
-                  :editorOptions="editorSettings"
-                ></vue-editor>
+                ></textarea>
               </div>
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
               <div class="content-form-sidebar">
-                <h3 class="h6">Category</h3>
-                <div class="form-group">
-                  <select
-                    class="form-control form-control-lg"
-                    name="category"
-                    v-model="post.category"
-                    @change="changeCategory($event)"
-                  >
-                    <option value="" selected disabled>Select category</option>
-                    <option
-                      v-for="(cat, index) in categories"
-                      v-bind:value="cat.name"
-                      :key="index"
-                    >
-                      {{ cat.name }}
-                    </option>
-                    <option value="other">Other category</option>
-                  </select>
-                </div>
                 <div class="form-group" v-if="showOtherCategoryInput">
                   <h3 class="h6">Specify other category</h3>
                   <input
@@ -93,14 +77,27 @@
                     placeholder="Type category..."
                   />
                 </div>
-                <h3 class="h6">Tags</h3>
-                <vue-tags-input
-                  v-model="post.tags"
-                  :tags="tags"
-                  @tags-changed="(newTags) => (tags = newTags)"
-                />
+                <h3 class="h6">Which group are you trying to reach?</h3>
+                <div
+                  class="co-badge"
+                  v-for="(act, index) in selectedBusinessActivities"
+                  :key="index"
+                >
+                  <span>
+                    {{ act.name }}
+                  </span>
+                  <button @click.prevent="removeActivityFromBlog(act.id)">
+                    <img src="@/assets/images/remove.png" />
+                  </button>
+                </div>
+                <a @click="updateActivities" class="btn btn-transparent px-1">
+                  Add
+                </a>
                 <h3 class="h6">Featured Image</h3>
-                <button class="btn btn-block" @click="$refs.FileInput.click()">
+                <button
+                  class="btn btn-block select-image"
+                  @click="$refs.FileInput.click()"
+                >
                   Select image
                 </button>
                 <div class="my-3">
@@ -121,6 +118,56 @@
               </div>
             </div>
           </div>
+          <!-- Update activities -->
+          <modal
+            name="openEditBusinessActivies"
+            :adaptive="true"
+            :scrollable="true"
+            :height="660"
+            :width="550"
+          >
+
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
+            <h3 class="p-4">Business activities</h3>
+            <div class="px-4">
+              <div
+                class="wrap-modal"
+                style="max-height: 500px; overflow: scroll"
+              >
+                <div class="row mt-1">
+                  <div class="col-12" v-if="listOfBusinessActivities">
+                    <div
+                      v-for="(a, index) in listOfBusinessActivities"
+                      :key="index"
+                    >
+                      <div class="s-one-activity">
+                        {{ a.name }}
+                        <button
+                          @click.prevent="addActivityToCompany(a, a.id)"
+                          type="button"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-1">
+                <span class="float-right">
+                  <button
+                    type="button"
+                    @click.prevent="closeModal"
+                    class="btn btn-gray-outline mr-2"
+                  >
+                    Close
+                  </button>
+                </span>
+              </div>
+            </div>
+          </modal>
         </div>
         <div v-else class="not-allowed"></div>
       </div>
@@ -136,16 +183,16 @@ import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
 import categories from "@/data/blogCategories.js";
-import VueTagsInput from "@johmun/vue-tags-input";
-import { VueEditor } from "vue2-editor";
+import VModal from "vue-js-modal";
+Vue.use(VModal);
+
+let marked = require("marked");
 
 export default {
   name: "write-blog",
   components: {
     MenuContent,
     VueCropper,
-    VueTagsInput,
-    VueEditor,
   },
   data() {
     return {
@@ -158,15 +205,9 @@ export default {
         author: "",
         category: "",
       },
-      toobar: [["bold", "italic", "underline"]],
-      editorSettings: {
-        modules: {
-          clipboard: {
-            matchVisual: false,
-          },
-        },
-      },
-      tags: [],
+      listOfBusinessActivities: "",
+      selectedBusinessActivities: [],
+      activities: [],
       categories: [],
       mime_type: "",
       cropedImage: "",
@@ -181,9 +222,16 @@ export default {
       showOtherCategoryInput: false,
     };
   },
+  beforeCreate() {
+    // loading business activities
+    AxiosHelper.get("business-activities")
+      .then((response) => {
+        this.listOfBusinessActivities = response.data.result;
+      })
+      .catch(() => {});
+  },
   mounted() {
     this.categories = categories;
-    this.post.author = `${this.profile.firstName} ${this.profile.lastName}`;
   },
   methods: {
     changeCategory(e) {
@@ -195,25 +243,51 @@ export default {
         this.post.category = e.target.value;
       }
     },
-    publishArticle(status) {
+    publishAPost(status) {
       this.savePost(status);
     },
     saveAsDraft(status) {
       this.savePost(status);
     },
+    updateActivities() {
+      this.$modal.show("openEditBusinessActivies");
+    },
+    closeModal() {
+      this.$modal.hide("openEditBusinessActivies");
+    },
+    addActivityToCompany(activity, id) {
+      if (!this.activities.includes(id)) {
+        this.selectedBusinessActivities = [
+          ...this.selectedBusinessActivities,
+          activity,
+        ];
+        this.activities = [...this.activities, id];
+      } else {
+        Vue.$toast.open({
+          message: "Activity is already added",
+          type: "warning",
+        });
+      }
+    },
+    removeActivityFromBlog(id) {
+      const ids = this._.remove(this.activities, (n) => {
+        return n !== id;
+      });
+      this.selectedBusinessActivities = this.selectedBusinessActivities.filter(
+        (e) => e.id != id
+      );
+      this.activities = ids;
+    },
     savePost(status) {
       this.post.status = status;
+      this.post.activities = this.activities;
       this.uploading = true;
       this.created = false;
-      // convert tags
-      let getTags = [];
-      if (this.tags) {
-        for (const value of this.tags) {
-          getTags = [...getTags, value.text];
-        }
-        this.post.tags = JSON.stringify(getTags);
-      }
       if (this.selectedFile) {
+        Vue.$toast.open({
+          message: "Wait. We are creating your post...",
+          type: "warning",
+        });
         this.uploading = false;
         this.uploadImage();
       } else {
@@ -224,6 +298,7 @@ export default {
       AxiosHelper.post("blog/post", this.post)
         .then(() => {
           this.created = true;
+          this.post = {}
           Vue.$toast.open({
             message: "Blog has been created successfully",
             type: "success",
@@ -290,6 +365,19 @@ export default {
     layout() {
       return this.$route.meta.layout;
     },
+    previewText() {
+      marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: true,
+        smartLists: true,
+        smartypants: false,
+      });
+      return marked(this.post.content);
+    },
   },
 };
 </script>
@@ -298,11 +386,6 @@ export default {
 .content-form-sidebar {
   background: #f0f2f8;
   padding: 25px;
-  border-radius: 3px;
-}
-.content-form-sidebar button {
-  border: 1px solid #5e7c8d;
-  background: #f0f2f8;
   border-radius: 3px;
 }
 </style>

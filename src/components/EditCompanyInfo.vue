@@ -1,13 +1,26 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Edit info</h3>
-    <div class="px-4 py-2">
+    <h3 class="px-4 pt-4">Edit info</h3>
+    <div class="mx-4 py-2">
       <form @submit="submitCompanyInfo">
-        <div class="wrap-modal" style="max-height: 450px; overflow: scroll">
-          <div class="row mt-4">
+        <div
+          style="
+            width: 100%;
+            max-height: 410px;
+            overflow-y: auto;
+            overflow-x: hidden;
+          "
+        >
+          <div class="row">
             <div class="col-lg-8 col-sm-12">
-              <h4 class="mt-3">What is your name?</h4>
-              <div class="form-group">
+              <h5 class="mt-3">Company name</h5>
+              <div
+                :class="`${
+                  $v.companyInfo.coName.$invalid === true
+                    ? 'form-group has-error'
+                    : 'form-group'
+                }`"
+              >
                 <input
                   type="text"
                   v-model.trim="$v.companyInfo.coName.$model"
@@ -18,8 +31,14 @@
               </div>
             </div>
             <div class="col-lg-4 col-sm-12">
-              <h4 class="mt-3">Year founded</h4>
-              <div class="form-group">
+              <h5 class="mt-3">Year founded</h5>
+              <div
+                :class="`${
+                  $v.companyInfo.yearFounded.$invalid === true
+                    ? 'form-group has-error'
+                    : 'form-group'
+                }`"
+              >
                 <input
                   type="number"
                   v-model.trim="$v.companyInfo.yearFounded.$model"
@@ -28,11 +47,16 @@
                 />
               </div>
             </div>
-          </div>
-          <div class="row mt-4">
             <div class="col-lg-6 col-sm-12">
-              <h4 class="mt-3">Contact email</h4>
-              <div class="form-group">
+              <h5 class="mt-3">Contact email</h5>
+
+              <div
+                :class="`${
+                  $v.companyInfo.contactEmail.$invalid === true
+                    ? 'form-group has-error'
+                    : 'form-group'
+                }`"
+              >
                 <input
                   type="email"
                   v-model.trim="$v.companyInfo.contactEmail.$model"
@@ -69,8 +93,14 @@
               </div>
             </div>
             <div class="col-lg-6 col-sm-12">
-              <h4 class="mt-3">Phone number</h4>
-              <div class="form-group">
+              <h5 class="mt-3">Phone number</h5>
+              <div
+                :class="`${
+                  $v.companyInfo.contactPhone.$invalid === true
+                    ? 'form-group has-error'
+                    : 'form-group'
+                }`"
+              >
                 <input
                   type="number"
                   v-model.trim="$v.companyInfo.contactPhone.$model"
@@ -106,12 +136,8 @@
                 >
               </div>
             </div>
-          </div>
-
-          <!-- district -->
-          <h4 class="mt-3">What District are you based in?</h4>
-          <div class="row mt-4">
             <div class="col-12">
+              <h5 class="my-3">What District are you based in?</h5>
               <div class="form-group">
                 <select
                   class="form-control form-control-lg"
@@ -131,65 +157,32 @@
               </div>
             </div>
           </div>
-          <!-- main area of interest -->
-          <h4 class="mt-3">Main business activity</h4>
-          <div class="row mt-4">
-            <div class="col-12">
-              <div class="form-group">
-                <select
-                  class="form-control form-control-lg"
-                  name="business_activity"
-                  v-model="companyInfo.businessActivityId"
-                  @change="changeInterest($event)"
-                  required
-                >
-                  <option
-                    v-for="(activity, index) in listOfBusinessActivities"
-                    v-bind:value="activity.id"
-                    :key="index"
-                    :selected="activity.id === companyInfo.businessActivityId"
-                  >
-                    {{ activity.name }}
-                  </option>
-                </select>
-                <!--
-                <select
-                  class="form-control form-control-lg"
-                  name="district"
-                  v-model="companyInfo.mainAreaOfInterest"
-                  @change="changeMainInterest($event)"
-                >
-                  <option
-                    v-for="(area, index) in listOfMainAreaOfInterests"
-                    v-bind:value="area"
-                    :key="index"
-                  >
-                    {{ area }}
-                  </option>
-                </select>
-                -->
-              </div>
-            </div>
-          </div>
         </div>
-        <div class="mt-4">
-          <span class="float-left">
-            <button
-              @click="submitCompanyInfo"
-              class="btn btn-success-outline mr-2"
-            >
-              Save
-            </button>
-          </span>
-          <span class="float-right">
-            <button
-              type="button"
-              @click="closeModal"
-              class="btn btn-gray-outline mr-2"
-            >
-              Close
-            </button>
-          </span>
+        <div
+          v-if="
+            profile.companyId === company.id && company.status === 'approved'
+          "
+          class="alert alert-danger"
+        >
+          Clicking on update button below, your institution/entity will be
+          pending review. You will wait for an approval from the Innovate Rwanda
+          team. We want to make sure you follow the guidelines for updating your
+          institution or entity's information
+        </div>
+        <div class="mt-2 mb-3">
+          <button
+            type="button"
+            @click.prevent="closeModal"
+            class="btn btn-gray-outline mr-2"
+          >
+            Close
+          </button>
+          <button
+            @click.prevent="submitCompanyInfo"
+            class="btn btn-success-outline"
+          >
+            Update
+          </button>
         </div>
       </form>
     </div>
@@ -213,8 +206,11 @@ import {
   email,
 } from "vuelidate/lib/validators";
 
-const checkWebsite = (value) =>
-  /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value);
+const checkYear = (value) => {
+  console.log(value);
+  return true;
+};
+
 import vSelect from "vue-select";
 
 Vue.component("v-select", vSelect);
@@ -252,7 +248,8 @@ export default {
   },
   created() {
     // loading all districts
-    this.allDistricts = Districts();
+    const dist = Districts();
+    this.allDistricts = dist.sort();
     // loading business activities
     AxiosHelper.get("business-activities")
       .then((response) => {
@@ -265,13 +262,13 @@ export default {
   },
   methods: {
     closeModal() {
-      this.$modal.hide("EditcompanyInfo");
+      this.$modal.hide("editCompanyInfo");
     },
     changeInterest(e) {
       this.companyInfo.businessActivityId = e.target.value;
     },
-    submitCompanyInfo(evt) {
-      evt.preventDefault();
+    submitCompanyInfo() {
+      this.companyInfo.status = "pending";
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
         .then(() => {
           Vue.$toast.open({
@@ -304,7 +301,9 @@ export default {
         minLength: minLength(3),
         maxLength: maxLength(25),
       },
-      yearFounded: {},
+      yearFounded: {
+        validateYear: checkYear,
+      },
       contactEmail: {
         email,
       },
@@ -313,13 +312,11 @@ export default {
       },
       contactPhone: {
         required,
-        minLength: minLength(3),
+        minLength: minLength(5),
+        maxLength: maxLength(18),
       },
       phoneDisplay: {
         required,
-      },
-      coWebsite: {
-        validateWebsite: checkWebsite,
       },
       districtBasedIn: {},
       areaOfInterest: {},

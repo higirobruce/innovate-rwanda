@@ -1,56 +1,30 @@
 <template>
   <div>
-    <h3 class="p-4 bottom-shadow shadow">Business activities</h3>
-    <div class="px-4">Select all your business activities</div>
+    <h3 class="p-4">Business activities</h3>
     <div class="px-4">
-      <form @submit="submit">
-        <div class="wrap-modal" style="max-height: 450px; overflow: scroll">
+        <div class="wrap-modal" style="max-height: 500px; overflow: scroll">
           <div class="row mt-1">
             <div class="col-12" v-if="listOfBusinessActivities">
-              <div
-                class="form-check co-badge form-check-inline"
-                v-for="(activity, index) in listOfBusinessActivities"
-                v-bind:value="activity.id"
-                :key="index"
-              >
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="businessActivities"
-                  :id="`box-${activity.id}`"
-                  :value="activity.id"
-                />
-                <label
-                  class="form-check-label"
-                  :for="`box-${activity.id}`"
-                >
-                  {{ activity.name }}
-                </label>
+              <div v-for="(a, index) in listOfBusinessActivities" :key="index">
+                <div class="s-one-activity">
+                  {{ a.name }}
+                  <button @click.prevent="addToCompany(a.id)" type="button">Add</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="mt-4">
-          <span class="float-left">
-            <button
-              type="submit"
-              @click="submit"
-              class="btn btn-success-outline mr-2"
-            >
-              Update
-            </button>
-          </span>
+        <div class="mt-1">
           <span class="float-right">
             <button
               type="button"
-              @click="closeModal"
+              @click.prevent="closeModal"
               class="btn btn-gray-outline mr-2"
             >
               Close
             </button>
           </span>
         </div>
-      </form>
     </div>
   </div>
 </template>
@@ -89,28 +63,23 @@ export default {
     closeModal() {
       this.$modal.hide("openEditBusinessActivies");
     },
-    submit(evt) {
-      evt.preventDefault();
-      this.companyInfo.businessActivities =
-        this.businessActivities !== ""
-          ? JSON.stringify(this.businessActivities)
-          : "";
-      console.log("wait", this.companyInfo.businessActivities);
-      AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
+    addToCompany(id) {
+      const data = {
+        companyId: this.company.company.id,
+        activityId: id
+      }
+      AxiosHelper.post('activities/add-activity', data)
         .then(() => {
           Vue.$toast.open({
             message:
-              "Company business activities have been updated successfully",
+              "Activity have been added successfully",
             type: "success",
           });
-          setTimeout(() => {
-            this.$router.go();
-          }, 2000);
         })
         .catch(() => {
           Vue.$toast.open({
             message:
-              "Sorry, something went wrong while updating your social media accounts",
+              "Sorry, something went wrong. Try again later",
             type: "error",
           });
         });
@@ -132,5 +101,22 @@ export default {
   border-radius: 5px;
   margin-top: 8px;
   cursor: pointer;
+}
+.s-one-activity {
+  position: relative;
+  padding: 10px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.s-one-activity button {
+  position: absolute;
+  font-size: 14px;
+  color: #747474;
+  top: 12px;
+  right: 5px;
+  border: none;
+  background: none;
+}
+.active-one-activity {
+  background: #f5f5f5 !important;
 }
 </style>

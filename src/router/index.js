@@ -35,6 +35,13 @@ const router = new Router({
       },
     },
     {
+      path: "/unsubscribe",
+      component: () => import("@/pages/unsubscribe/index.vue"),
+      meta: {
+        layout: "auth-layout",
+      },
+    },
+    {
       path: "/forgot-password",
       component: () => import("@/pages/forgot-password/index.vue"),
       meta: {
@@ -72,6 +79,13 @@ const router = new Router({
     {
       path: "/directory/enablers",
       component: () => import("@/pages/directory/enablers.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/directory/:slug",
+      component: () => import("@/pages/directory/slug.vue"),
       meta: {
         layout: "default-layout",
       },
@@ -120,7 +134,7 @@ const router = new Router({
       },
     },
     {
-      path: "/dashboard/my-company",
+      path: "/dashboard/company/:companyId",
       component: () => import("@/pages/dashboard/mycompany/index.vue"),
       meta: {
         layout: "dashboard-layout",
@@ -129,6 +143,27 @@ const router = new Router({
     {
       path: "/dashboard/users",
       component: () => import("@/pages/dashboard/users/index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/resources",
+      component: () => import("@/pages/dashboard/resources/index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/resources/new",
+      component: () => import("@/pages/dashboard/resources/new.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/resources/edit/:id",
+      component: () => import("@/pages/dashboard/resources/edit.vue"),
       meta: {
         layout: "dashboard-layout",
       },
@@ -218,10 +253,136 @@ const router = new Router({
       },
     },
     {
+      path: "/events",
+      component: () => import("@/pages/events/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/event/:slug",
+      component: () => import("@/pages/events/post.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/find-talent",
+      component: () => import("@/pages/jobs/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/job/:slug",
+      component: () => import("@/pages/jobs/post.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/resources",
+      component: () => import("@/pages/resources/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/resources/:id",
+      component: () => import("@/pages/resources/post.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
       path: "/dashboard/settings",
-      component: () => import("@/pages/dashboard/settings/index.vue"),
+      component: () => import("@/pages/dashboard/settings/profile.vue"),
       meta: {
         layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings/reset-password",
+      component: () => import("@/pages/dashboard/settings/reset.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings/business-activities",
+      component: () => import("@/pages/dashboard/settings/activities.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings/company-types",
+      component: () => import("@/pages/dashboard/settings/types.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings/categories",
+      component: () => import("@/pages/dashboard/settings/categories.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings/event-types",
+      component: () => import("@/pages/dashboard/settings/event-types.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/notifications",
+      component: () => import("@/pages/dashboard/notifications/index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/about",
+      component: () => import("@/pages/about/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
+      path: "/disclaimer",
+      component: () => import("@/pages/disclaimer/index.vue"),
+      meta: {
+        layout: "terms-layout",
+      },
+    },
+    {
+      path: "/terms",
+      component: () => import("@/pages/terms/index.vue"),
+      meta: {
+        layout: "terms-layout",
+      },
+    },
+    {
+      path: "/cookies-policy",
+      component: () => import("@/pages/cookies/index.vue"),
+      meta: {
+        layout: "terms-layout",
+      },
+    },
+    {
+      path: "/privacy-policy",
+      component: () => import("@/pages/privacy-policy/index.vue"),
+      meta: {
+        layout: "terms-layout",
+      },
+    },
+    {
+      path: "/redirect/:url*",
+      component: () => import("@/pages/redirect/_url.vue"),
+      meta: {
+        layout: "default-layout",
       },
     },
     {
