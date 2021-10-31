@@ -62,7 +62,7 @@ input::placeholder {
   color: #cecece !important;
 }
 .container {
-  max-width: 1500px;
+  max-width: 1300px;
 }
 .clear {
   clear: both;
@@ -114,76 +114,76 @@ input::placeholder {
 }
 .btn.btn-primary {
   background: #00aeef;
-  border: 2px solid #00aeef;
+  border: 1px solid #00aeef;
 }
 .btn.btn-primary:hover {
   background: #0066ab;
-  border: 2px solid #0066ab;
+  border: 1px solid #0066ab;
 }
 .btn.btn-primary-outline {
   color: #00aeef;
   background: #ffffff;
-  border: 2px solid #00aeef;
+  border: 1px solid #00aeef;
 }
 .btn.btn-primary-outline:hover {
   color: #0066ab;
   background: #e3eef1;
-  border: 2px solid #0066ab;
+  border: 1px solid #0066ab;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .btn.btn-gray-outline {
   color: #5e7c8d;
   background: #ffffff;
-  border: 2px solid #c0c6d8;
+  border: 1px solid #c0c6d8;
 }
 .btn.btn-gray-outline:hover {
   color: #5e7c8d;
   background: #ebeff1;
-  border: 2px solid #c4c4c4;
+  border: 1px solid #c4c4c4;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .btn.btn-success-outline {
   color: #28a745;
   background: #ffffff;
-  border: 2px solid #28a745;
+  border: 1px solid #28a745;
 }
 .btn.btn-success-outline:hover {
   color: #177c2e;
   background: #d0f1d8;
-  border: 2px solid #177c2e;
+  border: 1px solid #177c2e;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .btn.btn-danger-outline {
   color: #dc3545;
   background: #ffffff;
-  border: 2px solid #dc3545;
+  border: 1px solid #dc3545;
 }
 .btn.btn-danger-outline:hover {
   color: #dc3545;
   background: #fdf5f6;
-  border: 2px solid #dc3545;
+  border: 1px solid #dc3545;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .btn.btn-secondary-outline {
   color: #ef8700;
   background: #ffffff;
-  border: 2px solid #ef8700;
+  border: 1px solid #ef8700;
 }
 .btn.btn-secondary-outline:hover {
   color: #0066ab;
   background: #ffffff;
-  border: 2px solid #0066ab;
+  border: 1px solid #0066ab;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .btn.btn-transparent {
   color: #00aeef;
   background: transparent;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
 }
 .btn.btn-transparent:hover {
   color: #0066ab;
   background: transparent;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   opacity: 0.7;
 }
 

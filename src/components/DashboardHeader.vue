@@ -154,7 +154,8 @@ export default {
       localStorage.removeItem("company");
       localStorage.removeItem("isAuth", true);
       localStorage.removeItem("token");
-      this.$router.push("/login");
+      // this.$router.push("/login");
+      this.$router.go()
     },
   },
 };
