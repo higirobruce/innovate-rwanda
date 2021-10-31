@@ -33,11 +33,6 @@
                 <router-link active :to="'/blog'">Blog</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link active :to="'/find-talent'"
-                  >Find Talent</router-link
-                >
-              </li>
-              <li class="list-inline-item">
                 <router-link active :to="'/resources'">Resources</router-link>
               </li>
             </ul>
@@ -47,12 +42,29 @@
               class="py-2 float-right"
               v-if="profile && Object.keys(profile).length > 0"
             >
-              <router-link
-                :to="'/dashboard'"
-                class="btn font-weight-bold btn-secondary"
-              >
-                Dashboard
-              </router-link>
+              <div class="wrap-avatar-user">
+                <div class="avatar user-avatar" @click="toggleUserDropdown">
+                  <img src="@/assets/images/user-avatar.png" alt="user" />
+                  <div class="user-info">
+                    Hello, {{ profile.lastName | truncate(10) }}
+                    <p>Account<img src="@/assets/images/arrow-down.png" /></p>
+                  </div>
+                </div>
+                <div
+                  class="wrap-userdropdown"
+                  v-if="isUserDropdown"
+                  v-on-clickaway="hideIsUserDropdown"
+                >
+                  <ul>
+                    <li>
+                      <router-link :to="'/dashboard'">My Profile</router-link>
+                    </li>
+                    <li>
+                      <button @click="logout">Logout</button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div class="py-2 float-right" v-else>
               <router-link
@@ -83,7 +95,7 @@
       </div>
     </div>
     <!-- Sidebar -->
-    <div class="wrap-sidebar" v-if="isSidebarOpen">
+    <div class="wrap-userdropdown" v-if="isSidebarOpen">
       <button class="close" @click="isSidebarOpen = false">
         <i class="icon-times" />
       </button>
@@ -145,12 +157,15 @@
 <script>
 import Vue from "vue";
 import VModal from "vue-js-modal";
+import { mixin as clickaway } from "vue-clickaway";
 Vue.use(VModal);
 export default {
+   mixins: [clickaway],
   data() {
     return {
       isSidebarOpen: false,
       isAuthModelOpen: false,
+      isUserDropdown: false,
     };
   },
   methods: {
@@ -162,6 +177,19 @@ export default {
     },
     closeModal() {
       this.$modal.hide("openJoin");
+    },
+    toggleUserDropdown() {
+      this.isUserDropdown = !this.isUserDropdown;
+    },
+    hideIsUserDropdown() {
+      this.isUserDropdown = false;
+    },
+    logout() {
+      localStorage.removeItem("profile");
+      localStorage.removeItem("company");
+      localStorage.removeItem("isAuth", true);
+      localStorage.removeItem("token");
+      this.$router.go();
     },
   },
 };
@@ -180,21 +208,25 @@ export default {
 }
 @media (min-width: 1241px) {
   .wrap-logo {
-    width: 200px;
+    width: 320px;
   }
   .main-logo {
-    max-width: 200px;
+    max-width: 180px;
     margin: 10px 0;
     position: relative;
   }
   .wrap-hotlinks {
-    width: 300px;
+    width: 400px;
     padding: 5px 0;
   }
   .wrap-main-nav {
-    width: -webkit-calc(100% - 470px);
-    width: -moz-calc(100% - 470px);
-    width: calc(100% - 470px);
+    width: -webkit-calc(100% - 400px);
+    width: -moz-calc(100% - 400px);
+    width: calc(100% - 440px);
+  }
+  .wrap-main-nav ul {
+    justify-content: center;
+    display: flex;
   }
   .sidebar-btn,
   .auth-btn {
@@ -204,14 +236,16 @@ export default {
     margin: 0 !important;
   }
   .wrap-main-nav a {
-    font-size: 13px;
+    /* font-size: 13px; */
     padding: 0 0px;
     font-weight: 100;
   }
   .wrap-hotlinks .btn {
-    padding: 12px 20px !important;
-    font-size: 12px;
+    padding: 8px 20px !important;
+    /* font-size: 14px; */
     margin: 8px 5px !important;
+    box-shadow: 0px 4px 26px #1b295840;
+    /* border-radius: 10px; */
   }
   .sidebar-btn,
   .auth-btn {
@@ -228,7 +262,7 @@ export default {
     position: relative;
   }
   .wrap-hotlinks {
-    width: 240px;
+    width: 260px;
     padding: 5px 0;
   }
   .wrap-main-nav {
@@ -250,7 +284,7 @@ export default {
   }
   .wrap-hotlinks .btn {
     padding: 8px 12px !important;
-    font-size: 12px;
+    /* font-size: 12px; */
     margin: 8px 2px !important;
   }
 }
@@ -290,7 +324,6 @@ export default {
 .auth-btn img.profile {
   width: 42px;
   margin-top: 10px;
-  border: 1p solid red;
 }
 
 .main-logo img {
@@ -318,7 +351,7 @@ export default {
   bottom: -50px;
   left: 0;
 }
-.wrap-sidebar {
+.wrap-userdropdown {
   background: #ffffff;
   top: 0;
   left: 0;
@@ -347,7 +380,7 @@ export default {
   border-radius: 3px;
 }
 .auth-modal .close,
-.wrap-sidebar .close {
+.wrap-userdropdown .close {
   position: absolute;
   right: 15px;
   top: 10px;
@@ -367,6 +400,84 @@ export default {
 }
 .sidebar-nav li a {
   color: #5e7c8d;
+}
+
+/* Avatar */
+.avatar {
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  border-radius: 0 !important;
+  margin: 0 0.5em 0 0 !important;
+  background: none !important;
+  font-size: 15px;
+}
+.avatar p {
+  font-size: 11px;
+}
+.avatar img {
+  width: 44px;
+  height: auto;
+}
+.avatar .user-info {
+  padding: 0 10px;
+  height: 40px;
+}
+.avatar .user-info img {
+  width: 10px;
+  margin: 4px 2px;
+  float: right;
+}
+.avatar.user-avatar {
+  width: auto;
+  height: 44px;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  padding-right: 10px;
+  height: 50px;
+}
+.avatar.user-avatar i {
+  padding-left: 5px;
+  float: right;
+}
+.wrap-avatar-user {
+  position: relative;
+}
+.wrap-userdropdown {
+  width: 200px;
+  height: auto;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  box-shadow: 0px 16px 24px #00000029;
+  border-radius: 8px;
+  background: #ffffff;
+}
+.wrap-userdropdown ul {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.wrap-userdropdown ul li {
+  padding: 10px 20px;
+}
+.wrap-userdropdown button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+.wrap-userdropdown ul li,
+.wrap-userdropdown ul li a {
+  font-size: 14px;
 }
 </style>
 
