@@ -82,6 +82,72 @@
           </agile>
         </div>
       </div>
+      <div class="home-categories my-4 py-4" v-if="events && events.length">
+        <div class="container">
+          <h2 class="text-blue-dark text-center font-weight-bold py-3">
+            Upcoming Events
+          </h2>
+
+          <div class="row">
+            <div
+              class="col-sm-12 col-md-6 col-lg-4"
+              v-for="(post, index) in events"
+              :key="index"
+            >
+              <div class="wrap-one-event">
+                <router-link :to="`event/${post.id}`">
+                  <div class="one-event-image">
+                    <img
+                      v-if="post.flyer"
+                      :src="`${IMAGE_URL}c_fill,g_center,w_500,h_250/${post.flyer}`"
+                      :alt="post.title"
+                    />
+                    <img
+                      v-else
+                      src="@/assets/images/post_placeholder.svg"
+                      :alt="post.title"
+                    />
+                    <h2>
+                      {{ post.title | truncate(58) }}
+                    </h2>
+                  </div>
+                </router-link>
+                <div class="post-info">
+                  <h3 class="h5 text-blue-dark">
+                    <i class="icon-calendar mr-2" />
+                    {{ post.eventDate | date("DD MMM YYYY") }}
+                  </h3>
+                  <div>
+                    <span>
+                      <span class="text-blue">{{ post.category }}</span>
+                    </span>
+                    <span class="float-right">
+                      <i class="icon-calendar mr-2" />
+                      {{ post.eventTime }} CAT</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <router-link
+            :to="'/join'"
+            class="
+              btn btn-home btn-lg
+              font-weight-bold
+              bg-blue
+              text-white
+              mt-3
+              mr-lg-5
+              mt-3
+            "
+          >
+            Join the community
+          </router-link>
+        </div>
+      </div>
       <div class="my-4 py-4">
         <!-- Partners -->
         <div class="container text-center my-5">
@@ -166,6 +232,7 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import Vuelidate from "vuelidate";
+import moment from "moment";
 Vue.use(Vuelidate);
 import { required, email } from "vuelidate/lib/validators";
 import Loading from "@/components/Loading";
@@ -180,6 +247,8 @@ export default {
   },
   data() {
     return {
+      events: [],
+      comingEvents: [],
       categories: [],
       partners: {
         0: {
@@ -231,6 +300,7 @@ export default {
         email: "",
         status: "subscribed",
       },
+      timeNow: "",
       subscribing: false,
       subscribed: false,
       query: "",
@@ -269,6 +339,16 @@ export default {
   created() {
     AxiosHelper.get("company-categories", this.subscribe).then((response) => {
       this.categories = response.data.result;
+    });
+    this.timeNow = moment().format("YYYY-MM-DD");
+    AxiosHelper.get(`events/public`).then((response) => {
+      response.data.result &&
+        response.data.result.forEach((event) => {
+          if (event.eventDate >= this.timeNow) {
+            console.log("comingEvents", event);
+            this.events = [...this.events, event];
+          }
+        });
     });
   },
   methods: {
@@ -327,6 +407,26 @@ export default {
           this.subscribing = false;
         });
     },
+    // getUpcomingEvents() {
+    //   let comingEvents = [];
+    //   AxiosHelper.get(`events/public`)
+    //     .then((response) => {
+    //       this.posts = response.data.result;
+    //       this.loaded = true;
+    //     })
+    //     .catch(() => {
+    //       this.loading = false;
+    //       this.loaded = true;
+    //     });
+    //   if (this.posts && this.posts.length > 0) {
+    //     this.posts.forEach((event) => {
+    //       if (event.eventDate >= this.timeNow) {
+    //         comingEvents = [...comingEvents, event];
+    //       }
+    //     });
+    //   }
+    //   return comingEvents;
+    // },
   },
   computed: {
     layout() {

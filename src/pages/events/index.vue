@@ -155,7 +155,6 @@
               </div>
             </div>
           </div>
-          <!-- <ListEvents :events="getUpcomingEvents()" /> -->
         </div>
         <h2
           class="h2 pb-4 text-blue-dark text-center"
