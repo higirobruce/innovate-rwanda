@@ -143,12 +143,11 @@
                   <i class="icon-calendar mr-2" />
                   {{ post.eventDate | date("DD MMM YYYY") }}
                 </h3>
-                <div>
+                <div style="font-size: 14px">
                   <span>
-                    <span class="text-blue">{{ post.category }}</span>
+                    <span>{{ post.category }}</span>
                   </span>
-                  <span class="float-right">
-                    <i class="icon-calendar mr-2" />
+                  <span class="float-right text-blue">
                     {{ post.eventTime }} CAT</span
                   >
                 </div>
@@ -156,53 +155,19 @@
             </div>
           </div>
         </div>
-        <h2
-          class="h2 pb-4 text-blue-dark text-center"
-          v-if="loaded && !_.isEmpty(posts)"
-        >
-          Past Events
-        </h2>
+        <div class="text-center mt-3 mb-5" v-if="loaded && !_.isEmpty(posts)">
+          <h2 class="h2 text-blue-dark">Past Events</h2>
+          <div>
+            Missed our sessions? Don’t worry, you can watch the videos here.
+          </div>
+        </div>
         <div class="row">
           <div
             class="col-sm-12 col-md-6 col-lg-4"
             v-for="(post, index) in getPastEvents()"
             :key="index"
           >
-            <div class="wrap-one-event">
-              <router-link :to="`event/${post.id}`">
-                <div class="one-event-image">
-                  <img
-                    v-if="post.flyer"
-                    :src="`${IMAGE_URL}c_fill,g_center,w_500,h_250/${post.flyer}`"
-                    :alt="post.title"
-                  />
-                  <img
-                    v-else
-                    src="@/assets/images/post_placeholder.svg"
-                    :alt="post.title"
-                  />
-                  <h2>
-                    {{ post.title | truncate(58) }}
-                  </h2>
-                </div>
-              </router-link>
-              <div class="post-info">
-                <h3 class="h5 text-blue-dark">
-                  <i class="icon-calendar mr-2" />
-                  {{ post.eventDate | date("DD MMM YYYY") }}
-                </h3>
-                <div>
-                  <span>
-                    <span class="text-blue">{{ post.category }}</span>
-                  </span>
-                  <span class="float-right">
-                    <i class="icon-calendar mr-2" />
-                    {{ post.eventTime }} CAT</span
-                  >
-                </div>
-              </div>
-              <div class="clear"></div>
-            </div>
+            <Event :event="post" />
           </div>
         </div>
         <div v-if="loaded && _.isEmpty(posts)" class="empty-post">
@@ -219,6 +184,7 @@ import Vue from "vue";
 import PageHeader from "@/components/PageHeader";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import ListEvents from "@/components/ListEvents";
+import Event from "@/components/Event";
 let marked = require("marked");
 
 import moment from "moment";
@@ -229,6 +195,7 @@ export default {
   components: {
     PageHeader,
     ListEvents,
+    Event,
   },
   data() {
     return {

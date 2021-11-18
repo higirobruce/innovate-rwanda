@@ -6,7 +6,7 @@
         'list-inline-item mr-5': active != 'profile',
       }"
     >
-      <router-link exact :to="'/dashboard/settings'">Profile</router-link>
+      <router-link exact :to="'/dashboard/settings'">User information</router-link>
     </li>
     <li
       :class="{

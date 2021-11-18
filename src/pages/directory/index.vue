@@ -1,56 +1,350 @@
 <template>
   <div>
     <component :is="layout">
-      <div class="wrap-choose-section" v-if="!_.isEmpty(types)">
-        <h1>Choose a preferred section</h1>
-        <div class="row">
-          <div
-            class="col-sm-12 col-lg-4 col-md-4 one-box"
-            v-for="(type, index) in types"
-            :key="index"
-          >
-            <div class="box-image">
-              <img
-                v-if="type.image"
-                :src="`${IMAGE_URL}c_fill,g_center,h_420,w_420/${type.image}`"
-                :alt="type.name"
-              />
-              <img
-                v-else
-                src="@/assets/images/enablers.svg"
-                :alt="type.name"
-              />
-            </div>
-            <h3>{{ type.name }}</h3>
-            <div>
-              {{ type.description }}
-            </div>
-
-            <router-link :to="`/directory/${type.slug}`" class="btn">
-              Discover <img src="@/assets/images/arrow-right.png"
-            /></router-link>
+      <div
+        class="page-header"
+        :style="{
+          'background-image':
+            'url(' + require('@/assets/images/auth-bg.jpg') + '',
+        }"
+      >
+        <div
+          class="page-overlay"
+          :style="{ 'background-color': 'rgba(4, 137, 187, 0.83)' }"
+        ></div>
+        <h1>Community Directory</h1>
+        <div class="subtitle">
+          Our community listing of tech and innovation companies in the
+          ecosystem.
+        </div>
+        <form class="page-search">
+          <input
+            type="text"
+            v-model="search"
+            placeholder="Type to search and hit enter"
+          />
+          <button  @click.prevent="searchNow" :disabled="_.isEmpty(search)">
+            <img src="@/assets/images/search.png" />
+          </button>
+        </form>
+      </div>
+      <div class="wrap-filters-box">
+        <div class="wrap-filters">
+          <div class="filter-select">
+            <select
+              name="district"
+              v-model="typeSelected"
+              @change="changeType($event)"
+              required
+            >
+              <option value="" selected disabled>Campany category</option>
+              <option
+                v-for="(type, index) in types"
+                v-bind:value="type.slug"
+                :key="index"
+              >
+                {{ type.name }}
+              </option>
+              <option v-bind:value="''">All companies</option>
+            </select>
           </div>
+          <div class="filter-select">
+            <select
+              name="activity"
+              v-model="selectedActivity"
+              @change="changeActivity($event)"
+              required
+            >
+              <option value="" selected disabled>Activity</option>
+              <option
+                v-for="(act, index) in listOfBusinessActivities"
+                v-bind:value="act.id"
+                :key="index"
+              >
+                {{ act.name }}
+              </option>
+            </select>
+          </div>
+          <div class="filter-select">
+            <select
+              name="location"
+              v-model="selectedLocation"
+              @change="changeLocation($event)"
+              required
+            >
+              <option value="" selected disabled>Location</option>
+              <option
+                v-for="(district, index) in allDistricts"
+                v-bind:value="district"
+                :key="index"
+              >
+                {{ district }}
+              </option>
+            </select>
+          </div>
+          <span class="float-right">
+            <div class="filter-select" style="max-width: 220px">
+              <select
+                name="district"
+                v-model="sortBy"
+                @change="changeSort($event)"
+                required
+              >
+                <option value="" disabled selected>Sort by</option>
+                <option v-bind:value="'yearFounded,asc'">
+                  Year founded(Asc)
+                </option>
+                <option v-bind:value="'yearFounded,desc'">
+                  Year founded(Desc)
+                </option>
+                <option v-bind:value="'coName,asc'">Company name(A-Z)</option>
+                <option v-bind:value="'coName,desc'">Company name(Z-A)</option>
+              </select>
+            </div>
+            <button type="button" @click.prevent="resetFilter">
+              Reset filters
+            </button>
+          </span>
+          <div class="clear" />
+        </div>
+      </div>
+      <div class="container">
+        <div v-if="!_.isEmpty(directory)">
+          <ListCompanies :companies="directory" />
+          <div class="clear" />
+          <div class="wrap-pagination">
+            <button
+              type="button"
+              :disabled="meta.prev === 0"
+              @click.prevent="goTo(meta.prev)"
+            >
+              <img src="@/assets/images/left-arrow.png" />
+            </button>
+            <span
+              v-for="(p, index) in meta && meta.pages"
+              :class="`${p === meta.page ? 'active-page' : ''}`"
+              :key="index"
+              @click.prevent="goTo(p)"
+            >
+              {{ p }}
+            </span>
+            <button
+              type="button"
+              @click.prevent="goTo(meta.next)"
+              :disabled="meta.next === 0"
+            >
+              <img src="@/assets/images/right-arrow.png" />
+            </button>
+          </div>
+        </div>
+        <div v-if="!loaded && directory && _.isEmpty(directory)">
+          <Loading />
+        </div>
+        <div v-if="loaded && _.isEmpty(directory)" class="empty-post">
+          <img src="@/assets/images/empty.png" />
+          <h2 class="my-0 py-0 font-weight-light h3">Companies not found</h2>
         </div>
       </div>
     </component>
   </div>
-</template> 
+</template>
 
 
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
+import PageHeader from "@/components/PageHeader";
+import ListCompanies from "@/components/ListCompanies";
+import Loading from "@/components/Loading";
+import { Districts } from "rwanda";
 export default {
-  name: "institutions",
+  name: "companies",
+  components: {
+    PageHeader,
+    ListCompanies,
+    Loading,
+  },
   data() {
     return {
+      directory: {},
+      query: "",
+      loading: false,
+      loaded: false,
+      yearFounded: "",
+      selectedActivity: "",
+      allDistricts: [],
+      typeSelected: "",
+      selectedLocation: "",
+      listOfBusinessActivities: [],
+      sortBy: "",
+      page: 1,
+      meta: {},
       types: [],
+      orderType: "createdAt",
+      orderValue: "DESC",
+      search: "",
     };
+  },
+  computed: {
+    layout() {
+      return this.$route.meta.layout;
+    },
   },
   created() {
     this.loadCompanyTypes();
+    // loading business activities
+    AxiosHelper.get("business-activities")
+      .then((response) => {
+        this.listOfBusinessActivities = response.data.result;
+      })
+      .catch(() => {});
+    // loading all districts
+    this.allDistricts = Districts();
+    // load companies
+    const value = this.$route.query.search;
+    if (!this._.isEmpty(value)) {
+      this.search = value;
+    }
+
+    this.loadCompanies(
+      this.page,
+      "",
+      "",
+      "",
+      this.orderType,
+      this.orderValue,
+      this.search
+    );
   },
   methods: {
+    changeType(e) {
+      this.typeSelected = e.target.value;
+      this.loading = true;
+      this.loaded = false;
+      this.directory = [];
+      this.loadCompanies(
+        this.page,
+        e.target.value,
+        this.selectedActivity || "",
+        this.selectedLocation || "",
+        this.orderType,
+        this.orderValue,
+        this.search || ""
+      );
+    },
+    changeActivity(e) {
+      this.selectedActivity = e.target.value;
+      this.loading = true;
+      this.loaded = false;
+      this.directory = [];
+      this.loadCompanies(
+        this.page,
+        this.typeSelected || "",
+        e.target.value,
+        this.selectedLocation || "",
+        this.orderType,
+        this.orderValue,
+        this.search || ""
+      );
+    },
+    changeLocation(e) {
+      this.selectedLocation = e.target.value;
+      this.loading = true;
+      this.loaded = false;
+      this.directory = [];
+      this.loadCompanies(
+        this.page,
+        this.typeSelected || "",
+        this.selectedActivity || "",
+        e.target.value,
+        this.orderType,
+        this.orderValue,
+        this.search || ""
+      );
+    },
+    changeSort(e) {
+      this.orderType = e.target.value.split(",")[0];
+      this.orderValue = e.target.value.split(",")[1];
+      this.loading = true;
+      this.loaded = false;
+      this.directory = [];
+      this.loadCompanies(
+        this.page,
+        this.typeSelected || "",
+        this.selectedActivity || "",
+        this.selectedLocation || "",
+        this.orderType,
+        this.orderValue,
+        this.search || ""
+      );
+    },
+    async searchNow() {
+      await this.$router.push({query: {search: this.search}})
+      this.loading = true;
+      this.loaded = false;
+      this.directory = [];
+      this.loadCompanies(
+        this.page,
+        this.typeSelected || "",
+        this.selectedActivity || "",
+        this.selectedLocation || "",
+        this.orderType,
+        this.orderValue,
+        this.search
+      );
+    },
+    resetFilter() {
+      this.loading = true;
+      this.loaded = false;
+      // this.yearFounded = "";
+      // this.sortBy = "";
+      this.selectedLocation = "";
+      this.selectedActivity = "";
+      this.typeSelected = "";
+      this.search = "";
+      this.directory = [];
+      this.loadCompanies(this.page, "", "", "");
+    },
+    goTo(page) {
+      this.directory = [];
+      this.loading = false;
+      this.loaded = false;
+      this.loadCompanies(
+        page,
+        this.typeSelected || "",
+        this.selectedActivity || "",
+        this.selectedLocation || "",
+        this.orderType,
+        this.orderValue,
+        this.search
+      );
+    },
+    loadCompanies(
+      page,
+      companyType,
+      activity,
+      location,
+      orderType,
+      orderValue,
+      search
+    ) {
+      AxiosHelper.get(
+        `directory/public?page=${page}&companyType=${companyType}&activity=${activity}&location=${location}&orderType=${orderType}&orderValue=${orderValue}&search=${search}`
+      )
+        .then((response) => {
+          this.directory = response.data.result;
+          this.meta = response.data.meta;
+          console.log("companies:", this.directory);
+          console.log("meta:", this.meta);
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+          this.directory = [];
+        });
+    },
     loadCompanyTypes() {
+      this.loading = true;
       AxiosHelper.get("company-types")
         .then((response) => {
           this.types = response.data.result;
@@ -59,88 +353,7 @@ export default {
         .catch(() => (this.loading = false));
     },
   },
-  computed: {
-    layout() {
-      return this.$route.meta.layout;
-    },
-  },
 };
 </script>
 <style scoped>
-.wrap-choose-section {
-  margin: 25px auto 55px auto;
-  max-width: 1100px;
-}
-
-.wrap-choose-section h1 {
-  color: #00aeef;
-  font-size: 48px;
-  margin: 32px 0;
-  padding: 45px 0;
-}
-.one-box h3 {
-  color: #1b2958;
-  font-size: 30px;
-  font-weight: 600;
-  min-height: 70px;
-}
-.one-box div {
-  height: 80px;
-  font-size: 16px;
-  font-weight: 200;
-}
-.one-box .box-image {
-  width: 100px;
-  height: 130px;
-}
-.one-box img {
-  width: 100%;
-  height: auto;
-  margin: 0;
-}
-.one-box .btn {
-  border: 2px solid #c0c6d8;
-  padding: 13px 56px 13px 36px;
-  position: relative;
-}
-.one-box .btn .icon {
-  top: 18px;
-  right: 25px;
-  position: absolute;
-}
-.one-box .btn img {
-  width: 18px;
-  position: absolute;
-  right: 18px;
-  top: 14px;
-}
-
-@media (min-width: 1025px) {
-  .one-box {
-    margin-bottom: 25px;
-    padding: 25px;
-  }
-}
-@media (max-width: 1024px) {
-  .wrap-choose-section {
-    margin: 0 auto 55px auto;
-    padding: 0 30px;
-  }
-  .wrap-choose-section h1 {
-    color: #00aeef;
-    font-size: 48px;
-    margin: 10px 0;
-    padding: 5px 0;
-  }
-  .one-box {
-    margin-bottom: 25px;
-    padding: 25px;
-    background: #ffffff;
-    box-shadow: 0px 17px 36px #1b295814;
-  }
-  .one-box div {
-    height: auto;
-    margin-top: 10px;
-  }
-}
 </style>

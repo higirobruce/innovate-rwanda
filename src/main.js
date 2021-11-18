@@ -11,11 +11,17 @@ Vue.component("default-layout", Default);
 Vue.component("dashboard-layout", Dashboard);
 Vue.component("auth-layout", Auth);
 Vue.component("terms-layout", Terms);
+import VueGtag from "vue-gtag";
+
 import "./assets/css/bootstrap.min.css";
 import "./assets/css/styles.css";
 import "./assets/css/icons.css";
 
 Vue.config.productionTip = false;
+
+Vue.use(VueGtag, {
+  config: { id: "G-43MXZ4LYS4" }
+});
 
 import "./mixins/auth";
 

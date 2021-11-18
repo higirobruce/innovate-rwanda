@@ -39,6 +39,7 @@
             </h2>
             <div class="text-capitalize mb-2">
               {{ company.company.CompanyType.name }}
+             <button type="button"  @click="openChangeCompanyType">Change</button>
             </div>
             <div
               class="alert alert-warning mt-3"
@@ -60,7 +61,14 @@
             <div class="wrap-company position-relative">
               <button
                 @click="openEditCompanyInfo"
-                class="btn font-weight-bold btn-primary-outline mr-2 shadow floating-btn"
+                class="
+                  btn
+                  font-weight-bold
+                  btn-primary-outline
+                  mr-2
+                  shadow
+                  floating-btn
+                "
               >
                 <i class="icon-edit" />
                 Edit
@@ -274,7 +282,7 @@
                             <i class="icon-linkedin-alt mr-2" />
                           </span>
                           <button
-                            @click="openEditSocial"
+                            @click="openEditSocial('modal-id')"
                             class="btn btn-transparent mx-1 px-1"
                           >
                             Update
@@ -301,6 +309,22 @@
                               <img src="@/assets/images/close.png" />
                             </button>
                             <EditSocial :company="company.company" />
+                          </modal>
+                          <modal
+                            name="editCompanyType"
+                            :adaptive="true"
+                            :scrollable="true"
+                            :height="290"
+                            :width="400"
+                          >
+                            <button
+                              type="button"
+                              @click.prevent="closeModal"
+                              class="close"
+                            >
+                              <img src="@/assets/images/close.png" />
+                            </button>
+                            <EditCompanyType :company="company.company" />
                           </modal>
                         </div>
                       </div>
@@ -464,7 +488,14 @@
             <div class="co-description position-relative">
               <button
                 @click="openEditCompanySummary"
-                class="btn font-weight-bold btn-primary-outline mr-2 shadow floating-btn"
+                class="
+                  btn
+                  font-weight-bold
+                  btn-primary-outline
+                  mr-2
+                  shadow
+                  floating-btn
+                "
               >
                 <i class="icon-edit" />
                 Edit
@@ -492,7 +523,14 @@
             <div class="co-description position-relative">
               <button
                 @click="openEditCompanyLocation"
-                class="btn font-weight-bold btn-primary-outline mr-2 shadow floating-btn"
+                class="
+                  btn
+                  font-weight-bold
+                  btn-primary-outline
+                  mr-2
+                  shadow
+                  floating-btn
+                "
               >
                 <i class="icon-marker-stroked mr-2" />
                 Update location
@@ -631,6 +669,7 @@ import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import * as VueGoogleMaps from "vue2-google-maps";
 import EditSocial from "@/components/EditSocial";
+import EditCompanyType from "@/components/EditCompanyType";
 import EditCompanyInfo from "@/components/EditCompanyInfo";
 import EditCompanySummary from "@/components/EditCompanySummary";
 import EditBusinessActivities from "@/components/EditBusinessActivities";
@@ -650,6 +689,7 @@ export default {
   name: "company",
   components: {
     EditSocial,
+    EditCompanyType,
     EditCompanyInfo,
     EditCompanySummary,
     EditCompanyLocation,
@@ -772,6 +812,9 @@ export default {
     openEditSocial() {
       this.$modal.show("editSocialMedia");
     },
+    openChangeCompanyType() {
+      this.$modal.show("editCompanyType");
+    },
     openEditCompanyInfo() {
       this.$modal.show("editCompanyInfo");
     },
@@ -818,6 +861,7 @@ export default {
       this.$modal.hide("editCompanyInfo");
       this.$modal.hide("uploadCompanyLogo");
       this.$modal.hide("editSocialMedia");
+      this.$modal.hide("editCompanyType");
       this.$modal.hide("editCompanySummary");
       this.$modal.hide("editCompanyLocation");
       this.$modal.hide("openEditCustomerBase");

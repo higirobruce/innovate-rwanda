@@ -100,8 +100,7 @@
                   <router-link
                     v-if="
                       (post.status === 'draft' || post.status === 'pending') &&
-                      (profile.role === 'normal' ||
-                        profile.role === 'super-admin')
+                      profile.role === 'normal'
                     "
                     :to="`/dashboard/content/events/edit/${post.id}`"
                   >

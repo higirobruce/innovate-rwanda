@@ -23,7 +23,7 @@
               </li>
               <li class="list-inline-item">
                 <router-link active :to="'/directory'"
-                  >Community Directory</router-link
+                  >Directory</router-link
                 >
               </li>
               <li class="list-inline-item">
@@ -34,6 +34,9 @@
               </li>
               <li class="list-inline-item">
                 <router-link active :to="'/resources'">Resources</router-link>
+              </li>
+              <li class="list-inline-item">
+                <router-link active :to="'/find-talents'">Find Talents</router-link>
               </li>
             </ul>
           </div>
@@ -57,7 +60,10 @@
                 >
                   <ul>
                     <li>
-                      <router-link :to="'/dashboard'">My Profile</router-link>
+                      <router-link :to="'/dashboard'">Dashboard</router-link>
+                    </li>
+                    <li>
+                      <router-link :to="'/dashboard/settings'">My Profile</router-link>
                     </li>
                     <li>
                       <button @click="logout">Logout</button>
@@ -236,16 +242,13 @@ export default {
     margin: 0 !important;
   }
   .wrap-main-nav a {
-    /* font-size: 13px; */
-    padding: 0 0px;
+    padding: 0 10px!important;
     font-weight: 100;
   }
   .wrap-hotlinks .btn {
     padding: 8px 20px !important;
-    /* font-size: 14px; */
     margin: 8px 5px !important;
     box-shadow: 0px 4px 26px #1b295840;
-    /* border-radius: 10px; */
   }
   .sidebar-btn,
   .auth-btn {
@@ -284,7 +287,6 @@ export default {
   }
   .wrap-hotlinks .btn {
     padding: 8px 12px !important;
-    /* font-size: 12px; */
     margin: 8px 2px !important;
   }
 }
@@ -346,10 +348,11 @@ export default {
   position: absolute;
   content: "";
   width: 100%;
-  height: 4px;
-  background: #00aeef;
-  bottom: -50px;
+  height: 6px;
+  background: #1B2958;
+  bottom: -46px;
   left: 0;
+  border-radius: 4px 4px 0 0;
 }
 .wrap-userdropdown {
   background: #ffffff;

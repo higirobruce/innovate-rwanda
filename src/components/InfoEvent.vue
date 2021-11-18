@@ -48,6 +48,11 @@
     </div>
     <div class="my-3 mx-4">
       <span class="float-left">
+        <button @click="closeModal" class="btn btn-gray-outline mr-2">
+          Close
+        </button>
+      </span>
+      <span class="float-right">
         <button
           v-if="
             ((profile.role === 'admin-event' ||
@@ -79,10 +84,12 @@
         >
           Save as draft
         </button>
-      </span>
-      <span class="float-right">
-        <button @click="closeModal" class="btn btn-gray-outline mr-2">
-          Close
+        <button
+          v-if="profile.role === 'normal' && post.status === 'draft'"
+          @click="approveOrDecline('pending', post.id)"
+          class="btn btn-success mr-2"
+        >
+          Submit for publication
         </button>
       </span>
     </div>

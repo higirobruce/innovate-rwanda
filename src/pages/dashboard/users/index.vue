@@ -51,15 +51,14 @@
                 <td>{{ user.jobTitle || "-" }}</td>
                 <td>
                   <span
-                    @click.prevent="changeRole(user)"
-                    class="role-button"
-                    v-if="user.role !== 'normal' && profile.id !== user.id"
+                    v-if="user.role === 'normal' || user.role === 'individual'"
+                    class="text-capitalize"
                   >
-                    {{ generateRole(user.role) }}
-                    <img src="@/assets/images/arrow-down.png" alt="edit" />
+                    {{ user.role }} account
                   </span>
                   <span v-else class="role-button">
                     {{ generateRole(user.role) }}
+                    <img src="@/assets/images/arrow-down.png" alt="edit" />
                   </span>
                 </td>
                 <td>{{ user.createdAt | date("DD/MM/YYYY") }}</td>
@@ -123,8 +122,8 @@
             <button type="button" @click.prevent="closeModal" class="close">
               <img src="@/assets/images/close.png" />
             </button>
-            <h3 class="p-4 bottom-shadow shadow text-truncate">Change role</h3>
-            <div class="px-4 py-2">
+            <h3 class="p-4 bottom-shadow text-truncate">Change role</h3>
+            <div class="px-4 pb-0">
               <div
                 class="form-check list-check-role"
                 v-for="(role, index) in roles"

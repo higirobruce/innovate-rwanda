@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-3">
     <table class="table table-responsive-sm">
       <thead>
         <tr>

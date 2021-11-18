@@ -81,11 +81,16 @@
                   class="btn btn-success-outline"
                   @click.prevent="updateUser"
                 >
-                  Update your information
+                  Update
                 </button>
               </div>
             </form>
           </div>
+          <!-- <div class="border-top my-4 py-4">
+            <h2 class="text-blue-dark h5">More info</h2>
+            <h4 class="mt-3">Summary</h4>
+            <div></div>
+          </div> -->
           <div class="border-top my-4 py-4">
             <h2 class="text-blue-dark h5">
               Permanently delete this account and company
@@ -112,7 +117,7 @@
         :height="430"
         :width="700"
       >
-       <button type="button" @click.prevent="closeModal" class="close">
+        <button type="button" @click.prevent="closeModal" class="close">
           <img src="@/assets/images/close.png" />
         </button>
         <h3 class="p-4">Delete account &amp; company</h3>

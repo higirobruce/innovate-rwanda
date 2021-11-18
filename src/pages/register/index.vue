@@ -19,332 +19,380 @@
           place for you.
         </div>
       </div>
+
       <div class="container">
         <div v-if="_.isEmpty(profile) && !registering && !registered">
-          <h2 class="text-center mt-4">
-            Tell us a little bit about yourself...
-          </h2>
-          <div class="choose-company-type" v-if="coTypes">
-            <div
-              v-for="(type, index) in coTypes"
-              :key="index"
-              :class="`${
-                currentType === type.slug ? 'type-option active' : 'type-option'
-              }`"
-              @click="chooseType(type.slug)"
-            >
-              <h3>{{ type.name }}</h3>
-              <img src="@/assets/images/arrow-right.png" />
+          <div v-if="coTypes && coTypes.length">
+            <h2 class="text-center mt-4 choose-type">
+              Tell us a little bit about yourself...
+            </h2>
+            <div class="choose-company-type">
+              <div
+                v-for="(type, index) in coTypes"
+                :key="index"
+                :class="`${
+                  currentType === type.slug
+                    ? 'type-option active'
+                    : 'type-option'
+                }`"
+                @click="chooseType(type.slug)"
+              >
+                <div class="type-box">
+                  <img src="@/assets/images/arrow-right.png" />
+                  <h3>{{ type.name }}</h3>
+                  <div>
+                    {{ type.description }}
+                  </div>
+                  <button>Join</button>
+                </div>
+              </div>
+              <div
+                :class="`${
+                  currentType === 'individual'
+                    ? 'type-option active'
+                    : 'type-option'
+                }`"
+                @click="chooseType('individual')"
+              >
+                <div class="type-box">
+                  <img src="@/assets/images/arrow-right.png" />
+                  <h3>Individual</h3>
+                  <div>
+                    I am a profession/freelancer looking for jobs opportunities
+                    in the Rwandan tech ecosystem
+                  </div>
+                  <button>Join</button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="wrap-register" v-if="typeChosen">
-            <h2 class="text-center mb-4">Some basic information about you</h2>
-            <div class="register-form">
-              <form @submit="registerAccount">
-                <!-- names -->
-                <h4 class="text-center mt-3">What is your name?</h4>
-                <div class="row mt-4">
-                  <div class="col-lg-6 col-sm-12">
-                    <div class="form-group">
-                      <input
-                        type="firstname"
-                        name="first_name"
-                        v-model.trim="$v.user.firstName.$model"
-                        required
-                        class="form-control custom-input"
-                        placeholder="First name"
-                      />
-                    </div>
-                    <div
-                      class="my-1 alert alert-danger small py-1"
-                      v-if="
-                        $v.user.firstName.$dirty && $v.user.firstName.$invalid
-                      "
-                    >
-                      First name is not provided
-                    </div>
-                  </div>
-                  <div class="col-lg-6 col-sm-12">
-                    <div class="form-group">
-                      <input
-                        type="lastname"
-                        name="last_name"
-                        v-model.trim="$v.user.lastName.$model"
-                        required
-                        class="form-control custom-input"
-                        placeholder="Last name"
-                      />
-                    </div>
-                    <div
-                      class="my-1 alert alert-danger small py-1"
-                      v-if="
-                        $v.user.lastName.$dirty && $v.user.lastName.$invalid
-                      "
-                    >
-                      Last name is not provided
-                    </div>
-                  </div>
-                </div>
-                <!-- email -->
-                <h4 class="text-center mt-3">And your work email address?</h4>
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <input
-                        type="email"
-                        name="email"
-                        v-model.trim="$v.user.email.$model"
-                        class="form-control custom-input"
-                        placeholder="Email"
-                      />
-                    </div>
-                    <div
-                      class="my-1 alert alert-danger small py-1"
-                      v-if="$v.user.email.$dirty && $v.user.email.$invalid"
-                    >
-                      Email is not provided
-                    </div>
-                  </div>
-                </div>
-                <!-- password -->
-                <h4 class="text-center mt-3">Create password</h4>
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <input
-                        type="password"
-                        name="password"
-                        v-model.trim="$v.user.password.$model"
-                        required
-                        class="form-control custom-input"
-                        placeholder="Password"
-                      />
-                    </div>
-                    <div
-                      class="my-1 alert alert-danger small py-1"
-                      v-if="
-                        $v.user.password.$dirty && $v.user.password.$invalid
-                      "
-                    >
-                      Password is required and must be at least 8 characters
-                    </div>
-                  </div>
-                </div>
-                <!-- company/institution -->
-                <h4 class="text-center mt-3">
-                  What is the name of your organization/entity?
-                </h4>
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        name="company"
-                        v-model.trim="$v.user.coName.$model"
-                        required
-                        class="form-control custom-input"
-                        placeholder="Company name"
-                      />
-                    </div>
-                    <div
-                      class="my-1 alert alert-danger small py-1"
-                      v-if="$v.user.coName.$dirty && $v.user.coName.$invalid"
-                    >
-                      Company name is not provided
-                    </div>
-                  </div>
-                </div>
-                <!-- website -->
-                <h4 class="text-center mt-3">
-                  What is your organisation/entity's website?
-                </h4>
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        name="website"
-                        v-model.trim="$v.user.coWebsite.$model"
-                        @input="changingWeb(user.coWebsite)"
-                        required
-                        class="form-control custom-input"
-                        placeholder="Company's website"
-                      />
-                    </div>
-                    <div class="small">Example: example.com</div>
-                    <div
-                      class="my-1 alert alert-danger small py-1"
-                      v-if="
-                        $v.user.coWebsite.$dirty && $v.user.coWebsite.$invalid
-                      "
-                    >
-                      Provide a valid website
-                    </div>
-                    {{ webChanged }}
-                  </div>
-                </div>
-                <!-- job title -->
-                <h4 class="text-center mt-3">
-                  What is your job title
-                </h4>
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <input
-                        type="text"
-                        name="job_title"
-                        v-model.trim="$v.user.jobTitle.$model"
-                        required
-                        class="form-control custom-input"
-                        placeholder="Job title"
-                      />
-                    </div>
-                    <div
-                      class="my-1 alert alert-danger small py-1"
-                      v-if="
-                        $v.user.jobTitle.$dirty && $v.user.jobTitle.$invalid
-                      "
-                    >
-                      Job title is not provided
-                    </div>
-                  </div>
-                </div>
-                <!-- district -->
-                <h4 class="text-center mt-3">
-                  What district are your head offices based in?
-                </h4>
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <select
-                        class="form-control form-control-lg"
-                        name="district"
-                        v-model="user.districtBasedIn"
-                        @change="changeDistrict($event)"
-                        required
+            <div
+              class="wrap-register"
+              v-if="typeChosen && currentType !== 'individual'"
+            >
+              <h2 class="text-center mb-4">Some basic information about you</h2>
+              <div class="register-form">
+                <form @submit="registerAccount">
+                  <!-- names -->
+                  <h4 class="text-center mt-3">What is your name?</h4>
+                  <div class="row mt-4">
+                    <div class="col-lg-6 col-sm-12">
+                      <div class="form-group">
+                        <input
+                          type="firstname"
+                          name="first_name"
+                          v-model.trim="$v.user.firstName.$model"
+                          required
+                          class="form-control custom-input"
+                          placeholder="First name"
+                        />
+                      </div>
+                      <div
+                        class="my-1 alert alert-danger small py-1"
+                        v-if="
+                          $v.user.firstName.$dirty && $v.user.firstName.$invalid
+                        "
                       >
-                        <option
-                          v-for="(district, index) in allDistricts"
-                          v-bind:value="district"
-                          :key="index"
-                        >
-                          {{ district }}
-                        </option>
-                      </select>
-                    </div>
-                    <div
-                      class="my-1 alert alert-danger small py-1"
-                      v-if="submitted && !user.districtBasedIn"
-                    >
-                      Select district you are based in
-                    </div>
-                  </div>
-                </div>
-                <!-- area -->
-                <h4 class="text-center mt-3">
-                  What is the main business activity or sector that closely fits your organisation/entity’s Mandate?
-                </h4>
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <select
-                        class="form-control form-control-lg"
-                        name="business_activity"
-                        v-model="user.businessActivityId"
-                        @change="changeInterest($event)"
-                        required
-                      >
-                        <option
-                          v-for="(activity, index) in listOfBusinessActivities"
-                          v-bind:value="activity.id"
-                          :key="index"
-                        >
-                          {{ activity.name }}
-                        </option>
-                      </select>
-                    </div>
-                    <div
-                      class="my-1 alert alert-danger small py-1"
-                      v-if="submitted && !user.businessActivityId"
-                    >
-                      Choose main business activity
-                    </div>
-                  </div>
-                </div>
-                <!-- description -->
-                <h4 class="text-center mt-3">
-                  Short description about your organisation/entity
-                </h4>
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="form-group">
-                      <textarea
-                        name="description"
-                        v-model="user.shortDescription"
-                        class="form-control"
-                        rows="6"
-                      ></textarea>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div class="form-check mt-2">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      v-model="agreed"
-                      :value="agreed"
-                    />
-                    I have read and agree to the
-                    <router-link target="_blank" :to="'/privacy-policy'">
-                      privacy policy
-                    </router-link>
-                    and
-                    <router-link target="_blank" :to="'/terms'">
-                      terms
-                    </router-link>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12">
-                    <div
-                      v-if="
-                        submitted &&
-                        ($v.$invalid ||
-                          !user.districtBasedIn ||
-                          !user.businessActivityId)
-                      "
-                      role="alert"
-                    >
-                      <div class="my-1 alert alert-danger small py-1">
-                        You have to fill all required information
+                        First name is not provided
                       </div>
                     </div>
-                    <button
-                      :disabled="!agreed"
-                      @click.prevent="registerAccount"
-                      class="btn btn-lg font-weight-bold btn-primary-outline mr-lg-5 mt-3"
-                    >
-                      Register
-                    </button>
-                    <span class="py-3" v-if="registering">
-                      <Loading />
-                    </span>
-
-                    <div
-                      v-if="errorHappened && error"
-                      class="my-3 alert alert-danger"
-                      role="alert"
-                    >
-                      {{
-                        error.error ||
-                        "Something went wrong while creating your company, try again later"
-                      }}
+                    <div class="col-lg-6 col-sm-12">
+                      <div class="form-group">
+                        <input
+                          type="lastname"
+                          name="last_name"
+                          v-model.trim="$v.user.lastName.$model"
+                          required
+                          class="form-control custom-input"
+                          placeholder="Last name"
+                        />
+                      </div>
+                      <div
+                        class="my-1 alert alert-danger small py-1"
+                        v-if="
+                          $v.user.lastName.$dirty && $v.user.lastName.$invalid
+                        "
+                      >
+                        Last name is not provided
+                      </div>
                     </div>
                   </div>
-                </div>
-              </form>
+                  <!-- email -->
+                  <h4 class="text-center mt-3">And your work email address?</h4>
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <input
+                          type="email"
+                          name="email"
+                          v-model.trim="$v.user.email.$model"
+                          class="form-control custom-input"
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div
+                        class="my-1 alert alert-danger small py-1"
+                        v-if="$v.user.email.$dirty && $v.user.email.$invalid"
+                      >
+                        Email is not provided
+                      </div>
+                    </div>
+                  </div>
+                  <!-- password -->
+                  <h4 class="text-center mt-3">Create password</h4>
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <input
+                          type="password"
+                          name="password"
+                          v-model.trim="$v.user.password.$model"
+                          required
+                          class="form-control custom-input"
+                          placeholder="Password"
+                        />
+                      </div>
+                      <div
+                        class="my-1 alert alert-danger small py-1"
+                        v-if="
+                          $v.user.password.$dirty && $v.user.password.$invalid
+                        "
+                      >
+                        Password is required and must be at least 8 characters
+                      </div>
+                    </div>
+                  </div>
+                  <!-- company/institution -->
+                  <h4 class="text-center mt-3">
+                    What is the name of your organization/entity?
+                  </h4>
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="company"
+                          v-model.trim="$v.user.coName.$model"
+                          required
+                          class="form-control custom-input"
+                          placeholder="Company name"
+                        />
+                      </div>
+                      <div
+                        class="my-1 alert alert-danger small py-1"
+                        v-if="$v.user.coName.$dirty && $v.user.coName.$invalid"
+                      >
+                        Company name is not provided
+                      </div>
+                    </div>
+                  </div>
+                  <!-- website -->
+                  <h4 class="text-center mt-3">
+                    What is your organisation/entity's website?
+                  </h4>
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="website"
+                          v-model.trim="$v.user.coWebsite.$model"
+                          @input="changingWeb(user.coWebsite)"
+                          required
+                          class="form-control custom-input"
+                          placeholder="Company's website"
+                        />
+                      </div>
+                      <div class="small">Example: example.com</div>
+                      <div
+                        class="my-1 alert alert-danger small py-1"
+                        v-if="
+                          $v.user.coWebsite.$dirty && $v.user.coWebsite.$invalid
+                        "
+                      >
+                        Provide a valid website
+                      </div>
+                      {{ webChanged }}
+                    </div>
+                  </div>
+                  <!-- job title -->
+                  <h4 class="text-center mt-3">What is your job title</h4>
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="job_title"
+                          v-model.trim="$v.user.jobTitle.$model"
+                          required
+                          class="form-control custom-input"
+                          placeholder="Job title"
+                        />
+                      </div>
+                      <div
+                        class="my-1 alert alert-danger small py-1"
+                        v-if="
+                          $v.user.jobTitle.$dirty && $v.user.jobTitle.$invalid
+                        "
+                      >
+                        Job title is not provided
+                      </div>
+                    </div>
+                  </div>
+                  <!-- district -->
+                  <h4 class="text-center mt-3">
+                    What district are your head offices based in?
+                  </h4>
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <select
+                          class="form-control form-control-lg"
+                          name="district"
+                          v-model="user.districtBasedIn"
+                          @change="changeDistrict($event)"
+                          required
+                        >
+                          <option
+                            v-for="(district, index) in allDistricts"
+                            v-bind:value="district"
+                            :key="index"
+                          >
+                            {{ district }}
+                          </option>
+                        </select>
+                      </div>
+                      <div
+                        class="my-1 alert alert-danger small py-1"
+                        v-if="submitted && !user.districtBasedIn"
+                      >
+                        Select district you are based in
+                      </div>
+                    </div>
+                  </div>
+                  <!-- area -->
+                  <h4 class="text-center mt-3">
+                    What is the main business activity or sector that closely
+                    fits your organisation/entity’s Mandate?
+                  </h4>
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <select
+                          class="form-control form-control-lg"
+                          name="business_activity"
+                          v-model="user.businessActivityId"
+                          @change="changeInterest($event)"
+                          required
+                        >
+                          <option
+                            v-for="(
+                              activity, index
+                            ) in listOfBusinessActivities"
+                            v-bind:value="activity.id"
+                            :key="index"
+                          >
+                            {{ activity.name }}
+                          </option>
+                        </select>
+                      </div>
+                      <div
+                        class="my-1 alert alert-danger small py-1"
+                        v-if="submitted && !user.businessActivityId"
+                      >
+                        Choose main business activity
+                      </div>
+                    </div>
+                  </div>
+                  <!-- description -->
+                  <h4 class="text-center mt-3">
+                    Short description about your organisation/entity
+                  </h4>
+                  <div class="row mt-4">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <textarea
+                          name="description"
+                          v-model="user.shortDescription"
+                          class="form-control"
+                          rows="6"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="form-check mt-2">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        v-model="agreed"
+                        :value="agreed"
+                      />
+                      I have read and agree to the
+                      <router-link target="_blank" :to="'/privacy-policy'">
+                        privacy policy
+                      </router-link>
+                      and
+                      <router-link target="_blank" :to="'/terms'">
+                        terms
+                      </router-link>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div
+                        v-if="
+                          submitted &&
+                          ($v.$invalid ||
+                            !user.districtBasedIn ||
+                            !user.businessActivityId)
+                        "
+                        role="alert"
+                      >
+                        <div class="my-1 alert alert-danger small py-1">
+                          You have to fill all required information
+                        </div>
+                      </div>
+                      <button
+                        :disabled="!agreed"
+                        @click.prevent="registerAccount"
+                        class="
+                          btn btn-lg
+                          font-weight-bold
+                          btn-primary-outline
+                          mr-lg-5
+                          mt-3
+                        "
+                      >
+                        Register
+                      </button>
+                      <span class="py-3" v-if="registering">
+                        <Loading />
+                      </span>
+
+                      <div
+                        v-if="errorHappened && error"
+                        class="my-3 alert alert-danger"
+                        role="alert"
+                      >
+                        {{
+                          error.error ||
+                          "Something went wrong while creating your company, try again later"
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
+            <div
+              class="wrap-register"
+              v-if="typeChosen && currentType === 'individual'"
+            >
+              <RegisterIndividual />
+            </div>
+          </div>
+          <div class="loading-register" v-else>
+            <Loading />
           </div>
         </div>
         <div v-if="!_.isEmpty(profile)" class="text-center py-5 my-5">
@@ -381,6 +429,7 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import { Districts } from "rwanda";
 import Vuelidate from "vuelidate";
 import Loading from "@/components/Loading";
+import RegisterIndividual from "@/components/RegisterIndividual";
 Vue.use(Vuelidate);
 
 import { required, minLength, email } from "vuelidate/lib/validators";
@@ -408,6 +457,7 @@ export default {
   components: {
     PageHeader,
     Loading,
+    RegisterIndividual,
   },
   data() {
     return {
@@ -429,6 +479,7 @@ export default {
         coName: "",
         coType: "",
         coWebsite: "",
+        linkedin: "",
         districtBasedIn: "",
         businessActivityId: "",
         shortDescription: "",
@@ -461,6 +512,13 @@ export default {
       web = this._.replace(web, "http://", "");
       web = this._.replace(web, "www.", "");
       return (this.webChanged = web);
+    },
+    changingLinkedin(domain) {
+      let web = domain;
+      web = this._.replace(web, "https://", "");
+      web = this._.replace(web, "http://", "");
+      web = this._.replace(web, "www.", "");
+      return (this.linkedinChanged = web);
     },
     chooseType(type) {
       this.registered = false;
@@ -564,49 +622,75 @@ h2 {
   color: #1b2958;
 }
 .choose-company-type {
-  max-width: 700px;
-  margin: 30px auto;
-  display: flex;
-  gap: 20px;
+  max-width: 1200px;
+  margin: 10px auto 30px auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
 }
 .type-option {
-  width: 50%;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.type-box {
+  width: 100%;
+  height: 350px;
   background: #ffffff;
   box-shadow: 0px 9px 36px #1b295826;
-  border-radius: 3px;
   text-align: center;
   padding: 25px 0;
   cursor: pointer;
   position: relative;
+  border-radius: 22px;
+  z-index: 10;
+  border: 2px solid #ffffff;
+}
+.type-option.active .type-box {
+  border: 2px solid #00aeef;
+  top: 50px;
+}
+.type-box div {
+  font-size: 14px;
+  max-width: 200px;
+  margin: 0 auto;
+  display: auto;
+  color: #5e7c8d;
 }
 .type-option.active::before {
-  z-index: 1;
   position: absolute;
   content: "";
-  top: 0;
+  top: 0px;
   left: 0;
   width: 100%;
-  height: 160px;
-  background: #00aeef;
+  height: 100px;
+  background: #c0c6d8;
+  z-index: -3;
+  border-radius: 30px 30px 0 0;
 }
-.type-option.active::after {
+
+.type-option button {
   position: absolute;
-  content: "";
-  top: 160px;
+  bottom: 35px;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px #1b295840;
+  border: 2px solid #5e7c8d;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+  padding: 20px auto;
   left: 0;
-  width: 100%;
-  height: 6px;
-  background: #6fcff2;
+  right: 0;
+  width: 160px;
+  font-size: 14px;
 }
 .type-option h3 {
-  font-size: 22px;
+  font-size: 16px;
   margin: 10px 0;
-  z-index: 4;
-  position: relative;
+  color: #1b2958;
 }
-.type-option.active h3 {
-  color: #ffffff !important;
-}
+
 .wrap-register {
   max-width: 1200px;
   margin: 30px auto;
@@ -632,5 +716,14 @@ input[type="checkbox"] {
   -o-transform: scale(1.6); /* Opera */
   padding: 8px;
   cursor: pointer;
+}
+.choose-type {
+  color: #00aeef;
+  font-size: 36px;
+  margin: 22px 0;
+  padding: 15px 0;
+}
+.loading-register {
+  padding: 120px 0;
 }
 </style>

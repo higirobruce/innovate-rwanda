@@ -60,6 +60,19 @@
                     </h5>
                     <div>{{ act.description }}</div>
                     <div class="wrap-actions">
+                      <button>
+                        Order: {{ act.id }} (<span
+                          class="bold text-primary"
+                          @click="openTypeReorder(act)"
+                        >
+                          Change</span
+                        >
+                        <img
+                          src="@/assets/images/arrow-down.png"
+                          alt="delete"
+                        />
+                        )
+                      </button>
                       <button type="button" @click.prevent="editType(act)">
                         <img src="@/assets/images/edit.png" alt="edit" /> Edit
                       </button>
@@ -67,6 +80,7 @@
                         <img src="@/assets/images/delete.png" alt="delete" />
                         Delete
                       </button>
+                      <!-- wrap-order -->
                     </div>
                   </div>
                 </div>
@@ -81,6 +95,45 @@
           </ul>
         </div>
       </div>
+      <!-- REORDER COMPANY TYPES -->
+      <modal
+        name="reorderModal"
+        :adaptive="true"
+        :scrollable="true"
+        :width="600"
+      >
+        <!-- :height="240" -->
+        <button type="button" @click.prevent="closeModal" class="close">
+          <img src="@/assets/images/close.png" />
+        </button>
+        <h3 class="p-4">Update display order</h3>
+        <div class="p-3">
+          <div>
+            Current display order of <b>{{ activeType && activeType.name }}:</b>
+            {{ activeType && activeType.display_order }}
+          </div>
+          <div>Select new order</div>
+          <div>
+            <select name="display_order" id="">
+              <option value="something"
+              v-for="(o, index) in types"
+              :key="index"
+              >1</option>
+              <option value="something1"> {{ index + 1 }} </option>
+              <option value="something3">3</option>
+            </select>
+            <button>Update</button>
+          </div>
+          <!-- <ul class="list-group">
+            <li
+              class="list-group-item"
+              @click="updateTypeOrder(act, index + 1)"
+            >
+              {{ o.name }} Set to order #{{ index + 1 }}
+            </li>
+          </ul> -->
+        </div>
+      </modal>
       <!-- DELETE ACTIVITY -->
       <modal
         name="openDeleteRecord"
@@ -341,6 +394,7 @@ export default {
       currentCategory: "",
       aspectRatio: 1,
       size: {},
+      activeType: undefined,
     };
   },
   created() {
@@ -429,6 +483,29 @@ export default {
         })
         .catch(() => (this.loading = false));
     },
+    updateTypeOrder(type, display_order) {
+      type.display_order = display_order;
+      console.log("type", type);
+      AxiosHelper.patch("company-types/edit-type", type)
+        .then(() => {
+          Vue.$toast.open({
+            message: "Company type order has been updated successfully",
+            type: "success",
+          });
+          this.loadCompanyTypes();
+          this.edited = true;
+          this.editing = false;
+          this.loading = false;
+        })
+        .catch(() => {
+          Vue.$toast.open({
+            message:
+              "Sorry, something went wrong while updating your the display order",
+            type: "error",
+          });
+          this.loading = false;
+        });
+    },
     deleteRecord(id) {
       this.recordId = id;
       this.$modal.show("openDeleteRecord");
@@ -452,7 +529,23 @@ export default {
       this.$modal.hide("openEditType");
       this.$modal.hide("openUploadCategoryImage");
       this.$modal.hide("openDeleteRecord");
+      this.$modal.hide("reorderModal");
     },
+    changeOrder(id) {
+      console.log("changeOrder", id);
+    },
+    openTypeReorder(type) {
+      this.activeType = type;
+      this.$modal.show("reorderModal");
+      // console.log('#', this.$refs[0].classList)
+      // this.$refs["key" + key][0].classList.add("show-options");
+    },
+    // hideDisplayOption() {
+    // for (const classname of this.$refs["key" + key][0].classList) {
+    // console.log("classname", this.$refs);
+    // this.$refs[classname[0]].classList.remove("show-options");
+    // }
+    // },
     onFileSelect(e) {
       const file = e.target.files[0];
       this.mime_type = file.type;
@@ -534,5 +627,22 @@ export default {
 .image {
   width: 70px;
   height: 70px;
+}
+.wrap-order {
+  position: absolute;
+  top: 35px;
+  width: 180px;
+  left: 0;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  text-align: left;
+  cursor: pointer;
+  display: none;
+}
+.wrap-order li:hover {
+  background: #f2f2f2;
+}
+.show-options {
+  display: block;
 }
 </style>

@@ -16,6 +16,14 @@
           >
             Update
           </button>
+          <button
+            v-if="profile.role === 'normal' && post.status === 'draft'"
+            @click="submitForPublication"
+            class="btn btn-success ml-3"
+          >
+            <!-- @click="approveOrDecline('pending', post.id)" -->
+            Submit for publication
+          </button>
         </div>
         <div class="clear" />
         <br />
@@ -133,10 +141,9 @@
             :height="660"
             :width="550"
           >
-
-          <button type="button" @click.prevent="closeModal" class="close">
-            <img src="@/assets/images/close.png" />
-          </button>
+            <button type="button" @click.prevent="closeModal" class="close">
+              <img src="@/assets/images/close.png" />
+            </button>
             <h3 class="p-4">Business activities</h3>
             <div class="px-4">
               <div
@@ -324,6 +331,11 @@ export default {
       }
     },
     updateEvent() {
+      this.editing = true;
+      this.savePost();
+    },
+    submitForPublication() {
+      this.post.status = "pending";
       this.editing = true;
       this.savePost();
     },

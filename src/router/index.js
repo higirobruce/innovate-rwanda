@@ -267,8 +267,8 @@ const router = new Router({
       },
     },
     {
-      path: "/find-talent",
-      component: () => import("@/pages/jobs/index.vue"),
+      path: "/find-talents",
+      component: () => import("@/pages/find-talents/index.vue"),
       meta: {
         layout: "default-layout",
       },

@@ -1,58 +1,60 @@
 <template>
-  <div class="wrap-companies">
-    <div
-      class="row one-company"
-      v-for="(company, index) in response"
-      :key="index"
-    >
+  <div class="wrap-users">
+    <div class="row one-company" v-for="(user, index) in users" :key="index">
       <div class="col-sm-12 col-md-4 col-lg-2">
         <div class="company-logo">
-          <router-link :to="`/company/${company.slug}`">
-            <img
-              v-if="company && company.logo"
-              :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${company.logo}`"
-              :alt="company.coName"
-            />
-            <img
-              v-else
-              src="@/assets/images/logos_placeholder.png"
-              :alt="company.coName"
-            />
-          </router-link>
+          <img
+            v-if="user && user.picture"
+            :src="`${IMAGE_URL}c_fill,g_center,h_120,w_120/${user.picture}`"
+            :alt="user.lastName"
+          />
+          <img
+            v-else
+            src="@/assets/images/logos_placeholder.png"
+            :alt="user.coName"
+          />
         </div>
       </div>
       <div class="col-sm-12 col-md-8 col-lg-10">
-        <router-link :to="`/company/${company.slug}`">
-          <h2>{{ company.coName }}-{{ company.id }}</h2>
+          <h2>{{ user.lastName }} {{ user.firstName }}</h2>
           <div>
-            <div class="mb-2 co-info" v-if="company.yearFounded">
-              <i class="icon-calendar" />
-              <span class="ml-2">{{ company.yearFounded }} </span>
-            </div>
-            <div class="mb-2 co-info">
-              <i class="icon-calendar" />
-              <span class="ml-2">{{ company.BusinessActivity.name }} </span>
-            </div>
-            <div class="mb-2 co-info">
-              <i class="icon-calendar" />
-              <span class="ml-2">{{ company.coType }} </span>
-            </div>
-            <div class="mb-2 co-info" v-if="company.districtBasedIn">
+            <div class="mb-2 co-info" v-if="user.location">
               <i class="icon-marker-stroked" />
-              <span class="ml-2">{{ company.districtBasedIn }} </span>
+              <span class="ml-2">{{ user.location }} </span>
             </div>
-            <div class="mb-2 co-info" v-if="company.mainAreaOfInterest">
-              <i class="icon-pound" />
-              <span class="ml-2">{{ company.mainAreaOfInterest }} </span>
+            <div class="mb-2 co-info">
+              <i class="icon-calendar" />
+              <span class="ml-2">{{ user.accType }} </span>
             </div>
-            <div class="mb-2 co-info" v-if="company.shortDescription">
+            <!-- <div class="mb-2 co-info">
+              <i class="icon-calendar" />
+              <span class="ml-2">{{ user.BusinessActivity.name }} </span>
+            </div> -->
+            <div class="mb-2 co-info">
+              <i class="icon-calendar" />
+              <router-link
+                class="text-blue-dark"
+                :to="`blog/${user.slug}`"
+              >
+                {{ user.linkedin }}
+              </router-link>
+            </div>
+            <div class="mb-2 co-info">
+              <i class="icon-calendar" />
+              <router-link
+                class="text-blue-dark"
+                :to="`blog/${user.slug}`"
+              >
+                {{ user.portfolio }}
+              </router-link>
+            </div>
+            <div class="mb-2 co-info" v-if="user.shortDescription">
               <i class="icon-comment" />
               <span class="ml-2"
-                >{{ company.shortDescription | truncate(200) }}
+                >{{ user.shortDescription | truncate(300) }}
               </span>
             </div>
           </div>
-        </router-link>
       </div>
       <div class="info-separator clear my-3">&nbsp;</div>
     </div>
@@ -61,8 +63,8 @@
 
 <script>
 export default {
-  name: "list-companies",
-  props: ["companies"],
+  name: "list-users",
+  props: ["users"],
   data() {
     return {
       response: [],
@@ -74,8 +76,8 @@ export default {
   },
   created() {
     let remainder = 0;
-    this.count = this.companies && this.companies.length;
-    this.response = this.companies.slice(
+    this.count = this.users && this.users.length;
+    this.response = this.users.slice(
       this.currentPage,
       this.numberOnPage >= this.count ? this.count : this.numberOnPage
     );
@@ -91,21 +93,21 @@ export default {
   methods: {
     // goToPrevious() {
     //   this.currentPage = this.currentPage - 1;
-    //   this.response = this.companies.slice(
+    //   this.response = this.users.slice(
     //     this.currentPage,
     //     this.numberOnPage + this.currentPage
     //   );
     // },
     // goToNext() {
     //   this.currentPage = this.currentPage + 1;
-    //   this.response = this.companies.slice(
+    //   this.response = this.users.slice(
     //     this.currentPage,
     //     this.numberOnPage + this.currentPage
     //   );
     // },
     goTo(page) {
       this.currentPage = page;
-      this.response = this.companies.slice(
+      this.response = this.users.slice(
         this.currentPage,
         this.numberOnPage + this.currentPage
       );
@@ -115,7 +117,7 @@ export default {
 </script>
 
 <style scoped>
-.wrap-companies {
+.wrap-users {
   padding: 40px 0;
   box-shadow: 0px 17px 36px #1b295814;
   /* border-radius: 3px; */
