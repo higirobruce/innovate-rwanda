@@ -41,7 +41,7 @@
               <router-link :to="'/blog'">Blog</router-link>
             </li>
             <li class="list-inline-item">
-              <router-link :to="'/find-talent'">Find talents</router-link>
+              <router-link :to="'/find-talents'">Find talents</router-link>
             </li>
             <li class="list-inline-item">
               <router-link :to="'/resources'">Resources</router-link>

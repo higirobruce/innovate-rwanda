@@ -123,10 +123,10 @@
             <router-link :to="'/blog'">Blog</router-link>
           </li>
           <li class="list-group-item">
-            <router-link :to="'/find-talent'">Find Talents</router-link>
+            <router-link :to="'/find-talents'">Find Talents</router-link>
           </li>
           <li class="list-inline-item">
-            <router-link active :to="'/resources'">Resources</router-link>
+            <router-link :to="'/resources'">Resources</router-link>
           </li>
         </ul>
       </div>

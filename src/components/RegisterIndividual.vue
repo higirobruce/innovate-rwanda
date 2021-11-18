@@ -1,139 +1,157 @@
 <template>
   <div>
-    <h2 class="text-center mb-4">Some basic information about you</h2>
-    <div class="register-form">
-      <form @submit="registerIndividual">
-        <h4 class="text-center mt-3">What is your name?</h4>
-        <div class="row mt-4">
-          <div class="col-lg-6 col-sm-12">
-            <div class="form-group">
-              <input
-                type="firstname"
-                name="first_name"
-                v-model.trim="$v.userIndividual.firstName.$model"
+    <div v-if="!individualRegisting && !individualRegistered">
+      <h2 class="text-center mb-4">Some basic information about you</h2>
+      <div class="register-form">
+        <form @submit="registerIndividual">
+          <h4 class="text-center mt-3">What is your name?</h4>
+          <div class="row mt-4">
+            <div class="col-lg-6 col-sm-12">
+              <div class="form-group">
+                <input
+                  type="firstname"
+                  name="first_name"
+                  v-model.trim="$v.userIndividual.firstName.$model"
+                  required
+                  class="form-control custom-input"
+                  placeholder="First name"
+                />
+              </div>
+              <div
+                class="my-1 alert alert-danger small py-1"
+                v-if="
+                  $v.userIndividual.firstName.$dirty &&
+                  $v.userIndividual.firstName.$invalid
+                "
+              >
+                First name is not provided
+              </div>
+            </div>
+            <div class="col-lg-6 col-sm-12">
+              <div class="form-group">
+                <input
+                  type="lastname"
+                  name="last_name"
+                  v-model.trim="$v.userIndividual.lastName.$model"
+                  required
+                  class="form-control custom-input"
+                  placeholder="Last name"
+                />
+              </div>
+              <div
+                class="my-1 alert alert-danger small py-1"
+                v-if="
+                  $v.userIndividual.lastName.$dirty &&
+                  $v.userIndividual.lastName.$invalid
+                "
+              >
+                Last name is not provided
+              </div>
+            </div>
+          </div>
+          <h4 class="text-center mt-3">And your work email address?</h4>
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="form-group">
+                <input
+                  type="email"
+                  name="email"
+                  v-model.trim="$v.userIndividual.email.$model"
+                  class="form-control custom-input"
+                  placeholder="Email"
+                />
+              </div>
+              <div
+                class="my-1 alert alert-danger small py-1"
+                v-if="
+                  $v.userIndividual.email.$dirty &&
+                  $v.userIndividual.email.$invalid
+                "
+              >
+                Email is not provided
+              </div>
+            </div>
+          </div>
+          <h4 class="text-center mt-3">What's your phone number?</h4>
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="form-group">
+                <input
+                  type="phone"
+                  name="phone"
+                  v-model.trim="$v.userIndividual.phone.$model"
+                  class="form-control custom-input"
+                  placeholder="Phone number"
+                />
+              </div>
+              <div
+                class="my-1 alert alert-danger small py-1"
+                v-if="
+                  $v.userIndividual.phone.$dirty &&
+                  $v.userIndividual.phone.$invalid
+                "
+              >
+                Phone number is not provided
+              </div>
+            </div>
+          </div>
+          <h4 class="text-center mt-3">Create password</h4>
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="form-group">
+                <input
+                  type="password"
+                  name="password"
+                  v-model.trim="$v.userIndividual.password.$model"
+                  required
+                  class="form-control custom-input"
+                  placeholder="Password"
+                />
+              </div>
+              <div
+                class="my-1 alert alert-danger small py-1"
+                v-if="
+                  $v.userIndividual.password.$dirty &&
+                  $v.userIndividual.password.$invalid
+                "
+              >
+                Password is required and must be at least 8 characters
+              </div>
+            </div>
+          </div>
+          <h4 class="text-center mt-3">
+            Are you a mentor or open for opportunity?
+          </h4>
+          <div class="row mt-4">
+            <div class="col-12">
+              <!-- <div class="form-group">
+                <input
+                  type="text"
+                  name="company"
+                  v-model.trim="$v.userIndividual.accountType.$model"
+                  required
+                  class="form-control custom-input"
+                  placeholder="Company name"
+                />
+              </div> -->
+              <!-- v-model="userIndividual.location"
+                @change="changeLocation($event)" -->
+              <select
+                class="form-control form-control-lg"
+                name="accType"
+                v-model="userIndividual.accType"
                 required
-                class="form-control custom-input"
-                placeholder="First name"
-              />
-            </div>
-            <div
-              class="my-1 alert alert-danger small py-1"
-              v-if="
-                $v.userIndividual.firstName.$dirty &&
-                $v.userIndividual.firstName.$invalid
-              "
-            >
-              First name is not provided
-            </div>
-          </div>
-          <div class="col-lg-6 col-sm-12">
-            <div class="form-group">
-              <input
-                type="lastname"
-                name="last_name"
-                v-model.trim="$v.userIndividual.lastName.$model"
-                required
-                class="form-control custom-input"
-                placeholder="Last name"
-              />
-            </div>
-            <div
-              class="my-1 alert alert-danger small py-1"
-              v-if="
-                $v.userIndividual.lastName.$dirty &&
-                $v.userIndividual.lastName.$invalid
-              "
-            >
-              Last name is not provided
-            </div>
-          </div>
-        </div>
-        <h4 class="text-center mt-3">And your work email address?</h4>
-        <div class="row mt-4">
-          <div class="col-12">
-            <div class="form-group">
-              <input
-                type="email"
-                name="email"
-                v-model.trim="$v.userIndividual.email.$model"
-                class="form-control custom-input"
-                placeholder="Email"
-              />
-            </div>
-            <div
-              class="my-1 alert alert-danger small py-1"
-              v-if="
-                $v.userIndividual.email.$dirty &&
-                $v.userIndividual.email.$invalid
-              "
-            >
-              Email is not provided
-            </div>
-          </div>
-        </div>
-        <h4 class="text-center mt-3">What's your phone number?</h4>
-        <div class="row mt-4">
-          <div class="col-12">
-            <div class="form-group">
-              <input
-                type="phone"
-                name="phone"
-                v-model.trim="$v.userIndividual.phone.$model"
-                class="form-control custom-input"
-                placeholder="Phone number"
-              />
-            </div>
-            <div
-              class="my-1 alert alert-danger small py-1"
-              v-if="
-                $v.userIndividual.phone.$dirty &&
-                $v.userIndividual.phone.$invalid
-              "
-            >
-              Phone number is not provided
-            </div>
-          </div>
-        </div>
-        <h4 class="text-center mt-3">Create password</h4>
-        <div class="row mt-4">
-          <div class="col-12">
-            <div class="form-group">
-              <input
-                type="password"
-                name="password"
-                v-model.trim="$v.userIndividual.password.$model"
-                required
-                class="form-control custom-input"
-                placeholder="Password"
-              />
-            </div>
-            <div
-              class="my-1 alert alert-danger small py-1"
-              v-if="
-                $v.userIndividual.password.$dirty &&
-                $v.userIndividual.password.$invalid
-              "
-            >
-              Password is required and must be at least 8 characters
-            </div>
-          </div>
-        </div>
-        <h4 class="text-center mt-3">
-          Are you a mentor or open for opportunity?
-        </h4>
-        <div class="row mt-4">
-          <div class="col-12">
-            <div class="form-group">
-              <input
-                type="text"
-                name="company"
-                v-model.trim="$v.userIndividual.accountType.$model"
-                required
-                class="form-control custom-input"
-                placeholder="Company name"
-              />
-            </div>
-            <div
+              >
+                <option value="" selected disabled>You are joing as....</option>
+                <option v-bind:value="'profession'">I am looking for opportunities </option>
+                <option v-bind:value="'volunteer'">
+                 I am a volunteer (internship,practicum,apprenticeship)
+                </option>
+                <option v-bind:value="'mentor'">
+                 I am a mentor
+                </option>
+              </select>
+              <!-- <div
               class="my-1 alert alert-danger small py-1"
               v-if="
                 $v.userIndividual.accountType.$dirty &&
@@ -141,128 +159,129 @@
               "
             >
               Select one option
+            </div> -->
             </div>
           </div>
-        </div>
-        <h4 class="text-center mt-3">Link to your linkedin</h4>
-        <div class="row mt-4">
-          <div class="col-12">
-            <div class="form-group">
-              <input
-                type="text"
-                name="website"
-                v-model.trim="$v.userIndividual.linkedin.$model"
-                required
-                class="form-control custom-input"
-                placeholder="Company's website"
-              />
-              <!-- @input="changingLinkedin(user.linkedin)" -->
-            </div>
-            <div class="small">
-              Example: linkedin.com/in/yourlinkedinusername
-            </div>
-            <div
-              class="my-1 alert alert-danger small py-1"
-              v-if="
-                $v.userIndividual.linkedin.$dirty &&
-                $v.userIndividual.linkedin.$invalid
-              "
-            >
-              Provide a valid linkedin account link
-            </div>
-            <!-- {{ linkedinChanged }} -->
-          </div>
-        </div>
-        <h4 class="text-center mt-3">Link to your Portolio</h4>
-        <div class="row mt-4">
-          <div class="col-12">
-            <div class="form-group">
-              <input
-                type="text"
-                name="job_title"
-                v-model.trim="$v.userIndividual.portfolio.$model"
-                required
-                class="form-control custom-input"
-                placeholder="Job title"
-              />
-            </div>
-            <div
-              class="my-1 alert alert-danger small py-1"
-              v-if="
-                $v.userIndividual.portfolio.$dirty &&
-                $v.userIndividual.portfolio.$invalid
-              "
-            >
-              Portolio is not provided
-            </div>
-          </div>
-        </div>
-        <h4 class="text-center mt-3">What's your location?</h4>
-        <div class="row mt-4">
-          <div class="col-12">
-            <div class="form-group">
-              <select
-                class="form-control form-control-lg"
-                name="district"
-                v-model="userIndividual.location"
-                @change="changeLocation($event)"
-                required
+          <h4 class="text-center mt-3">Link to your linkedin</h4>
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="website"
+                  v-model.trim="$v.userIndividual.linkedin.$model"
+                  required
+                  class="form-control custom-input"
+                  placeholder="Company's website"
+                />
+                <!-- @input="changingLinkedin(user.linkedin)" -->
+              </div>
+              <div class="small">
+                Example: linkedin.com/in/yourlinkedinusername
+              </div>
+              <div
+                class="my-1 alert alert-danger small py-1"
+                v-if="
+                  $v.userIndividual.linkedin.$dirty &&
+                  $v.userIndividual.linkedin.$invalid
+                "
               >
-                <option
-                  v-for="(district, index) in allDistricts"
-                  v-bind:value="district"
-                  :key="index"
+                Provide a valid linkedin account link
+              </div>
+              <!-- {{ linkedinChanged }} -->
+            </div>
+          </div>
+          <h4 class="text-center mt-3">Link to your Portolio</h4>
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="portofolio"
+                  v-model.trim="$v.userIndividual.portfolio.$model"
+                  required
+                  class="form-control custom-input"
+                  placeholder="Link to your portfolio"
+                />
+              </div>
+              <div class="small">Provide a link to you portfolio or resume</div>
+              <div
+                class="my-1 alert alert-danger small py-1"
+                v-if="
+                  $v.userIndividual.portfolio.$dirty &&
+                  $v.userIndividual.portfolio.$invalid
+                "
+              >
+                Portolio is not provided
+              </div>
+            </div>
+          </div>
+          <h4 class="text-center mt-3">What's your location?</h4>
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="form-group">
+                <select
+                  class="form-control form-control-lg"
+                  name="district"
+                  v-model="userIndividual.location"
+                  @change="changeLocation($event)"
+                  required
                 >
-                  {{ district }}
-                </option>
-              </select>
+                  <option
+                    v-for="(district, index) in allDistricts"
+                    v-bind:value="district"
+                    :key="index"
+                  >
+                    {{ district }}
+                  </option>
+                </select>
+              </div>
+              <div
+                class="my-1 alert alert-danger small py-1"
+                v-if="submitted && !userIndividual.location"
+              >
+                Select district you are based in
+              </div>
+            </div>
+          </div>
+          <h4 class="text-center mt-3">Your short summary</h4>
+          <div class="row mt-4">
+            <div class="col-12">
+              <div class="form-group">
+                <textarea
+                  name="description"
+                  v-model="userIndividual.shortDescription"
+                  class="form-control"
+                  rows="6"
+                ></textarea>
+              </div>
             </div>
             <div
               class="my-1 alert alert-danger small py-1"
-              v-if="submitted && !userIndividual.location"
+              v-if="submitted && !userIndividual.shortDescription"
             >
-              Select district you are based in
+              Your summary be 10 to 300 characters
             </div>
           </div>
-        </div>
-        <h4 class="text-center mt-3">Your short summary</h4>
-        <div class="row mt-4">
-          <div class="col-12">
-            <div class="form-group">
-              <textarea
-                name="description"
-                v-model="userIndividual.shortDescription"
-                class="form-control"
-                rows="6"
-              ></textarea>
+          <div>
+            <div class="form-check mt-2">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                v-model="agreed"
+                :value="agreed"
+              />
+              I have read and agree to the
+              <router-link target="_blank" :to="'/privacy-policy'">
+                privacy policy
+              </router-link>
+              and
+              <router-link target="_blank" :to="'/terms'"> terms </router-link>
             </div>
           </div>
-          <div
-            class="my-1 alert alert-danger small py-1"
-            v-if="submitted && !userIndividual.shortDescription"
-          >
-            Your summary be 10 to 300 characters
-          </div>
-        </div>
-        <div>
-          <div class="form-check mt-2">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              v-model="agreed"
-              :value="agreed"
-            />
-            I have read and agree to the
-            <router-link target="_blank" :to="'/privacy-policy'">
-              privacy policy
-            </router-link>
-            and
-            <router-link target="_blank" :to="'/terms'"> terms </router-link>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <!-- <div
+          <div class="row">
+            <div class="col-12">
+              <!-- <div
               v-if="
                 !(
                   submitted &&
@@ -276,37 +295,47 @@
                 You have to fill all required information
               </div>
             </div> -->
-            <!-- :disabled="
+              <!-- :disabled="
                 !agreed && !$v.$invalid && _.isEmpty(userIndividual.location) -->
-            <button
-              @click.prevent="registerIndividual"
-              class="
-                btn btn-lg
-                font-weight-bold
-                btn-primary-outline
-                mr-lg-5
-                mt-3
-              "
-            >
-              Register
-            </button>
-            <span class="py-3" v-if="registering">
-              <Loading />
-            </span>
+              <button
+                @click.prevent="registerIndividual"
+                class="
+                  btn btn-lg
+                  font-weight-bold
+                  btn-primary-outline
+                  mr-lg-5
+                  mt-3
+                "
+              >
+                Register
+              </button>
 
-            <div
-              v-if="errorHappened && error"
-              class="my-3 alert alert-danger"
-              role="alert"
-            >
-              {{
-                error.error ||
-                "Something went wrong while creating your company, try again later"
-              }}
+              <div
+                v-if="errorHappened && error"
+                class="my-3 alert alert-danger"
+                role="alert"
+              >
+                {{
+                  error.error ||
+                  "Something went wrong while creating your company, try again later"
+                }}
+              </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
+    </div>
+    <div class="py-3" v-if="individualRegisting && !individualRegistered">
+      <Loading />
+    </div>
+    <div
+      v-if="!individualRegisting && individualRegistered"
+      class="text-center py-5 my-5"
+    >
+      <div class="my-3 alert alert-success" role="alert">
+        We have created your account successfully. Kindly, check your email to
+        verify your account!
+      </div>
     </div>
   </div>
 </template>
@@ -360,11 +389,14 @@ export default {
         shortDescription: "",
         phone: "",
         entity_type: "individual",
+        accType: "",
       },
       webChanged: "",
       allDistricts: [],
       listOfBusinessActivities: [],
       coTypes: [],
+      individualRegisting: false,
+      individualRegistered: false,
     };
   },
   created() {
@@ -387,7 +419,8 @@ export default {
       this.userIndividual.location = e.target.value;
     },
     registerIndividual() {
-      console.log("user", this.userIndividual);
+      this.individualRegisting = true;
+      this.individualRegistered = false;
       this.submitted = true;
       if (!this.$v.$invalid) {
         this.registering = true;
@@ -395,8 +428,8 @@ export default {
         this.errorHappened = false;
         AxiosHelper.post("register", this.userIndividual)
           .then(() => {
-            this.registering = false;
-            this.registered = true;
+            this.individualRegisting = false;
+            this.individualRegistered = true;
             this.userIndividual = {
               firstName: "",
               lastName: "",
@@ -416,11 +449,12 @@ export default {
           })
           .catch((error) => {
             this.error = error.response.data;
-            this.registering = false;
+            this.individualRegisting = false;
+            this.individualRegistered = false;
             this.errorHappened = true;
           });
       } else {
-        console.log("error", this.$v);
+        console.log("error here", this.$v);
       }
     },
   },
@@ -434,9 +468,6 @@ export default {
       },
       email: {
         email,
-      },
-      accountType: {
-        required,
       },
       linkedin: {
         validateWebsite: checkWebsite,

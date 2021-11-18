@@ -48,7 +48,7 @@
               <option v-bind:value="''">All companies</option>
             </select>
           </div>
-          <div class="filter-select">
+          <!-- <div class="filter-select">
             <select
               name="activity"
               v-model="selectedActivity"
@@ -64,7 +64,7 @@
                 {{ act.name }}
               </option>
             </select>
-          </div>
+          </div> -->
           <div class="filter-select">
             <select
               name="location"
