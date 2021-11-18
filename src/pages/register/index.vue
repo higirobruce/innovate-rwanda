@@ -38,7 +38,10 @@
                 @click="chooseType(type.slug)"
               >
                 <div class="type-box">
-                  <img src="@/assets/images/arrow-right.png" />
+                  <img
+                    :src="`${IMAGE_URL}c_fill,g_center,w_178,h_178/${type.image}`"
+                    :alt="type.name"
+                  />
                   <h3>{{ type.name }}</h3>
                   <div>
                     {{ type.description }}
@@ -55,7 +58,7 @@
                 @click="chooseType('individual')"
               >
                 <div class="type-box">
-                  <img src="@/assets/images/arrow-right.png" />
+                  <img src="@/assets/images/user-type-icon.png" />
                   <h3>Individual</h3>
                   <div>
                     I am a profession/freelancer looking for jobs opportunities
@@ -657,6 +660,10 @@ h2 {
   margin: 0 auto;
   display: auto;
   color: #5e7c8d;
+}
+.type-box img {
+  width: 50px;
+  height: 50px;
 }
 .type-option.active::before {
   position: absolute;
