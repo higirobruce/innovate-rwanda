@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     search() {
-      this.$router.push(`/directory/startupcompany?search=${this.query}`);
+      this.$router.push(`/directory?search=${this.query}`);
     },
   },
 };

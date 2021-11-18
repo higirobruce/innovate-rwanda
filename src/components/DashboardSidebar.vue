@@ -28,7 +28,7 @@
       <li class="nav-item" v-if="profile.role === 'normal'">
         <router-link :to="`/dashboard/company/${profile.companyId}`">
           <img src="@/assets/images/icon-company.png" />
-          <div>My Profile</div>
+          <div>My Company</div>
         </router-link>
       </li>
       <li
@@ -55,7 +55,9 @@
       </li>
       <li
         class="nav-item"
-        v-if="profile && profile.role !== 'normal'"
+        v-if="
+          profile && profile.role !== 'normal' && profile.role !== 'individual'
+        "
       >
         <router-link :to="'/dashboard/resources'">
           <img src="@/assets/images/icon-resources.png" />
@@ -68,10 +70,16 @@
           <div>Content</div>
         </router-link>
       </li>
-      <li class="nav-item" v-if="profile.role === 'admin-job'">
+      <li class="nav-item" v-if="profile && profile.role === 'admin-job'">
         <router-link :to="'/dashboard/content/jobs'">
           <img src="@/assets/images/icon-content.png" />
           <div>Content</div>
+        </router-link>
+      </li>
+      <li class="nav-item" v-if="profile && profile.role !== 'individual'">
+        <router-link :to="'/dashboard/messages'">
+          <img src="@/assets/images/icon-content.png" />
+          <div>Messages</div>
         </router-link>
       </li>
       <li class="nav-item float-bottom">

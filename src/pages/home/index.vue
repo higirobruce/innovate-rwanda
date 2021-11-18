@@ -133,7 +133,7 @@
         </div>
         <div class="text-center">
           <router-link
-            :to="'/join'"
+            :to="'/events'"
             class="
               btn btn-home btn-lg
               font-weight-bold
@@ -144,7 +144,7 @@
               mt-3
             "
           >
-            Join the community
+            More events
           </router-link>
         </div>
       </div>
@@ -266,6 +266,7 @@ export default {
         2: {
           image: "kic-b.png",
           hover: "kic.png",
+          link: "rdb.rw",
           isHover: false,
         },
         3: {
@@ -359,7 +360,7 @@ export default {
       this.$refs.carousel.next();
     },
     search() {
-      this.$router.push(`/directory/companies?search=${this.query}`);
+      this.$router.push(`/directory?search=${this.query}`);
     },
     pageOne(start, end) {
       this.startingPoint = start;

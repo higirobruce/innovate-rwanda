@@ -27,6 +27,14 @@
           directory.result
         "
       >
+        <div>
+          <span class="float-right">
+            <button @click="closeModal" class="btn btn-primary-outline mr-2">
+              Export
+            </button>
+          </span>
+        </div>
+        <div class="clear" />
         <ListAdminCompanies :directory="companies" />
         <div>
           <Loading v-if="loadingDirectory" />

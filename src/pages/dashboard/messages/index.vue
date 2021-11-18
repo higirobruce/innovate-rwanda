@@ -4,10 +4,7 @@
       <div class="page-info px-5">
         <h2 class="h2 font-weight-bold">Messages</h2>
       </div>
-      <div
-        class="dash-container"
-        v-if="messages && profile && profile.role === 'normal'"
-      >
+      <div class="dash-container" v-if="messages && profile">
         <div class="wrap-messages">
           <div class="wrap-senders">
             <div class="wrap-search" v-if="!_.isEmpty(message)">
@@ -44,8 +41,77 @@
                   :alt="message.email"
                 />
                 <div class="media-body">
-                  <h5 class="mt-0 mb-1">{{ message.email }}</h5>
-                  {{ message.createdAt | date("DD MMM YYYY") }}
+                  <h6 class="mt-0 mb-1 font-weight-bold">
+                    Thousand Hills Accounting Ltd
+                    <span class="badge badge-info">Ecosystem Enabler</span>
+                  </h6>
+                  <div>Edward Nganyira</div>
+                  <div style="color:#7789A7">
+                    I won Huge in Bingo last night...
+                    <span class="float-right">{{ message.createdAt | date("HH:mm") }}</span>
+                  </div>
+                </div>
+              </li>
+              <li
+                v-for="(message, index) in messages"
+                :key="index+1"
+                @click="viewMessage(message)"
+                :class="`${
+                  message.id === activeMessage
+                    ? 'media cursor-pointer'
+                    : 'media cursor-pointer'
+                }`"
+              >
+                <img
+                  :class="`${
+                    message.id === activeMessage
+                      ? 'mr-3 avatar active'
+                      : 'mr-3 avatar'
+                  }`"
+                  src="@/assets/images/user-avatar.svg"
+                  :alt="message.email"
+                />
+                <div class="media-body">
+                  <h6 class="mt-0 mb-1 font-weight-bold">
+                    Apewo Ltd
+                    <span class="badge badge-success">Ecosystem Enabler</span>
+                  </h6>
+                  <div>Claude Karangwa</div>
+                 <div style="color:#7789A7">
+                    I won Huge in Bingo last night...
+                    <span class="float-right">{{ message.createdAt | date("HH:mm") }}</span>
+                  </div>
+                </div>
+              </li>
+              <li
+                v-for="(message, index) in messages"
+                :key="index+2"
+                @click="viewMessage(message)"
+                :class="`${
+                  message.id === activeMessage
+                    ? 'media cursor-pointer'
+                    : 'media cursor-pointer'
+                }`"
+              >
+                <img
+                  :class="`${
+                    message.id === activeMessage
+                      ? 'mr-3 avatar active'
+                      : 'mr-3 avatar'
+                  }`"
+                  src="@/assets/images/user-avatar.svg"
+                  :alt="message.email"
+                />
+                <div class="media-body">
+                  <h6 class="mt-0 mb-1 font-weight-bold">
+                    Xroze Fleet
+                    <span class="badge badge-warning">Company</span>
+                  </h6>
+                  <div>Ngabo Jasper</div>
+                  <div style="color:#7789A7">
+                    I won Huge in Bingo last night...
+                    <span class="float-right">{{ message.createdAt | date("HH:mm") }}</span>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -145,29 +211,29 @@ export default {
 
 <style scoped>
 .dash-container {
-  background: #eeeff3 !important;
+  /* background: #eeeff3 !important; */
 }
 .wrap-read-message {
   position: relative;
 }
-.wrap-read-message::before {
+/* .wrap-read-message::before {
   position: absolute;
   width: 1px;
   height: 100%;
   background: #dce0e9;
   content: "";
-}
+} */
 .wrap-messages {
   display: flex;
   flex-direction: row;
-  height: 78vh;
+  /* height: 78vh; */
 }
 .wrap-senders {
   width: 450px;
   background: #ffffff !important;
 }
 .wrap-senders ul {
-  height: 65vh;
+  /* height: 65vh; */
   overflow-y: auto;
 }
 .wrap-read-message {
@@ -177,20 +243,20 @@ export default {
   margin: 30px;
 }
 .wrap-search input {
-  background: #f0f2f8;
+  background: #ffffff;
 }
 .media img {
   width: 45px;
 }
 .media {
   padding: 30px 10px;
-  border-top: 1px solid #dce0e9;
+  border-top: 1px solid #f0f2f8;
 }
 .media:last-child {
-  border-bottom: 1px solid #dce0e9;
+  border-bottom: 1px solid #f0f2f8;
 }
 .media.active {
-  background: #dce0e9;
+  background: #f0f2f8;
 }
 .avatar.active {
   background: #00aeef;
