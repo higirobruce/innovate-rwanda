@@ -92,7 +92,7 @@ export default {
           this.sent = true;
           Vue.$toast.open({
             message:
-              "Sorry, something went wrong while updating your social media accounts",
+              "Sorry, something went wrong. Try again later",
             type: "error",
           });
         });

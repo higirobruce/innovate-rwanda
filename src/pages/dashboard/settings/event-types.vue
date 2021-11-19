@@ -220,7 +220,7 @@ export default {
           this.editing = false;
           Vue.$toast.open({
             message:
-              "Sorry, something went wrong while updating your social media accounts",
+              "Sorry, something went wrong while updating event type",
             type: "error",
           });
         });
@@ -243,7 +243,7 @@ export default {
           this.adding = false;
           Vue.$toast.open({
             message:
-              "Sorry, something went wrong while updating your social media accounts",
+              "Sorry, something went wrong while creating event type",
             type: "error",
           });
         });

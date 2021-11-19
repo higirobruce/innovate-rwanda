@@ -83,7 +83,7 @@ export default {
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
         .then(() => {
           Vue.$toast.open({
-            message: "Company summary has been updated successfully",
+            message: "Company type has been updated successfully",
             type: "success",
           });
           setTimeout(() => {
@@ -93,7 +93,7 @@ export default {
         .catch(() => {
           Vue.$toast.open({
             message:
-              "Sorry, something went wrong while updating your social media accounts",
+              "Sorry, something went wrong while updating company type",
             type: "error",
           });
         });
