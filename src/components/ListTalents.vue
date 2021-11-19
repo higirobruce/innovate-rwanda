@@ -16,45 +16,55 @@
         </div>
       </div>
       <div class="col-sm-12 col-md-8 col-lg-10">
-          <h2>{{ user.lastName }} {{ user.firstName }}</h2>
-          <div>
-            <div class="mb-2 co-info" v-if="user.location">
-              <i class="icon-marker-stroked" />
-              <span class="ml-2">{{ user.location }} </span>
-            </div>
-            <div class="mb-2 co-info">
-              <i class="icon-calendar" />
-              <span class="ml-2">{{ user.accType }} </span>
-            </div>
-            <!-- <div class="mb-2 co-info">
+        <h2>{{ user.lastName }} {{ user.firstName }}</h2>
+        <div>
+          <div class="mb-2 co-info" v-if="user.location">
+            <i class="icon-marker-stroked" />
+            <span class="ml-2">{{ user.location }} </span>
+          </div>
+          <div class="mb-2 co-info">
+            <span class="ml-2" v-if="user.accType === 'mentor'">Mentor</span>
+            <span class="ml-2" v-if="user.accType === 'volunteer'"
+              >Volunteer</span
+            >
+            <span class="ml-2" v-if="user.accType === 'profession'"
+              >Open for opportunities
+            </span>
+            <!-- <i class="icon-calendar" /> -->
+          </div>
+          <!-- <div class="mb-2 co-info">
               <i class="icon-calendar" />
               <span class="ml-2">{{ user.BusinessActivity.name }} </span>
             </div> -->
-            <div class="mb-2 co-info">
-              <i class="icon-calendar" />
-              <router-link
-                class="text-blue-dark"
-                :to="`blog/${user.slug}`"
-              >
-                {{ user.linkedin }}
-              </router-link>
-            </div>
-            <div class="mb-2 co-info">
-              <i class="icon-calendar" />
-              <router-link
-                class="text-blue-dark"
-                :to="`blog/${user.slug}`"
-              >
-                {{ user.portfolio }}
-              </router-link>
-            </div>
-            <div class="mb-2 co-info" v-if="user.shortDescription">
-              <i class="icon-comment" />
-              <span class="ml-2"
-                >{{ user.shortDescription | truncate(300) }}
-              </span>
-            </div>
+          <div class="mb-2 co-info">
+            <!-- <i class="icon-calendar" /> -->
+            <router-link
+              class="text-blue-dark"
+              :to="`/redirect/${user.linkedin}`"
+              target="_blank"
+              v-if="user.linkedin"
+            >
+              <!-- <router-link class="text-blue-dark" :to="`blog/${user.slug}`"> -->
+              LinkedIn
+            </router-link>
+            {{ " | " }}
+            <router-link
+              class="text-blue-dark"
+              :to="`/redirect/${user.portfolio}`"
+              target="_blank"
+              v-if="user.portfolio"
+            >
+              <!-- <router-link class="text-blue-dark" :to="`blog/${user.slug}`"> -->
+              Portfolio
+            </router-link>
           </div>
+          <div class="mb-2 co-info" v-if="user.shortDescription">
+            <i class="icon-comment" />
+            <span class="ml-2"
+              >{{ user.shortDescription | truncate(300) }}
+            </span>
+          </div>
+        </div>
       </div>
       <div class="info-separator clear my-3">&nbsp;</div>
     </div>

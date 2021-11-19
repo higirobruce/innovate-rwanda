@@ -377,7 +377,7 @@ export default {
           this.created = false;
           Vue.$toast.open({
             message:
-              "Sorry, something went wrong while updating your social media accounts",
+              "Sorry, something went wrong while editing blog post",
             type: "error",
           });
         });

@@ -129,7 +129,7 @@ export default {
                 this.uploading = false;
                 Vue.$toast.open({
                   message:
-                    "Sorry, something went wrong while updating your social media accounts",
+                    "Sorry, something went wrong while update company logo",
                   type: "error",
                 });
               });

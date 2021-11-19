@@ -104,7 +104,7 @@ export default {
         .catch(() => {
           Vue.$toast.open({
             message:
-              "Sorry, something went wrong while updating your social media accounts",
+              "Sorry, something went wrong while updating your summary",
             type: "error",
           });
         });

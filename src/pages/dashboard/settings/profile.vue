@@ -40,21 +40,27 @@
               <div>
                 <h3 class="p-4">Update profile picture</h3>
                 <div class="px-4 py-2">
+                  <button
+                    class="btn btn-success-outline mr-2"
+                    @click="$refs.FileInput.click()"
+                  >
+                    Browse picture
+                  </button>
                   <div
                     class="wrap-modal"
-                    style="max-height: 420px; overflow: scroll"
+                    style="max-height: 450px; overflow: scroll"
                   >
                     <img
                       v-if="individual && individual.picture && !selectedFile"
-                      :src="`${IMAGE_URL}c_fill,g_center,h_420,w_420/${individual.picture}`"
+                      :src="`${IMAGE_URL}c_fill,g_center,h_300,w_300/${individual.picture}`"
                       :alt="individual.firstName"
-                      class="current-logo"
+                      class="current-picture"
                     />
                     <img
                       v-if="picture && !individual.picture && !selectedFile"
                       src="@/assets/images/logo_placeholder.png"
                       :alt="individual.firstName"
-                      class="current-logo"
+                      class="current-picture"
                     />
                     <input
                       ref="FileInput"
@@ -68,12 +74,14 @@
                       :src="selectedFile"
                       alt="Source Image"
                       :aspectRatio="aspectRatio"
+                      :viewMode="2"
+                      :responsive="true"
                     ></VueCropper>
                   </div>
 
                   <div class="mt-4">
                     <button class="btn btn-danger-outline" @click="closeModal">
-                      Cancel
+                      Close
                     </button>
                     <button
                       :disabled="!selectedFile"
@@ -82,12 +90,7 @@
                     >
                       Upload
                     </button>
-                    <button
-                      class="btn btn-success mr-2 float-right"
-                      @click="$refs.FileInput.click()"
-                    >
-                      Browse logo
-                    </button>
+
                     <div v-if="uploading" class="my-1 text-info">
                       Uploading, please wait....
                     </div>
@@ -201,7 +204,7 @@
         :height="430"
         :width="700"
       >
-        <button type="button" @click.prevent="closeModal" class="close">
+        <button type="button" @click.prevent="closeModel" class="close">
           <img src="@/assets/images/close.png" />
         </button>
         <h3 class="p-4">Delete account &amp; company</h3>
@@ -225,7 +228,7 @@
         <div class="py-3 px-4">
           <span class="float-left">
             <button class="btn btn-success-outline mr-2" @click="closeModel">
-              Cancel
+              Close
             </button>
             <button
               class="btn btn-danger"
@@ -265,8 +268,7 @@ Vue.use(Vuelidate);
 Vue.use(VModal);
 export default {
   name: "dashboard",
-  components: { MenuSettings,
-    VueCropper },
+  components: { MenuSettings, VueCropper },
   data() {
     return {
       user: {},
@@ -294,6 +296,7 @@ export default {
     },
     closeModel() {
       this.$modal.hide("openDeleteAccount");
+      this.$modal.hide("uploadPictureModal");
     },
     loadUser() {
       AxiosHelper.get("profile")
@@ -345,27 +348,25 @@ export default {
           .then((response) => {
             // update company information
             const img_url = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
-            this.companyInfo.logo = img_url;
-            AxiosHelper.patch(
-              `company/edit/${this.companyInfo.id}`,
-              this.companyInfo
-            )
-              .then(() => {
+            this.individual.picture = img_url;
+            AxiosHelper.put(`individual/edit_profile`, this.individual)
+              .then((response) => {
+                console.log("response", response.data);
                 this.uploading = false;
                 Vue.$toast.open({
-                  message:
-                    "Company logo has been upload, wait while we are uploading your information",
+                  message: "You have updated your profile picture",
                   type: "success",
                 });
                 setTimeout(() => {
                   this.$router.go();
                 }, 2500);
               })
-              .catch(() => {
+              .catch((error) => {
+                console.log("error", error);
                 this.uploading = false;
                 Vue.$toast.open({
                   message:
-                    "Sorry, something went wrong while updating your social media accounts",
+                    "Sorry, something went wrong while updating your information",
                   type: "error",
                 });
               });
@@ -484,5 +485,9 @@ export default {
   padding: 8px 0;
   border-radius: 3px;
   font-size: 12px;
+}
+.current-picture {
+  width: 300px !important;
+  height: 300px !important;
 }
 </style>

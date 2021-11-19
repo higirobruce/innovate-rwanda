@@ -23,7 +23,7 @@
       </div>
       <div class="col-sm-12 col-md-8 col-lg-10">
         <router-link :to="`/company/${company.slug}`">
-          <h2>{{ company.coName }}-{{ company.id }}</h2>
+          <h2>{{ company.coName }}</h2>
           <div>
             <div class="mb-2 co-info" v-if="company.yearFounded">
               <i class="icon-calendar" />
