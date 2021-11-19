@@ -16,7 +16,7 @@
               <div class="col-sm-12 col-lg-6">
                 <div class="company-small-info">
                   <h4>Website</h4>
-                  <h5>
+                  <div class="text-truncate">
                     <router-link
                       v-if="!_.isEmpty(company.company.coWebsite)"
                       :to="`/redirect/${company.company.coWebsite}`"
@@ -24,22 +24,22 @@
                     >
                       {{ company.company.coWebsite }}
                     </router-link>
-                  </h5>
+                  </div>
                   <img src="@/assets/images/globe.png" />
                 </div>
                 <div class="company-small-info">
                   <h4>Location</h4>
-                  <h5>
+                  <div class="text-truncate">
                     {{ company.company.districtBasedIn }}
-                  </h5>
+                  </div>
                   <img src="@/assets/images/map-marker.png" />
                 </div>
                 <div class="info-separator clear my-3">&nbsp;</div>
                 <div class="company-small-info">
                   <h4>Year founded</h4>
-                  <h5>
+                  <div class="text-truncate">
                     {{ company.company.yearFounded }}
-                  </h5>
+                  </div>
                   <img src="@/assets/images/calendar-alt.png" />
                 </div>
                 <div class="company-small-info">
@@ -288,7 +288,7 @@ export default {
       slug: "",
       notfound: false,
       loaded: false,
-      meta: ""
+      meta: "",
     };
   },
   created() {
@@ -301,7 +301,7 @@ export default {
   },
   methods: {
     goToCompany(slug) {
-       window.scrollTo(0,0);
+      window.scrollTo(0, 0);
       this.loadCompanyInfo(slug);
     },
     convertToObject(object) {
