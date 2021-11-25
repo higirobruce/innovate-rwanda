@@ -73,20 +73,21 @@ export default {
     };
   },
   created() {
-    let remainder = 0;
-    this.count = this.companies && this.companies.length;
-    this.response = this.companies.slice(
-      this.currentPage,
-      this.numberOnPage >= this.count ? this.count : this.numberOnPage
-    );
-    remainder = this.count % this.numberOnPage;
-    if (this.count < this.numberOnPage) {
-      this.allPages = 1;
-    } else if (remainder === 0) {
-      this.allPages = this.count / this.numberOnPage;
-    } else {
-      this.allPages = Math.floor(this.count / this.numberOnPage) + 1;
-    }
+    this.response = this.companies;
+    // let remainder = 0;
+    // this.count = this.companies && this.companies.length;
+    // this.response = this.companies.slice(
+    //   this.currentPage,
+    //   this.numberOnPage >= this.count ? this.count : this.numberOnPage
+    // );
+    // remainder = this.count % this.numberOnPage;
+    // if (this.count < this.numberOnPage) {
+    //   this.allPages = 1;
+    // } else if (remainder === 0) {
+    //   this.allPages = this.count / this.numberOnPage;
+    // } else {
+    //   this.allPages = Math.floor(this.count / this.numberOnPage) + 1;
+    // }
   },
   methods: {
     // goToPrevious() {

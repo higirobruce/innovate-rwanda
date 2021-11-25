@@ -45,6 +45,7 @@
           <img src="@/assets/images/empty.png" />
           <h2 class="my-0 py-0 font-weight-light h3">No resources found</h2>
         </div>
+        <Loading v-if="loading && !loaded" />
       </div>
       <modal
         name="openViewFile"
@@ -81,6 +82,7 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import PageHeader from "@/components/PageHeader";
+import Loading from "@/components/Loading";
 import moment from "moment";
 import VModal from "vue-js-modal";
 
@@ -90,6 +92,7 @@ export default {
   name: "companies",
   components: {
     PageHeader,
+    Loading
   },
   data() {
     return {
@@ -140,10 +143,13 @@ export default {
       this.$modal.hide("openViewFile");
     },
     loadJob() {
+      this.loaded = false;
+      this.loading = true;
       AxiosHelper.get("resources")
         .then((response) => {
           this.posts = response.data.result;
           this.loaded = true;
+          this.loading = false;
         })
         .catch(() => {
           this.loading = false;

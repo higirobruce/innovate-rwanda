@@ -39,7 +39,9 @@
             </h2>
             <div class="text-capitalize mb-2">
               {{ company.company.CompanyType.name }}
-             <button type="button"  @click="openChangeCompanyType">Change</button>
+              <span class="btn btn-link" @click="openChangeCompanyType">
+                <strong> Change </strong>
+              </span>
             </div>
             <div
               class="alert alert-warning mt-3"
@@ -365,6 +367,12 @@
                   <span class="text-blue-dark"
                     >{{ company.company.BusinessActivity.name }}
                   </span>
+                  <button
+                    @click="updateMainActivity"
+                    class="btn btn-sm p-0 my-0 mx-2 btn-transparent"
+                  >
+                    Change
+                  </button>
                 </div>
               </div>
               <div class="info-separator">&nbsp;</div>
@@ -559,7 +567,7 @@
                   :center="convertLatLng(company.company)"
                   :zoom="17"
                   map-type-id="terrain"
-                  style="max-width: 1000px; height: 700px"
+                  style="max-width: 1000px;width: 100%; height: 700px"
                 >
                   <GmapMarker
                     :position="convertLatLng(company.company)"
@@ -656,6 +664,70 @@
                 </div>
               </div>
             </modal>
+            <modal
+              name="openUpdateMainActivity"
+              :adaptive="true"
+              :scrollable="true"
+              :height="280"
+              :width="550"
+            >
+              <button type="button" @click.prevent="closeModal" class="close">
+                <img src="@/assets/images/close.png" />
+              </button>
+              <h3 class="p-4">Update main activity</h3>
+              <div class="px-4">
+                Select new activity
+                <div
+                  class="wrap-modal"
+                  style="max-height: 500px; overflow: scroll"
+                >
+                  <div class="mt-1">
+                    <div class="form-group">
+                      <select
+                        class="form-control"
+                        v-model="company.company.BusinessActivity.name"
+                        name="business_activity"
+                        @change="changeMainBusinessActivity($event)"
+                        required
+                      >
+                        <option
+                          v-for="(activity, index) in listOfBusinessActivities"
+                          v-bind:value="activity.name"
+                          :key="index"
+                          :selected="
+                            activity.name ===
+                            company.company.BusinessActivity.name
+                          "
+                        >
+                          {{ activity.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-1">
+                  <span class="float-left">
+                    <button
+                      type="button"
+                      @click.prevent="closeModal"
+                      class="btn btn-gray-outline mr-2"
+                    >
+                      Close
+                    </button>
+                  </span>
+                  <span class="float-right">
+                    <button
+                      type="button"
+                      @click.prevent="updateCompanayInfo"
+                      class="btn btn-success-outline"
+                    >
+                      <span v-if="!updating && updated"> Update </span>
+                      <span v-if="updating && !updated"> Updating </span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </modal>
           </div>
         </div>
       </div>
@@ -701,17 +773,23 @@ export default {
     return {
       company: {},
       socialMedia: {},
-      listOfBusinessActivities: "",
       bases: [],
       checkedBases: [],
       companyId: "",
+      listOfBusinessActivities: [],
+      updating: false,
+      updated: true,
     };
   },
   created() {
     this.companyId = this.$route.params.companyId;
+    // AxiosHelper.get("business-activities")
+    //   .then((response) => {
+    //     this.listOfBusinessActivities = response.data.result;
+    //   })
+    //   .catch(() => {});
   },
   beforeCreate() {
-    // loading business activities
     AxiosHelper.get("business-activities")
       .then((response) => {
         this.listOfBusinessActivities = response.data.result;
@@ -723,6 +801,10 @@ export default {
     this.loadCompanyInfo();
   },
   methods: {
+    changeMainBusinessActivity(e) {
+      this.company.company.BusinessActivity.name = e.target.value;
+      console.log("company", this.company);
+    },
     checkCurrentBases(base) {
       if (JSON.parse(this.company.company.customerBase) !== null) {
         return JSON.parse(this.company.company.customerBase.includes(base));
@@ -750,6 +832,29 @@ export default {
           this.company.company.customerBase = JSON.stringify(newArray);
         }
       }
+    },
+    updateCompanayInfo() {
+      this.updating = true;
+      this.updated = false;
+      AxiosHelper.patch(`company/edit/${this.company.id}`, this.company)
+        .then(() => {
+          this.updating = false;
+          this.updated = true;
+          this.$modal.hide("openUpdateMainActivity");
+          Vue.$toast.open({
+            message: "Company information has been updated successfully",
+            type: "success",
+          });
+        })
+        .catch(() => {
+          this.updating = false;
+          this.updated = false;
+          Vue.$toast.open({
+            message:
+              "Sorry, something went wrong while updating your information",
+            type: "error",
+          });
+        });
     },
     resubmitNow() {
       const data = {
@@ -781,6 +886,7 @@ export default {
             {};
         })
         .catch((error) => {
+          console.log("what again", error.response);
           if (error.response.status === 404) {
             this.errorCompany =
               "Company information not found. Try again later";
@@ -808,6 +914,9 @@ export default {
     },
     updateActivities() {
       this.$modal.show("openEditBusinessActivies");
+    },
+    updateMainActivity() {
+      this.$modal.show("openUpdateMainActivity");
     },
     openEditSocial() {
       this.$modal.show("editSocialMedia");
@@ -850,14 +959,14 @@ export default {
         })
         .catch(() => {
           Vue.$toast.open({
-            message:
-              "Sorry, something went wrong while updating company base",
+            message: "Sorry, something went wrong while updating company base",
             type: "error",
           });
         });
     },
     closeModal() {
       this.$modal.hide("openEditBusinessActivies");
+      this.$modal.hide("openUpdateMainActivity");
       this.$modal.hide("editCompanyInfo");
       this.$modal.hide("uploadCompanyLogo");
       this.$modal.hide("editSocialMedia");

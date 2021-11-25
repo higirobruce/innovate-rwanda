@@ -23,6 +23,7 @@
             <span class="ml-2">{{ user.location }} </span>
           </div>
           <div class="mb-2 co-info">
+            <i class="icon-tag-1" />
             <span class="ml-2" v-if="user.accType === 'mentor'">Mentor</span>
             <span class="ml-2" v-if="user.accType === 'volunteer'"
               >Volunteer</span
@@ -30,14 +31,13 @@
             <span class="ml-2" v-if="user.accType === 'profession'"
               >Open for opportunities
             </span>
-            <!-- <i class="icon-calendar" /> -->
           </div>
           <!-- <div class="mb-2 co-info">
               <i class="icon-calendar" />
               <span class="ml-2">{{ user.BusinessActivity.name }} </span>
             </div> -->
           <div class="mb-2 co-info">
-            <!-- <i class="icon-calendar" /> -->
+            <i class="icon-linkedin" />
             <router-link
               class="text-blue-dark"
               :to="`/redirect/${user.linkedin}`"
@@ -48,6 +48,7 @@
               LinkedIn
             </router-link>
             {{ " | " }}
+             <i class="icon-world" />
             <router-link
               class="text-blue-dark"
               :to="`/redirect/${user.portfolio}`"

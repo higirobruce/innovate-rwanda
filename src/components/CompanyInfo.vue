@@ -83,7 +83,7 @@
                   :center="convertLatLng(company.company.officeAddress)"
                   :zoom="17"
                   map-type-id="terrain"
-                  style="width: 1000px; height: 700px"
+                  style="max-width: 1000px; width: 100%;height: 700px"
                 >
                   <GmapMarker
                     :position="convertLatLng(company.company.officeAddress)"

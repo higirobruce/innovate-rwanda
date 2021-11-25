@@ -17,7 +17,8 @@
             </button>
           </div>
         </div>
-        <div class="dash-container">
+        <Loading v-if="loading && !loaded" />
+        <div class="dash-container" v-if="!loading && loaded">
           <table
             class="table table-responsive-sm"
             v-if="
@@ -248,13 +249,15 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import NewUser from "@/components/NewUser";
+import Loading from "@/components/Loading";
 export default {
-  components: { NewUser },
+  components: { NewUser, Loading },
   data() {
     return {
       users: [],
       temporaryUsers: [],
       loading: false,
+      loaded: false,
       userRole: "",
       changingRole: false,
       user: {},
@@ -359,11 +362,13 @@ export default {
     },
     loadUsers() {
       this.loading = true;
+      this.loaded = false;
       AxiosHelper.get("users")
         .then((response) => {
           this.users = response.data.result;
           this.temporaryUsers = response.data.result;
           this.loading = false;
+          this.loaded = true;
         })
         .catch((error) => {
           this.users = [];
@@ -376,6 +381,7 @@ export default {
             this.error = "Something went wrong, try again later";
           }
           this.loading = false;
+          this.loaded = false;
         });
     },
     closeModal() {

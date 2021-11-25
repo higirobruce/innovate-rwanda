@@ -111,7 +111,7 @@
 
         <div v-if="loaded && _.isEmpty(directory)" class="empty-post">
           <img src="@/assets/images/empty.png" />
-          <h2 class="my-0 py-0 font-weight-light h3">Companies not found</h2>
+          <h2 class="my-0 py-0 font-weight-light h3">Directory is empty</h2>
         </div>
       </div>
     </component>
@@ -230,6 +230,20 @@ export default {
       this.directory = [];
       AxiosHelper.get(
         `directory/filter/Tech company?filterBy=${filter}&filterValue=${value}`
+      )
+        .then((response) => {
+          this.directory = response.data.result;
+          this.loaded = true;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.loaded = true;
+        });
+    },
+    loadCompaniesByFilter() {
+      this.directory = [];
+      AxiosHelper.get(
+        `directory/filter?filterBy=activities&filterValue=${this.selectedActivity}`
       )
         .then((response) => {
           this.directory = response.data.result;
