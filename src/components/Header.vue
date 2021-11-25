@@ -22,9 +22,7 @@
                 <router-link active :to="'/why-rwanda'">Why Rwanda</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link active :to="'/directory'"
-                  >Directory</router-link
-                >
+                <router-link active :to="'/directory'">Directory</router-link>
               </li>
               <li class="list-inline-item">
                 <router-link active :to="'/events'">Events</router-link>
@@ -36,7 +34,9 @@
                 <router-link active :to="'/resources'">Resources</router-link>
               </li>
               <li class="list-inline-item">
-                <router-link active :to="'/find-talents'">Find Talents</router-link>
+                <router-link active :to="'/find-talents'"
+                  >Find Talents</router-link
+                >
               </li>
             </ul>
           </div>
@@ -63,7 +63,9 @@
                       <router-link :to="'/dashboard'">Dashboard</router-link>
                     </li>
                     <li>
-                      <router-link :to="'/dashboard/settings'">My Profile</router-link>
+                      <router-link :to="'/dashboard/settings'"
+                        >My Profile</router-link
+                      >
                     </li>
                     <li>
                       <button @click="logout">Logout</button>
@@ -101,12 +103,21 @@
       </div>
     </div>
     <!-- Sidebar -->
-    <div class="wrap-userdropdown" v-if="isSidebarOpen">
+    <div class="wrap-sidebar" v-if="isSidebarOpen">
       <button class="close" @click="isSidebarOpen = false">
         <i class="icon-times" />
       </button>
       <div class="sidebar-nav mt-5">
         <ul class="list-group list-group-flush">
+          <li
+            class="list-group-item"
+            v-if="profile && Object.keys(profile).length > 0"
+          >
+            <router-link :to="'/about'"
+              >Hi, {{ profile.lastName | truncate(10) }} <br />
+              Go to dashboard</router-link
+            >
+          </li>
           <li class="list-group-item">
             <router-link :to="'/about'">About</router-link>
           </li>
@@ -123,10 +134,10 @@
             <router-link :to="'/blog'">Blog</router-link>
           </li>
           <li class="list-group-item">
-            <router-link :to="'/find-talents'">Find Talents</router-link>
-          </li>
-          <li class="list-inline-item">
             <router-link :to="'/resources'">Resources</router-link>
+          </li>
+          <li class="list-group-item">
+            <router-link :to="'/find-talents'">Find Talents</router-link>
           </li>
         </ul>
       </div>
@@ -166,7 +177,7 @@ import VModal from "vue-js-modal";
 import { mixin as clickaway } from "vue-clickaway";
 Vue.use(VModal);
 export default {
-   mixins: [clickaway],
+  mixins: [clickaway],
   data() {
     return {
       isSidebarOpen: false,
@@ -242,7 +253,7 @@ export default {
     margin: 0 !important;
   }
   .wrap-main-nav a {
-    padding: 0 10px!important;
+    padding: 0 10px !important;
     font-weight: 100;
   }
   .wrap-hotlinks .btn {
@@ -349,12 +360,21 @@ export default {
   content: "";
   width: 100%;
   height: 6px;
-  background: #1B2958;
+  background: #1b2958;
   bottom: -46px;
   left: 0;
   border-radius: 4px 4px 0 0;
 }
-.wrap-userdropdown {
+/* .wrap-userdropdown {
+  background: #ffffff;
+  top: 40px;
+  right: 0;
+  width: auto;
+  height: auto;
+  position: absolute;
+  z-index: 100000;
+} */
+.wrap-sidebar {
   background: #ffffff;
   top: 0;
   left: 0;
@@ -385,8 +405,17 @@ export default {
 .auth-modal .close,
 .wrap-userdropdown .close {
   position: absolute;
-  right: 15px;
+  right: 5px;
   top: 10px;
+  width: 30px;
+  height: 30px;
+}
+.wrap-sidebar .close {
+  position: absolute;
+  right: 5px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
 }
 .auth-wrap-btns {
   margin: 0 auto;
@@ -397,7 +426,7 @@ export default {
   width: 100%;
 }
 .sidebar-nav li {
-  padding: 25px 0;
+  padding: 36px 0;
   text-align: center;
   border: none;
 }
@@ -451,22 +480,23 @@ export default {
   position: relative;
 }
 .wrap-userdropdown {
-  width: 200px;
+  width: auto;
+  min-width: 180px;
   height: auto;
   position: absolute;
   top: 50px;
-  left: 0;
+  right: 20px;
   box-shadow: 0px 16px 24px #00000029;
   border-radius: 8px;
   background: #ffffff;
 }
-.wrap-userdropdown ul {
+.wrap-userdropdown ul, .wrap-sidebar ul {
   display: block;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.wrap-userdropdown ul li {
+.wrap-userdropdown ul li , .wrap-sidebar ul li{
   padding: 10px 20px;
 }
 .wrap-userdropdown button {
