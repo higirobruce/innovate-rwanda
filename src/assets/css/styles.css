@@ -410,10 +410,11 @@ input.custom-input {
 .wrap-actions a {
   border: none;
   background: #f1f1f1;
-  margin: 0 10px 0 0;
-  padding: 6px 10px;
+  margin: 0 6px 0 0;
+  padding:4px;
   border-radius: 3px;
   color: #898989;
+  font-size: 9px!important;
 }
 .wrap-actions button img {
   height: 12px;

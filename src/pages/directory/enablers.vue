@@ -110,7 +110,7 @@
 
         <div v-if="loaded && _.isEmpty(directory)" class="empty-post">
           <img src="@/assets/images/empty.png" />
-          <h2 class="my-0 py-0 font-weight-light h3">Companies not found</h2>
+          <h2 class="my-0 py-0 font-weight-light h3">Directory is empty</h2>
         </div>
       </div>
     </component>

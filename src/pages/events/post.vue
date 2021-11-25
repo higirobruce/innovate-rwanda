@@ -65,6 +65,7 @@
         v-if="loaded && post && post.status !== 'approved'"
         class="not-found"
       ></div>
+      <Loading v-if="loading && !loaded" />
     </component>
   </div>
 </template>
@@ -72,12 +73,14 @@
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
 import PageHeaderSm from "@/components/PageHeaderSm";
+import Loading from "@/components/Loading";
 let marked = require("marked");
 
 export default {
   name: "job-post",
   components: {
     PageHeaderSm,
+    Loading,
   },
   data() {
     return {
@@ -87,10 +90,13 @@ export default {
     };
   },
   created() {
+    this.loading = true;
+    this.loaded = false;
     const slug = this.$route.params.slug;
     AxiosHelper.get(`events/info/${slug}`)
       .then((response) => {
         this.post = response.data.result;
+        this.loading = false;
         this.loaded = true;
       })
       .catch(() => {

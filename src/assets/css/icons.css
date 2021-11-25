@@ -47,20 +47,11 @@
 .icon-arrow-left:before {
   content: "\64";
 }
-.icon-tag:before {
-  content: "\65";
-}
 .icon-phone:before {
   content: "\67";
 }
 .icon-at:before {
   content: "\68";
-}
-.icon-marker-stroked:before {
-  content: "\62";
-}
-.icon-world:before {
-  content: "\69";
 }
 .icon-pound:before {
   content: "\6a";
@@ -92,9 +83,21 @@
 .icon-file:before {
   content: "\73";
 }
-.icon-company:before {
-  content: "\75";
-}
 .icon-instagram:before {
   content: "\74";
+}
+.icon-company:before {
+  content: "\6d";
+}
+.icon-world:before {
+  content: "\76";
+}
+.icon-linkedin:before {
+  content: "\77";
+}
+.icon-marker-stroked:before {
+  content: "\78";
+}
+.icon-tag-1:before {
+  content: "\79";
 }

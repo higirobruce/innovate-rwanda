@@ -17,6 +17,7 @@
         </ul>
         <br />
       </div>
+      <Loading v-if="loadingDirectory && !loaded" />
       <div
         class="dash-container"
         v-if="
@@ -35,10 +36,11 @@
           </span>
         </div>
         <div class="clear" />
-        <ListAdminCompanies :directory="companies" />
-        <div>
-          <Loading v-if="loadingDirectory" />
-        </div>
+        <ListAdminCompanies
+          v-if="!loadingDirectory && loaded"
+          :directory="companies"
+        />
+        <div></div>
         <div v-if="!notAllowed && !loadingDirectory && error.length > 1">
           <h2 class="h5 font-weight-light">{{ error }}</h2>
         </div>
@@ -95,6 +97,7 @@ export default {
       companyIdEdit: "",
       currentStatus: "pending",
       companies: [],
+      loaded: false,
     };
   },
   created() {
@@ -115,6 +118,7 @@ export default {
   methods: {
     loadCompanies() {
       this.loadingDirectory = true;
+      this.loaded = false;
       AxiosHelper.get("directory/admin")
         .then((response) => {
           this.directory = response.data;
@@ -123,6 +127,7 @@ export default {
             this.directory &&
             this.directory.result.filter((d) => d.status !== "pending");
           this.loadingDirectory = false;
+          this.loaded = true;
         })
         .catch((error) => {
           if (error.response.status === 404 || error.response.status === 400) {
@@ -134,6 +139,7 @@ export default {
             this.error = "Something went wrong, try again later";
           }
           this.loadingDirectory = false;
+          this.loaded = false;
         });
     },
     loadPendingDir() {

@@ -23,7 +23,7 @@
             v-model="search"
             placeholder="Type to search and hit enter"
           />
-          <button  @click.prevent="searchNow" :disabled="_.isEmpty(search)">
+          <button @click.prevent="searchNow" :disabled="_.isEmpty(search)">
             <img src="@/assets/images/search.png" />
           </button>
         </form>
@@ -48,7 +48,7 @@
               <option v-bind:value="''">All companies</option>
             </select>
           </div>
-          <!-- <div class="filter-select">
+          <div class="filter-select">
             <select
               name="activity"
               v-model="selectedActivity"
@@ -64,7 +64,7 @@
                 {{ act.name }}
               </option>
             </select>
-          </div> -->
+          </div>
           <div class="filter-select">
             <select
               name="location"
@@ -142,7 +142,10 @@
         </div>
         <div v-if="loaded && _.isEmpty(directory)" class="empty-post">
           <img src="@/assets/images/empty.png" />
-          <h2 class="my-0 py-0 font-weight-light h3">Companies not found</h2>
+          <h2 class="mt-0 py-0 font-weight-light h3">Directory is empty</h2>
+          <button  class="btn btn-success-outline mt-4" type="button" @click.prevent="resetFilter">
+            Reflesh directory
+          </button>
         </div>
       </div>
     </component>
@@ -232,19 +235,21 @@ export default {
       );
     },
     changeActivity(e) {
+      this.resetFilter();
       this.selectedActivity = e.target.value;
-      this.loading = true;
-      this.loaded = false;
-      this.directory = [];
-      this.loadCompanies(
-        this.page,
-        this.typeSelected || "",
-        e.target.value,
-        this.selectedLocation || "",
-        this.orderType,
-        this.orderValue,
-        this.search || ""
-      );
+      this.loadCompanyByActivity();
+      // this.loading = true;
+      // this.loaded = false;
+      // this.directory = [];
+      // this.loadCompanies(
+      //   this.page,
+      //   this.typeSelected || "",
+      //   e.target.value,
+      //   this.selectedLocation || "",
+      //   this.orderType,
+      //   this.orderValue,
+      //   this.search || ""
+      // );
     },
     changeLocation(e) {
       this.selectedLocation = e.target.value;
@@ -278,7 +283,7 @@ export default {
       );
     },
     async searchNow() {
-      await this.$router.push({query: {search: this.search}})
+      await this.$router.push({ query: { search: this.search } });
       this.loading = true;
       this.loaded = false;
       this.directory = [];
@@ -292,17 +297,21 @@ export default {
         this.search
       );
     },
-    resetFilter() {
+    async resetFilter() {
+      // await this.$router.push({ query: { search: "" } });
       this.loading = true;
       this.loaded = false;
-      // this.yearFounded = "";
-      // this.sortBy = "";
-      this.selectedLocation = "";
-      this.selectedActivity = "";
-      this.typeSelected = "";
       this.search = "";
       this.directory = [];
-      this.loadCompanies(this.page, "", "", "");
+      this.loadCompanies(
+        this.page,
+        (this.typeSelected = ""),
+        (this.selectedActivity = ""),
+        (this.selectedLocation = ""),
+        this.orderType,
+        this.orderValue,
+        (this.search = "")
+      );
     },
     goTo(page) {
       this.directory = [];
@@ -333,14 +342,38 @@ export default {
         .then((response) => {
           this.directory = response.data.result;
           this.meta = response.data.meta;
-          console.log("companies:", this.directory);
-          console.log("meta:", this.meta);
           this.loaded = true;
         })
         .catch(() => {
           this.loading = false;
           this.loaded = true;
           this.directory = [];
+        });
+    },
+    loadCompanyByActivity() {
+      // this.loading = true;
+      // AxiosHelper.get("directory//?")
+      //   .then((response) => {
+      //     this.types = response.data.result;
+      //     this.loading = false;
+      //   })
+      //   .catch(() => (this.loading = false));
+      AxiosHelper.get(
+        `directory/filter?filterBy=activities&filterValue=${this.selectedActivity}`
+      )
+        .then((response) => {
+          this.directory = response.data.result;
+          this.loaded = true;
+          this.loading = false;
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            this.directory = [];
+          } else {
+            // this.errorPost = "Something went wrong, try again later";
+          }
+          this.loading = false;
+          this.loaded = true;
         });
     },
     loadCompanyTypes() {

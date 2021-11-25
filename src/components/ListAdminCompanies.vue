@@ -6,7 +6,7 @@
           <th scope="col">Title</th>
           <th scope="col">Date joined</th>
           <th scope="col">Type</th>
-          <th scope="col">Business activity</th>
+          <th scope="col">Activities</th>
           <th scope="col">Activities</th>
           <th scope="col">Status</th>
           <th scope="col">
@@ -17,12 +17,11 @@
       <tbody v-if="directory && directory">
         <tr v-for="(dir, index) in directory" :key="index">
           <td>
-            <router-link
-              class="text-blue"
-              :to="`/dashboard/company/${dir.id}`"
-            >
+            <router-link class="text-blue" :to="`/dashboard/company/${dir.id}`">
               {{ dir.coName }}
             </router-link>
+            <br />
+            <!-- <small>Created by: {{ dir }}</small> -->
           </td>
           <td>{{ dir.createdAt | date("DD MMM, YYYY") }}</td>
           <td>{{ dir.CompanyType.name }}</td>

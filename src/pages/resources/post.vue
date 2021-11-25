@@ -42,9 +42,7 @@
               <span class="ml-2"
                 >{{ post.deadlineDate | date("DD-MM-YYYY") }}
               </span>
-              <span class="ml-1"
-                >{{ post.deadlineTime  }} CAT
-              </span>
+              <span class="ml-1">{{ post.deadlineTime }} CAT </span>
             </span>
           </div>
           <div class="my-2">
@@ -81,6 +79,7 @@
         v-if="loaded && post && post.status !== 'approved'"
         class="not-found"
       ></div>
+      <Loading v-if="loading && !loaded" />
     </component>
   </div>
 </template>
@@ -88,12 +87,14 @@
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
 import PageHeaderSm from "@/components/PageHeaderSm";
+import Loading from "@/components/Loading";
 let marked = require("marked");
 
 export default {
   name: "blog-post",
   components: {
     PageHeaderSm,
+    Loading
   },
   data() {
     return {
@@ -103,11 +104,14 @@ export default {
     };
   },
   created() {
+    this.loaded = false;
+    this.loading = true;
     const slug = this.$route.params.slug;
     AxiosHelper.get(`jobs/info/${slug}`)
       .then((response) => {
         this.post = response.data.result;
         this.loaded = true;
+        this.loading = false;
       })
       .catch(() => {
         this.loading = false;

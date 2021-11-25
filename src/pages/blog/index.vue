@@ -114,6 +114,7 @@
           <h2 class="my-0 py-0 font-weight-light h3">No blog posts found</h2>
         </div>
       </div>
+      <Loading v-if="loading && !loaded" />
     </component>
   </div>
 </template>
@@ -122,11 +123,13 @@
 import PageHeader from "@/components/PageHeader";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import ListBlog from "@/components/ListBlog";
+import Loading from "@/components/Loading";
 export default {
   name: "blog",
   components: {
     PageHeader,
     ListBlog,
+    Loading,
   },
   data() {
     return {
@@ -154,14 +157,16 @@ export default {
       this.loadBlog();
     }
     // loading business activities
-    AxiosHelper.get("business-activities")
-      .then((response) => {
-        this.listOfBusinessActivities = response.data.result;
-      })
+    AxiosHelper.get("business-activities").then((response) => {
+      this.listOfBusinessActivities = response.data.result;
+    });
+    this.loaded = false;
+    this.loading = true;
     AxiosHelper.get("directory/public")
       .then((response) => {
         this.companies = response.data.result;
         this.loaded = true;
+        this.loading = false;
       })
       .catch(() => {
         this.loading = false;

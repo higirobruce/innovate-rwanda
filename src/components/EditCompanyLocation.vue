@@ -50,23 +50,28 @@
             :center="place"
             :zoom="15"
             map-type-id="terrain"
-            style="width: 940px; height: 410px"
+            style="max-width: 940px;width: 100%; height: 410px"
           >
             <GmapMarker
               :position="officeAddress"
               :draggable="true"
-              @drag="updateCoordinates()"
+              @drag="updateCoordinates($event)"
             />
           </GmapMap>
         </div>
       </div>
       <div class="mt-4">
-        <button
-          @click.prevent="submitCompanyInfo"
-          class="btn btn-success-outline mr-2"
-        >
-          Update location
-        </button>
+        <span class="float-right">
+          <button
+            @click.prevent="submitCompanyInfo"
+            class="btn btn-success-outline mr-2"
+          >
+            <span v-if="!locationUpdating && locationUpdated"
+              >Update location</span
+            >
+            <span v-if="locationUpdating && !locationUpdated">Updating</span>
+          </button>
+        </span>
       </div>
     </div>
   </div>
@@ -94,6 +99,8 @@ export default {
       placeName: "",
       place: { lat: -1.9535713202050946, lng: 30.09239731494155 },
       starting_point: "",
+      locationUpdating: false,
+      locationUpdated: true,
     };
   },
   mounted() {
@@ -106,6 +113,7 @@ export default {
   },
   methods: {
     setPlace(place) {
+      console.log("set location", place);
       this.place = {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
@@ -125,17 +133,24 @@ export default {
     convertToObject(object) {
       return JSON.parse(object);
     },
-    updateCoordinates(location) {
+    updateCoordinates(event) {
+      // console.log( location);
       this.officeAddress = {
-        lat: location.latLng.lat(),
-        lng: location.latLng.lng(),
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng(),
         place: "",
       };
+      console.log("office", this.officeAddress);
+      // this.officeAddress = {
+      //   lat: location.latLng.lat(),
+      //   lng: location.latLng.lng(),
+      //   place: "",
+      // };
       this.companyInfo.officeAddress = JSON.stringify(this.officeAddress);
     },
-    // setPlace(place) {
-    //   this.place = place;
-    // },
+    setPlace(place) {
+      this.place = place;
+    },
     usePlace(place) {
       console.log("pl", place);
       // if (this.place) {
@@ -149,8 +164,12 @@ export default {
       // }
     },
     submitCompanyInfo() {
+      this.locationUpdating = true;
+      this.locationUpdated = false;
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
         .then(() => {
+          this.locationUpdating = false;
+          this.locationUpdated = true;
           Vue.$toast.open({
             message:
               "Office location of the company has been updated successfully",
@@ -160,8 +179,9 @@ export default {
             this.$router.go();
           }, 2500);
         })
-        .catch((err) => {
-          console.log(err.response.data);
+        .catch(() => {
+          this.locationUpdating = false;
+          this.locationUpdated = false;
           Vue.$toast.open({
             message:
               "Sorry, something went wrong while updating office location",

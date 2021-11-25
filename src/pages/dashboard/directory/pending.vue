@@ -27,6 +27,8 @@
           </h3>
         </div>
       </div>
+
+      <Loading v-if="loadingDirectory && !loaded" />
       <div
         class="dash-container"
         v-if="
