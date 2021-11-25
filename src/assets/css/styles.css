@@ -197,11 +197,11 @@ h5 {
   font-family: "Circular Std Black";
 }
 h1 {
-  font-size: 75px;
+  font-size: 40px;
   font-weight: 900;
 }
 h2 {
-  font-size: 52px;
+  font-size: 34px;
   font-weight: 900;
 }
 @media (max-width: 769px) {
