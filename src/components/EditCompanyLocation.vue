@@ -113,7 +113,6 @@ export default {
   },
   methods: {
     setPlace(place) {
-      console.log("set location", place);
       this.place = {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
@@ -148,9 +147,9 @@ export default {
       // };
       this.companyInfo.officeAddress = JSON.stringify(this.officeAddress);
     },
-    setPlace(place) {
-      this.place = place;
-    },
+    // setPlace(place) {
+    //   this.place = place;
+    // },
     usePlace(place) {
       console.log("pl", place);
       // if (this.place) {
