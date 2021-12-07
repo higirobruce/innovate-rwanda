@@ -30,11 +30,131 @@
       >
         <div>
           <span class="float-right">
-            <button @click="closeModal" class="btn btn-primary-outline mr-2">
+            <button
+              v-if="!loadingDirectory && loaded"
+              @click="openExportModal"
+              class="btn btn-primary-outline mr-2"
+            >
               Export
             </button>
           </span>
         </div>
+        <div class="clear" />
+        <modal
+          name="ExportModal"
+          :adaptive="true"
+          :scrollable="true"
+          :height="380"
+          :width="600"
+        >
+          <button type="button" @click.prevent="closeModal" class="close">
+            <img src="@/assets/images/close.png" />
+          </button>
+          <h3 class="p-4">Export companies</h3>
+          <div class="px-4">
+            <div class="row">
+              <div class="col-6">
+                <h3 class="h6">Founded from</h3>
+                <date-picker
+                  v-model="startingDate"
+                  :type="'year'"
+                  :placeholder="'Choose starting date'"
+                  :format="'YYYY'"
+                  valueType="format"
+                ></date-picker>
+              </div>
+              <div class="col-6">
+                <h3 class="h6">To</h3>
+                <date-picker
+                  v-model="endingDate"
+                  :type="'year'"
+                  :placeholder="'Choose ending date'"
+                  :format="'YYYY'"
+                  valueType="format"
+                ></date-picker>
+              </div>
+            </div>
+
+            <div class="my-3">
+              <h3 class="h6">Company status</h3>
+              <div class="form-group">
+                <select
+                  v-model="companyStatus"
+                  class="form-control form-control-lg"
+                  @change="changeCompanyStatusForExport($event)"
+                  name="company-status"
+                >
+                  <option :value="''" selected>All companies</option>
+                  <option :value="'pending'">Pending companies</option>
+                  <option :value="'approved'">Approved companies</option>
+                  <option :value="'in_editing'">In editing mode</option>
+                </select>
+              </div>
+            </div>
+            <div
+              class="alert alert-danger"
+              v-if="!pdfDownloaded && !pdfDownloading && companyNotFound"
+            >
+              Directory is empty, select other options and export again
+            </div>
+            <div>
+              <span class="float-left">
+                <button
+                  type="button"
+                  @click.prevent="closeModal"
+                  class="btn btn-gray-outline"
+                >
+                  Close
+                </button>
+              </span>
+              <span class="float-right">
+                <div class="my-3" v-if="!pdfDownloaded && pdfDownloading">
+                  Generating companies....
+                </div>
+                <button
+                  v-if="!pdfDownloading"
+                  type="button"
+                  @click.prevent="loadCompaniesForExport"
+                  class="btn btn-success"
+                >
+                  Export now
+                </button>
+              </span>
+            </div>
+          </div>
+        </modal>
+        <vue-html2pdf
+          :show-layout="false"
+          :float-layout="true"
+          :enable-download="true"
+          :preview-modal="true"
+          :paginate-elements-by-height="1400"
+          filename="Companies - Exported"
+          :pdf-quality="2"
+          :manual-pagination="false"
+          pdf-format="a4"
+          pdf-orientation="landscape"
+          pdf-content-width="100%"
+          @hasStartedGeneration="hasStartedGeneration()"
+          @hasGenerated="hasGenerated($event)"
+          ref="html2Pdf"
+        >
+          <section slot="pdf-content">
+            <div class="wrap-export">
+              <div class="export-header">
+                <div class="brand">
+                  <h1 class="h2 font-weight-bold">INNOVATE RWANDA</h1>
+                </div>
+                <div class="export-title">
+                  <h2>List of Companies</h2>
+                </div>
+              </div>
+              <div class="export-body">
+                <ExportCompanies :directory="companiesForExport" />
+              </div>
+            </div>
+          </section>
+        </vue-html2pdf>
         <div class="clear" />
         <ListAdminCompanies
           v-if="!loadingDirectory && loaded"
@@ -69,10 +189,15 @@ import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import Loading from "@/components/Loading";
 import CompanyInfo from "@/components/CompanyInfo";
+import ExportCompanies from "@/components/ExportCompanies";
 import NotAllowed from "@/components/NotAllowed";
 import EditCompanyInfo from "@/components/EditCompanyInfo";
 import ListAdminCompanies from "@/components/ListAdminCompanies.vue";
 import { EventBus } from "@/helpers/event-bus.js";
+import VueHtml2pdf from "vue-html2pdf";
+import DatePicker from "vue2-datepicker";
+import "vue2-datepicker/index.css";
+import moment from "moment";
 export default {
   name: "directory",
   components: {
@@ -81,6 +206,9 @@ export default {
     NotAllowed,
     EditCompanyInfo,
     ListAdminCompanies,
+    VueHtml2pdf,
+    ExportCompanies,
+    DatePicker,
   },
   data() {
     return {
@@ -98,6 +226,13 @@ export default {
       currentStatus: "pending",
       companies: [],
       loaded: false,
+      companiesForExport: [],
+      startingDate: "",
+      endingDate: "",
+      companyStatus: "",
+      pdfDownloaded: false,
+      pdfDownloading: false,
+      companyNotFound: false,
     };
   },
   created() {
@@ -105,10 +240,13 @@ export default {
       this.loadCompanies();
     });
     this.loadCompanies();
+    // this.loadCompaniesForExport();
   },
   mounted() {
     this.$modal.hide("companyInfo");
     this.currentStatus = this.$route.params.status;
+    this.startingDate = "1960";
+    this.endingDate = moment().format("YYYY");
   },
   computed: {
     layout() {
@@ -116,6 +254,45 @@ export default {
     },
   },
   methods: {
+    changeCompanyStatusForExport(e) {
+      this.companyStatus = e.target.value;
+    },
+    // generateReport() {
+    //   this.loadCompaniesForExport();
+    // },
+    downloadReportNow() {
+      // this.loadCompaniesForExport();
+      this.$refs.html2Pdf.generatePdf();
+      this.pdfDownloaded = true;
+      this.pdfDownloading = false;
+    },
+    loadCompaniesForExport() {
+      this.pdfDownloading = true;
+      this.pdfDownloaded = false;
+      this.companyNotFound = true;
+      AxiosHelper.get(
+        `export?model=Company&start=${this.startingDate}&end=${this.endingDate}&status=${this.companyStatus}`
+      )
+        .then((response) => {
+          this.companiesForExport = response.data.result;
+          this.loadedCompaniesForExport = true;
+          this.$refs.html2Pdf.generatePdf();
+          this.pdfDownloaded = true;
+          this.pdfDownloading = false;
+          this.$modal.hide("ExportModal");
+        })
+        .catch((error) => {
+          this.pdfDownloaded = false;
+          this.pdfDownloading = false;
+          if (error.response.status === 404) {
+            Vue.$toast.open({
+              message:
+                "You can not export right now, please select different options and export again",
+              type: "error",
+            });
+          }
+        });
+    },
     loadCompanies() {
       this.loadingDirectory = true;
       this.loaded = false;
@@ -205,8 +382,12 @@ export default {
     cancelDelete() {
       this.$modal.hide("deleteCompany");
     },
+    openExportModal() {
+      this.$modal.show("ExportModal");
+    },
     closeModal() {
       this.$modal.hide("EditcompanyInfo");
+      this.$modal.hide("ExportModal");
     },
   },
 };
@@ -220,5 +401,25 @@ export default {
 }
 .page-nav button:hover {
   box-shadow: none;
+}
+.wrap-export {
+  padding: 20px;
+}
+.export-header {
+  text-align: center;
+}
+.brand {
+  margin: 15px 0;
+}
+.brand h1 {
+  color: #04adef;
+}
+.export-title {
+  padding: 20px 0;
+  border-top: 1px solid #b1b1b1;
+}
+.export-body {
+  font-size: 12px;
+  border: 1px solid #b1b1b1;
 }
 </style>

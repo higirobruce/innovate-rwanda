@@ -2,16 +2,16 @@
   <ul class="page-nav list-inline">
     <li
       :class="{
-        'list-inline-item mr-5 list-active': active == 'profile',
-        'list-inline-item mr-5': active != 'profile',
+        'list-inline-item mr-4 list-active': active == 'profile',
+        'list-inline-item mr-4': active != 'profile',
       }"
     >
       <router-link exact :to="'/dashboard/settings'">User information</router-link>
     </li>
     <li
       :class="{
-        'list-inline-item mr-5 list-active': active == 'reset',
-        'list-inline-item mr-5': active != 'reset',
+        'list-inline-item mr-4 list-active': active == 'reset',
+        'list-inline-item mr-4': active != 'reset',
       }"
     >
       <router-link exact :to="'/dashboard/settings/reset-password'"
@@ -20,8 +20,8 @@
     </li>
     <li
       :class="{
-        'list-inline-item mr-5 list-active': active == 'activities',
-        'list-inline-item mr-5': active != 'activities',
+        'list-inline-item mr-4 list-active': active == 'activities',
+        'list-inline-item mr-4': active != 'activities',
       }"
       v-if="
         profile &&
@@ -34,8 +34,8 @@
     </li>
     <li
       :class="{
-        'list-inline-item mr-5 list-active': active == 'type',
-        'list-inline-item mr-5': active != 'type',
+        'list-inline-item mr-4 list-active': active == 'type',
+        'list-inline-item mr-4': active != 'type',
       }"
       v-if="
         profile &&
@@ -48,8 +48,8 @@
     </li>
     <li
       :class="{
-        'list-inline-item mr-5 list-active': active == 'categories',
-        'list-inline-item mr-5': active != 'categories',
+        'list-inline-item mr-4 list-active': active == 'categories',
+        'list-inline-item mr-4': active != 'categories',
       }"
       v-if="
         profile &&
@@ -62,8 +62,8 @@
     </li>
     <li
       :class="{
-        'list-inline-item mr-5 list-active': active == 'event-types',
-        'list-inline-item mr-5': active != 'event-types',
+        'list-inline-item mr-4 list-active': active == 'event-types',
+        'list-inline-item mr-4': active != 'event-types',
       }"
       v-if="
         profile &&
@@ -72,6 +72,20 @@
     >
       <router-link exact :to="'/dashboard/settings/event-types'"
         >Event types</router-link
+      >
+    </li>
+    <li
+      :class="{
+        'list-inline-item mr-4 list-active': active == 'resources-types',
+        'list-inline-item mr-4': active != 'resources-types',
+      }"
+      v-if="
+        profile &&
+        (profile.role === 'admin-company' || profile.role === 'super-admin')
+      "
+    >
+      <router-link exact :to="'/dashboard/settings/resource-types'"
+        >Resources types</router-link
       >
     </li>
   </ul>

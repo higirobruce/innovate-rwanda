@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h3 class="p-4">Edit info</h3>
+    <h3 class="p-4">Edit customer base</h3>
     <div class="px-4 py-2">
-      <form @submit="submitCompanyInfo">
+      <form @submit.prevent="submitCompanyInfo">
         <div class="wrap-modal" style="max-height: 450px; overflow: scroll">
           <h5 class="mt-3">Company summary</h5>
           <div class="row mt-4">
@@ -38,7 +38,7 @@
           </button>
           <button
             type="submit"
-            @click="submitCompanyInfo"
+            @click.prevent="submitCompanyInfo"
             class="btn btn-success-outline mr-2"
           >
             Save
@@ -51,7 +51,7 @@
 
 <script>
 import Vue from "vue";
-import AxiosHelper from "@/helpers/AxiosHelper";
+// import AxiosHelper from "@/helpers/AxiosHelper";
 import VModal from "vue-js-modal";
 Vue.use(VModal);
 
@@ -82,25 +82,26 @@ export default {
     closeModal() {
       this.$modal.hide("editCompanySummary");
     },
-    submitCompanyInfo(evt) {
-      evt.preventDefault();
-      AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
-        .then(() => {
-          Vue.$toast.open({
-            message: "Client base has been updated successfully",
-            type: "success",
-          });
-          setTimeout(() => {
-            this.$router.go();
-          }, 2000);
-        })
-        .catch(() => {
-          Vue.$toast.open({
-            message:
-              "Sorry, something went wrong while client base",
-            type: "error",
-          });
-        });
+    submitCompanyInfo() {
+      console.log('this.companyInfo.status', this.companyInfo.status)
+      // evt.preventDefault();
+      // AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
+      //   .then(() => {
+      //     Vue.$toast.open({
+      //       message: "Client base has been updated successfully",
+      //       type: "success",
+      //     });
+      //     setTimeout(() => {
+      //       this.$router.go();
+      //     }, 2000);
+      //   })
+      //   .catch(() => {
+      //     Vue.$toast.open({
+      //       message:
+      //         "Sorry, something went wrong while client base",
+      //       type: "error",
+      //     });
+      //   });
     },
     changeCustomerBase(e) {
       this.companyInfo.districtBasedIn = e.target.value;

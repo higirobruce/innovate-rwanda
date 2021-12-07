@@ -346,7 +346,6 @@ export default {
       response.data.result &&
         response.data.result.forEach((event) => {
           if (event.eventDate >= this.timeNow) {
-            console.log("comingEvents", event);
             this.events = [...this.events, event];
           }
         });

@@ -354,7 +354,7 @@ export default {
           this.created = true;
           this.event = {};
           Vue.$toast.open({
-            message: "Blog has been created successfully",
+            message: "Event has been created successfully",
             type: "success",
           });
         })
@@ -363,7 +363,7 @@ export default {
           this.created = false;
           Vue.$toast.open({
             message:
-              "Sorry, something went wrong while creating a blog post",
+              "Sorry, something went wrong while creating a event post",
             type: "error",
           });
         });

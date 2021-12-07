@@ -42,6 +42,15 @@
       </li>
       <li
         class="nav-item"
+        v-if="profile.role === 'admin-user' || profile.role === 'super-admin'"
+      >
+        <router-link :to="'/dashboard/subscribers'">
+          <img src="@/assets/images/icon-users.png" />
+          <div>Subscribers</div>
+        </router-link>
+      </li>
+      <li
+        class="nav-item"
         v-if="
           profile.role === 'normal' ||
           profile.role === 'admin-blog' ||

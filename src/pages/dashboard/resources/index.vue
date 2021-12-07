@@ -3,12 +3,10 @@
     <component :is="layout">
       <div class="page-info px-5 position-relative">
         <h2 class="h2 font-weight-bold">Resources</h2>
-        <div class="wrap-content-head-btns align-items-end">
+        <div class="wrap-content-head-btns align-items-end" v-if="!loading">
           <router-link
             :to="'/dashboard/resources/new'"
-            v-if="
-              profile && profile.role !== 'normal'
-            "
+            v-if="profile && profile.role !== 'normal'"
             class="btn font-weight-bold btn-primary-outline"
           >
             Add a resource
@@ -17,7 +15,7 @@
         <div class="clear" />
         <br />
       </div>
-      <div class="dash-container">
+      <div class="dash-container" v-if="!loading">
         <table
           class="table table-responsive-sm"
           v-if="profile && profile.role !== 'normal'"
@@ -70,7 +68,7 @@
             </tr>
           </tbody>
         </table>
-        <div v-else class="not-allowed"></div>
+        <!-- <div v-else class="not-allowed"></div> -->
         <modal
           name="openInfoJob"
           :adaptive="true"
@@ -99,6 +97,7 @@
           />
         </modal>
       </div>
+      <Loading v-if="loading" />
     </component>
   </div>
 </template>
@@ -108,12 +107,14 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import MenuContent from "@/components/MenuContent";
 import InfoJob from "@/components/InfoJob";
 import DeleteModal from "@/components/DeleteModal";
+import Loading from "@/components/Loading";
 export default {
   name: "content",
   components: {
     MenuContent,
     InfoJob,
     DeleteModal,
+    Loading,
   },
   data() {
     return {
@@ -125,7 +126,7 @@ export default {
   },
   created() {
     this.loading = true;
-    
+
     AxiosHelper.get("resources")
       .then((response) => {
         this.resources = response.data.result;
@@ -135,7 +136,7 @@ export default {
         if (error.response.status === 404 || error.response.status === 400) {
           this.error = "No content yet!";
         } else if (error.response.status === 403) {
-          this.error = "No companies found at this moment";
+          this.error = "No resources found at this moment";
           this.notAllowed = true;
         } else {
           this.error = "Something went wrong, try again later";

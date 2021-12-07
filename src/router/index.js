@@ -108,7 +108,7 @@ const router = new Router({
       path: "/dashboard",
       component: () => import("@/pages/dashboard/index.vue"),
       meta: {
-        layout: "dashboard-layout",
+        layout: "overview-layout",
       },
     },
     {
@@ -143,6 +143,13 @@ const router = new Router({
     {
       path: "/dashboard/users",
       component: () => import("@/pages/dashboard/users/index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/subscribers",
+      component: () => import("@/pages/dashboard/subscribers/index.vue"),
       meta: {
         layout: "dashboard-layout",
       },
@@ -274,6 +281,13 @@ const router = new Router({
       },
     },
     {
+      path: "/jobs",
+      component: () => import("@/pages/jobs/index.vue"),
+      meta: {
+        layout: "default-layout",
+      },
+    },
+    {
       path: "/job/:slug",
       component: () => import("@/pages/jobs/post.vue"),
       meta: {
@@ -332,6 +346,13 @@ const router = new Router({
     {
       path: "/dashboard/settings/event-types",
       component: () => import("@/pages/dashboard/settings/event-types.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/settings/resource-types",
+      component: () => import("@/pages/dashboard/settings/resource-types.vue"),
       meta: {
         layout: "dashboard-layout",
       },

@@ -3,7 +3,7 @@
     <h3 class="p-4">Delete</h3>
     <div class="p-4">Do you really want to delete this {{ entity }}?</div>
     <div class="my-2 mx-4">
-      <span class="float-left">
+      <span class="float-right">
         <button @click="closeModal" class="btn btn-primary-outline mr-2">
           Cancel
         </button>
@@ -14,7 +14,7 @@
           Delete
         </button>
       </span>
-      <span class="float-right">
+      <span class="float-left">
         <button @click="closeModal" class="btn btn-gray-outline mr-2">
           Close
         </button>

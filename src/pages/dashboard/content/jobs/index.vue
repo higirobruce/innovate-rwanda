@@ -179,7 +179,7 @@ export default {
         if (error.response.status === 404 || error.response.status === 400) {
           this.error = "No content yet!";
         } else if (error.response.status === 403) {
-          this.error = "No companies found at this moment";
+          this.error = "No jobs found at this moment";
           this.notAllowed = true;
         } else {
           this.error = "Something went wrong, try again later";
