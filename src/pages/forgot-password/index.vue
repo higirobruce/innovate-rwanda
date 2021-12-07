@@ -93,7 +93,9 @@ export default {
       this.loading = true;
       this.requested = false;
       this.error = false;
-      AxiosHelper.put("forgot-password", this.user)
+      AxiosHelper.put("forgot-password", {
+        email: 'ngabojasper@gmail.com'
+      })
         .then(() => {
           this.loading = false;
           this.requested = true;

@@ -75,10 +75,46 @@
             <h5 class="card-title">
               {{ profile.lastName }} {{ profile.firstName }}
             </h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ profile.email }}</h6>
-            <p class="card-text">
+            <h6 class="card-subtitle mt-2 text-muted">{{ profile.email }}</h6>
+            <p class="card-text" v-if="profile.jobTitle">
               {{ profile.jobTitle || "" }}
             </p>
+            <h6
+              class="card-subtitle mb-4 mt-2 text-muted"
+              v-if="profile.role === 'super-admin'"
+            >
+              Super admin
+            </h6>
+            <h6
+              class="card-subtitle mb-4 mt-2 text-muted"
+              v-if="profile.role === 'admin-company'"
+            >
+              Company admin
+            </h6>
+            <h6
+              class="card-subtitle mb-4 mt-2 text-muted"
+              v-if="profile.role === 'admin-job'"
+            >
+              Job admin
+            </h6>
+            <h6
+              class="card-subtitle mb-4 mt-2 text-muted"
+              v-if="profile.role === 'admin-event'"
+            >
+              Event admin
+            </h6>
+            <h6
+              class="card-subtitle mb-4 mt-2 text-muted"
+              v-if="profile.role === 'admin-blog'"
+            >
+              Blog admin
+            </h6>
+            <h6
+              class="card-subtitle mb-4 mt-2 text-muted"
+              v-if="profile.role === 'admin-user'"
+            >
+              User admin
+            </h6>
             <button @click="logout" class="btn border btn-sm bg-white">
               Logout
             </button>
@@ -155,7 +191,7 @@ export default {
       localStorage.removeItem("isAuth", true);
       localStorage.removeItem("token");
       // this.$router.push("/login");
-      this.$router.go()
+      this.$router.go();
     },
   },
 };

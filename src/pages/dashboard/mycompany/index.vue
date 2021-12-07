@@ -50,18 +50,7 @@
                   <strong> <i class="icon-edit" /> Change </strong>
                 </span>
               </div>
-              <div
-                class="alert alert-warning mt-3"
-                v-if="
-                  profile.role === 'super-admin' ||
-                  profile.role === 'admin-company'
-                "
-              >
-                You are viewing this page because you are an admin.
-                <router-link :to="'/dashboard/directory'">
-                  See all companies
-                </router-link>
-              </div>
+
               <div
                 class="border border-warning rounded-lg p-3 bg-white mb-3"
                 v-if="
@@ -89,49 +78,64 @@
                   <Loading v-if="resubmitting && !resubmitted" />
                 </p>
               </div>
-              <div
-                class="border border-warning rounded-lg p-3 bg-white mb-3"
-                v-if="
-                  (profile.role === 'super-admin' ||
-                    profile.role === 'admin-company') &&
-                  company.company.status === 'pending'
-                "
-                role="alert"
-              >
-                <p>
-                  This company "<b>{{ company.company.coName }}</b
-                  >" is pending approval. Please, review it admin publish
-                </p>
-                <hr />
-                <p class="mb-0">
-                  <button
-                    type="button"
-                    @click="resubmitNow"
-                    v-if="!resubmitting && !resubmitted"
-                    class="btn btn-success btn-sm mr-2"
-                  >
-                    Publish
-                  </button>
+            </div>
+            <div
+              class="border p-3 bg-white"
+              v-if="
+                (profile.role === 'super-admin' ||
+                  profile.role === 'admin-company') &&
+                company.company.status === 'pending'
+              "
+              role="alert"
+            >
+              <div class="inner-container">
+                This company "<b>{{ company.company.coName }}</b
+                >" is pending approval. Please, review and publish it!
+                <span class="float-right">
                   <button
                     type="button"
                     @click="openDecline(company.company.id)"
                     v-if="!resubmitting && !resubmitted"
-                    class="btn btn-danger btn-sm"
+                    class="btn btn-secondary btn-sm mr-2"
                   >
                     Decline
                   </button>
+                  <button
+                    type="button"
+                    @click="resubmitNow"
+                    v-if="!resubmitting && !resubmitted"
+                    class="btn btn-success btn-sm"
+                  >
+                    Publish now
+                  </button>
                   <Loading v-if="resubmitting && !resubmitted" />
-                </p>
+                </span>
               </div>
-              <div
-                class="alert alert-danger"
-                v-if="
-                  profile.role === 'normal' &&
-                  company.company.status === 'pending'
-                "
-                role="alert"
-              >
-                This company is under review. It will be published once shortly
+            </div>
+            <div
+              class="alert alert-warning"
+              v-if="
+                profile.role === 'super-admin' ||
+                profile.role === 'admin-company'
+              "
+            >
+              <div class="inner-container">
+                You are viewing this page because you are an admin.
+                <router-link :to="'/dashboard/directory'">
+                  See all companies
+                </router-link>
+              </div>
+            </div>
+            <div
+              class="alert alert-danger"
+              v-if="
+                profile.role === 'normal' &&
+                company.company.status === 'pending'
+              "
+              role="alert"
+            >
+              <div class="inner-container">
+                This company is under review. It will be published shortly
               </div>
             </div>
             <div
@@ -835,7 +839,12 @@
         <div v-else class="not-allowed" />
       </div>
       <Loading v-if="!loaded && loading" />
-
+      <div class="alert alert-danger" v-if="!_.isEmpty(errorCompany)">
+        {{ errorCompany }}
+        <button class="btn btn-sm btn-secondary float-right" @click="logout">
+          Logout
+        </button>
+      </div>
       <!-- Decline -->
       <modal
         name="declineCompanyModal"
@@ -943,15 +952,6 @@ export default {
       declined: false,
     };
   },
-  // mounted() {
-  //   this.companyId = this.$route.params.companyId;
-  //   console.log('companyId', this.companyId)
-  // AxiosHelper.get("business-activities")
-  //   .then((response) => {
-  //     this.listOfBusinessActivities = response.data.result;
-  //   })
-  //   .catch(() => {});
-  // },
   beforeCreate() {
     AxiosHelper.get("business-activities")
       .then((response) => {
@@ -965,6 +965,13 @@ export default {
     this.loadCompanyInfo();
   },
   methods: {
+    logout() {
+      localStorage.removeItem("profile");
+      localStorage.removeItem("company");
+      localStorage.removeItem("isAuth", true);
+      localStorage.removeItem("token");
+      this.$router.push("/login");
+    },
     changeMainBusinessActivity(e) {
       this.businessActivityId = e.target.value;
     },
@@ -1099,19 +1106,26 @@ export default {
         .catch((error) => {
           this.loading = false;
           this.loaded = false;
+          console.log("error$$", error.response.data.message);
           if (error.response.status === 404) {
             this.errorCompany =
               "Company information not found. Try again later";
           } else if (error.response.status === 403) {
             this.errorCompany =
               "You are not allowed to access this resource. Kindly log out and login in again!";
+          } else if (
+            error.response.status === 401 &&
+            error.response.data.message === "TokenExpiredError"
+          ) {
+            this.errorCompany =
+              "Your token has been expired, kindly logout and login again";
           } else {
             this.errorCompany = "Something went wrong, try again later";
           }
-          Vue.$toast.open({
-            message: this.errorCompany,
-            type: "error",
-          });
+          // Vue.$toast.open({
+          //   message: this.errorCompany,
+          //   type: "error",
+          // });
         });
     },
     convertToObject(object) {

@@ -253,10 +253,13 @@ export default {
         });
     },
     search(query) {
+      this.loaded = false;
+      this.loading = true;
       AxiosHelper.get(`blogs/search?searchValue=${query}`)
         .then((response) => {
           this.posts = response.data.result;
           this.loaded = true;
+          this.loading = true;
         })
         .catch(() => {
           this.loading = false;

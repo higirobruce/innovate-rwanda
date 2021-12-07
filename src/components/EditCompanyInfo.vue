@@ -5,11 +5,6 @@
       <form @submit="submitCompanyInfo">
         <div>
           <div class="row">
-            <!-- style="
-            width: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
-          " -->
             <div class="col-lg-8 col-sm-12">
               <h5 class="mt-3">Company name</h5>
               <div

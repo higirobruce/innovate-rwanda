@@ -49,7 +49,7 @@
       </div>
     </div>
     <div class="my-3 mx-4">
-      <span class="float-left">
+      <span class="float-right">
         <button
           v-if="
             ((profile.role === 'admin-blog' ||
@@ -82,7 +82,7 @@
           Save as draft
         </button>
       </span>
-      <span class="float-right">
+      <span class="float-left">
         <button @click="closeModal" class="btn btn-gray-outline mr-2">
           Close
         </button>

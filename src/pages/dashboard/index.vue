@@ -115,7 +115,7 @@
           v-if="!_.isEmpty(summary) && profile.role === 'normal'"
         >
           <div class="row">
-            <div class="col-sm-12 col-lg-3">
+            <div class="col-sm-12 col-lg-4">
               <router-link :to="'/dashboard/content'">
                 <div class="one-counter">
                   <img src="@/assets/images/counter-companies.png" />
@@ -124,7 +124,7 @@
                 </div>
               </router-link>
             </div>
-            <div class="col-sm-12 col-lg-3">
+            <div class="col-sm-12 col-lg-4">
               <router-link :to="'/dashboard/content/events'">
                 <div class="one-counter">
                   <img src="@/assets/images/counter-users.png" />
@@ -133,7 +133,7 @@
                 </div>
               </router-link>
             </div>
-            <div class="col-sm-12 col-lg-3">
+            <div class="col-sm-12 col-lg-4">
               <router-link :to="'/dashboard/content/jobs'">
                 <div class="one-counter">
                   <img src="@/assets/images/counter-pending.png" />

@@ -30,7 +30,11 @@
         <br />
       </div>
       <div class="dash-container">
-        <div v-if="profile && profile.role !== 'normal'">
+        <div
+          v-if="
+            profile && profile.role !== 'normal' && !typesLoading && typesLoaded
+          "
+        >
           <h4 class="h5">
             <router-link :to="'/dashboard/resources'" class="btn btn-back">
               <i class="icon-arrow-left" />
@@ -80,10 +84,10 @@
                     <option value="" selected disabled>Select type</option>
                     <option
                       v-for="(type, index) in resourceTypes"
-                      v-bind:value="type"
+                      v-bind:value="type.name"
                       :key="index"
                     >
-                      {{ type }}
+                      {{ type.name }}
                     </option>
                   </select>
                 </div>
@@ -122,7 +126,13 @@
           </div>
           <!-- Update activities -->
         </div>
-        <div v-else class="not-allowed"></div>
+        <div
+          v-if="
+            profile && profile.role === 'normal' && !typesLoading && typesLoaded
+          "
+          class="not-allowed"
+        ></div>
+        <Loading v-if="typesLoading && !typesLoaded" />
       </div>
     </component>
   </div>
@@ -132,9 +142,12 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import File from "@/helpers/File";
-import resourceTypes from "@/data/resourceTypes.js";
+import Loading from "@/components/Loading";
 
 export default {
+  components: {
+    Loading,
+  },
   name: "post-resource",
   data() {
     return {
@@ -158,12 +171,31 @@ export default {
       file: "",
       fileName: "",
       resourceTypes: [],
+      typesLoading: false,
+      typesLoaded: false,
     };
   },
+  created() {
+    this.loadResourceTypes();
+  },
   mounted() {
-    this.resourceTypes = resourceTypes;
+    // this.resourceTypes = resourceTypes;
   },
   methods: {
+    loadResourceTypes() {
+      this.typesLoading = true;
+      this.typesLoaded = false;
+      AxiosHelper.get("resources-types")
+        .then((response) => {
+          this.resourceTypes = response.data.result;
+          this.typesLoading = false;
+          this.typesLoaded = true;
+        })
+        .catch(() => {
+          this.typesLoading = false;
+          this.typesLoaded = false;
+        });
+    },
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
       this.fileName = this.file.name;
