@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="px-4 pt-4">Edit info</h3>
+    <h3 class="px-4 pt-4">Edit summary</h3>
     <div class="mx-4 py-2">
       <form @submit="submitCompanyInfo">
         <div

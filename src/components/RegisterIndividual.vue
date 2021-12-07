@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!individualRegisting && !individualRegistered">
+    <div v-if="!individualRegistering && !individualRegistered">
       <h2 class="text-center mb-4">Some basic information about you</h2>
       <div class="register-form">
         <form @submit="registerIndividual">
@@ -9,7 +9,7 @@
             <div class="col-lg-6 col-sm-12">
               <div class="form-group">
                 <input
-                  type="firstname"
+                  type="text"
                   name="first_name"
                   v-model.trim="$v.userIndividual.firstName.$model"
                   required
@@ -30,7 +30,7 @@
             <div class="col-lg-6 col-sm-12">
               <div class="form-group">
                 <input
-                  type="lastname"
+                  type="text"
                   name="last_name"
                   v-model.trim="$v.userIndividual.lastName.$model"
                   required
@@ -325,11 +325,11 @@
         </form>
       </div>
     </div>
-    <div class="py-3" v-if="individualRegisting && !individualRegistered">
+    <div class="py-5" v-if="individualRegistering && !individualRegistered">
       <Loading />
     </div>
     <div
-      v-if="!individualRegisting && individualRegistered"
+      v-if="!individualRegistering && individualRegistered"
       class="text-center py-5 my-5"
     >
       <div class="my-3 alert alert-success" role="alert">
@@ -395,7 +395,7 @@ export default {
       allDistricts: [],
       listOfBusinessActivities: [],
       coTypes: [],
-      individualRegisting: false,
+      individualRegistering: false,
       individualRegistered: false,
     };
   },
@@ -419,7 +419,7 @@ export default {
       this.userIndividual.location = e.target.value;
     },
     registerIndividual() {
-      this.individualRegisting = true;
+      this.individualRegistering = true;
       this.individualRegistered = false;
       this.submitted = true;
       if (!this.$v.$invalid) {
@@ -428,7 +428,7 @@ export default {
         this.errorHappened = false;
         AxiosHelper.post("register", this.userIndividual)
           .then(() => {
-            this.individualRegisting = false;
+            this.individualRegistering = false;
             this.individualRegistered = true;
             this.userIndividual = {
               firstName: "",
@@ -449,7 +449,7 @@ export default {
           })
           .catch((error) => {
             this.error = error.response.data;
-            this.individualRegisting = false;
+            this.individualRegistering = false;
             this.individualRegistered = false;
             this.errorHappened = true;
           });

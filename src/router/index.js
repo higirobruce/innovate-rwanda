@@ -108,7 +108,7 @@ const router = new Router({
       path: "/dashboard",
       component: () => import("@/pages/dashboard/index.vue"),
       meta: {
-        layout: "dashboard-layout",
+        layout: "overview-layout",
       },
     },
     {
@@ -143,6 +143,13 @@ const router = new Router({
     {
       path: "/dashboard/users",
       component: () => import("@/pages/dashboard/users/index.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
+      path: "/dashboard/subscribers",
+      component: () => import("@/pages/dashboard/subscribers/index.vue"),
       meta: {
         layout: "dashboard-layout",
       },

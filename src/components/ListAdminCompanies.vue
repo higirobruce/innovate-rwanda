@@ -51,6 +51,12 @@
                 Approved
               </span>
               <span
+                class="status text-capitalize declined"
+                v-if="dir.status === 'in_editing'"
+              >
+                In editing mode
+              </span>
+              <span
                 class="status text-capitalize pending"
                 v-if="dir.status === 'pending'"
               >

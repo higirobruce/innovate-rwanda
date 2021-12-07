@@ -110,9 +110,9 @@
                     src="@/assets/images/pdf.png"
                     alt="Generic placeholder image"
                   />
-                  <div class="media-body">
+                  <div class="media-body" style="overflow: hidden">
                     <h5 class="mt-2">Preview</h5>
-                    <p>
+                    <p class="text-truncate">
                       {{ fileName }}
                     </p>
                   </div>

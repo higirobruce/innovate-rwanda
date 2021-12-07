@@ -21,7 +21,7 @@
       </div>
 
       <div class="container">
-        <div v-if="_.isEmpty(profile) && !registering && !registered">
+        <div v-if="_.isEmpty(profile) && !registered">
           <div v-if="coTypes && coTypes.length">
             <h2 class="text-center mt-4 choose-type">
               Tell us a little bit about yourself...
@@ -70,7 +70,12 @@
             </div>
             <div
               class="wrap-register"
-              v-if="typeChosen && currentType !== 'individual'"
+              v-if="
+                typeChosen &&
+                currentType !== 'individual' &&
+                !registering &&
+                !registered
+              "
             >
               <h2 class="text-center mb-4">Some basic information about you</h2>
               <div class="register-form">
@@ -388,6 +393,12 @@
               </div>
             </div>
             <div
+              class="py-5 bg-white shadow rounded-md mb-3"
+              v-if="!registered && registering"
+            >
+              <Loading />
+            </div>
+            <div
               class="wrap-register"
               v-if="typeChosen && currentType === 'individual'"
             >
@@ -398,6 +409,7 @@
             <Loading />
           </div>
         </div>
+
         <div v-if="!_.isEmpty(profile)" class="text-center py-5 my-5">
           <h1 class="h3">You are already logged in.<br /></h1>
           <router-link
@@ -492,6 +504,11 @@ export default {
       listOfBusinessActivities: [],
       coTypes: [],
     };
+  },
+  mounted() {
+    if (!this._.isEmpty(this.profile) && this.profile.id) {
+      this.$router.push("/dashboard");
+    }
   },
   created() {
     // loading all districts

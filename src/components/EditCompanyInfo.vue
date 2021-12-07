@@ -1,17 +1,15 @@
 <template>
   <div>
-    <h3 class="px-4 pt-4">Edit info</h3>
+    <h3 class="px-4 pt-4">Edit company information</h3>
     <div class="mx-4 py-2">
       <form @submit="submitCompanyInfo">
-        <div
-          style="
+        <div>
+          <div class="row">
+            <!-- style="
             width: 100%;
-            max-height: 410px;
             overflow-y: auto;
             overflow-x: hidden;
-          "
-        >
-          <div class="row">
+          " -->
             <div class="col-lg-8 col-sm-12">
               <h5 class="mt-3">Company name</h5>
               <div
@@ -169,20 +167,52 @@
           team. We want to make sure you follow the guidelines for updating your
           institution or entity's information
         </div>
-        <div class="mt-2 mb-3">
-          <button
-            type="button"
-            @click.prevent="closeModal"
-            class="btn btn-gray-outline mr-2"
-          >
-            Close
-          </button>
-          <button
-            @click.prevent="submitCompanyInfo"
-            class="btn btn-success-outline"
-          >
-            Update
-          </button>
+        <div class="mt-4 mb-1">
+          <span class="float-left">
+            <button
+              type="button"
+              @click.prevent="closeModal"
+              class="btn btn-gray-outline mr-2"
+            >
+              Close
+            </button>
+          </span>
+          <span class="float-right" v-if="submitting && !submitted">Submitting, please wait...</span>
+          <span class="float-right" v-if="!submitting && !submitted">
+            <button
+              @click.prevent="submitCompanyInfo('in_editing')"
+              class="btn btn-success-outline mr-2"
+            >
+              Save as draft
+            </button>
+            <span v-if="profile.role === 'normal'">
+              <button
+                @click.prevent="submitCompanyInfo('pending')"
+                class="btn btn-success"
+              >
+                Save &amp; Submit for review
+              </button>
+            </span>
+            <span
+              v-if="
+                profile.role === 'admin-company' ||
+                profile.role === 'super-admin'
+              "
+            >
+              <button
+                @click.prevent="submitCompanyInfo('pending')"
+                class="btn btn-success-outline mr-2"
+              >
+                Save in pending
+              </button>
+              <button
+                @click.prevent="submitCompanyInfo('approved')"
+                class="btn btn-success"
+              >
+                Publish now
+              </button>
+            </span>
+          </span>
         </div>
       </form>
     </div>
@@ -244,6 +274,8 @@ export default {
       Deselect: {
         render: (createElement) => createElement("span", "❌"),
       },
+      submitting: false,
+      submitted: false,
     };
   },
   created() {
@@ -267,19 +299,34 @@ export default {
     changeInterest(e) {
       this.companyInfo.businessActivityId = e.target.value;
     },
-    submitCompanyInfo() {
-      this.companyInfo.status = "pending";
+    submitCompanyInfo(status) {
+      this.submitting = true;
+      this.submitted = false;
+      this.companyInfo.status = status;
       AxiosHelper.patch(`company/edit/${this.companyInfo.id}`, this.companyInfo)
         .then(() => {
-          Vue.$toast.open({
-            message: "Company information has been updated successfully",
-            type: "success",
-          });
+          this.submitting = false;
+          this.submitted = true;
+          if (this.companyInfo.status === "in_editing") {
+            Vue.$toast.open({
+              message:
+                "You have saved company information as draft. Once you are done with editing, you will have to submit for publication",
+              type: "warning",
+            });
+          } else {
+            Vue.$toast.open({
+              message:
+                "You have submitted company for evaluation. The company will be published after being reviewed by our admins",
+              type: "success",
+            });
+          }
           setTimeout(() => {
             this.$router.go();
-          }, 500);
+          }, 2000);
         })
         .catch(() => {
+          this.submitting = false;
+          this.submitted = false;
           Vue.$toast.open({
             message:
               "Sorry, something went wrong while updating your information",
