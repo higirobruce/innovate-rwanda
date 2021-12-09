@@ -1,7 +1,7 @@
 <template>
   <div class="wrap-dash-header">
     <ul class="list-inline my-2 mr-4 py-1 float-right">
-      <li class="list-inline-item px-1 position-relative">
+      <!-- <li class="list-inline-item px-1 position-relative">
         <router-link
           class="dash-header-btn dash-notification-badge"
           :to="'/dashboard/messages'"
@@ -14,7 +14,7 @@
             {{ number && number.newMessages }}
           </span>
         </router-link>
-      </li>
+      </li> -->
       <li class="list-inline-item px-1 position-relative">
         <button
           class="dash-header-btn dash-notification-badge"

@@ -144,7 +144,7 @@
           <img src="@/assets/images/empty.png" />
           <h2 class="mt-0 py-0 font-weight-light h3">Directory is empty</h2>
           <button  class="btn btn-success-outline mt-4" type="button" @click.prevent="resetFilter">
-            Reflesh directory
+            Refresh directory
           </button>
         </div>
       </div>

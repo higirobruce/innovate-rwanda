@@ -14,6 +14,7 @@
           >
           <button
             :disabled="
+              !characterLength ||
               resource.title === '' ||
               resource.description === '' ||
               resource.type === '' ||
@@ -65,11 +66,12 @@
                   style="height: auto"
                   rows="5"
                   class="form-control"
+                  @keydown="checkCharacterLength"
                   v-model="resource.description"
                 ></textarea>
               </div>
               <div class="text-info">
-                Description should not exceed 255 characters
+                Description should not exceed 255 characters{{ 255 - resource.description.length }} )
               </div>
             </div>
             <div class="col-sm-12 col-md-4 col-l-4">
@@ -173,6 +175,7 @@ export default {
       resourceTypes: [],
       typesLoading: false,
       typesLoaded: false,
+      characterLength: false,
     };
   },
   created() {
@@ -182,6 +185,12 @@ export default {
     // this.resourceTypes = resourceTypes;
   },
   methods: {
+    checkCharacterLength(e) {
+      parseInt(this.resource.description.length) > 5 &&
+      parseInt(this.resource.description.length) < 355
+        ? (this.characterLength = true)
+        : (this.characterLength = false);
+    },
     loadResourceTypes() {
       this.typesLoading = true;
       this.typesLoaded = false;

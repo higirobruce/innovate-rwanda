@@ -280,13 +280,13 @@ const router = new Router({
         layout: "default-layout",
       },
     },
-    {
-      path: "/jobs",
-      component: () => import("@/pages/jobs/index.vue"),
-      meta: {
-        layout: "default-layout",
-      },
-    },
+    // {
+    //   path: "/jobs",
+    //   component: () => import("@/pages/jobs/index.vue"),
+    //   meta: {
+    //     layout: "default-layout",
+    //   },
+    // },
     {
       path: "/job/:slug",
       component: () => import("@/pages/jobs/post.vue"),

@@ -344,7 +344,7 @@ export default {
       this.editing = true;
       this.savePost(status);
       this.message =
-        "Blog has been marked as draft. If you want to published again, please reflesh the page and click on publish";
+        "Blog has been marked as draft. If you want to published again, please refresh the page and click on publish";
     },
     savePost(status) {
       this.post.status = status;
