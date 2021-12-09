@@ -185,7 +185,7 @@ export default {
     // this.resourceTypes = resourceTypes;
   },
   methods: {
-    checkCharacterLength(e) {
+    checkCharacterLength() {
       parseInt(this.resource.description.length) > 5 &&
       parseInt(this.resource.description.length) < 355
         ? (this.characterLength = true)
