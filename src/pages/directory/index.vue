@@ -235,21 +235,19 @@ export default {
       );
     },
     changeActivity(e) {
-      this.resetFilter();
       this.selectedActivity = e.target.value;
-      this.loadCompanyByActivity();
-      // this.loading = true;
-      // this.loaded = false;
-      // this.directory = [];
-      // this.loadCompanies(
-      //   this.page,
-      //   this.typeSelected || "",
-      //   e.target.value,
-      //   this.selectedLocation || "",
-      //   this.orderType,
-      //   this.orderValue,
-      //   this.search || ""
-      // );
+      this.loading = true;
+      this.loaded = false;
+      this.directory = [];
+      this.loadCompanies(
+        this.page,
+        this.typeSelected || "",
+        this.selectedActivity || "",
+        this.selectedLocation || "",
+        this.orderType,
+        this.orderValue,
+        this.search || ""
+      );
     },
     changeLocation(e) {
       this.selectedLocation = e.target.value;
