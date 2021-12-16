@@ -94,7 +94,7 @@ export default {
       this.requested = false;
       this.error = false;
       AxiosHelper.put("forgot-password", {
-        email: 'ngabojasper@gmail.com'
+        email: this.user.email
       })
         .then(() => {
           this.loading = false;
