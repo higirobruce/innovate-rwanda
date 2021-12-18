@@ -23,9 +23,9 @@
           <thead>
             <tr>
               <th scope="col">Title</th>
-              <th scope="col">Company</th>
-              <th scope="col">Date</th>
+              <th scope="col">Description</th>
               <th scope="col">Attachment</th>
+              <th scope="col">Date</th>
               <th scope="col">
                 <span class="float-right px-3"> Actions </span>
               </th>

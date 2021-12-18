@@ -172,7 +172,7 @@
                   v-model.trim="$v.userIndividual.linkedin.$model"
                   required
                   class="form-control custom-input"
-                  placeholder="Company's website"
+                  placeholder="Linkedin profile"
                 />
                 <!-- @input="changingLinkedin(user.linkedin)" -->
               </div>

@@ -101,7 +101,7 @@
             </div>
             <div class="col-sm-12 col-lg-3">
               <div class="one-counter">
-                <router-link :to="'/dashboard/directory'">
+                <router-link :to="'/dashboard/subscribers'">
                   <img src="@/assets/images/counter-subscribers.png" />
                   <h3 class="ml-2">{{ summary.subscribersCount }}</h3>
                   <div class="counter-description">Subscribers</div>

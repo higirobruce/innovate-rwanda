@@ -35,7 +35,7 @@
             </div>
             <div class="mb-2 co-info">
               <i class="icon-calendar" />
-              <span class="ml-2">{{ company.coType }} </span>
+              <span class="ml-2">{{ company.CompanyType.name }} </span>
             </div>
             <div class="mb-2 co-info" v-if="company.districtBasedIn">
               <i class="icon-marker-stroked" />

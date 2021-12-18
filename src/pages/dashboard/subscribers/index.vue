@@ -25,7 +25,7 @@
               <tbody v-if="subscribers && Object.keys(subscribers).length">
                 <tr v-for="(user, index) in subscribers" :key="index">
                   <td>
-                    {{ user.id }}
+                    {{ index + 1 }}
                   </td>
                   <td>{{ user.email }}</td>
                   <td>{{ user.status || "-" }}</td>
