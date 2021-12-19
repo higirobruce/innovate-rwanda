@@ -19,18 +19,17 @@
           nights, other signature conferences. Sign up and learn at your own
           pace and convenience.
         </div>
-        <form @submit="search" class="page-search">
+        <form class="page-search">
           <input
             type="text"
-            v-model="query"
+            v-model="search"
             placeholder="Type to search and hit enter"
           />
-          <button :disabled="_.isEmpty(query)" @click.prevent="search(query)">
+          <button @click.prevent="searchNow" :disabled="_.isEmpty(search)">
             <img src="@/assets/images/search.png" />
           </button>
         </form>
       </div>
-      <div v-if="!loading && loaded">
         <div class="wrap-filters-box">
           <div class="wrap-filters">
             <div class="filter-select">
@@ -175,7 +174,6 @@
             <h2 class="my-0 py-0 font-weight-light h3">No event found</h2>
           </div>
         </div>
-      </div>
       <Loading  v-if="loading && !loaded" />
     </component>
   </div>
@@ -216,6 +214,9 @@ export default {
       sortBy: "",
       yearFounded: "",
       coTypes: [],
+      orderType: "",
+      orderValue:"",
+      search: "",
     };
   },
   created() {
@@ -228,59 +229,86 @@ export default {
     this.timeNow = moment().format("YYYY-MM-DD");
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {
-      this.search(value);
-    } else {
-      this.loadEvents();
+      this.search = value;
     }
+    this.loadEvents(
+      "",
+      "",
+      "",
+      this.orderType,
+      this.orderValue || "",
+      this.search || ""
+    );
+    this.loaded = false;
+    this.loading = true;
   },
   methods: {
     changeCompany(e) {
-      this.selectedCompany = "";
-      this.selectedActivity = "";
-      this.sortBy = "";
-      this.yearFounded = "";
       this.selectedCompany = e.target.value;
-      this.loadEventsWithFilter("company-type", this.selectedCompany);
+      this.loading = true;
+      this.loaded = false;
+      this.posts = [];
+      this.loadEvents(
+        this.selectedCompany || "",
+        this.selectedActivity || "",
+        this.yearFounded || "",
+        this.orderType || "",
+        this.orderValue || "",
+        this.search || ""
+      );
     },
     changeActivity(e) {
-      this.sortBy = "";
-      this.yearFounded = "";
-      this.selectedCompany = "";
-      this.loadEventsWithFilter("topic", e.target.value);
+      this.selectedActivity = e.target.value;
+      this.loading = true;
+      this.loaded = false;
+      this.posts = [];
+      this.loadEvents(
+        this.selectedCompany || "",
+        this.selectedActivity || "",
+        this.yearFounded || "",
+        this.orderType || "",
+        this.orderValue || "",
+        this.search || ""
+      );
     },
     changeYearfound(e) {
-      this.sortBy = "";
-      this.selectedCompany = "";
-      this.selectedActivity = "";
-      this.loadEventsWithFilter("year", e.target.value);
-    },
-    loadEventsWithFilter(filter, value) {
+      this.yearFounded = e.target.value;
+      this.loading = true;
+      this.loaded = false;
       this.posts = [];
-      AxiosHelper.get(
-        `events/public/filter?filterBy=${filter}&filterValue=${value}`
-      )
-        .then((response) => {
-          this.posts = response.data.result;
-          this.loaded = true;
-        })
-        .catch(() => {
-          this.loading = false;
-          this.loaded = true;
-        });
+      this.loadEvents(
+        this.selectedCompany || "",
+        this.selectedActivity || "",
+        this.yearFounded || "",
+        this.orderType || "",
+        this.orderValue || "",
+        this.search || ""
+      );
     },
     resetFilter() {
       this.selectedCompany = "";
       this.selectedActivity = "";
       this.yearFounded = "";
-      this.sortBy = "";
+      this.sortBy = "",
+      this.orderType = "",
+      this.orderValue = "",
+      this.search = ""
       this.posts = [];
-      this.loadEvents();
-    },
-    loadEvents() {
-      this.loading = true;
+      this.loadEvents(
+        "",
+        "",
+        "",
+        this.orderType,
+        this.orderValue || "",
+        this.search || ""
+      );
       this.loaded = false;
-      AxiosHelper.get("events/public")
-        .then((response) => {
+      this.loading = true;
+    },
+    loadEvents(companyType, activity, yearFounded, orderType, orderValue, search) {
+      AxiosHelper.get(
+        `events/public?companyType=${companyType}&topic=${activity}&year=${yearFounded}&orderType=${orderType}&orderValue=${orderValue}&search=${search}`
+      ).then((response) => {
           this.posts = response.data.result;
           this.loading = false;
           this.loaded = true;
@@ -292,24 +320,19 @@ export default {
         });
     },
     changeSort(e) {
-      this.selectedCompany = "";
-      this.selectedActivity = "";
-      this.yearFounded = "";
+      this.orderType = e.target.value.split(",")[0];
+      this.orderValue = e.target.value.split(",")[1];
+      this.loading = true;
+      this.loaded = false;
       this.posts = [];
-      const sortBy = e.target.value.split(",")[0];
-      const sortValue = e.target.value.split(",")[1];
-      AxiosHelper.get(
-        `events/public/sort?sortBy=${sortBy}&sortValue=${sortValue}`
-      )
-        .then((response) => {
-          this.posts = response.data.result;
-          this.loaded = true;
-        })
-        .catch(() => {
-          this.loading = false;
-          this.loaded = true;
-          this.posts = [];
-        });
+      this.loadEvents(
+        this.selectedCompany || "",
+        this.selectedActivity || "",
+        this.yearFounded || "",
+        this.orderType,
+        this.orderValue,
+        this.search || ""
+      );
     },
     getPastEvents() {
       let pastEvents = [];
@@ -336,17 +359,19 @@ export default {
     filterHtml(str) {
       return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 200)}...`;
     },
-    search(query) {
-      AxiosHelper.get(`events/public/search?searchValue=${query}`)
-        .then((response) => {
-          this.posts = response.data.result;
-          this.loaded = true;
-        })
-        .catch(() => {
-          this.loading = false;
-          this.loaded = true;
-          this.posts = [];
-        });
+    async searchNow() {
+      await this.$router.push({ query: { search: this.search } });
+      this.loading = true;
+      this.loaded = false;
+      this.posts = [];
+      this.loadEvents(
+        this.selectedCompany || "",
+        this.selectedActivity || "",
+        this.yearFounded || "",
+        this.orderType,
+        this.orderValue,
+        this.search || ""
+      );
     },
     convertToObject(object) {
       return JSON.parse(object);

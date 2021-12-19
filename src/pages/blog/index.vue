@@ -18,13 +18,13 @@
           for a boost, or a VC looking to meet great startups, we're the right
           place for you.
         </div>
-        <form @submit="search" class="page-search">
+        <form class="page-search">
           <input
             type="text"
-            v-model="query"
+            v-model="search"
             placeholder="Type to search and hit enter"
           />
-          <button :disabled="_.isEmpty(query)" @click.prevent="search(query)">
+          <button @click.prevent="searchNow" :disabled="_.isEmpty(search)">
             <img src="@/assets/images/search.png" />
           </button>
         </form>
@@ -144,6 +144,9 @@ export default {
       sortBy: "",
       yearFounded: "",
       coTypes: [],
+      orderType: "",
+      orderValue:"",
+      search: "",
     };
   },
   created() {
@@ -152,10 +155,16 @@ export default {
     });
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {
-      this.search(value);
-    } else {
-      this.loadBlog();
+      this.search = value;
     }
+    this.loadBlogs(
+      "",
+      "",
+      "",
+      this.orderType,
+      this.orderValue || "",
+      this.search || ""
+      );
     // loading business activities
     AxiosHelper.get("business-activities").then((response) => {
       this.listOfBusinessActivities = response.data.result;
@@ -176,30 +185,54 @@ export default {
   },
   methods: {
     changeCompany(e) {
-      this.selectedCompany = "";
-      this.selectedActivity = "";
-      this.yearFounded = "";
-      this.sortBy = "";
       this.selectedCompany = e.target.value;
-      this.loadBlogWithFilter("company-type", this.selectedCompany);
+      this.loading = true;
+      this.loaded = false;
+      this.posts = [];
+      this.loadBlogs(
+        this.selectedCompany || "",
+        this.selectedActivity || "",
+        this.yearFounded || "",
+        this.orderType || "",
+        this.orderValue || "",
+        this.search || ""
+      );
     },
     changeActivity(e) {
-      this.sortBy = "";
-      this.yearFounded = "";
-      this.selectedCompany = "";
-      this.loadBlogWithFilter("topic", e.target.value);
+      this.selectedActivity = e.target.value;
+      this.loading = true;
+      this.loaded = false;
+      this.posts = [];
+      this.loadBlogs(
+        this.selectedCompany || "",
+        this.selectedActivity || "",
+        this.yearFounded || "",
+        this.orderType || "",
+        this.orderValue || "",
+        this.search || ""
+      );
     },
     changeYearfound(e) {
-      this.sortBy = "";
-      this.selectedCompany = "";
-      this.selectedActivity = "";
-      this.loadBlogWithFilter("year", e.target.value);
+      this.yearFounded = e.target.value;
+      this.loading = true;
+      this.loaded = false;
+      this.posts = [];
+      this.loadBlogs(
+        this.selectedCompany || "",
+        this.selectedActivity || "",
+        this.yearFounded || "",
+        this.orderType || "",
+        this.orderValue || "",
+        this.search || ""
+      );
     },
     filterHtml(str) {
       return `${str.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 200)}...`;
     },
-    loadBlog() {
-      AxiosHelper.get("blog/public")
+    loadBlogs(companyType, activity, yearFounded, orderType, orderValue, search) {
+      AxiosHelper.get(
+        `blog/public?companyType=${companyType}&topic=${activity}&year=${yearFounded}&orderType=${orderType}&orderValue=${orderValue}&search=${search}`
+      )
         .then((response) => {
           this.posts = response.data.result;
           this.loaded = true;
@@ -214,58 +247,50 @@ export default {
       this.selectedCompany = "";
       this.selectedActivity = "";
       this.yearFounded = "";
-      this.sortBy = "";
+      this.sortBy = "",
+      this.orderType = "",
+      this.orderValue = "",
+      this.search = ""
       this.posts = [];
-      this.loadBlog();
-    },
-    loadBlogWithFilter(filter, value) {
-      this.posts = [];
-      AxiosHelper.get(
-        `blogs/public/filter?filterBy=${filter}&filterValue=${value}`
-      )
-        .then((response) => {
-          this.posts = response.data.result;
-          this.loaded = true;
-        })
-        .catch(() => {
-          this.loading = false;
-          this.loaded = true;
-        });
-    },
-    changeSort(e) {
-      this.selectedCompany = "";
-      this.selectedActivity = "";
-      this.yearFounded = "";
-      this.posts = [];
-      const sortBy = e.target.value.split(",")[0];
-      const sortValue = e.target.value.split(",")[1];
-      AxiosHelper.get(
-        `blogs/public/sort?sortBy=${sortBy}&sortValue=${sortValue}`
-      )
-        .then((response) => {
-          this.posts = response.data.result;
-          this.loaded = true;
-        })
-        .catch(() => {
-          this.loading = false;
-          this.loaded = true;
-          this.posts = [];
-        });
-    },
-    search(query) {
+      this.loadBlogs(
+        "",
+        "",
+        "",
+        this.orderType,
+        this.orderValue || "",
+        this.search || ""
+      );
       this.loaded = false;
       this.loading = true;
-      AxiosHelper.get(`blogs/search?searchValue=${query}`)
-        .then((response) => {
-          this.posts = response.data.result;
-          this.loaded = true;
-          this.loading = true;
-        })
-        .catch(() => {
-          this.loading = false;
-          this.loaded = true;
-          this.posts = [];
-        });
+    },
+    changeSort(e) {
+      this.orderType = e.target.value.split(",")[0];
+      this.orderValue = e.target.value.split(",")[1];
+      this.loading = true;
+      this.loaded = false;
+      this.posts = [];
+      this.loadBlogs(
+        this.selectedCompany || "",
+        this.selectedActivity || "",
+        this.yearFounded || "",
+        this.orderType,
+        this.orderValue,
+        this.search || ""
+      );
+    },
+    async searchNow() {
+      await this.$router.push({ query: { search: this.search } });
+      this.loading = true;
+      this.loaded = false;
+      this.posts = [];
+      this.loadBlogs(
+        this.selectedCompany || "",
+        this.selectedActivity || "",
+        this.yearFounded || "",
+        this.orderType,
+        this.orderValue,
+        this.search || ""
+      );
     },
     convertToObject(object) {
       return JSON.parse(object);
