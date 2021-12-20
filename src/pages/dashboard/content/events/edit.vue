@@ -100,6 +100,25 @@
                     placeholder="Type category..."
                   />
                 </div>
+                <h3 class="h6">Event time</h3>
+                <div class="my-3">
+                  <date-picker
+                    v-model="post.eventDate"
+                    :type="'date'"
+                    :placeholder="'Choose date'"
+                    :format="'YYYY-MM-DD'"
+                    valueType="format"
+                  ></date-picker>
+                </div>
+                <div class="my-3">
+                  <date-picker
+                    v-model="post.eventTime"
+                    :type="'time'"
+                    :placeholder="'Choose time'"
+                    :format="'hh:mm a'"
+                    valueType="format"
+                  ></date-picker>
+                </div>
                 <h3 class="h6 my-3">Event flyer</h3>
                 <button
                   class="btn btn-block select-image"
@@ -197,6 +216,8 @@ import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
 import { VueEditor } from "vue2-editor";
+import DatePicker from "vue2-datepicker";
+import "vue2-datepicker/index.css";
 let marked = require("marked");
 import VModal from "vue-js-modal";
 Vue.use(VModal);
@@ -207,6 +228,7 @@ export default {
     MenuContent,
     VueCropper,
     VueEditor,
+    DatePicker
   },
   data() {
     return {
