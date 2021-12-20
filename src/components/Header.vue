@@ -140,8 +140,11 @@
             <router-link :to="'/resources'">Resources</router-link>
           </li>
           <li class="list-group-item">
-            <router-link :to="'/find-talents'">Find Talents</router-link>
+            <router-link :to="'/jobs'">Jobs</router-link>
           </li>
+        <!-- <li class="list-group-item">
+            <router-link :to="'/find-talents'">Find Talents</router-link>
+          </li> -->
         </ul>
       </div>
     </div>
