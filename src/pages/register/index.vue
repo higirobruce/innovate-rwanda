@@ -49,7 +49,7 @@
                   <button>Join</button>
                 </div>
               </div>
-              <div
+              <!--<div
                 :class="`${
                   currentType === 'individual'
                     ? 'type-option active'
@@ -66,7 +66,7 @@
                   </div>
                   <button>Join</button>
                 </div>
-              </div>
+              </div> -->
             </div>
             <div
               class="wrap-register"
@@ -398,12 +398,12 @@
             >
               <Loading />
             </div>
-            <div
+           <!-- <div
               class="wrap-register"
               v-if="typeChosen && currentType === 'individual'"
             >
               <RegisterIndividual />
-            </div>
+            </div> -->
           </div>
           <div class="loading-register" v-else>
             <Loading />
@@ -645,7 +645,7 @@ h2 {
   max-width: 1200px;
   margin: 10px auto 30px auto;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);//grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }

@@ -175,6 +175,7 @@
           <h2 class="my-0 py-0 font-weight-light h3">No jobs found</h2>
         </div>
       </div>
+      <Loading  v-if="loading && !loaded" />
     </component>
   </div>
 </template>
@@ -183,12 +184,14 @@
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
 import PageHeader from "@/components/PageHeader";
+import Loading from "@/components/Loading";
 import moment from "moment";
 Vue.use(moment);
 export default {
   name: "companies",
   components: {
     PageHeader,
+    Loading
   },
   data() {
     return {
@@ -225,6 +228,8 @@ export default {
     } else {
       this.loadJob();
     }
+    this.loaded = false;
+    this.loading = true;
     // loading business activities
     AxiosHelper.get("business-activities")
       .then((response) => {
