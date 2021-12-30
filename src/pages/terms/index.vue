@@ -746,7 +746,7 @@
 </template>
 <script>
 export default {
-  name: "disclaimer",
+  name: "terms-and-conditions",
   computed: {
     layout() {
       return this.$route.meta.layout;

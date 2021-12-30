@@ -374,7 +374,7 @@ Vue.use(Vuelidate);
 import { required, minLength, maxLength } from "vuelidate/lib/validators";
 
 export default {
-  name: "dashboard",
+  name: "dashboard-settins",
   components: { MenuSettings, DeleteModal, Loading, VueCropper },
   data() {
     return {

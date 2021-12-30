@@ -183,6 +183,7 @@ import VModal from "vue-js-modal";
 import { mixin as clickaway } from "vue-clickaway";
 Vue.use(VModal);
 export default {
+    name: "HeaderComponent",
   mixins: [clickaway],
   data() {
     return {

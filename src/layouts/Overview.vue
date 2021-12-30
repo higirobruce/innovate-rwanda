@@ -17,6 +17,7 @@
 import DashboardSidebar from "./../components/DashboardSidebar";
 import DashboardHeader from "./../components/DashboardHeader";
 export default {
+  name: "OverviewLayout",
   components: {
     DashboardSidebar,
     DashboardHeader,

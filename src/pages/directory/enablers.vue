@@ -124,7 +124,7 @@ import PageHeader from "@/components/PageHeader";
 import ListCompanies from "@/components/ListCompanies";
 import { Districts } from "rwanda";
 export default {
-  name: "companies",
+  name: "enablers-directory",
   components: {
     PageHeader,
     ListCompanies,

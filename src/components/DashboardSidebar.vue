@@ -102,7 +102,7 @@
 </template>
 <script>
 export default {
-  name: "sidebar",
+  name: "side-bar",
 };
 </script>
 <style scoped>

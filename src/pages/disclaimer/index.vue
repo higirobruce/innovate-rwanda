@@ -35,7 +35,7 @@
 </template>
 <script>
 export default {
-  name: "disclaimer",
+  name: "disclaimer-terms",
   computed: {
     layout() {
       return this.$route.meta.layout;

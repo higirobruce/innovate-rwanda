@@ -199,7 +199,7 @@ import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
 import moment from "moment";
 export default {
-  name: "directory",
+  name: "directory-directory",
   components: {
     Loading,
     CompanyInfo,

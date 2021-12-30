@@ -119,7 +119,6 @@ export default {
 .wrap-companies {
   padding: 40px 0;
   box-shadow: 0px 17px 36px #1b295814;
-  /* border-radius: 3px; */
   border-radius: 40px;
   margin: 0 auto;
   max-width: 1200px;

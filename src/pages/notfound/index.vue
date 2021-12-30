@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "notfound",
+  name: "not-found",
   computed: {
     layout() {
       return this.$route.meta.layout;

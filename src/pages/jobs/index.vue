@@ -105,7 +105,7 @@
         </div>
       </div>
       <div class="container">
-        <div class="wrap-companies" v-if="!_.isEmpty(posts)">
+        <div class="wrap-jobs" v-if="!_.isEmpty(posts)">
           <div
             class="row one-company"
             v-for="(post, index) in posts"
@@ -188,7 +188,7 @@ import Loading from "@/components/Loading";
 import moment from "moment";
 Vue.use(moment);
 export default {
-  name: "companies",
+  name: "job-page",
   components: {
     PageHeader,
     Loading
@@ -338,10 +338,10 @@ export default {
 };
 </script>
 <style scoped>
-.wrap-companies {
+.wrap-jobs {
   padding: 40px;
   box-shadow: 0px 17px 36px #1b295814;
-  border-radius: 3px;
+  border-radius: 40px;
   margin: 0 auto;
   max-width: 1200px;
   background: #ffffff;

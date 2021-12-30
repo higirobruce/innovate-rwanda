@@ -134,7 +134,7 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import ReadMessage from "@/components/ReadMessage";
 import { EventBus } from "@/helpers/event-bus.js";
 export default {
-  name: "messages",
+  name: "message-center",
   components: {
     ReadMessage,
   },

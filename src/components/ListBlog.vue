@@ -6,18 +6,20 @@
         v-for="(post, index) in response"
         :key="index"
       >
-        <div class="wrap-one-post">
+        <div class="wrap-one-post rounded-big">
           <router-link :to="`blog/${post.id}`">
             <div class="one-post-image">
               <img
                 v-if="post.image"
                 :src="`${IMAGE_URL}c_fill,g_center,w_500,h_250/${post.image}`"
                 :alt="post.title"
+                class="rounded-big-img"
               />
               <img
                 v-else
                 src="@/assets/images/post_placeholder.svg"
                 :alt="post.title"
+                class="rounded-big-img"
               />
             </div>
           </router-link>
@@ -30,7 +32,7 @@
                 class="text-blue-dark font-weight-bold"
                 :to="`blog/${post.id}`"
               >
-                {{ post.title | truncate(42) }}
+                {{ post.title }}
               </router-link>
             </h2>
             <div class="post-content d-none d-sm-block mb-2">
@@ -169,5 +171,13 @@ export default {
   border: 2px solid #06adef;
   background: #06adef;
   color: #ffffff;
+}
+.post-info h2 {
+  overflow: hidden;
+  text-overflow: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: pre-line;
 }
 </style>

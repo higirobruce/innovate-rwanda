@@ -164,7 +164,7 @@ import InfoBlog from "@/components/InfoBlog";
 import DeleteModal from "@/components/DeleteModal";
 import { EventBus } from "@/helpers/event-bus.js";
 export default {
-  name: "blog",
+  name: "blog-admin-content",
   components: {
     MenuContent,
     InfoBlog,

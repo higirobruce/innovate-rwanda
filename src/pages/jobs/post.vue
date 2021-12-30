@@ -82,7 +82,7 @@
           </div>
         </div>
         <div class="more-posts mt-5">
-          <router-link :to="'/find-talent'">Find jobs</router-link>
+          <router-link :to="'/jobs'">Find jobs</router-link>
         </div>
       </div>
       <div

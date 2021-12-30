@@ -181,7 +181,7 @@ Vue.use(Vuelidate);
 import { required, minLength, maxLength } from "vuelidate/lib/validators";
 
 export default {
-  name: "dashboard",
+  name: "dashboard-avtivities",
   components: { MenuSettings, DeleteModal, Loading },
   data() {
     return {

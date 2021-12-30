@@ -157,7 +157,7 @@ import InfoEvent from "@/components/InfoEvent";
 import DeleteModal from "@/components/DeleteModal";
 import { EventBus } from "@/helpers/event-bus.js";
 export default {
-  name: "content",
+  name: "content-events",
   components: {
     MenuContent,
     InfoEvent,

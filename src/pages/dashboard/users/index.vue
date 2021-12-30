@@ -251,6 +251,7 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import NewUser from "@/components/NewUser";
 import Loading from "@/components/Loading";
 export default {
+  name: "dashboard-users",
   components: { NewUser, Loading },
   data() {
     return {

@@ -143,7 +143,11 @@
         <div v-if="loaded && _.isEmpty(directory)" class="empty-post">
           <img src="@/assets/images/empty.png" />
           <h2 class="mt-0 py-0 font-weight-light h3">Directory is empty</h2>
-          <button  class="btn btn-success-outline mt-4" type="button" @click.prevent="resetFilter">
+          <button
+            class="btn btn-success-outline mt-4"
+            type="button"
+            @click.prevent="resetFilter"
+          >
             Refresh directory
           </button>
         </div>
@@ -160,7 +164,7 @@ import ListCompanies from "@/components/ListCompanies";
 import Loading from "@/components/Loading";
 import { Districts } from "rwanda";
 export default {
-  name: "companies",
+  name: "company-directory-page",
   components: {
     PageHeader,
     ListCompanies,
@@ -282,6 +286,11 @@ export default {
     },
     async searchNow() {
       await this.$router.push({ query: { search: this.search } });
+      if (this.$route.path !== `/directory?search=${this.search}`) {
+        console.log("something", this.$route);
+      } else {
+        console.log("something", this.$route);
+      }
       this.loading = true;
       this.loaded = false;
       this.directory = [];
@@ -296,7 +305,7 @@ export default {
       );
     },
     async resetFilter() {
-      // await this.$router.push({ query: { search: "" } });
+      await this.$router.push({ query: { search: "" } });
       this.loading = true;
       this.loaded = false;
       this.search = "";
@@ -334,6 +343,7 @@ export default {
       orderValue,
       search
     ) {
+       
       AxiosHelper.get(
         `directory/public?page=${page}&companyType=${companyType}&activity=${activity}&location=${location}&orderType=${orderType}&orderValue=${orderValue}&search=${search}`
       )
@@ -342,7 +352,9 @@ export default {
           this.meta = response.data.meta;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+          
+          console.log('404', error)
           this.loading = false;
           this.loaded = true;
           this.directory = [];

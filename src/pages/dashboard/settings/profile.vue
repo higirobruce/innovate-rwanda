@@ -267,7 +267,7 @@ import { required, minLength, maxLength } from "vuelidate/lib/validators";
 Vue.use(Vuelidate);
 Vue.use(VModal);
 export default {
-  name: "dashboard",
+  name: "dashboard-profile",
   components: { MenuSettings, VueCropper },
   data() {
     return {

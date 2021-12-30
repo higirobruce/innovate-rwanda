@@ -83,7 +83,7 @@
 <script>
 import companies from "./../../../data/company.js";
 export default {
-  name: "dashboard",
+  name: "dashboard-areas-of-interests",
   data() {
     return {
       directory: [],

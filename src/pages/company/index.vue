@@ -207,7 +207,7 @@
                         :center="convertLatLng(company.company.officeAddress)"
                         :zoom="17"
                         map-type-id="terrain"
-                        style="max-width: 500px; width:100%; height: 400px"
+                        style="max-width: 500px; width: 100%; height: 400px"
                       >
                         <GmapMarker
                           :position="
@@ -257,9 +257,7 @@
               </div>
             </div>
             <div class="co-loadmore">
-              <router-link :to="`/directory/${meta.slug}`"
-                >Load more</router-link
-              >
+              <router-link to="/directory">Load more</router-link>
             </div>
           </div>
         </div>
@@ -288,7 +286,7 @@ Vue.use(VueGoogleMaps, {
   },
 });
 export default {
-  name: "company",
+  name: "company-page",
   components: {
     SendMessage,
     Loading,

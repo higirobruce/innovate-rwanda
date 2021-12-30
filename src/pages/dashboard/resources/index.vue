@@ -109,7 +109,7 @@ import InfoJob from "@/components/InfoJob";
 import DeleteModal from "@/components/DeleteModal";
 import Loading from "@/components/Loading";
 export default {
-  name: "content",
+  name: "content-resources",
   components: {
     MenuContent,
     InfoJob,

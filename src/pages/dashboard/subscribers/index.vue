@@ -48,6 +48,7 @@
 import AxiosHelper from "@/helpers/AxiosHelper";
 import Loading from "@/components/Loading";
 export default {
+  name:"dashboard-subscribers",
   components: { Loading },
   data() {
     return {

@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  name: "redirect",
+  name: "redirect-url",
   data() {
     return {
       url: "",

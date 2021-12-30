@@ -398,7 +398,7 @@
             >
               <Loading />
             </div>
-           <!-- <div
+            <!-- <div
               class="wrap-register"
               v-if="typeChosen && currentType === 'individual'"
             >
@@ -468,7 +468,7 @@ const checkWebsite = (value) => {
 
 import PageHeader from "@/components/PageHeader";
 export default {
-  name: "register",
+  name: "register-page",
   components: {
     PageHeader,
     Loading,
@@ -515,15 +515,22 @@ export default {
     const dist = Districts();
     this.allDistricts = dist.sort();
     // loading company types
-    AxiosHelper.get("company-types").then((response) => {
-      this.coTypes = response.data.result;
-    });
+    AxiosHelper.get("company-types")
+      .then((response) => {
+        console.log("error", response.data);
+        this.coTypes = response.data.result;
+      })
+      .catch((error) => {
+        console.log("error", error.response);
+      });
     // loading business activities
     AxiosHelper.get("business-activities")
       .then((response) => {
         this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {});
+      .catch((error) => {
+        console.log("error", error.response);
+      });
   },
   methods: {
     changingWeb(domain) {
@@ -645,7 +652,10 @@ h2 {
   max-width: 1200px;
   margin: 10px auto 30px auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);//grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(
+    3,
+    1fr
+  ); //grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }

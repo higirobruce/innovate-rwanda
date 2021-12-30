@@ -81,7 +81,7 @@ Vue.use(Vuelidate);
 import { required, minLength, sameAs } from "vuelidate/lib/validators";
 import Loading from "@/components/Loading";
 export default {
-  name: "login",
+  name: "reset-password",
   components: {
     Loading,
   },

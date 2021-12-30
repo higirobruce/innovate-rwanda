@@ -363,7 +363,7 @@ const checkWebsite = (value) => {
 };
 
 export default {
-  name: "register",
+  name: "register-individual",
   components: {
     Loading,
   },

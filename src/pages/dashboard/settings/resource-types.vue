@@ -230,7 +230,7 @@ Vue.use(Vuelidate);
 import { required, minLength, maxLength } from "vuelidate/lib/validators";
 
 export default {
-  name: "dashboard",
+  name: "dashboard-resource-types",
   components: { MenuSettings, DeleteModal, Loading, VueCropper },
   data() {
     return {

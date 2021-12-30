@@ -39,11 +39,11 @@ import Loading from "@/components/Loading";
 import PageHeader from "@/components/PageHeader";
 import AxiosHelper from "@/helpers/AxiosHelper";
 export default {
+  name:"activate-account",
   components: {
     Loading,
     PageHeader,
   },
-  name: "Verify",
   data() {
     return {
       token: "",

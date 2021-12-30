@@ -139,7 +139,7 @@
 </template>
 <script>
 export default {
-  name: "disclaimer",
+  name: "cookies-terms",
   computed: {
     layout() {
       return this.$route.meta.layout;

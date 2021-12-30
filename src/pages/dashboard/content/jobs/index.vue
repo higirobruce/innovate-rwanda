@@ -150,7 +150,7 @@ import MenuContent from "@/components/MenuContent";
 import InfoJob from "@/components/InfoJob";
 import DeleteModal from "@/components/DeleteModal";
 export default {
-  name: "content",
+  name: "content-jobs",
   components: {
     MenuContent,
     InfoJob,

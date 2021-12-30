@@ -8,7 +8,15 @@
         </h1>
         <router-link
           :to="'/join'"
-          class="btn btn-home btn-lg font-weight-bold bg-blue text-white mt-3 mr-lg-5 mt-3"
+          class="
+            btn btn-home btn-lg
+            font-weight-bold
+            bg-blue
+            text-white
+            mt-3
+            mr-lg-5
+            mt-3
+          "
         >
           Join the community
         </router-link>
@@ -43,7 +51,7 @@
 </template>
 <script>
 export default {
-  name: "welcome",
+  name: "welcome-3",
   data() {
     return {
       query: "",
@@ -57,8 +65,11 @@ export default {
 };
 </script>
 <style scoped>
+.welcome-info h1 {
+  font-size: 65px;
+}
 @media (min-width: 1241px) {
-      .welcome-screen {
+  .welcome-screen {
     height: 800px;
     display: flex;
     align-items: center;

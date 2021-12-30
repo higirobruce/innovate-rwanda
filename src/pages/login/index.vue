@@ -87,7 +87,7 @@ dotenv.config();
 import { required, email, minLength } from "vuelidate/lib/validators";
 import Loading from "@/components/Loading";
 export default {
-  name: "login",
+  name: "login-page",
   components: {
     Loading,
   },

@@ -312,7 +312,7 @@ import EditCompanyInfo from "@/components/EditCompanyInfo";
 import ListAdminCompanies from "@/components/ListAdminCompanies.vue";
 import { EventBus } from "@/helpers/event-bus.js";
 export default {
-  name: "directory",
+  name: "directory-pending-companies",
   components: {
     Loading,
     CompanyInfo,

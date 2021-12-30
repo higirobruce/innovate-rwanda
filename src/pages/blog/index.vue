@@ -114,7 +114,7 @@
           <h2 class="my-0 py-0 font-weight-light h3">No blog posts found</h2>
         </div>
       </div>
-      <Loading v-if="loading && !loaded" />
+      <Loading size="big" v-if="loading && !loaded" />
     </component>
   </div>
 </template>
@@ -125,7 +125,7 @@ import AxiosHelper from "@/helpers/AxiosHelper";
 import ListBlog from "@/components/ListBlog";
 import Loading from "@/components/Loading";
 export default {
-  name: "blog",
+  name: "Blog-Component",
   components: {
     PageHeader,
     ListBlog,

@@ -1,16 +1,18 @@
 <template>
-  <div class="wrap-one-event">
+  <div class="wrap-one-event rounded-big">
     <router-link :to="`event/${event.id}`">
       <div class="one-event-image">
         <img
           v-if="event.flyer"
           :src="`${IMAGE_URL}c_fill,g_center,w_500,h_250/${event.flyer}`"
           :alt="event.title"
+          class="rounded-big-img"
         />
         <img
           v-else
           src="@/assets/images/post_placeholder.svg"
           :alt="event.title"
+          class="rounded-big-img"
         />
         <h2>
           {{ event.title | truncate(58) }}

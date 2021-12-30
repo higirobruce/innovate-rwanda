@@ -208,7 +208,7 @@
 </template>
 <script>
 export default {
-  name: "disclaimer",
+  name: "privacy-policy",
   computed: {
     layout() {
       return this.$route.meta.layout;

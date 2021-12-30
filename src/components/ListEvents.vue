@@ -6,18 +6,20 @@
         v-for="(post, index) in events"
         :key="index"
       >
-        <div class="wrap-one-event">
+        <div class="wrap-one-event border rounded-big">
           <router-link :to="`event/${post.id}`">
             <div class="one-event-image">
               <img
                 v-if="post.flyer"
                 :src="`${IMAGE_URL}c_fill,g_center,w_500,h_250/${post.flyer}`"
                 :alt="post.title"
+                class="rounded-big-img"
               />
               <img
                 v-else
                 src="@/assets/images/post_placeholder.svg"
                 :alt="post.title"
+                class="rounded-big-img"
               />
               <h2>
                 {{ post.title | truncate(58) }}

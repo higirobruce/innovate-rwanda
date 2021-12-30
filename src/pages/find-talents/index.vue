@@ -63,7 +63,7 @@ import ListTalents from "@/components/ListTalents";
 import Loading from "@/components/Loading";
 import { Districts } from "rwanda";
 export default {
-  name: "companies",
+  name: "find-talents",
   components: {
     PageHeader,
     ListTalents,

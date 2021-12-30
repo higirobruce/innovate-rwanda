@@ -919,7 +919,7 @@ Vue.use(VueGoogleMaps, {
   },
 });
 export default {
-  name: "company",
+  name: "company-details-admin",
   components: {
     EditSocial,
     EditCompanyType,

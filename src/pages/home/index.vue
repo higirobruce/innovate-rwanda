@@ -239,7 +239,7 @@ import Loading from "@/components/Loading";
 import Welcome from "@/components/Welcome3";
 import { VueAgile } from "vue-agile";
 export default {
-  name: "home",
+  name: "home-page",
   components: {
     Loading,
     agile: VueAgile,

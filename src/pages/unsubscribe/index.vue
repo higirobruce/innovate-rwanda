@@ -76,7 +76,7 @@ export default {
     Loading,
     PageHeader,
   },
-  name: "unsubscribe",
+  name: "unsubscribe-page",
   data() {
     return {
       email: "",

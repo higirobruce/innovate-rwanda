@@ -89,10 +89,10 @@ import VModal from "vue-js-modal";
 Vue.use(VModal);
 Vue.use(moment);
 export default {
-  name: "companies",
+  name: "resources-pages",
   components: {
     PageHeader,
-    Loading
+    Loading,
   },
   data() {
     return {
@@ -229,6 +229,17 @@ export default {
   }
   .one-resource h2 {
     font-size: 16px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .wrap-resources {
+    padding: 12px;
+  }
+  .one-resource {
+    width: 98%;
+  }
+  .one-resource h2 {
+    font-size: 13px;
   }
 }
 </style>
