@@ -26,7 +26,7 @@
           <div class="row my-5">
             <div class="col-sm-12 col-md-12 col-lg-4">
               <div class="media px-4 py-5 rounded">
-                <img class="mr-3" src="@/assets/images/join-company.png" />
+                <img class="mr-3" src="@/assets/images/join-company.png" style="width: 100px;" />
                 <div class="media-body">
                   Profile your company, startup or organization to local and
                   global ecosystem players
@@ -35,16 +35,16 @@
             </div>
             <div class="col-sm-12 col-md-12 col-lg-4">
               <div class="media px-4 py-5 rounded">
-                <img class="mr-3" src="@/assets/images/join-partner.png" />
+                <img class="mr-3" src="@/assets/images/join-partner.png" style="width: 100px;" />
                 <div class="media-body">
                   Discover partners, various avenues for support, resources and
-                  events
+                  events <br/><br/>
                 </div>
               </div>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-4">
               <div class="media px-4 py-5 rounded">
-                <img class="mr-3" src="@/assets/images/join-collaborate.svg" />
+                <img class="mr-3" src="@/assets/images/join-collaborate.png" style="width: 100px;" />
                 <div class="media-body">
                   Connect, collaborate and innovate with other ecosystem players
                   for growth.
@@ -101,6 +101,7 @@
                       v-if="post.flyer"
                       :src="`${IMAGE_URL}c_fill,g_center,w_500,h_250/${post.flyer}`"
                       :alt="post.title"
+                      class="rounded-big-img"
                     />
                     <img
                       v-else

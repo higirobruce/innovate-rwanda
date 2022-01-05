@@ -46,9 +46,6 @@
             <li class="list-inline-item">
               <router-link :to="'/jobs'">Jobs</router-link>
             </li>
-        <!-- <li class="list-inline-item">
-              <router-link :to="'/find-talents'">Find talents</router-link>
-            </li> -->
           </ul>
         </div>
         <div class="footer-divider my-2"></div>
@@ -56,15 +53,9 @@
           <div class="float-lg-left">
             <h4 class="h6">Follow us</h4>
             <div>
-              <!-- <router-link :to="'/'">
-                <i class="icon-facebook-official mr-2"
-              /></router-link> -->
               <a target="_blank" href="https://twitter.com/innovate_rwanda">
                 <i class="icon-twitter mr-2"
               /></a>
-              <!-- <router-link :to="'/'">
-                <i class="icon-instagram mr-2"
-              /></router-link> -->
             </div>
           </div>
           <div class="float-lg-right">
@@ -83,8 +74,6 @@
       <div class="container">
         <div class="trademark float-lg-left">
           &copy; Copyright {{ new Date().getFullYear() }}, Innovate Rwanda
-          <!-- Trademark Notice: Innovate Rwanda Is A Registered Trademark Of Kigali
-          Innovation City. -->
         </div>
         <div class="copyright-links float-sm-left float-lg-right">
           <router-link :to="'/terms'" class="mr-4">Terms</router-link>
@@ -92,6 +81,7 @@
             >Privacy</router-link
           >
           <router-link :to="'/disclaimer'" class="mr-4">Disclaimer</router-link>
+          <router-link to="/redirect/techclick.rw"> Powered by Techclick </router-link>
         </div>
       </div>
     </div>
