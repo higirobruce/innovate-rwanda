@@ -127,7 +127,7 @@
                     v-if="company.company.emailDisplay === true"
                   >
                     <h4>Contact email</h4>
-                    <h5>
+                    <h5 class="text-truncate">
                       {{ company.company.contactEmail }}
                     </h5>
                     <img src="@/assets/images/email.png" />

@@ -235,7 +235,9 @@ export default {
       companyNotFound: false,
     };
   },
+  
   created() {
+    this.$forceUpdate();
     EventBus.$on("reload-company-dir", () => {
       this.loadCompanies();
     });

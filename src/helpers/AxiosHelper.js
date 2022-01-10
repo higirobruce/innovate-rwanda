@@ -7,15 +7,31 @@ const headers = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Credentials': true,
   'Access-Control-Allow-Headers': '*',
+  'Cache-Control': 'no-cache',
+  Pragma: 'no-cache',
+  Expires: '0',
 };
+
+const instance = axios.create({
+  baseURL: VUE_APP_BACKEND_URL,
+  timeout: 30000,
+  headers: {
+    authorization: localStorage.token || null,
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Allow-Headers': '*',
+    'Cache-Control': 'no-cache',
+    Pragma: 'no-cache',
+    Expires: '0',
+  },
+});
 
 class AxiosHelper {
   static post(path, data) {
     return new Promise((resolve, reject) => {
-      return axios
-        .post(`${VUE_APP_BACKEND_URL}${path}`, data, {
-          headers,
-        })
+      return instance
+        .post(path, data)
         .then((response) => {
           resolve(response);
         })
@@ -26,10 +42,8 @@ class AxiosHelper {
   }
   static get(path) {
     return new Promise((resolve, reject) => {
-      return axios
-        .get(`${VUE_APP_BACKEND_URL}${path}`, {
-          headers,
-        })
+      return instance
+        .get(path)
         .then((response) => {
           resolve(response);
         })
@@ -41,8 +55,8 @@ class AxiosHelper {
 
   static put(path, data) {
     return new Promise((resolve, reject) => {
-      return axios
-        .put(`${VUE_APP_BACKEND_URL}${path}`, data, {
+      return instance
+        .put(path, data, {
           headers,
         })
         .then((response) => {
@@ -56,8 +70,8 @@ class AxiosHelper {
 
   static patch(path, data) {
     return new Promise((resolve, reject) => {
-      return axios
-        .patch(`${VUE_APP_BACKEND_URL}${path}`, data, {
+      return instance
+        .patch(path, data, {
           headers,
         })
         .then((response) => {
@@ -71,8 +85,8 @@ class AxiosHelper {
 
   static delete(path) {
     return new Promise((resolve, reject) => {
-      return axios
-        .delete(`${VUE_APP_BACKEND_URL}${path}`, {
+      return instance
+        .delete(path, {
           headers,
         })
         .then((response) => {

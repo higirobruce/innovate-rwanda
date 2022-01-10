@@ -950,6 +950,7 @@ export default {
       message: "",
       declining: false,
       declined: false,
+      errorCompany: ''
     };
   },
   beforeCreate() {

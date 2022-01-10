@@ -36,7 +36,7 @@ export default {
   height: 100px;
 }
 .loading.big {
-  height: 400px;
+  height: 500px;
 }
 .loading.big::before {
   border: 8px solid #ffffff;

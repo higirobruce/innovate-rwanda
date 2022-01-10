@@ -124,9 +124,10 @@ export default {
           );
           localStorage.setItem("isAuth", true);
           localStorage.setItem("token", response.data.token);
-          // console.log('what?', localStorage.getItem('token'))
-          // window.location.href = '/dashboard';
-          this.$router.push("/dashboard");
+          console.log('what?', localStorage.getItem('token'))
+          this.$forceUpdate();
+          window.location.href = '/dashboard';
+          // this.$router.push("/dashboard");
         })
         .catch(() => {
           this.errorMessage = "Something went wrong";

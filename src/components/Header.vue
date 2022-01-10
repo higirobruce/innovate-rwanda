@@ -112,15 +112,6 @@
       </button>
       <div class="sidebar-nav mt-5">
         <ul class="list-group list-group-flush">
-          <li
-            class="list-group-item"
-            v-if="profile && Object.keys(profile).length > 0"
-          >
-            <router-link :to="'/about'"
-              >Hi, {{ profile.lastName | truncate(10) }} <br />
-              Go to dashboard</router-link
-            >
-          </li>
           <li class="list-group-item">
             <router-link :to="'/about'">About</router-link>
           </li>
@@ -142,9 +133,39 @@
           <li class="list-group-item">
             <router-link :to="'/jobs'">Jobs</router-link>
           </li>
-        <!-- <li class="list-group-item">
+          <!-- <li class="list-group-item">
             <router-link :to="'/find-talents'">Find Talents</router-link>
           </li> -->
+          <li
+            class="list-group-item"
+            v-if="profile && Object.keys(profile).length > 0"
+          >
+            <router-link
+              :to="'/dashboard'"
+              class="btn btn-block font-weight-bold btn-primary"
+              style="color: white"
+            >
+              Go to dashboard
+            </router-link>
+          </li>
+          <li class="list-group-item" v-else>
+            <div>
+              <router-link
+                :to="'/login'"
+                class="btn btn-block font-weight-bold btn-primary-outline mr-2"
+                style="color: #06adef"
+              >
+                Login
+              </router-link>
+              <router-link
+                :to="'/join'"
+                class="btn btn-block font-weight-bold btn-primary"
+                style="color: white"
+              >
+                Join The Community
+              </router-link>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -183,7 +204,7 @@ import VModal from "vue-js-modal";
 import { mixin as clickaway } from "vue-clickaway";
 Vue.use(VModal);
 export default {
-    name: "HeaderComponent",
+  name: "HeaderComponent",
   mixins: [clickaway],
   data() {
     return {
@@ -497,13 +518,15 @@ export default {
   border-radius: 8px;
   background: #ffffff;
 }
-.wrap-userdropdown ul, .wrap-sidebar ul {
+.wrap-userdropdown ul,
+.wrap-sidebar ul {
   display: block;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.wrap-userdropdown ul li , .wrap-sidebar ul li{
+.wrap-userdropdown ul li,
+.wrap-sidebar ul li {
   padding: 10px 20px;
 }
 .wrap-userdropdown button {

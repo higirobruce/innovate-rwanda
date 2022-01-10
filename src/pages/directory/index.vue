@@ -37,7 +37,7 @@
               @change="changeType($event)"
               required
             >
-              <option value="" selected disabled>Campany category</option>
+              <option value="" selected disabled>Company category</option>
               <option
                 v-for="(type, index) in types"
                 v-bind:value="type.slug"
@@ -138,7 +138,7 @@
           </div>
         </div>
         <div v-if="!loaded && directory && _.isEmpty(directory)">
-          <Loading />
+          <Loading size="big" />
         </div>
         <div v-if="loaded && _.isEmpty(directory)" class="empty-post">
           <img src="@/assets/images/empty.png" />
