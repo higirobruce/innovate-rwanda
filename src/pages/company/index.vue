@@ -127,7 +127,7 @@
                     v-if="company.company.emailDisplay === true"
                   >
                     <h4>Contact email</h4>
-                    <h5 class="text-truncate">
+                    <h5>
                       {{ company.company.contactEmail }}
                     </h5>
                     <img src="@/assets/images/email.png" />
@@ -380,6 +380,7 @@ export default {
   padding-left: 45px;
   width: 50%;
   float: left;
+  word-wrap: break-word
 }
 @media screen and (max-width: 760px) {
   .company-small-info {
@@ -390,6 +391,7 @@ export default {
   position: relative;
   margin: 15px 0;
   padding-left: 45px;
+  border: 1px solid;
 }
 .company-small-info h4,
 .company-large-info h4 {
