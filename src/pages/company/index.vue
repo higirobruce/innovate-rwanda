@@ -391,7 +391,6 @@ export default {
   position: relative;
   margin: 15px 0;
   padding-left: 45px;
-  border: 1px solid;
 }
 .company-small-info h4,
 .company-large-info h4 {
