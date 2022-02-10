@@ -39,7 +39,7 @@
           <div class="mb-2 co-info">
             <i class="icon-linkedin" />
             <router-link
-              class="text-blue-dark"
+              class="text-blue-dark link-social"
               :to="`/redirect/${user.linkedin}`"
               target="_blank"
               v-if="user.linkedin"
@@ -50,7 +50,7 @@
             {{ " | " }}
              <i class="icon-world" />
             <router-link
-              class="text-blue-dark"
+              class="text-blue-dark link-social"
               :to="`/redirect/${user.portfolio}`"
               target="_blank"
               v-if="user.portfolio"
@@ -154,5 +154,9 @@ export default {
   font-size: 22px;
   font-weight: 900;
   color: #1b2958;
+}
+
+.link-social:hover {
+  text-decoration: underline;
 }
 </style>

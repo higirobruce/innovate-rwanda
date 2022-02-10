@@ -129,7 +129,7 @@ export default {
     margin: 0 0 40px 0;
     padding: 20px;
     box-shadow: 0px 17px 36px #1b295814;
-    border-radius: 3px;
+    border-radius: 40px;
     display: grid;
     grid-template-areas: "image-row content-row";
     grid-template-columns: 1fr 1fr;
@@ -157,7 +157,7 @@ export default {
     margin: 0 0 40px 0;
     padding: 20px;
     box-shadow: 0px 17px 36px #1b295814;
-    border-radius: 3px;
+    border-radius: 40px;
     display: grid;
     grid-template-areas:
       "image-row "
