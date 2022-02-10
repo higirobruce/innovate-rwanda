@@ -273,13 +273,13 @@ const router = new Router({
         layout: "default-layout",
       },
     },
-    //{
-    //  path: "/find-talents",
-    //  component: () => import("@/pages/find-talents/index.vue"),
-     // meta: {
-     //   layout: "default-layout",
-    //  },
-   // },
+    {
+     path: "/find-talents",
+     component: () => import("@/pages/find-talents/index.vue"),
+     meta: {
+       layout: "default-layout",
+     },
+   },
     {
        path: "/jobs",
        component: () => import("@/pages/jobs/index.vue"),

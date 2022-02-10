@@ -517,7 +517,7 @@ export default {
     // loading company types
     AxiosHelper.get("company-types")
       .then((response) => {
-        console.log("error", response.data);
+        console.log("response", response.data);
         this.coTypes = response.data.result;
       })
       .catch((error) => {
@@ -655,7 +655,7 @@ h2 {
   grid-template-columns: repeat(
     3,
     1fr
-  ); //grid-template-columns: repeat(4, 1fr);
+  ); 
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
@@ -759,5 +759,11 @@ input[type="checkbox"] {
 }
 .loading-register {
   padding: 120px 0;
+}
+
+@media(max-width: 768px) {
+  .choose-company-type {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 </style>

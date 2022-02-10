@@ -36,11 +36,11 @@
               <li class="list-inline-item">
                 <router-link active :to="'/jobs'">Jobs</router-link>
               </li>
-              <!-- <li class="list-inline-item">
+              <li class="list-inline-item">
                 <router-link active :to="'/find-talents'"
                   >Find Talents</router-link
                 >
-              </li> -->
+              </li>
             </ul>
           </div>
           <div class="wrap-hotlinks">
