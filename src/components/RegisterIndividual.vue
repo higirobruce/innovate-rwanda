@@ -422,7 +422,6 @@ export default {
       this.individualRegistering = true;
       this.individualRegistered = false;
       this.submitted = true;
-      if (!this.$v.$invalid) {
         this.registering = true;
         this.registered = false;
         this.errorHappened = false;
@@ -453,9 +452,7 @@ export default {
             this.individualRegistered = false;
             this.errorHappened = true;
           });
-      } else {
-        console.log("error here", this.$v);
-      }
+      
     },
   },
   validations: {

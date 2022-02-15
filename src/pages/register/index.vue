@@ -49,7 +49,7 @@
                   <button>Join</button>
                 </div>
               </div>
-              <!--<div
+              <div
                 :class="`${
                   currentType === 'individual'
                     ? 'type-option active'
@@ -66,7 +66,7 @@
                   </div>
                   <button>Join</button>
                 </div>
-              </div> -->
+              </div>
             </div>
             <div
               class="wrap-register"
@@ -398,12 +398,12 @@
             >
               <Loading />
             </div>
-            <!-- <div
+            <div
               class="wrap-register"
               v-if="typeChosen && currentType === 'individual'"
             >
               <RegisterIndividual />
-            </div> -->
+            </div>
           </div>
           <div class="loading-register" v-else>
             <Loading />
