@@ -81,6 +81,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import PageHeader from "@/components/PageHeader";
 import Loading from "@/components/Loading";
 import moment from "moment";
@@ -113,7 +114,11 @@ export default {
       .then((response) => {
         this.posts = response.data.result;
       })
-      .catch(() => {});
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+      });
     this.timeNow = moment().format("YYYY-MM-DD");
     const value = this.$route.query.search;
     if (!this._.isEmpty(value)) {
@@ -127,7 +132,10 @@ export default {
         this.companies = response.data.result;
         this.loaded = true;
       })
-      .catch(() => {
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
         this.loading = false;
         this.loaded = true;
         this.companies = [];
@@ -151,7 +159,10 @@ export default {
           this.loaded = true;
           this.loading = false;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.posts = [];

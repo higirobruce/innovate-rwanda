@@ -248,6 +248,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import NewUser from "@/components/NewUser";
 import Loading from "@/components/Loading";
 export default {
@@ -336,7 +337,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+            if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",
@@ -353,7 +357,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+            if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",
@@ -372,6 +379,9 @@ export default {
           this.loaded = true;
         })
         .catch((error) => {
+            if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.users = [];
           if (error.response.status === 404 || error.response.status === 400) {
             this.error = "No content yet!";
@@ -409,7 +419,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+            if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",

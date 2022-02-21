@@ -127,6 +127,7 @@
 
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import { mixin as clickaway } from "vue-clickaway";
 import { EventBus } from "@/helpers/event-bus.js";
 export default {
@@ -150,6 +151,10 @@ export default {
       this.profile.companyId &&
       AxiosHelper.get("notification/company").then((response) => {
         this.notifications = response.data.result;
+      }).catch((error)=>{
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
       });
     this.checkNoficationsNumber();
   },
@@ -173,6 +178,10 @@ export default {
       };
       AxiosHelper.put("notification/read", data).then(() => {
         this.checkNoficationsNumber();
+      }).catch((error)=>{
+        if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
       });
     },
     hideNotifications() {
@@ -183,7 +192,11 @@ export default {
         .then((res) => {
           this.number = res.data.result;
         })
-        .catch(() => {});
+        .catch((error) => {
+          if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+        });
     },
     logout() {
       localStorage.removeItem("profile");

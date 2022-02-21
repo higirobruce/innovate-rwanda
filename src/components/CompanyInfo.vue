@@ -135,7 +135,6 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
-
 import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {

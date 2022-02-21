@@ -183,6 +183,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import PageHeader from "@/components/PageHeader";
 import Loading from "@/components/Loading";
 import moment from "moment";
@@ -297,7 +298,10 @@ export default {
           this.posts = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
         });
@@ -316,7 +320,10 @@ export default {
           this.posts = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.posts = [];
@@ -328,7 +335,10 @@ export default {
           this.posts = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.posts = [];

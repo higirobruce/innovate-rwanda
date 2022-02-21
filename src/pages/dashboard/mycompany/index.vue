@@ -1120,6 +1120,7 @@ export default {
           ) {
             this.errorCompany =
               "Your token has been expired, kindly logout and login again";
+              window.location.href = '/login';
           } else {
             this.errorCompany = "Something went wrong, try again later";
           }

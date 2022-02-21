@@ -171,7 +171,7 @@
                       {{ company.company.shortDescription }}
                     </div>
                     <div class="info-separator my-3">&nbsp;</div>
-                    <h3>Main business actity</h3>
+                    <h3>Main business activity</h3>
                     <div>
                       {{ company.company.BusinessActivity.name }}
                     </div>
@@ -276,6 +276,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import * as VueGoogleMaps from "vue2-google-maps";
 import SendMessage from "@/components/SendMessage";
 import Loading from "@/components/Loading";
@@ -327,7 +328,10 @@ export default {
           this.loaded = true;
           this.loading = false;
         })
-        .catch(() => {
+        .catch((error) => {
+          if(isTokenExpired(error)) {
+            window.location.href = '/login';
+          }
           this.notfound = true;
           this.loaded = false;
           this.loading = false;

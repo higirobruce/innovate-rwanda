@@ -71,6 +71,7 @@
 import Loading from "@/components/Loading";
 import PageHeader from "@/components/PageHeader";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 export default {
   components: {
     Loading,
@@ -94,7 +95,10 @@ export default {
           this.unsubscribed = true;
           this.error = false;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.unsubscribed = false;
           this.error = true;
         });
