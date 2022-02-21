@@ -80,6 +80,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {
@@ -178,7 +179,10 @@ export default {
             this.$router.go();
           }, 2500);
         })
-        .catch(() => {
+        .catch((error) => {
+          if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.locationUpdating = false;
           this.locationUpdated = false;
           Vue.$toast.open({

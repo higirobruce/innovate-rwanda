@@ -61,6 +61,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import VModal from "vue-js-modal";
 Vue.use(VModal);
 
@@ -101,7 +102,10 @@ export default {
             this.$router.go();
           }, 2000);
         })
-        .catch(() => {
+        .catch((error) => {
+          if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message:
               "Sorry, something went wrong while updating your summary",

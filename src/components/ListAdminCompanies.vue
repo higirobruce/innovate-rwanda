@@ -216,6 +216,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import CompanyInfo from "@/components/CompanyInfo";
 import { EventBus } from "@/helpers/event-bus.js";
 export default {
@@ -261,7 +262,10 @@ export default {
           });
           EventBus.$emit("reload-company-dir");
         })
-        .catch(() => {
+        .catch((error) => {
+          if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",
@@ -282,7 +286,10 @@ export default {
           });
           EventBus.$emit("reload-company-dir");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",
@@ -302,6 +309,9 @@ export default {
           this.$modal.show("companyInfo");
         })
         .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           if (error.response.status === 404) {
             this.errorCompany = error.response.data.error;
           } else {
@@ -327,7 +337,10 @@ export default {
           }, 2000);
           this.$modal.hide("deleteCompany");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",

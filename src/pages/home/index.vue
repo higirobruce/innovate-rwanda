@@ -25,7 +25,7 @@
           </h5>
           <div class="row my-5">
             <div class="col-sm-12 col-md-12 col-lg-4">
-              <div class="media px-4 py-5 rounded">
+              <div class="media px-4 py-5 rounded-lg">
                 <img class="mr-3" src="@/assets/images/join-company.png" style="width: 100px;" />
                 <div class="media-body">
                   Profile your company, startup or organization to local and
@@ -34,7 +34,7 @@
               </div>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-4">
-              <div class="media px-4 py-5 rounded">
+              <div class="media px-4 py-5 rounded-lg">
                 <img class="mr-3" src="@/assets/images/join-partner.png" style="width: 100px;" />
                 <div class="media-body">
                   Discover partners, various avenues for support, resources and
@@ -43,7 +43,7 @@
               </div>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-4">
-              <div class="media px-4 py-5 rounded">
+              <div class="media px-4 py-5 rounded-lg">
                 <img class="mr-3" src="@/assets/images/join-collaborate.png" style="width: 100px;" />
                 <div class="media-body">
                   Connect, collaborate and innovate with other ecosystem players
@@ -59,7 +59,7 @@
           <h2 class="text-blue-dark font-weight-bold py-3 mb-4">Categories</h2>
           <agile v-if="categories && !_.isEmpty(categories)" :options="options">
             <div
-              class="slide"
+              class="slide category-item"
               v-for="(category, index) in categories"
               :key="index"
             >
@@ -559,5 +559,9 @@ export default {
 }
 .wrap-dots button:hover {
   opacity: 0.5;
+}
+
+.category-item {
+  border-radius: 40px;
 }
 </style>
