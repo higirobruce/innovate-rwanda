@@ -922,6 +922,11 @@
     "@babel/helper-validator-identifier" "^7.15.7"
     to-fast-properties "^2.0.0"
 
+"@exuus/rwanda-phone-utils@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@exuus/rwanda-phone-utils/-/rwanda-phone-utils-1.0.9.tgz#cf7130d241af187e99fe0090e41bc8210993fb18"
+  integrity sha512-XIywsQXODGocBNhFMt10eeDsMeZbKbbdseXJkxzSnUIMrMyjuUxI+x5EU+OOXvfS8bgKgbejrHmCysmjECzcRQ==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -8646,6 +8651,11 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+validator@^13.7.0:
+  version "13.7.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.7.0.tgz#4f9658ba13ba8f3d82ee881d3516489ea85c0857"
+  integrity sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==
 
 vary@~1.1.2:
   version "1.1.2"

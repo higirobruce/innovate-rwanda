@@ -21,10 +21,10 @@
                 class="my-1 alert alert-danger small py-1"
                 v-if="
                   $v.userIndividual.firstName.$dirty &&
-                  $v.userIndividual.firstName.$invalid
+                  $v.userIndividual.firstName.$invalid || !isFirstNameValid
                 "
               >
-                First name is not provided
+                First Name is required and should have at least 3 characters
               </div>
             </div>
             <div class="col-lg-6 col-sm-12">
@@ -42,10 +42,10 @@
                 class="my-1 alert alert-danger small py-1"
                 v-if="
                   $v.userIndividual.lastName.$dirty &&
-                  $v.userIndividual.lastName.$invalid
+                  $v.userIndividual.lastName.$invalid || !isLastNameValid
                 "
               >
-                Last name is not provided
+                Last Name is required and should have at least 3 characters
               </div>
             </div>
           </div>
@@ -65,10 +65,10 @@
                 class="my-1 alert alert-danger small py-1"
                 v-if="
                   $v.userIndividual.email.$dirty &&
-                  $v.userIndividual.email.$invalid
+                  $v.userIndividual.email.$invalid || !isEmailValid
                 "
               >
-                Email is not provided
+                Email is invalid
               </div>
             </div>
           </div>
@@ -88,10 +88,10 @@
                 class="my-1 alert alert-danger small py-1"
                 v-if="
                   $v.userIndividual.phone.$dirty &&
-                  $v.userIndividual.phone.$invalid
+                  $v.userIndividual.phone.$invalid || !isPhoneValid
                 "
               >
-                Phone number is not provided
+                Phone number is invalid
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@
                 class="my-1 alert alert-danger small py-1"
                 v-if="
                   $v.userIndividual.password.$dirty &&
-                  $v.userIndividual.password.$invalid
+                  $v.userIndividual.password.$invalid || !isPasswordValid
                 "
               >
                 Password is required and must be at least 8 characters
@@ -140,6 +140,7 @@
                 class="form-control form-control-lg"
                 name="accType"
                 v-model="userIndividual.accType"
+                @change="accTypeChange"
                 required
               >
                 <option value="" selected disabled>You are joing as....</option>
@@ -151,15 +152,12 @@
                  I am a mentor
                 </option>
               </select>
-              <!-- <div
+              <div
               class="my-1 alert alert-danger small py-1"
-              v-if="
-                $v.userIndividual.accountType.$dirty &&
-                $v.userIndividual.accountType.$invalid
-              "
+              v-if="!accountTypeValid"
             >
               Select one option
-            </div> -->
+            </div>
             </div>
           </div>
           <h4 class="text-center mt-3">Link to your linkedin</h4>
@@ -183,7 +181,7 @@
                 class="my-1 alert alert-danger small py-1"
                 v-if="
                   $v.userIndividual.linkedin.$dirty &&
-                  $v.userIndividual.linkedin.$invalid
+                  $v.userIndividual.linkedin.$invalid || !isLinkedInValid
                 "
               >
                 Provide a valid linkedin account link
@@ -209,7 +207,7 @@
                 class="my-1 alert alert-danger small py-1"
                 v-if="
                   $v.userIndividual.portfolio.$dirty &&
-                  $v.userIndividual.portfolio.$invalid
+                  $v.userIndividual.portfolio.$invalid || !isPortfolioValid
                 "
               >
                 Portolio is not provided
@@ -258,7 +256,7 @@
             </div>
             <div
               class="my-1 alert alert-danger small py-1"
-              v-if="submitted && !userIndividual.shortDescription"
+              v-if="submitted && !userIndividual.shortDescription || !isSummaryValid"
             >
               Your summary be 10 to 300 characters
             </div>
@@ -342,6 +340,8 @@
 
 <script>
 import Vue from "vue";
+import validator from 'validator';
+import PhoneUtils from '@exuus/rwanda-phone-utils';
 import AxiosHelper from "@/helpers/AxiosHelper";
 import { Districts } from "rwanda";
 import Vuelidate from "vuelidate";
@@ -397,6 +397,16 @@ export default {
       coTypes: [],
       individualRegistering: false,
       individualRegistered: false,
+       isPhoneValid: true,
+      isLinkedInValid: true,
+      isPortfolioValid: true,
+      isEmailValid: true,
+      isFirstNameValid: true,
+      isLastNameValid: true,
+      accountTypeValid: true,
+      isPasswordValid: true,
+      isSummaryValid: true,
+      isLocationValid: true,
     };
   },
   created() {
@@ -418,7 +428,61 @@ export default {
     changeLocation(e) {
       this.userIndividual.location = e.target.value;
     },
+    accTypeChange(e){
+      this.userIndividual.accType = e.target.value;
+    },
     registerIndividual() {
+       this.isFirstNameValid = true;
+      this.isLastNameValid = true;
+      this.isEmailValid = true;
+      this.isPhoneValid = true;
+      this.isLinkedInValid = true;
+      this.isPortfolioValid = true;
+      this.accountTypeValid = true;
+      this.isPasswordValid = true;
+      this.isLocationValid = true;
+      this.isSummaryValid = true;
+
+ if (!validator.isLength(this.userIndividual.firstName, { min: 3 })) {
+        this.isFirstNameValid = false;
+        return;
+      }
+       if (!validator.isLength(this.userIndividual.lastName, { min: 3 })) {
+        this.isLastNameValid = false;
+        return;
+      }
+      if (!validator.isEmail(this.userIndividual.email)) {
+        this.isEmailValid = false;
+        return;
+      }
+      const phoneValid = PhoneUtils(this.userIndividual.phone).isValid;
+      if (!phoneValid) {
+        this.isPhoneValid = false;
+        return;
+      }
+
+      if (!validator.isURL(this.userIndividual.linkedin)) {
+        this.isLinkedInValid = false;
+        return;
+      }
+      if (!validator.isURL(this.userIndividual.portfolio)) {
+        this.isPortfolioValid = false;
+        return;
+      }
+      if(!this.userIndividual.accType) {
+        this.accountTypeValid = false;
+        return;
+      }
+      if(!validator.isLength(this.userIndividual.password, {min: 8})) {
+        this.isPasswordValid = false;
+        return;
+      }
+
+      if(!validator.isLength(this.userIndividual.shortDescription, {min: 10, max: 300})) {
+        this.isSummaryValid = false;
+        return;
+      }
+
       this.individualRegistering = true;
       this.individualRegistered = false;
       this.submitted = true;
