@@ -66,6 +66,7 @@
 import Vue from "vue";
 import MenuSettings from "@/components/MenuSettings";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import VModal from "vue-js-modal";
 import Vuelidate from "vuelidate";
 
@@ -100,7 +101,10 @@ export default {
           this.user = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.user = {};
@@ -121,7 +125,10 @@ export default {
             this.$router.push("/");
           }, 2000);
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",
@@ -149,7 +156,10 @@ export default {
             this.$router.push("/login");
           }, 3000);
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",

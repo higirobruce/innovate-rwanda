@@ -143,6 +143,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import File from "@/helpers/File";
 import Loading from "@/components/Loading";
 
@@ -200,7 +201,10 @@ export default {
           this.typesLoading = false;
           this.typesLoaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.typesLoading = false;
           this.typesLoaded = false;
         });
@@ -237,7 +241,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.uploading = false;
           this.created = false;
           Vue.$toast.open({
@@ -259,7 +266,11 @@ export default {
           this.resource.file = response.data.file;
           this.submitPostNow();
         })
-        .catch(() => {});
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+        });
     },
     onFileSelect(e) {
       const file = e.target.files[0];

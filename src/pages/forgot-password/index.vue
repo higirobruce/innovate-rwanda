@@ -66,6 +66,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
@@ -100,7 +101,10 @@ export default {
           this.loading = false;
           this.requested = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.requested = false;
           this.loading = false;
           this.error = true;

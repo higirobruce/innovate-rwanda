@@ -46,6 +46,7 @@
 
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import Loading from "@/components/Loading";
 export default {
   name:"dashboard-subscribers",
@@ -74,6 +75,9 @@ export default {
           this.loaded = true;
         })
         .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.subscribers = [];
           if (error.response.status === 404 || error.response.status === 400) {
             this.noSubscribers = true;

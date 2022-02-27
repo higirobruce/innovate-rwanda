@@ -236,14 +236,21 @@ export default {
       .then((response) => {
         this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {});
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+      });
     // load all companies
     AxiosHelper.get("directory/public")
       .then((response) => {
         this.companies = response.data.result;
         this.loaded = true;
       })
-      .catch(() => {
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
         this.loading = false;
         this.loaded = true;
         this.companies = [];
@@ -256,7 +263,10 @@ export default {
           this.posts = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.posts = [];

@@ -38,6 +38,7 @@
 import Loading from "@/components/Loading";
 import PageHeader from "@/components/PageHeader";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 export default {
   name:"activate-account",
   components: {
@@ -62,7 +63,10 @@ export default {
         this.response = response.data.message;
         this.verified = true;
       })
-      .catch(() => {
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
         this.verified = false;
       });
   },

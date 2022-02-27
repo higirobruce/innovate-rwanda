@@ -121,6 +121,7 @@
 
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import PageHeader from "@/components/PageHeader";
 import ListCompanies from "@/components/ListCompanies";
 import { Districts } from "rwanda";
@@ -155,7 +156,11 @@ export default {
       .then((response) => {
         this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {});
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+      });
     // loading all districts
     this.allDistricts = Districts();
     // load companies
@@ -208,7 +213,10 @@ export default {
           this.directory = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.directory = [];
@@ -220,7 +228,10 @@ export default {
           this.directory = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.directory = [];
@@ -235,7 +246,10 @@ export default {
           this.directory = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
         });
@@ -249,7 +263,10 @@ export default {
           this.directory = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
         });
@@ -260,7 +277,10 @@ export default {
           this.directory = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.directory = [];

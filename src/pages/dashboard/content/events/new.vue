@@ -221,6 +221,7 @@
 import Vue from "vue";
 import axios from "axios";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
@@ -274,7 +275,11 @@ export default {
       .then((response) => {
         this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {});
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+      });
   },
   mounted() {
     this.loadEventTypes();
@@ -286,7 +291,12 @@ export default {
           this.types = response.data.result;
           this.loading = false;
         })
-        .catch(() => (this.loading = false));
+        .catch((error) =>{
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+          this.loading = false;
+        });
     },
     changeCategory(e) {
       if (e.target.value === "other") {
@@ -358,7 +368,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.uploading = false;
           this.created = false;
           Vue.$toast.open({
@@ -389,7 +402,10 @@ export default {
             this.event.flyer = `v${response.data.version}/${response.data.public_id}.${response.data.format}`;
             this.submitPostNow();
           })
-          .catch(() => {
+          .catch((error) => {
+             if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
             this.uploading = false;
             this.created = false;
           });

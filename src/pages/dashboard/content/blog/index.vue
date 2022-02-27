@@ -159,6 +159,7 @@
 
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import MenuContent from "@/components/MenuContent";
 import InfoBlog from "@/components/InfoBlog";
 import DeleteModal from "@/components/DeleteModal";
@@ -198,6 +199,9 @@ export default {
           this.loading = false;
         })
         .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           if (error.response.status === 404 || error.response.status === 400) {
             this.error = "No content yet!";
           } else if (error.response.status === 403) {

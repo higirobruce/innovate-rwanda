@@ -232,6 +232,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import Vuelidate from "vuelidate";
 import moment from "moment";
 Vue.use(Vuelidate);
@@ -393,6 +394,9 @@ export default {
           };
         })
         .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           if (error.response.status === 409) {
             Vue.$toast.open({
               message: "You have already subscribed",

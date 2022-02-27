@@ -361,6 +361,7 @@ import Vue from "vue";
 import axios from "axios";
 import MenuSettings from "@/components/MenuSettings";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import DeleteModal from "@/components/DeleteModal";
 import Loading from "@/components/Loading";
 import VueCropper from "vue-cropperjs";
@@ -424,7 +425,10 @@ export default {
             this.activity.image = img_url;
             this.submitEditType();
           })
-          .catch(() => {
+          .catch((error) => {
+             if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
             this.uploading = false;
           });
       }, this.mime_type);
@@ -443,7 +447,10 @@ export default {
           this.editing = false;
           this.$modal.hide("openUploadCategoryImage");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.editing = false;
           Vue.$toast.open({
             message:
@@ -466,7 +473,10 @@ export default {
           this.adding = false;
           this.$modal.hide("openAddActivity");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.adding = false;
           Vue.$toast.open({
             message:
@@ -481,7 +491,11 @@ export default {
           this.types = response.data.result;
           this.loading = false;
         })
-        .catch(() => (this.loading = false));
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+        });
     },
     updateTypeOrder(type, display_order) {
       type.display_order = display_order;
@@ -497,7 +511,10 @@ export default {
           this.editing = false;
           this.loading = false;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message:
               "Sorry, something went wrong while updating your the display order",

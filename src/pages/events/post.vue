@@ -72,6 +72,7 @@
 
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import PageHeaderSm from "@/components/PageHeaderSm";
 import Loading from "@/components/Loading";
 let marked = require("marked");
@@ -99,7 +100,10 @@ export default {
         this.loading = false;
         this.loaded = true;
       })
-      .catch(() => {
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
         this.loading = false;
         this.loaded = true;
       });

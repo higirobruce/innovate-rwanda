@@ -58,6 +58,7 @@
 
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import PageHeader from "@/components/PageHeader";
 import ListTalents from "@/components/ListTalents";
 import Loading from "@/components/Loading";
@@ -96,7 +97,11 @@ export default {
       .then((response) => {
         this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {});
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+      });
     // loading all districts
     this.allDistricts = Districts();
     // load companies
@@ -122,7 +127,10 @@ export default {
           console.log("meta:", this.meta);
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.users = [];

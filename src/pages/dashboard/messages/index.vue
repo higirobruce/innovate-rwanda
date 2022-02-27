@@ -131,6 +131,7 @@
 
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import ReadMessage from "@/components/ReadMessage";
 import { EventBus } from "@/helpers/event-bus.js";
 export default {
@@ -175,7 +176,10 @@ export default {
             EventBus.$emit("reload-notification-number");
           });
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.messagesLoaded = false;
         });
     },

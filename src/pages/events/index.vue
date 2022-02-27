@@ -185,6 +185,7 @@
 import Vue from "vue";
 import PageHeader from "@/components/PageHeader";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import ListEvents from "@/components/ListEvents";
 import Event from "@/components/Event";
 import Loading from "@/components/Loading";
@@ -315,7 +316,10 @@ export default {
           this.loading = false;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.posts = [];

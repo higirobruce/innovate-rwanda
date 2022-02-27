@@ -79,6 +79,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 import dotenv from "dotenv";
@@ -129,7 +130,10 @@ export default {
           window.location.href = '/dashboard';
           // this.$router.push("/dashboard");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.errorMessage = "Something went wrong";
           this.unauthorized = true;
           this.logging = false;

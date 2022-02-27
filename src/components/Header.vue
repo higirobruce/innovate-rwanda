@@ -133,9 +133,9 @@
           <li class="list-group-item">
             <router-link :to="'/jobs'">Jobs</router-link>
           </li>
-          <!-- <li class="list-group-item">
+          <li class="list-group-item">
             <router-link :to="'/find-talents'">Find Talents</router-link>
-          </li> -->
+          </li>
           <li
             class="list-group-item"
             v-if="profile && Object.keys(profile).length > 0"

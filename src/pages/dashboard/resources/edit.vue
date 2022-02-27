@@ -196,6 +196,7 @@
 import Vue from "vue";
 import File from "@/helpers/File";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
@@ -261,7 +262,10 @@ export default {
           this.post = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
         });
@@ -300,7 +304,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.uploading = false;
           this.created = false;
           Vue.$toast.open({
@@ -324,7 +331,11 @@ export default {
           this.post.file = response.data.file;
           this.submitPostNow();
         })
-        .catch(() => {});
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+        });
     },
     onFileSelect(e) {
       const file = e.target.files[0];
