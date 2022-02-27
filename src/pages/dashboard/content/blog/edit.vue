@@ -201,6 +201,7 @@
 import Vue from "vue";
 import axios from "axios";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
@@ -258,7 +259,11 @@ export default {
       .then((response) => {
         this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {});
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+      });
   },
   created() {
     this.slug = this.$route.params.slug;
@@ -275,7 +280,10 @@ export default {
             this.tags.push({ text: value });
           });
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
         });
@@ -319,7 +327,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. Try again later",
             type: "error",
@@ -372,7 +383,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.uploading = false;
           this.created = false;
           Vue.$toast.open({
@@ -407,7 +421,10 @@ export default {
             this.imageUpdated = true;
             this.submitPostNow();
           })
-          .catch(() => {
+          .catch((error) => {
+             if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
             this.uploading = false;
             this.created = false;
           });

@@ -257,6 +257,7 @@ import Vue from "vue";
 import axios from "axios";
 import MenuSettings from "@/components/MenuSettings";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import VueCropper from "vue-cropperjs";
 import VModal from "vue-js-modal";
 import Vuelidate from "vuelidate";
@@ -305,7 +306,10 @@ export default {
           this.loaded = true;
           this.loadIndividual(this.user);
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.user = {};
@@ -322,7 +326,10 @@ export default {
           console.log("indi", response.data.result);
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.individual = {};
@@ -362,6 +369,9 @@ export default {
                 }, 2500);
               })
               .catch((error) => {
+                 if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
                 console.log("error", error);
                 this.uploading = false;
                 Vue.$toast.open({
@@ -371,7 +381,10 @@ export default {
                 });
               });
           })
-          .catch(() => {
+          .catch((error) => {
+             if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
             this.uploading = false;
           });
       }, this.mime_type);
@@ -410,7 +423,10 @@ export default {
             this.$router.push("/");
           }, 2000);
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",
@@ -427,7 +443,10 @@ export default {
           localStorage.setItem("profile", JSON.stringify(this.user));
           this.loadUser();
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",

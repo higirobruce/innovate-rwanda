@@ -273,6 +273,7 @@ import Vue from "vue";
 import axios from "axios";
 import MenuSettings from "@/components/MenuSettings";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import DeleteModal from "@/components/DeleteModal";
 import Loading from "@/components/Loading";
 
@@ -342,7 +343,10 @@ export default {
             this.submitEditCategory();
             this.$modal.hide("openUploadCategoryImage");
           })
-          .catch(() => {
+          .catch((error) => {
+             if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
             this.uploading = false;
           });
       }, this.mime_type);
@@ -361,7 +365,10 @@ export default {
           this.editing = false;
           this.$modal.hide("openEditType");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.editing = false;
           Vue.$toast.open({
             message:
@@ -384,7 +391,10 @@ export default {
           this.adding = false;
           this.$modal.hide("openAddCategory");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.adding = false;
           Vue.$toast.open({
             message:
@@ -399,7 +409,12 @@ export default {
           this.types = response.data.result;
           this.loading = false;
         })
-        .catch(() => (this.loading = false));
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+         this.loading = false;
+        });
     },
     deleteRecord(id) {
       this.recordId = id;

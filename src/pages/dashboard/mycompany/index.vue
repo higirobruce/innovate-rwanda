@@ -899,6 +899,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import * as VueGoogleMaps from "vue2-google-maps";
 import EditSocial from "@/components/EditSocial";
 import EditCompanyType from "@/components/EditCompanyType";
@@ -958,7 +959,11 @@ export default {
       .then((response) => {
         this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {});
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+      });
   },
   mounted() {
     this.companyId = this.$route.params.companyId;
@@ -1023,7 +1028,10 @@ export default {
           });
           this.loadCompanyInfo();
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.updating = false;
           this.updated = false;
           Vue.$toast.open({
@@ -1051,7 +1059,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.resubmitting = false;
           this.resubmitted = false;
           Vue.$toast.open({
@@ -1082,7 +1093,10 @@ export default {
           this.$modal.hide("declineCompanyModal");
           this.loadCompanyInfo();
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.declining = false;
           this.declined = false;
           Vue.$toast.open({
@@ -1105,6 +1119,9 @@ export default {
             {};
         })
         .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = false;
           console.log("error$$", error.response.data.message);
@@ -1185,7 +1202,10 @@ export default {
           });
           this.$modal.hide("openEditCustomerBase");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong while updating company base",
             type: "error",
@@ -1219,6 +1239,9 @@ export default {
           });
         })
         .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           if (error.response.status === 409) {
             Vue.$toast.open({
               message: "Activity has been already added",
@@ -1243,7 +1266,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. Try again later",
             type: "error",

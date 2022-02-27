@@ -151,6 +151,7 @@
 
 <script>
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import Loading from "@/components/Loading";
 export default {
   name: "dashboard-overview",
@@ -195,7 +196,10 @@ export default {
           this.loading = false;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = false;
         });
@@ -206,7 +210,10 @@ export default {
           this.loading = false;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = false;
         });

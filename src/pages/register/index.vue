@@ -441,6 +441,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import { Districts } from "rwanda";
 import Vuelidate from "vuelidate";
 import Loading from "@/components/Loading";
@@ -521,6 +522,9 @@ export default {
         this.coTypes = response.data.result;
       })
       .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
         console.log("error", error.response);
       });
     // loading business activities
@@ -529,6 +533,9 @@ export default {
         this.listOfBusinessActivities = response.data.result;
       })
       .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
         console.log("error", error.response);
       });
   },
@@ -594,6 +601,9 @@ export default {
             });
           })
           .catch((error) => {
+             if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
             this.error = error.response.data;
             this.registering = false;
             this.errorHappened = true;

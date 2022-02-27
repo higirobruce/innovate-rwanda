@@ -1,5 +1,4 @@
 import axios from 'axios';
-import isTokenExpired from './isTokenExpired';
 const { VUE_APP_BACKEND_URL } = process.env;
 
 const headers = {
@@ -13,7 +12,7 @@ const headers = {
   Expires: '0',
 };
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: VUE_APP_BACKEND_URL,
   timeout: 30000,
   headers: {
@@ -28,23 +27,13 @@ const instance = axios.create({
   },
 });
 
-const errorHandler = (error) => {
-  if (isTokenExpired(error)) {
-    localStorage.clear();
-    window.location.href = '/login';
-  }
-}
-
-const responseHandler = response => response;
-
-instance.interceptors.response.use(responseHandler, errorHandler);
-
 class AxiosHelper {
   static post(path, data) {
     return new Promise((resolve, reject) => {
       return instance
         .post(path, data)
         .then((response) => {
+          console.log('POST RESPONSE', response);
           resolve(response);
         })
         .catch((error) => {

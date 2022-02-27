@@ -122,6 +122,7 @@
 <script>
 import PageHeader from "@/components/PageHeader";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import ListBlog from "@/components/ListBlog";
 import Loading from "@/components/Loading";
 export default {
@@ -177,7 +178,10 @@ export default {
         this.loaded = true;
         this.loading = false;
       })
-      .catch(() => {
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
         this.loading = false;
         this.loaded = true;
         this.companies = [];
@@ -237,7 +241,10 @@ export default {
           this.posts = response.data.result;
           this.loaded = true;
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.loading = false;
           this.loaded = true;
           this.posts = [];

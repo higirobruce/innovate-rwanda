@@ -305,6 +305,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import Loading from "@/components/Loading";
 import CompanyInfo from "@/components/CompanyInfo";
 import NotAllowed from "@/components/NotAllowed";
@@ -372,6 +373,9 @@ export default {
           this.loaded = true;
         })
         .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           if (error.response.status === 404 || error.response.status === 400) {
             this.error = "No companies found at this moment";
           } else if (error.response.status === 403) {
@@ -405,6 +409,9 @@ export default {
           this.$modal.show("EditcompanyInfo");
         })
         .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           if (error.response.status === 404) {
             this.errorCompany = error.response.data.error;
           } else {
@@ -430,6 +437,9 @@ export default {
           this.$modal.show("companyInfo");
         })
         .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           if (error.response.status === 404) {
             this.errorCompany = error.response.data.error;
           } else {
@@ -475,7 +485,10 @@ export default {
           });
           EventBus.$emit("reload-company-dir");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",
@@ -499,7 +512,10 @@ export default {
           });
           EventBus.$emit("reload-company-dir");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",
@@ -519,7 +535,10 @@ export default {
           }, 2000);
           this.$modal.hide("deleteCompany");
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           Vue.$toast.open({
             message: "Sorry, something went wrong. try again later!",
             type: "error",

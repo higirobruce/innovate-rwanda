@@ -342,7 +342,7 @@
 import Vue from "vue";
 import validator from 'validator';
 import PhoneUtils from '@exuus/rwanda-phone-utils';
-import AxiosHelper from "@/helpers/AxiosHelper";
+import AxiosHelper, { instance as http } from "@/helpers/AxiosHelper";
 import { Districts } from "rwanda";
 import Vuelidate from "vuelidate";
 import Loading from "@/components/Loading";
@@ -431,7 +431,7 @@ export default {
     accTypeChange(e){
       this.userIndividual.accType = e.target.value;
     },
-    registerIndividual() {
+    async registerIndividual() {
        this.isFirstNameValid = true;
       this.isLastNameValid = true;
       this.isEmailValid = true;
@@ -489,33 +489,44 @@ export default {
         this.registering = true;
         this.registered = false;
         this.errorHappened = false;
-        AxiosHelper.post("register", this.userIndividual)
-          .then(() => {
-            this.individualRegistering = false;
-            this.individualRegistered = true;
-            this.userIndividual = {
-              firstName: "",
-              lastName: "",
-              email: "",
-              phone: "",
-              password: "",
-              accountType: "",
-              linkedin: "",
-              portfolio: "",
-              location: "",
-              shortDescription: "",
-            };
-            Vue.$toast.open({
-              message: "Company has been registered successfully",
-              type: "success",
-            });
-          })
-          .catch((error) => {
-            this.error = error.response.data;
+
+        try {
+          const response = await http.post('register', this.userIndividual);
+          console.log('REG RES', response);
+        } catch(error) {
+          this.error = error.response.data;
             this.individualRegistering = false;
             this.individualRegistered = false;
             this.errorHappened = true;
-          });
+        }
+        // AxiosHelper.post("register", this.userIndividual)
+        //   .then((response) => {
+        //     console.log('WHO BE THIS', response);
+        //     this.individualRegistering = false;
+        //     this.individualRegistered = true;
+        //     this.userIndividual = {
+        //       firstName: "",
+        //       lastName: "",
+        //       email: "",
+        //       phone: "",
+        //       password: "",
+        //       accountType: "",
+        //       linkedin: "",
+        //       portfolio: "",
+        //       location: "",
+        //       shortDescription: "",
+        //     };
+        //     Vue.$toast.open({
+        //       message: "Company has been registered successfully",
+        //       type: "success",
+        //     });
+        //   })
+        //   .catch((error) => {
+        //     this.error = error.response.data;
+        //     this.individualRegistering = false;
+        //     this.individualRegistered = false;
+        //     this.errorHappened = true;
+        //   });
       
     },
   },

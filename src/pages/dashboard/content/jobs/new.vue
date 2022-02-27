@@ -209,6 +209,7 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
+import isTokenExpired from '@/helpers/isTokenExpired';
 import File from "@/helpers/File";
 import MenuContent from "@/components/MenuContent";
 import VueCropper from "vue-cropperjs";
@@ -262,7 +263,11 @@ export default {
       .then((response) => {
         this.listOfBusinessActivities = response.data.result;
       })
-      .catch(() => {});
+      .catch((error) => {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+      });
   },
 
   methods: {
@@ -331,7 +336,10 @@ export default {
             type: "success",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+           if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
           this.uploading = false;
           this.created = false;
           Vue.$toast.open({
