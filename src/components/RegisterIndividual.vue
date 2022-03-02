@@ -493,6 +493,25 @@ export default {
         try {
           const response = await http.post('register', this.userIndividual);
           console.log('REG RES', response);
+          this.individualRegistering = false;
+          this.individualRegistered = true;
+          Vue.$toast.open({
+            type: 'success',
+            message: 'Individual registered successfully'
+          })
+
+             this.userIndividual = {
+              firstName: "",
+              lastName: "",
+              email: "",
+              phone: "",
+              password: "",
+              accountType: "",
+              linkedin: "",
+              portfolio: "",
+              location: "",
+              shortDescription: "",
+            };
         } catch(error) {
           this.error = error.response.data;
             this.individualRegistering = false;

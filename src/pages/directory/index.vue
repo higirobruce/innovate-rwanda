@@ -83,7 +83,7 @@
             </select>
           </div>
           <span class="float-right">
-            <div class="filter-select" style="max-width: 220px">
+            <div class="filter-select">
               <select
                 name="district"
                 v-model="sortBy"
@@ -410,4 +410,14 @@ export default {
 };
 </script>
 <style scoped>
+
+.filter-select {
+  width: 25%;
+}
+
+@media(max-width: 768px) {
+  .filter-select {
+  width: 100%;
+}
+}
 </style>
