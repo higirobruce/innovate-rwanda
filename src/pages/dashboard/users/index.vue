@@ -65,8 +65,8 @@
                 </td>
                 <td>{{ user.createdAt | date("DD/MM/YYYY") }}</td>
                 <td class="d-flex align-content-center flex-wrap">
-                  <span class="status pending" v-if="user.status === 'new'">
-                    Account not verified
+                  <span class="status pending" v-if="user.status === 'pending'">
+                    Pending
                   </span>
                   <span class="status approved" v-if="user.status === 'active'">
                     Active
@@ -95,7 +95,7 @@
                         )
                       "
                       v-if="
-                        profile.id !== user.id && user.status === 'inactive'
+                        profile.id !== user.id && ['inactive', 'pending'].includes(user.status)
                       "
                     >
                       Activate
