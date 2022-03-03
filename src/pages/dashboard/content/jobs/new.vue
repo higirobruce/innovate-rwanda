@@ -328,13 +328,15 @@ export default {
     },
     submitPostNow() {
       AxiosHelper.post("jobs/post", this.job)
-        .then(() => {
+        .then((response) => {
+          console.log('NEW JOB RES', response);
           this.created = true;
           this.job = {};
           Vue.$toast.open({
             message: "Blog has been created successfully",
             type: "success",
           });
+          window.location.href ='/dashboard/content/jobs'
         })
         .catch((error) => {
            if(isTokenExpired(error)) {

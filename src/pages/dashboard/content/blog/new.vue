@@ -308,9 +308,7 @@ export default {
             message: "Blog has been created successfully",
             type: "success",
           });
-          setTimeout(() => {
-            // this.$router.go();
-          }, 4500);
+          window.location.href ='/dashboard/content/blog';
         })
         .catch((error) => {
            if(isTokenExpired(error)) {
