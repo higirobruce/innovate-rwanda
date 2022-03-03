@@ -367,6 +367,7 @@ export default {
             message: "Event has been created successfully",
             type: "success",
           });
+          window.location.href ='/dashboard/content/events';
         })
         .catch((error) => {
            if(isTokenExpired(error)) {
