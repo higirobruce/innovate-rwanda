@@ -34,6 +34,7 @@
                 <th scope="col">Role</th>
                 <th scope="col">Date</th>
                 <th scope="col">Status</th>
+                <th scope="col">Company Name</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -76,6 +77,12 @@
                   >
                     Inactive
                   </span>
+                </td>
+                <td>
+                  <div v-if="!!user.company">
+                    <span>{{user.company.coName}}</span>
+                  </div>
+                  <span v-else>---</span>
                 </td>
                 <td>
                   <div class="wrap-actions">
