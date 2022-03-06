@@ -308,7 +308,7 @@ export default {
             message: "Blog has been created successfully",
             type: "success",
           });
-          window.location.href ='/dashboard/content/blog';
+          window.location.href ='/dashboard/content';
         })
         .catch((error) => {
            if(isTokenExpired(error)) {
