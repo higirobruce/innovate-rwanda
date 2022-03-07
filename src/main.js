@@ -36,10 +36,15 @@ Vue.prototype._ = _;
 Vue.config.productionTip = false;
 
 import VueToast from 'vue-toast-notification';
+import VSelect from 'vue-select'
+
 import 'vue-toast-notification/dist/theme-sugar.css';
+import 'vue-select/dist/vue-select.css';
 Vue.use(VueToast, {
   position: 'bottom-right',
 });
+
+Vue.component('v-select', VSelect);
 new Vue({
   store,
   router,

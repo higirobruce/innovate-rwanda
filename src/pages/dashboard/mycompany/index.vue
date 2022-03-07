@@ -1046,7 +1046,7 @@ export default {
       this.resubmitted = false;
       const data = {
         id: this.company.company.id,
-        decision: "pending",
+        decision: "approved",
       };
       AxiosHelper.put("company/manage", data)
         .then(() => {
