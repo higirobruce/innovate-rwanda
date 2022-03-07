@@ -19,7 +19,7 @@
           />
         </div>
         <div class="head-post">
-          <h1 class="text-blue-dark font-weight-bold">
+          <h1 class="text-blue-dark font-weight-bold event-title">
             {{ post.title }}
           </h1>
           <div>
@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="divider bg-gray-1 my-3"></div>
-        <h1 class="h1 text-blue-dark font-weight-bold">About the event</h1>
+        <h1 class="h1 text-blue-dark font-weight-bold event-subtitle">About the event</h1>
         <div
           class="wrap-post-content mt-0 py-0"
           v-if="post.description"
@@ -158,5 +158,13 @@ export default {
   padding: 25px 0;
   text-align: center;
   color: #5e7c8d;
+}
+
+.event-title {
+  font-size: 40px !important;
+}
+
+.event-subtitle {
+  font-size: 1.8 rem !important; 
 }
 </style>

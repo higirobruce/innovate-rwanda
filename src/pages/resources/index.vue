@@ -67,10 +67,10 @@
           <div class="py-5 text-justify">
             {{ resource.description }}
           </div>
-          <router-link
-            :to="`/redirect/${FILE_URL}${resource.file}`"
+          <a
+            :href="`${FILE_URL}${resource.file}`"
             target="_blank"
-            >Download the document</router-link
+            >Download the document</a
           >
         </div>
       </modal>

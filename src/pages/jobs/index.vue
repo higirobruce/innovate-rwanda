@@ -156,14 +156,14 @@
                   </span>
                 </div>
                 <div class="mb-2 co-info" v-if="post.jobDetailsDocument">
-                  <router-link
+                  <a
                     class="text-blue-dark"
-                    :to="`/redirect/${FILE_URL}${post.jobDetailsDocument}`"
+                    :href="`${FILE_URL}${post.jobDetailsDocument}`"
                     target="_blank"
                   >
                     <i class="icon-file" />
                     <span class="ml-2">Attachment</span>
-                  </router-link>
+                  </a>
                 </div>
               </div>
             </div>
