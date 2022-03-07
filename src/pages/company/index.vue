@@ -18,13 +18,13 @@
                   <div class="company-small-info">
                     <h4>Website</h4>
                     <div class="text-truncate">
-                      <router-link
+                      <a
                         v-if="!_.isEmpty(company.company.coWebsite)"
-                        :to="`/redirect/${company.company.coWebsite}`"
+                        :href="`${company.company.coWebsite}`"
                         target="_blank"
                       >
                         {{ company.company.coWebsite }}
-                      </router-link>
+                      </a>
                     </div>
                     <img src="@/assets/images/globe.png" />
                   </div>
@@ -46,10 +46,10 @@
                   <div class="company-small-info">
                     <h4>Social media</h4>
                     <div class="social-links">
-                      <router-link
+                      <a
                         style="color: #1473e6"
                         target="_blank"
-                        :to="`/redirect/facebook.com/${
+                        :href="`facebook.com/${
                           convertToObject(company.company.socialMedia).facebook
                         }`"
                         v-if="
@@ -58,11 +58,11 @@
                         "
                       >
                         <i class="icon-facebook-official mr-2" />
-                      </router-link>
-                      <router-link
+                      </a>
+                      <a
                         style="color: #00aeef"
                         target="_blank"
-                        :to="`/redirect/twitter.com/${
+                        :href="`twitter.com/${
                           convertToObject(company.company.socialMedia).twitter
                         }`"
                         v-if="
@@ -71,10 +71,10 @@
                         "
                       >
                         <i class="icon-twitter mr-2" />
-                      </router-link>
-                      <router-link
+                      </a>
+                      <a
                         style="color: #ff1d77"
-                        :to="`/redirect/instagram.com/${
+                        :href="`instagram.com/${
                           convertToObject(company.company.socialMedia).instagram
                         }`"
                         v-if="
@@ -83,10 +83,10 @@
                         "
                       >
                         <i class="icon-instagram mr-2" />
-                      </router-link>
-                      <router-link
+                      </a>
+                      <a
                         style="color: #ff0000"
-                        :to="`/redirect/youtube.com/c/${
+                        :href="`youtube.com/c/${
                           convertToObject(company.company.socialMedia).youtube
                         }`"
                         v-if="
@@ -95,10 +95,10 @@
                         "
                       >
                         <i class="icon-youtube-play mr-2" />
-                      </router-link>
-                      <router-link
+                      </a>
+                      <a
                         style="color: #007bb5"
-                        :to="`/redirect/linkedin.com/company/${
+                        :href="`alinkedin.com/company/${
                           convertToObject(company.company.socialMedia).linkedin
                         }`"
                         v-if="
@@ -107,7 +107,7 @@
                         "
                       >
                         <i class="icon-linkedin-alt mr-2" />
-                      </router-link>
+                      </a>
                     </div>
                     <img src="@/assets/images/hashtag.png" />
                   </div>

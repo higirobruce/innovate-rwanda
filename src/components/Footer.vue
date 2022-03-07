@@ -81,7 +81,7 @@
             >Privacy</router-link
           >
           <router-link :to="'/disclaimer'" class="mr-4">Disclaimer</router-link>
-          <router-link to="/redirect/techclick.rw"> Powered by Techclick </router-link>
+          <a to="techclick.rw" target="_blank"> Powered by Techclick </a>
         </div>
       </div>
     </div>

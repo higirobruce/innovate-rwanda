@@ -54,9 +54,9 @@
         ></div>
 
         <div class="clear"></div>
-        <router-link
+        <a
           class="text-blue-dark"
-          :to="`/redirect/${FILE_URL}${post.jobDetailsDocument}`"
+          :href="`${FILE_URL}${post.jobDetailsDocument}`"
           target="_blank"
         >
           <div
@@ -69,7 +69,7 @@
               <p>Job attachment</p>
             </div>
           </div>
-        </router-link>
+        </a>
         <div class="my-4">
           <div
             class="co-badge"

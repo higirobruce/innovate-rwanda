@@ -242,13 +242,13 @@
                         </div>
                         <div class="col-sm-12 col-lg-6 info-box">
                           Website:&nbsp;&nbsp;
-                          <router-link
+                          <a
                             v-if="!_.isEmpty(company.company.coWebsite)"
-                            :to="`/redirect/${company.company.coWebsite}`"
+                            :href="`${company.company.coWebsite}`"
                             target="_blank"
                           >
                             {{ company.company.coWebsite }}
-                          </router-link>
+                          </a>
                         </div>
                         <div class="col-sm-12 col-lg-6 info-box">
                           Year Founded:&nbsp;&nbsp;
