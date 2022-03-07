@@ -8644,6 +8644,11 @@ uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
+v-select@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/v-select/-/v-select-0.0.1.tgz#b40cbdbfa1b0791743f8ad71c981f1e0c4d92fc0"
+  integrity sha512-HdqwyPkaSg2ZZhgGVrALLeIxGtQKEg3rIartnaxU+z7l2fIoVptl6885Fx2rVyXhI0jz+osv9iZfvVe6XtBoJw==
+
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/validate-npm-package-license/-/validate-npm-package-license-3.0.4.tgz#fc91f6b9c7ba15c857f4cb2c5defeec39d4f410a"
