@@ -26,9 +26,9 @@
           </span>
         </div>
         <div v-if="post.description" v-html="previewText"></div>
-        <a
+        <router-link
           class="text-blue-dark"
-          :href="`${FILE_URL}${post.jobDetailsDocument}`"
+          :to="`/redirect/${FILE_URL}${post.jobDetailsDocument}`"
           target="_blank"
         >
           <div
@@ -41,7 +41,7 @@
               <p>Job attachment</p>
             </div>
           </div>
-        </a>
+        </router-link>
         <div class="mb-2">
           <div
             class="co-badge"
