@@ -10,7 +10,7 @@
       <div class="container">
         <div class="wrap-about">
           <div class="row">
-            <div class="col-sm-12 col-md-3 col-lg-5">
+            <div class="col-sm-12 col-md-6 col-lg-5 col-xs-12">
               <div class="p-3">
                 <div class="image">
                   <img src="@/assets/images/about-rocket.png" />
@@ -20,7 +20,7 @@
                 </h2>
               </div>
             </div>
-            <div class="col-sm-12 col-md-9 col-lg-7">
+            <div class="col-sm-12 col-md-6 col-lg-7 col-xs-12">
               <div class="my-4 py-5">
                 Innovate Rwanda also has a refined list of innovation ecosystem
                 enablers, who in most cases are corporations, government
@@ -34,7 +34,7 @@
           </div>
           <div class="divider my-4"></div>
           <div class="row">
-            <div class="col-sm-12 col-md-3 col-lg-5">
+            <div class="col-sm-12 col-md-6 col-lg-5 col-xs-12">
               <div class="p-3">
                 <div class="image">
                   <img src="@/assets/images/about-idea.png" />
@@ -44,7 +44,7 @@
                 </h2>
               </div>
             </div>
-            <div class="col-sm-12 col-md-9 col-lg-7">
+            <div class="col-sm-12 col-md-6 col-lg-7 col-xs-12">
               <div class="my-4 py-5">
                 Innovate Rwanda also has a refined list of innovation ecosystem
                 enablers, who in most cases are corporations, government
@@ -58,7 +58,7 @@
           </div>
           <div class="divider my-4"></div>
           <div class="row">
-            <div class="col-sm-12 col-md-3 col-lg-5">
+            <div class="col-sm-12 col-md-6 col-lg-5 col-xs-12">
               <div class="p-3">
                 <div class="image">
                   <img src="@/assets/images/about-connect.png" />
@@ -68,7 +68,7 @@
                 </h2>
               </div>
             </div>
-            <div class="col-sm-12 col-md-9 col-lg-7">
+            <div class="col-sm-12 col-md-6 col-lg-7 col-xs-12">
               <div class="my-4 py-5">
                 The platform has an event, talent acquisition and blog section
                 for success stories, intercompany collaboration from the
