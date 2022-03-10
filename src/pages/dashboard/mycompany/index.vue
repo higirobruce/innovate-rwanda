@@ -242,13 +242,13 @@
                         </div>
                         <div class="col-sm-12 col-lg-6 info-box">
                           Website:&nbsp;&nbsp;
-                          <a
+                          <router-link
                             v-if="!_.isEmpty(company.company.coWebsite)"
-                            :href="`${company.company.coWebsite}`"
+                            :to="`/redirect/${company.company.coWebsite}`"
                             target="_blank"
                           >
                             {{ company.company.coWebsite }}
-                          </a>
+                          </router-link>
                         </div>
                         <div class="col-sm-12 col-lg-6 info-box">
                           Year Founded:&nbsp;&nbsp;
@@ -264,9 +264,9 @@
                           <div class="social-links">
                             Social media&nbsp;&nbsp;
 
-                            <a
+                            <router-link
                               style="color: #1473e6"
-                              :href="`https://facebook.com/${
+                              :to="`/redirect/https://facebook.com/${
                                 convertToObject(company.company.socialMedia)
                                   .facebook
                               }`"
@@ -275,12 +275,12 @@
                               "
                             >
                               <i class="icon-facebook-official mr-2" />
-                            </a>
+                            </router-link>
 
-                            <a
+                            <router-link
                               style="color: #00aeef"
                               target="_blank"
-                              :href="`https://twitter.com/${
+                              :to="`/redirect/https://twitter.com/${
                                 convertToObject(company.company.socialMedia)
                                   .twitter
                               }`"
@@ -289,11 +289,11 @@
                               "
                             >
                               <i class="icon-twitter mr-2" />
-                            </a>
-                            <a
+                            </router-link>
+                            <router-link
                               style="color: #ff1d77"
                               target="_blank"
-                              :href="`https://instagram.com/${
+                              :to="`/redirect/https://instagram.com/${
                                 convertToObject(company.company.socialMedia)
                                   .instagram
                               }`"
@@ -302,33 +302,33 @@
                               "
                             >
                               <i class="icon-instagram mr-2" />
-                            </a>
-                            <a
+                            </router-link>
+                            <router-link
                               style="color: #ff0000"
                               target="_blank"
                               v-if="
                                 !_.isEmpty(socialMedia) && socialMedia.youtube
                               "
-                              :href="`https://youtube.com/c/${
+                              :to="`/redirect/https://youtube.com/c/${
                                 convertToObject(company.company.socialMedia)
                                   .youtube
                               }`"
                             >
                               <i class="icon-youtube-play mr-2" />
-                            </a>
-                            <a
+                            </router-link>
+                            <router-link
                               style="color: #007bb5"
                               target="_blank"
                               v-if="
                                 !_.isEmpty(socialMedia) && socialMedia.linkedin
                               "
-                              :href="`https://linkedin.com/company/${
+                              :to="`/redirect/https://linkedin.com/company/${
                                 convertToObject(company.company.socialMedia)
                                   .linkedin
                               }`"
                             >
                               <i class="icon-linkedin-alt mr-2" />
-                            </a>
+                            </router-link>
                             <span
                               style="color: #dedede"
                               v-if="
@@ -912,6 +912,7 @@ import UploadCompanyLogo from "@/components/UploadCompanyLogo";
 import Loading from "@/components/Loading";
 import bases from "@/data/bases.js";
 import VModal from "vue-js-modal";
+import makeURI from '@/helpers/makeURI';
 Vue.use(VModal);
 Vue.use(VueGoogleMaps, {
   load: {
@@ -1281,6 +1282,7 @@ export default {
     layout() {
       return this.$route.meta.layout;
     },
+    makeURI,
   },
 };
 </script>

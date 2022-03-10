@@ -42,14 +42,14 @@
                 {{ post.description | truncate(120) }}
               </td>
               <td>
-                <a
+                <router-link
                   class="btn btn-outline-secondary"
-                  :href="`${FILE_URL}${post.file}`"
+                  :to="`/redirect/${FILE_URL}${post.file}`"
                   target="_blank"
                 >
                   <i class="icon-file" />
                   <span class="ml-2">Attachment</span>
-                </a>
+                </router-link>
               </td>
               <td>{{ post.createdAt | date("DD/MM/YYYY") }}</td>
               <td>

@@ -38,26 +38,26 @@
             </div> -->
           <div class="mb-2 co-info">
             <i class="icon-linkedin" />
-            <a
+            <router-link
               class="text-blue-dark link-social"
-              :href="`${user.linkedin}`"
+              :to="`/redirect/${user.linkedin}`"
               target="_blank"
               v-if="user.linkedin"
             >
               <!-- <router-link class="text-blue-dark" :to="`blog/${user.slug}`"> -->
               LinkedIn
-            </a>
+            </router-link>
             {{ " | " }}
              <i class="icon-world" />
-            <a
+            <router-link
               class="text-blue-dark link-social"
-              :href="`${user.portfolio}`"
+              :to="`/redirect/${user.portfolio}`"
               target="_blank"
               v-if="user.portfolio"
             >
               <!-- <router-link class="text-blue-dark" :to="`blog/${user.slug}`"> -->
               Portfolio
-            </a>
+            </router-link>
           </div>
           <div class="mb-2 co-info" v-if="user.shortDescription">
             <i class="icon-comment" />
