@@ -33,7 +33,7 @@
                   :alt="post.title"
                 />
               </div>
-              <h2 class="mb-3 h5 font-weight-light">
+              <h2 class="mb-5 h5 font-weight-light resource-desc">
                 {{ post.title | truncate(45) }}
               </h2>
               <button type="button">See disclaimer</button>
@@ -187,6 +187,7 @@ export default {
   width: 23%;
   cursor: pointer;
   float: left;
+  position: relative;
 }
 .one-resource:hover {
   background: #f7fbfd;
@@ -195,7 +196,11 @@ export default {
   color: #06adef;
 }
 .one-resource h2 {
+  position: relative;
+  width: 80%;
+  margin-bottom: 30px;
   height: 80px;
+  font-size: 16px;
 }
 .one-resource button {
   margin: 10px 0;
@@ -231,6 +236,7 @@ export default {
   display: block;
   width: 350px;
 }
+
 @media screen and (max-width: 760px) {
   .wrap-resources {
     padding: 20px;

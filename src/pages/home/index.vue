@@ -74,7 +74,7 @@
                   src="@/assets/images/innovate-lamp.png"
                   :alt="category.name"
                 />
-                <h3>
+                <h3 class="category-name">
                   {{ category.name }}
                 </h3>
               </div>
@@ -567,5 +567,15 @@ export default {
 
 .category-item {
   border-radius: 40px;
+}
+
+.category-name {
+  font-size: 16px;
+  position: relative;
+  /* width: 80%; */
+  /* margin: auto 10%; */
+  margin-right: 10% !important;
+  margin-left: 10% !important;
+  overflow: hidden;
 }
 </style>
