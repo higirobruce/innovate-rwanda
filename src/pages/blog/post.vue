@@ -8,7 +8,7 @@
       />
       <div
         class="container"
-        v-if="loaded && post && post.status === 'approved'"
+        v-if="loaded && post && post.status === 'approved' || (isLoggedIn && userProfile.role === 'super-admin')"
       >
         <div class="head-post">
           <h1 class="text-blue-dark font-weight-bold">
@@ -53,10 +53,10 @@
         </div>
       </div>
       <div
-        v-if="loaded && post && post.status !== 'approved'"
+        v-if="!cantViewPost"
         class="not-found"
       ></div>
-      <Loading v-if="loading && !loaded" />
+      <Loading v-if="loading" />
     </component>
   </div>
 </template>
@@ -82,8 +82,8 @@ export default {
   },
   created() {
     const slug = this.$route.params.slug;
-    this.loading = false;
-    this.loaded = true;
+    this.loading = true;
+    this.loaded = false;
     AxiosHelper.get(`blog/info/${slug}`)
       .then((response) => {
         this.post = response.data.result;
@@ -101,6 +101,27 @@ export default {
   computed: {
     layout() {
       return this.$route.meta.layout;
+    },
+    userProfile(){
+      const user = JSON.parse(localStorage.getItem('profile'));
+
+      console.log('USER', {user});
+
+      return user;
+    },
+    isLoggedIn(){
+      const loggedIn = JSON.parse(localStorage.getItem('isAuth'));
+
+      console.log({loggedIn});
+
+      return loggedIn;
+    },
+    cantViewPost(){
+
+      const eligibleToView = this.loaded && this.post && this.post.status === 'approved' || (this.isLoggedIn && this.userProfile && this.userProfile.role === 'super-admin')
+      return eligibleToView;
+
+    
     },
     previewText() {
       marked.setOptions({
