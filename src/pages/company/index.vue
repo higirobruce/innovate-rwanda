@@ -20,7 +20,7 @@
                     <div class="text-truncate">
                       <router-link
                         v-if="!_.isEmpty(company.company.coWebsite)"
-                        :to="`${company.company.coWebsite}`"
+                        :to="`/redirect/${company.company.coWebsite}`"
                         target="_blank"
                       >
                         {{ company.company.coWebsite }}
