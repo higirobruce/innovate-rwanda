@@ -171,6 +171,13 @@ export default {
     layout() {
       return this.$route.meta.layout;
     },
+    userProfile(){
+      const user = JSON.parse(localStorage.getItem('profile'));
+
+      console.log('USER', {user});
+
+      return user;
+    }
   },
   mounted() {
     this.loadCompanyInfo();

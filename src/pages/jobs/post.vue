@@ -8,7 +8,7 @@
       />
       <div
         class="container"
-        v-if="loaded && post && post.status === 'approved'"
+        v-if="loaded && post && post.status === 'approved' || (isLoggedIn && userProfile.role === 'super-admin')"
       >
         <div class="wrap-event-image">
           <img
@@ -86,7 +86,7 @@
         </div>
       </div>
       <div
-        v-if="loaded && post && post.status !== 'approved'"
+        v-if="!cantViewPost"
         class="not-found"
       ></div>
     </component>
@@ -142,6 +142,27 @@ export default {
         smartypants: false,
       });
       return marked(this.post.description);
+    },
+    userProfile(){
+      const user = JSON.parse(localStorage.getItem('profile'));
+
+      console.log('USER', {user});
+
+      return user;
+    },
+    isLoggedIn(){
+      const loggedIn = JSON.parse(localStorage.getItem('isAuth'));
+
+      console.log({loggedIn});
+
+      return loggedIn;
+    },
+    cantViewPost(){
+
+      const eligibleToView = this.loaded && this.post && this.post.status === 'approved' || (this.isLoggedIn && this.userProfile && this.userProfile.role === 'super-admin')
+      return eligibleToView;
+
+    
     },
   },
 };

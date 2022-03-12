@@ -87,7 +87,6 @@
                 <div class="wrap-actions">
                   <router-link
                     v-if="post.status !== 'deleted'"
-                    target="_blank"
                     :to="`/job/${post.id}`"
                   >
                     <img src="@/assets/images/view.png" alt="view" />
@@ -140,6 +139,7 @@
           <DeleteModal :url="`jobs/delete?jobId=${recordId}`" entity="job" />
         </modal>
       </div>
+      <Loading v-if='loading' />
     </component>
   </div>
 </template>
@@ -150,12 +150,14 @@ import isTokenExpired from '@/helpers/isTokenExpired';
 import MenuContent from "@/components/MenuContent";
 import InfoJob from "@/components/InfoJob";
 import DeleteModal from "@/components/DeleteModal";
+import Loading from '@/components/Loading';
 export default {
   name: "content-jobs",
   components: {
     MenuContent,
     InfoJob,
     DeleteModal,
+    Loading,
   },
   data() {
     return {
