@@ -79,7 +79,6 @@
 <script>
 import Vue from "vue";
 import AxiosHelper from "@/helpers/AxiosHelper";
-import isTokenExpired from '@/helpers/isTokenExpired';
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 import dotenv from "dotenv";
@@ -105,13 +104,12 @@ export default {
     };
   },
   mounted() {},
+  beforeMount(){
+    localStorage.clear();
+  },
   methods: {
     login(evt) {
       evt.preventDefault();
-      localStorage.removeItem("profile");
-      localStorage.removeItem("isAuth");
-      localStorage.removeItem("token");
-      localStorage.removeItem("company");
       this.logging = true;
       this.success = false;
       AxiosHelper.post("login", this.user)
@@ -130,10 +128,8 @@ export default {
           window.location.href = '/dashboard';
           // this.$router.push("/dashboard");
         })
-        .catch((error) => {
-           if(isTokenExpired(error)) {
-           window.location.href = '/login';
-         }
+        .catch(() => {
+          
           this.errorMessage = "Something went wrong";
           this.unauthorized = true;
           this.logging = false;
