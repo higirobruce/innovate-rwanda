@@ -57,6 +57,7 @@
       <div class="home-categories bg-blue-light-1 my-4 py-4">
         <div class="container text-center my-5">
           <h2 class="text-blue-dark font-weight-bold py-3 mb-4">Categories</h2>
+          <Loading v-if="categoryLoading" />
           <agile v-if="categories && !_.isEmpty(categories)" :options="options">
             <div
               class="slide category-item"
@@ -252,6 +253,7 @@ export default {
       events: [],
       comingEvents: [],
       categories: [],
+      categoryLoading: false,
       partners: {
         0: {
           image: "myict-b.png",
@@ -340,8 +342,13 @@ export default {
     };
   },
   created() {
+    this.categoryLoading = true;
     AxiosHelper.get("company-categories", this.subscribe).then((response) => {
       this.categories = response.data.result;
+      this.categoryLoading = false;
+    }).catch((error)=>{
+      this.categoryLoading = false;
+      console.log('ERR', error);
     });
     this.timeNow = moment().format("YYYY-MM-DD");
     AxiosHelper.get(`events/public`).then((response) => {
