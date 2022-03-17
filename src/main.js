@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import moment from 'moment';
 import _ from 'lodash';
 import App from './App.vue';
 import router from './router';
@@ -32,6 +33,7 @@ import './filters/date';
 
 // Register lodash
 Vue.prototype._ = _;
+Vue.prototype.moment = moment;
 
 Vue.config.productionTip = false;
 

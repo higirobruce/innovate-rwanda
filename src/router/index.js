@@ -365,6 +365,13 @@ const router = new Router({
       },
     },
     {
+      path: '/dashboard/logs',
+      component: () => import('@/pages/dashboard/logs/index.vue'),
+      meta: {
+        layout: 'dashboard-layout'
+      }
+    },
+    {
       path: "/about",
       component: () => import("@/pages/about/index.vue"),
       meta: {
