@@ -85,6 +85,12 @@
           <div>Content</div>
         </router-link>
       </li>
+      <li class="nav-item" v-if="profile && profile.role==='super-admin'">
+          <router-link to="/dashboard/logs">
+                 <img src="@/assets/images/logs-alt.jpg" />
+          <div>Logs</div>
+          </router-link>
+      </li>
       <!-- <li class="nav-item" v-if="profile && profile.role !== 'individual'">
         <router-link :to="'/dashboard/messages'">
           <img src="@/assets/images/icon-content.png" />
