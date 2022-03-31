@@ -65,8 +65,10 @@
           "
           @click="approveOrDecline('approved', post.id)"
           class="btn btn-success-outline mr-2"
+                    :disabled='isApproving'
+
         >
-          Approve &amp; Publish
+        {{isApproving ? 'Approving...' : 'Approve & Publish'}}
         </button>
         <button
           v-if="
@@ -76,8 +78,9 @@
           "
           @click="approveOrDecline('declined', post.id)"
           class="btn mr-2 btn-danger-outline"
+          :disabled="isDeclining"
         >
-          Decline
+          {{isDeclining ? 'Declining...' : 'Decline'}}
         </button>
         <button
           v-if="profile.role === 'normal' && post.status === 'pending'"
@@ -112,6 +115,8 @@ export default {
     return {
       post: {},
       loadingPost: false,
+       isApproving: false,
+      isDeclining: false,
     };
   },
   mounted() {
@@ -146,6 +151,9 @@ export default {
         decision,
         jobId,
       };
+
+                this.isApproving = decision === 'approved' ? true : this.isApproving;
+          this.isDeclining = decision === 'declined' ? true : this.isDeclining;
       AxiosHelper.put("jobs/approve-decline", data)
         .then(() => {
           Vue.$toast.open({
@@ -160,6 +168,8 @@ export default {
           }, 3000);
         })
         .catch((error) => {
+                    this.isApproving = decision === 'approved' ? false : this.isApproving;
+          this.isDeclining = decision === 'declined' ? false : this.isDeclining;
           if(isTokenExpired(error)) {
            window.location.href = '/login';
          }

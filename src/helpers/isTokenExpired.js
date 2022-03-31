@@ -1,6 +1,6 @@
 
 const isTokenExpired = (error) => {
-    return error.response.status === 401 && error.response.data.message === 'TokenExpiredError';
+    return (error && error.response && error.response.status === 401) && (error && error.response && error.response.data && error.response.data.message && error.response.data.message === 'TokenExpiredError');
 }
 
 export default isTokenExpired;

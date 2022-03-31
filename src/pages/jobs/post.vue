@@ -8,7 +8,7 @@
       />
       <div
         class="container"
-        v-if="loaded && post && post.status === 'approved' || (isLoggedIn && userProfile.role === 'super-admin')"
+        v-if="!loading && post && post.status === 'approved' || (isLoggedIn && userProfile.role === 'super-admin')"
       >
         <div class="wrap-event-image">
           <img
@@ -112,19 +112,7 @@ export default {
     };
   },
   created() {
-    const slug = this.$route.params.slug;
-    AxiosHelper.get(`jobs/info/${slug}`)
-      .then((response) => {
-        this.post = response.data.result;
-        this.loaded = true;
-      })
-      .catch((error) => {
-         if(isTokenExpired(error)) {
-           window.location.href = '/login';
-         }
-        this.loading = false;
-        this.loaded = true;
-      });
+    this.getJobDetails();
   },
   computed: {
     layout() {
@@ -145,26 +133,40 @@ export default {
     },
     userProfile(){
       const user = JSON.parse(localStorage.getItem('profile'));
-
-      console.log('USER', {user});
-
       return user;
     },
     isLoggedIn(){
       const loggedIn = JSON.parse(localStorage.getItem('isAuth'));
 
-      console.log({loggedIn});
-
       return loggedIn;
     },
     cantViewPost(){
 
-      const eligibleToView = this.loaded && this.post && this.post.status === 'approved' || (this.isLoggedIn && this.userProfile && this.userProfile.role === 'super-admin')
+      const eligibleToView = !this.loading && this.post && this.post.status === 'approved' || (this.isLoggedIn && this.userProfile && this.userProfile.role === 'super-admin' && !this.loading)
       return eligibleToView;
 
     
     },
   },
+  methods: {
+   async  getJobDetails() {
+      this.loading = true;
+          const slug = this.$route.params.slug;
+      try {
+        const response = await AxiosHelper.get(`/jobs/info/${slug}`);
+        this.post = response.data.result;
+        this.loaded = true;
+        this.loading = false;
+      } catch(error) {
+         if(isTokenExpired(error)) {
+           window.location.href = '/login';
+         }
+        this.loading = false;
+        this.loaded = true;
+      }
+
+    }
+  }
 };
 </script>
 
