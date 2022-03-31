@@ -59,8 +59,9 @@
           "
           @click="approveOrDecline('approved', post.id)"
           class="btn btn-success-outline mr-2"
+          :disabled='isApproving'
         >
-          Approve &amp; Publish
+        {{isApproving ? 'Approving...' : 'Approve & Publish'}}
         </button>
         <button
           v-if="
@@ -71,8 +72,9 @@
           "
           @click="approveOrDecline('declined', post.id)"
           class="btn mr-2 btn-danger-outline"
+          :disabled='isDeclining'
         >
-          Decline
+          {{isDeclining ? 'Declining...' : 'Decline'}}
         </button>
         <button
           v-if="profile.role === 'normal' && post.status === 'pending'"
@@ -108,6 +110,8 @@ export default {
     return {
       post: {},
       loadingPost: false,
+      isApproving: false,
+      isDeclining: false,
     };
   },
   mounted() {
@@ -144,13 +148,16 @@ export default {
           blogId,
           decision,
         };
+        this.isApproving = true;
       }
       if (decision === "declined") {
         data = {
           blogId,
           decision,
         };
+        this.isDeclining = true;
       }
+
       AxiosHelper.put("blog/approve-decline", data)
         .then(() => {
           Vue.$toast.open({
@@ -162,8 +169,12 @@ export default {
           });
           EventBus.$emit("reload-posts");
           this.$modal.hide("openInfoBlog");
+          this.isApproving = decision === 'approved' ? false : this.isApproving;
+          this.isDeclining = decision === 'declined' ? false : this.isDeclining;
         })
         .catch((error) => {
+          this.isApproving = decision === 'approved' ? false : this.isApproving;
+          this.isDeclining = decision === 'declined' ? false : this.isDeclining;
           if(isTokenExpired(error)) {
            window.location.href = '/login';
          }

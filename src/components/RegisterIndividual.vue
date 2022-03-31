@@ -491,7 +491,7 @@ export default {
         this.errorHappened = false;
 
         try {
-          const response = await http.post('register', this.userIndividual);
+          const response = await AxiosHelper.post('register', this.userIndividual);
           console.log('REG RES', response);
           this.individualRegistering = false;
           this.individualRegistered = true;
@@ -513,6 +513,7 @@ export default {
               shortDescription: "",
             };
         } catch(error) {
+          console.log('ERR', error);
           this.error = error.response.data;
             this.individualRegistering = false;
             this.individualRegistered = false;
