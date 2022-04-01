@@ -155,6 +155,7 @@ export default {
   },
   methods: {
     loadMessages() {
+      console.log('PROFILE', this.profile);
       this.companyId = `${this.profile.companyId}`;
       AxiosHelper.get(`message/company/${this.companyId}`)
         .then((response) => {
