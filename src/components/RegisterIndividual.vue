@@ -342,7 +342,7 @@
 import Vue from "vue";
 import validator from 'validator';
 import PhoneUtils from '@exuus/rwanda-phone-utils';
-import AxiosHelper, { instance as http } from "@/helpers/AxiosHelper";
+import AxiosHelper from "@/helpers/AxiosHelper";
 import { Districts } from "rwanda";
 import Vuelidate from "vuelidate";
 import Loading from "@/components/Loading";

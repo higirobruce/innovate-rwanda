@@ -87,16 +87,16 @@
       </li>
       <li class="nav-item" v-if="profile && profile.role==='super-admin'">
           <router-link to="/dashboard/logs">
-                 <img src="@/assets/images/logs-alt.jpg" />
+                 <img src="@/assets/images/activity-assessment.png" />
           <div>Logs</div>
           </router-link>
       </li>
-      <!-- <li class="nav-item" v-if="profile && profile.role !== 'individual'">
+      <li class="nav-item" v-if="profile && profile.role !== 'individual'">
         <router-link :to="'/dashboard/messages'">
           <img src="@/assets/images/icon-content.png" />
           <div>Messages</div>
         </router-link>
-      </li> -->
+      </li>
       <li class="nav-item float-bottom">
         <router-link :to="'/dashboard/settings'">
           <img src="@/assets/images/icon-settings.png" />
