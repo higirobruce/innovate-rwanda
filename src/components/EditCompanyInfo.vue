@@ -148,6 +148,10 @@
                   </option>
                 </select>
               </div>
+              <div class="form-group">
+                <h5 class="mt-3">Company Website</h5>
+                <input type="text" class="form-control custom-input" v-model="companyInfo.coWebsite" placeholder="Company Website">
+              </div>
             </div>
           </div>
         </div>
