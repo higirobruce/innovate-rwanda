@@ -161,8 +161,9 @@
                   name="editCompanyInfo"
                   :adaptive="true"
                   :scrollable="true"
-                  :height="640"
                   :width="920"
+                  :height="700"
+                  class="companyInfoModal"
                 >
                   <button
                     type="button"
@@ -1330,5 +1331,9 @@ export default {
   width: 100%;
   margin: 0 auto;
   float: left;
+}
+
+.companyInfoModal {
+  padding-bottom: 5px;
 }
 </style>
