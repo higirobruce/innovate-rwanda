@@ -119,7 +119,7 @@
               v-for="(post, index) in getUpcomingEvents()"
               :key="index"
             >
-              <div class="wrap-one-event rounded-big">
+              <div class="wrap-one-event rounded-sm">
                 <router-link :to="`event/${post.id}`">
                   <div class="one-event-image">
                     <img

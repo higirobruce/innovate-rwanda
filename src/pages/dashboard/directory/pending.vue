@@ -14,6 +14,11 @@
               Pending Approval
             </router-link>
           </li>
+          <li class="list-inline-item mr-5">
+            <router-link class="text-blue" :to="'/dashboard/directory/individuals'">
+              Individual Registrations
+            </router-link>
+          </li>
         </ul>
         <br />
       </div>
@@ -23,7 +28,7 @@
             <img src="@/assets/images/companies.png" alt="companies" />
           </div>
           <h3 class="text-center py-4 font-weight-light">
-            All pending approval companies found.
+            No pending approval companies found.
           </h3>
         </div>
       </div>
