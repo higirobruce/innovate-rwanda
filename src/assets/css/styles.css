@@ -1020,16 +1020,14 @@ input[type='number'] {
   font-size: 28px;
   color: #ffffff;
 }
-.one-event-image::before {
+/* .one-event-image::before {
   position: absolute;
   content: '';
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.4);
   width: 100%;
   height: 100%;
-  border-radius: 45px 45px 0 0 ;
-}
+} */
 .one-event-image img {
   width: 100%;
 }
@@ -1158,9 +1156,9 @@ input[type='number'] {
   font-size: 14px !important;
   box-shadow: none !important;
 }
-.rounded-big {
+/* .rounded-big {
   border-radius: 45px !important;
 }
 .rounded-big-img {
   border-radius: 45px 45px 0 0 !important;
-}
+} */

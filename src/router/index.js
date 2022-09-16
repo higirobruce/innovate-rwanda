@@ -126,6 +126,13 @@ const router = new Router({
       },
     },
     {
+      path: "/dashboard/directory/individuals",
+      component: () => import("@/pages/dashboard/directory/individuals.vue"),
+      meta: {
+        layout: "dashboard-layout",
+      },
+    },
+    {
       path: "/dashboard/directory/area-of-interests",
       component: () =>
         import("@/pages/dashboard/directory/areaOfInterests.vue"),

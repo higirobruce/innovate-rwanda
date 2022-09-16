@@ -14,6 +14,11 @@
               Pending Approval
             </router-link>
           </li>
+          <li class="list-inline-item mr-5">
+            <router-link class="text-blue" :to="'/dashboard/directory/individuals'">
+              Individual Registrations
+            </router-link>
+          </li>
         </ul>
         <br />
       </div>

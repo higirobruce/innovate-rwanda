@@ -6,7 +6,7 @@
         v-for="(post, index) in events"
         :key="index"
       >
-        <div class="wrap-one-event border rounded-big">
+        <div class="wrap-one-event border rounded-md">
           <router-link :to="`event/${post.id}`">
             <div class="one-event-image">
               <img
