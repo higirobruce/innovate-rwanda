@@ -243,13 +243,7 @@
                         </div>
                         <div class="col-sm-12 col-lg-6 info-box">
                           Website:&nbsp;&nbsp;
-                          <router-link
-                            v-if="!_.isEmpty(company.company.coWebsite)"
-                            :to="`/redirect/${company.company.coWebsite}`"
-                            target="_blank"
-                          >
-                            {{ company.company.coWebsite }}
-                          </router-link>
+                          <a :href="makeURL(company.company.coWebsite)" v-if="!_.isEmpty(company.company.coWebsite)" target="_blank">{{company.company.coWebsite}}</a>
                         </div>
                         <div class="col-sm-12 col-lg-6 info-box">
                           Year Founded:&nbsp;&nbsp;
@@ -1278,6 +1272,14 @@ export default {
           });
         });
     },
+    makeURL(value) {
+            let newUL = value;
+            if (!newUL.startsWith('http://') || !newUL.startsWith('https://')) {
+            newUL = `http://${newUL}`
+            }
+
+            return newUL
+    }
   },
   computed: {
     layout() {
