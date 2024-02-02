@@ -39,17 +39,16 @@
     "vue2-editor": "^2.10.2",
     "vue2-google-maps": "^0.10.7",
     "vuelidate": "^0.7.6",
-    "vuex": "^3.1.2",
+    "vuex": "^3.1.2"
+  },
+  "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-service": "^4.1.0",
-    "vue-template-compiler": "^2.6.10",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0"
-  },
-  "devDependencies": {
-    
+    "eslint-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {
     "root": true,
